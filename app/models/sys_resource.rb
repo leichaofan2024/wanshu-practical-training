@@ -1,0 +1,3 @@
+class SysResource < ApplicationRecord
+
+end 
