@@ -11,7 +11,7 @@ default: &default
   timeout: 5000
   username: rali
   password: 123456
-  host: 192.168.1.10
+  host: 192.168.1.8
 
 development:
   <<: *default
