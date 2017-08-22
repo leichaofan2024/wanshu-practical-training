@@ -1,0 +1,65 @@
+// Place all the styles related to the t_duan_infoes controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+.duan-frame{
+  width:90%;
+  margin:20px auto;
+
+}
+.duan-head-frame{
+  width:100%;
+  box-sizing:content-box;
+  overflow:auto;
+  .duan-zhi{
+    width: 33.33%;
+    float:left;
+    text-align: center;
+  }
+  .duan-chewu{
+    width: 33.33%;
+    float:left;
+    text-align: center;
+  }
+  .duan-zj{
+    width: 33.33%;
+    float:left;
+    text-align: center;
+  }
+
+  .duan-picture{
+    float:left;
+    width:100px;
+    height:100px;
+    overflow:auto;
+    background:#E5E4F6;
+    margin:20px 0 0 20px;
+    h4{
+     line-height: 15px;
+     font-size: 15px;
+    }
+
+    p{
+     line-height: 8px;
+     font-size:12px;
+    }
+  }
+}
+.duan-cankao{
+  width:100%;
+  clear:both;
+  margin-top:50px;
+  h3{
+    text-align:center;
+  }
+}
+
+.duan-kaoshicishu{
+  width:100%;
+  clear:both;
+  margin-top:50px;
+  h3{
+    text-align: center;
+  }
+}
