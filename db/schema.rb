@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170808003503) do
+ActiveRecord::Schema.define(version: 20170825112024) do
 
   create_table "attachment", id: :bigint, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", comment: "系统附件表" do |t|
     t.string   "file_name",          limit: 50,                                       null: false, comment: "文件名称"
@@ -205,6 +205,7 @@ ActiveRecord::Schema.define(version: 20170808003503) do
     t.string  "F_name", limit: 64,             null: false
     t.integer "F_type",            default: 1, null: false, comment: "类型 1 车务段 2 直属站"
     t.bigint  "LEVEL"
+    t.index ["F_name"], name: "index_t_duan_info_on_F_name", using: :btree
   end
 
   create_table "t_program_info", primary_key: "F_id", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -265,13 +266,19 @@ ActiveRecord::Schema.define(version: 20170808003503) do
     t.integer "F_synch_record",             default: 0, null: false, comment: "`"
     t.index ["F_duan_uuid", "F_time"], name: "F_duan_uuid_2", using: :btree
     t.index ["F_duan_uuid"], name: "F_duan_uuid", using: :btree
+    t.index ["F_duan_uuid"], name: "index_t_record_info_on_F_duan_uuid", using: :btree
+    t.index ["F_score"], name: "index_t_record_info_on_F_score", using: :btree
     t.index ["F_station_uuid", "F_time"], name: "F_station_uuid_2", using: :btree
     t.index ["F_station_uuid"], name: "F_station_uuid", using: :btree
+    t.index ["F_station_uuid"], name: "index_t_record_info_on_F_station_uuid", using: :btree
     t.index ["F_team_uuid", "F_time"], name: "F_team_uuid_2", using: :btree
     t.index ["F_team_uuid"], name: "F_team_uuid", using: :btree
+    t.index ["F_team_uuid"], name: "index_t_record_info_on_F_team_uuid", using: :btree
     t.index ["F_user_uuid", "F_duan_uuid", "F_station_uuid", "F_team_uuid"], name: "F_user_uuid_3", using: :btree
     t.index ["F_user_uuid", "F_time"], name: "F_user_uuid_2", using: :btree
     t.index ["F_user_uuid"], name: "F_user_uuid", using: :btree
+    t.index ["F_user_uuid"], name: "index_t_record_info_on_F_user_uuid", using: :btree
+    t.index ["F_work_uuid"], name: "index_t_record_info_on_F_work_uuid", using: :btree
   end
 
   create_table "t_station_info", primary_key: "F_uuid", id: :string, limit: 64, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -279,11 +286,13 @@ ActiveRecord::Schema.define(version: 20170808003503) do
     t.string  "F_duan_uuid", limit: 64,             null: false
     t.integer "F_level",                default: 0, null: false
     t.bigint  "LEVEL"
+    t.index ["F_duan_uuid"], name: "index_t_station_info_on_F_duan_uuid", using: :btree
   end
 
   create_table "t_team_info", primary_key: "F_uuid", id: :string, limit: 64, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "F_name",         limit: 64, null: false
     t.string "F_station_uuid", limit: 64, null: false
+    t.index ["F_station_uuid"], name: "index_t_team_info_on_F_station_uuid", using: :btree
   end
 
   create_table "t_test", primary_key: "F_uuid", id: :string, limit: 64, collation: "latin1_swedish_ci", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -306,6 +315,8 @@ ActiveRecord::Schema.define(version: 20170808003503) do
     t.index ["F_name"], name: "F_name", using: :btree
     t.index ["F_station_uuid"], name: "F_station_uuid", using: :btree
     t.index ["F_team_uuid"], name: "F_team_uuid", using: :btree
+    t.index ["F_team_uuid"], name: "index_t_user_info_on_F_team_uuid", using: :btree
+    t.index ["F_type"], name: "index_t_user_info_on_F_type", using: :btree
     t.index ["F_uuid"], name: "F_uuid", using: :btree
     t.index ["F_work_uuid"], name: "F_work_uuid", using: :btree
   end

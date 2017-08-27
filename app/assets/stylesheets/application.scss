@@ -16,3 +16,102 @@
 
 @import "bootstrap-sprockets";
 @import "bootstrap";
+@import "bootstrap-datepicker3";
+
+
+.nav-size{
+  font-size: 15px;
+}
+
+.root-search{
+  display:inline-block;
+  margin-left: 18%;
+  input{
+    display:inline-block;
+  }
+
+}
+
+.root-search-time1{
+  display:inline-block;
+  margin-left: 10%;
+
+}
+.root-search-time2{
+  display:inline-block;
+  margin-left: 10px;
+
+}
+
+.root-card-frame{
+  height:100px;
+  width:100%;
+  margin:30px auto;
+  .root-card{
+    width:950px;
+    margin:0 auto;
+    background: green;
+    .root-card-block{
+      height:100px;
+      width:150px;
+      margin-left: 45px;
+      background:blue;
+      float:left;
+      border:2px solid grey;
+      strong{
+        line-height: 30px;
+        margin-left:20px;
+      }
+    }
+    .root-card-block:first-of-type{
+      height:100px;
+      width:150px;
+      margin-left: 0;
+      float:left;
+      border:2px solid grey;
+
+    }
+  }
+
+}
+
+.root-data-frame{
+  height:600px;
+  width:100%;
+  background:green;
+  .root-data-block{
+    height:600px;
+    width:950px;
+    margin:0 auto;
+    .root-data-people{
+      height:300px;
+      width:450px;
+      float:left;
+      background:red;
+    }
+    .root-data-score{
+      height:300px;
+      width:450px;
+
+      float:right;
+      background:blue;
+
+    }
+    .root-data-question{
+      height:300px;
+      width:450px;
+      float:left;
+      background:yellow;
+
+    }
+    .root-data-wrong{
+      height:300px;
+      width:450px;
+      float:right;
+      background:red;
+
+    }
+  }
+
+
+}

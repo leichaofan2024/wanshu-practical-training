@@ -10,4 +10,5 @@ class ApplicationRecord < ActiveRecord::Base
     return t
   end
 
+
 end
