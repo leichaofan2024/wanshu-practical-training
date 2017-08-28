@@ -56,16 +56,24 @@
 <div class="root-data-frame">
   <div class="root-data-block">
     <div class="root-data-people">
-      <%= student_ck.count.to_f/student.count %>
+      <%= link_to t_duan_infoes_path do %>
+        <%= student_ck.count.to_f/student.count %>
+      <% end %>
     </div>
     <div class="root-data-score">
-      <%= %>
+      <%= score_90.count%><br>
+      <%= score_80.count%><br>
+      <%= score_60.count%><br>
+      <%= score_60_below.count%><br>
     </div>
     <div class="root-data-question">
-
+      <%= program_type_1.count%><br>
+      <%= program_type_2.count%><br>
+      <%= program_type_3.count%><br>
+      <%= program_type_4.count%><br>
     </div>
     <div class="root-data-wrong">
-
+      <%= reason_hot_all.first(8)%>
     </div>
   </div>
 

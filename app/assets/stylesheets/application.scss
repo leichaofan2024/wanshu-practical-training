@@ -19,6 +19,10 @@
 @import "bootstrap-datepicker3";
 
 
+body {
+  min-height:100%;
+  background:rgba(143,145,157,0.17);
+}
 .nav-size{
   font-size: 15px;
 }
@@ -50,14 +54,13 @@
   .root-card{
     width:950px;
     margin:0 auto;
-    background: green;
     .root-card-block{
       height:100px;
       width:150px;
       margin-left: 45px;
-      background:blue;
+      background-color: #fff;
       float:left;
-      border:2px solid grey;
+
       strong{
         line-height: 30px;
         margin-left:20px;
@@ -68,7 +71,6 @@
       width:150px;
       margin-left: 0;
       float:left;
-      border:2px solid grey;
 
     }
   }
@@ -78,7 +80,6 @@
 .root-data-frame{
   height:600px;
   width:100%;
-  background:green;
   .root-data-block{
     height:600px;
     width:950px;
@@ -87,28 +88,29 @@
       height:300px;
       width:450px;
       float:left;
-      background:red;
+      border-bottom: 1px solid rgba(143,145,157,0.17);
+      background-color: #fff;
     }
     .root-data-score{
       height:300px;
       width:450px;
-
+      border-bottom: 1px solid rgba(143,145,157,0.17);
       float:right;
-      background:blue;
+      background-color: #fff;
 
     }
     .root-data-question{
       height:300px;
       width:450px;
       float:left;
-      background:yellow;
+      background-color: #fff;
 
     }
     .root-data-wrong{
       height:300px;
       width:450px;
       float:right;
-      background:red;
+      background-color: #fff;
 
     }
   }

@@ -1,7 +1,8 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
-  helper_method [:duan,:duan_z,:duan_cw,:duan_ju,:duan_ck,:station,:station_ck,:team,:team_ju,:team_ck,:student,:student_ck, :teacher ,:program_ck]
+  helper_method [:duan,:duan_z,:duan_cw,:duan_ju,:duan_ck,:station,:station_ck,:team,:team_ju,:team_ck,:student,:student_ck, :teacher ,:program_ck,
+                 :score_90,:score_80,:score_60,:score_60_below,:program_type_1,:program_type_2,:program_type_3,:program_type_4,:reason_hot_all]
   def duan
     m = TDuanInfo.includes(:t_record_infoes).where.not("F_name= ? || F_name= ?", "局职教基地", "运输处")
   end
@@ -95,10 +96,40 @@ class ApplicationController < ActionController::Base
     return m.uniq
   end
 
+  def score_90
+    m = TRecordInfo.where("F_score >= ?", 90)
+  end
 
+  def score_80
+    m = TRecordInfo.where("F_score >= ? AND F_score<? ", 80,90)
+  end
 
+  def score_60
+    m = TRecordInfo.where("F_score >= ? AND F_score<? ", 60,80)
+  end
 
+  def score_60_below
+    m = TRecordInfo.where("F_score< ? ", 60)
+  end
 
+  def program_type_1
+    m = TRecordDetailInfo.record_type_1
+  end
 
+  def program_type_2
+    m = TRecordDetailInfo.record_type_2
+  end
+
+  def program_type_3
+    m = TRecordDetailInfo.record_type_3
+  end
+
+  def program_type_4
+    m = TRecordDetailInfo.record_type_4
+  end
+
+  def reason_hot_all
+    m = TReasonInfo.all.map{|r| [r.F_name,r.t_detail_reason_infoes.count]}.sort_by{|a| a.second}.map{|b| b.first}.reverse
+  end
 
 end

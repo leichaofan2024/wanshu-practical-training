@@ -5,4 +5,7 @@ class TRecordInfo < ApplicationRecord
   belongs_to :t_user_info,:foreign_key => "F_user_uuid"
   belongs_to :t_station_info, :foreign_key => "F_station_uuid"
   belongs_to :t_team_info, :foreign_key => "F_team_uuid"
+
+
+  
 end
