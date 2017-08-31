@@ -75,13 +75,8 @@ class ApplicationController < ActionController::Base
   end
 
   def student_ck
-    m = Array.new
-    student.each do |s|
-      if s.t_record_infoes.present?
-        m << s
-      end
-    end
-    return m
+    m = student.select{|s| s.t_record_infoes.present?}
+
   end
 
   def teacher
@@ -129,7 +124,7 @@ class ApplicationController < ActionController::Base
   end
 
   def reason_hot_all
-    m = TReasonInfo.all.map{|r| [r.F_name,r.t_detail_reason_infoes.count]}.sort_by{|a| a.second}.map{|b| b.first}.reverse
+    m = TReasonInfo.all.map{|r| [r.F_name,r.t_detail_reason_infoes.size]}.sort_by{|a| a.second}.map{|b| b.first}.reverse
   end
 
 end

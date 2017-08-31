@@ -1,7 +1,11 @@
 class TDuanInfoesController < ApplicationController
 
   def index
-  end 
+    @duans = TDuanInfo.where.not(:F_name => ["运输处","局职教基地"] )
+    # @records = TRecordInfo.pluck(:F_user_uuid)
+    # @users = TUserInfo.select{|u| @records.include?(u.F_uuid)}
+
+  end
 
 
 

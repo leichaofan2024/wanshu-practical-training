@@ -1,0 +1,80 @@
+
+<div class="root-search-frame">
+  <div class="root-search">
+    <b>搜索：</b>
+    <div style="display:inline-block;">
+      <%= form_for t_station_infoes_path do |f| %>
+        <%= f.text_field  :date,:placeholder => "输入搜索内容", :style => "height:25px;font-size:10px;"%>
+      <% end %>
+    </div>
+
+  </div>
+
+  <div class="root-search-time1">
+    <b>时间：</b>
+    <div style="display:inline-block;">
+      <%= form_for t_station_infoes_path do |f| %>
+        <%= f.text_field  :date, :placeholder => "开始日期...",:style => "height:25px;font-size:10px;"%>
+      <% end %>
+    </div>
+
+  </div>
+  ~
+  <div class="root-search-time2">
+    <%= form_for t_station_infoes_path do |f| %>
+      <%= f.text_field  :date, :placeholder => "截止日期...",:style => "height:25px;font-size:10px;"%>
+    <% end %>
+  </div>
+  <button type="button" name="button">确定</button>
+</div>
+<div class="root-card-frame">
+  <div class="root-card">
+    <div class="root-card-block">
+      <strong>站段总数：<%= TDuanInfo.all.size - 2 %> </strong><br>
+      <strong>实考站段：<%= duan_ck.size %></strong>
+    </div>
+    <div class="root-card-block">
+      <strong>车站总数：<%= station.size%> </strong><br>
+      <strong>实考车站：<%= station_ck.size %></strong>
+    </div>
+    <div class="root-card-block">
+      <strong>班组总数：<%= team.size %> </strong><br>
+      <strong>实考班组：<%= team_ck.size %></strong>
+    </div>
+    <div class="root-card-block">
+      <strong>实训人数：<%= student.size %> </strong><br>
+      <strong>实考人数：<%= student_ck.size %></strong>
+    </div>
+    <div class="root-card-block">
+      <strong>考点总数：<%= TProgramInfo.all.size %> </strong><br>
+      <strong>覆盖考点：<%= program_ck.size %></strong>
+    </div>
+  </div>
+
+</div>
+
+<div class="root-data-frame">
+  <div class="root-data-block">
+    <div class="root-data-people">
+      <%= link_to t_duan_infoes_path do %>
+        <%= student_ck.size.to_f/student.size %>
+      <% end %>
+    </div>
+    <div class="root-data-score">
+      <%= score_90.size%><br>
+      <%= score_80.size%><br>
+      <%= score_60.size%><br>
+      <%= score_60_below.size%><br>
+    </div>
+    <div class="root-data-question">
+      <%= program_type_1.size%><br>
+      <%= program_type_2.size%><br>
+      <%= program_type_3.size%><br>
+      <%= program_type_4.size%><br>
+    </div>
+    <div class="root-data-wrong">
+      <%= reason_hot_all.first(8)%>
+    </div>
+  </div>
+
+</div>

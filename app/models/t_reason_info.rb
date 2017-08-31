@@ -6,6 +6,5 @@ class TReasonInfo < ApplicationRecord
 
 
 
-  scope :reason_hot, -> {map{|r| [r.F_name,r.t_detail_reason_infoes.count]}.sort_by{|a| a.second}.map{|b| b.first}.reverse}
 
 end

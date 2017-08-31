@@ -4,7 +4,7 @@ class TDuanInfo < ApplicationRecord
   has_many :t_user_infoes ,:class_name => "TUserInfo" ,:foreign_key => "F_duan_uuid"
   has_many :t_record_infoes, :foreign_key => "F_duan_uuid"
 
-
+  
 
 
 
