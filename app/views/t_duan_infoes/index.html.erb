@@ -6,9 +6,7 @@
   </tr>
   <% duan.each do |d| %>
     <tr>
-      <td><%= student.where(:F_duan_uuid => d.F_uuid).size%></td>
-      <td><%= student_ck.select{|s| s.F_duan_uuid == d.F_uuid}.size%></td>
-      <td><%= student.where(:F_duan_uuid => d.F_uuid).size - student_ck.select{|s| s.F_duan_uuid == d.F_uuid}.size %></td>
+      <%= %>
     </tr>
   <% end %>
 </table>
