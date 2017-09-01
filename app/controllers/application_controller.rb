@@ -1,14 +1,14 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
-  helper_method [:duan,:duan_z,:duan_cw,:duan_ju,:duan_ck,:station,:station_ck,:team,:team_ju,:team_ck,:student,:student_ck, :teacher ,:program_ck,
+  helper_method [:duan,:duan_z,:duan_cw,:duan_ju,:duan_ck_count,:station,:station_ck,:team,:team_ju,:team_ck,:student,:student_ck, :teacher ,:program_ck,
                  :score_90,:score_80,:score_60,:score_60_below,:program_type_percent,:reason_hot_all]
   def duan
     m = TDuanInfo.where.not("F_name= ? || F_name= ?", "局职教基地", "运输处").count - 2
   end
 
-  def duan_ck
-    m = TRecordInfo.select("F_duan_uuid,sum(F_score)").group("F_duan_uuid").size.count - 2
+  def duan_ck_count
+    m = TRecordInfo.select("F_duan_uuid").group("F_duan_uuid").size.count - 2
   end
 
   def duan_z

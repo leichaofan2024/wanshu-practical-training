@@ -4,10 +4,5 @@ class TUserInfo < ApplicationRecord
   belongs_to :t_duan_info,:class_name =>"TDuanInfo", :foreign_key => "F_duan_uuid"
   has_many :t_record_infoes, :foreign_key => "F_user_uuid"
 
-  def duan_user_ck
 
-  end
-
-
-  scope :user_ck, -> {select{|u| u.t_record_infoes.present?}.size}
 end

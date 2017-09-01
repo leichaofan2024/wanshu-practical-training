@@ -1,14 +1,12 @@
-<table>
-  <tr>
-    <th>应考人数</th>
-    <th>实考人数</th>
-    <th>未考人数</th>
-  </tr>
-  <% duan.each do |d| %>
-    <tr>
-      <%= %>
-    </tr>
-  <% end %>
-</table>
+<h3>站段总人数:</h3>
+<div class="">
+  <%= @duans_student %>
+</div>
+
+<h3>参加考试的人数:</h3>
+<div><%= @duans_student_ck %></div>
+
+
+
 
 <%= line_chart charts_names_path %>

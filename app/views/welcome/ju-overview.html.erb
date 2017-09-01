@@ -30,8 +30,10 @@
 <div class="root-card-frame">
   <div class="root-card">
     <div class="root-card-block">
-      <strong>站段总数：<%= duan %> </strong><br>
-      <strong>实考站段：<%= duan_ck %></strong>
+      <%= link_to duan_ck_path do %>
+        <strong>站段总数：<%= duan %> </strong><br>
+        <strong>实考站段：<%= duan_ck_count %></strong>
+      <% end %>
     </div>
     <div class="root-card-block">
       <strong>车站总数：<%= station%> </strong><br>

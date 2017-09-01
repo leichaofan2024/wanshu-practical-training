@@ -4,9 +4,15 @@ Rails.application.routes.draw do
   root "welcome#ju-overview"
   get "/duan-overview",:to => "welcome#duan-overview"
   get "/station-overview",:to => "welcome#station-overview"
+  get "/duan_ck", :to => "welcome#duan_ck"
+  get "/station_ck", :to => "welcome#station_ck"
+  get "/team_ck", :to => "welcome#team_ck"
+  get "/student_ck", :to => "welcome#student_ck"
+  get "/program_ck", :to => "welcome#program_ck"
 
   resources :t_duan_infoes
   resources :t_station_infoes
+
   namespace :charts do
     get "names"
   end

@@ -1,0 +1,43 @@
+<h3>已参考站段</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>编号</th>
+        <th>站段名称</th>
+        <th>是否参考</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% i= 0 %>
+      <% @ck_duans.each do |d| %>
+      <% i = i+1%>
+      <tr>
+        <td><%= i%></td>
+        <td><%= d%></td>
+        <td><%= "已考试"%></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+<h3>未参考站段</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>编号</th>
+        <th>站段名称</th>
+        <th>是否参考</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% i= 0 %>
+      <% @wk_duans.each do |d| %>
+        <% i = i+1%>
+        <tr>
+          <td><%= i%></td>
+          <td><%= d%></td>
+          <td><%= "未考试"%></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
