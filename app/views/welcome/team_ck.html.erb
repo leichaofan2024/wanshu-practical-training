@@ -1,0 +1,13 @@
+<div class = "welcome_frame">
+  <h3>已参考班组 (共计：<%= @ck_teams.size%>个)</h3><hr>
+    <% @ck_teams.each do |team|%>
+      <button type="button" name="name"><%= team%></button>
+    <% end %>
+
+  <h3>未参考班组 (共计：<%= @wk_teams.size%>个)</h3><hr>
+    <% @wk_teams.each do |team|%>
+      <button type="button" name="name"><%= team%></button>
+    <% end %>
+
+
+</div>

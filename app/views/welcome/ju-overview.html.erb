@@ -36,20 +36,28 @@
       <% end %>
     </div>
     <div class="root-card-block">
-      <strong>车站总数：<%= station%> </strong><br>
-      <strong>实考车站：<%= station_ck %></strong>
+      <%= link_to station_ck_path do %>
+        <strong>车站总数：<%= station%> </strong><br>
+        <strong>实考车站：<%= station_ck_count %></strong>
+      <% end %>
     </div>
     <div class="root-card-block">
-      <strong>班组总数：<%= team %> </strong><br>
-      <strong>实考班组：<%= team_ck %></strong>
+      <%= link_to team_ck_path do %>
+        <strong>班组总数：<%= team %> </strong><br>
+        <strong>实考班组：<%= team_ck_count %></strong>
+      <% end %>
     </div>
     <div class="root-card-block">
-      <strong>实训人数：<%= student %> </strong><br>
-      <strong>实考人数：<%= student_ck %></strong>
+      <%= link_to student_ck_path do %>
+        <strong>实训人数：<%= student %> </strong><br>
+        <strong>实考人数：<%= student_ck_count %></strong>
+      <% end %>
     </div>
     <div class="root-card-block">
-      <strong>考点总数：<%= TProgramInfo.count %> </strong><br>
-      <strong>覆盖考点：<%= program_ck %></strong>
+      <%= link_to program_ck_path do %>
+        <strong>考点总数：<%= TProgramInfo.count %> </strong><br>
+        <strong>覆盖考点：<%= program_ck_count %></strong>
+      <% end %>
     </div>
   </div>
 
@@ -59,7 +67,7 @@
   <div class="root-data-block">
     <div class="root-data-people">
       <%= link_to t_duan_infoes_path do %>
-        <%= student_ck.to_f/student %>
+        <%= student_ck_count.to_f/student %>
       <% end %>
     </div>
     <div class="root-data-score">

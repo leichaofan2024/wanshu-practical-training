@@ -1,10 +1,10 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
-  helper_method [:duan,:duan_z,:duan_cw,:duan_ju,:duan_ck_count,:station,:station_ck,:team,:team_ju,:team_ck,:student,:student_ck, :teacher ,:program_ck,
+  helper_method [:duan,:duan_z,:duan_cw,:duan_ju,:duan_ck_count,:station,:station_ck_count,:team,:team_ju,:team_ck_count,:student,:student_ck_count, :teacher ,:program_ck_count,
                  :score_90,:score_80,:score_60,:score_60_below,:program_type_percent,:reason_hot_all]
   def duan
-    m = TDuanInfo.where.not("F_name= ? || F_name= ?", "局职教基地", "运输处").count - 2
+    m = TDuanInfo.where.not("F_name= ? || F_name= ?", "局职教基地", "运输处").count
   end
 
   def duan_ck_count
@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
     m = TStationInfo.includes(:t_record_infoes).where("F_duan_uuid = ? || F_duan_uuid = ? " , duan_ju.first.F_uuid,duan_ju.last.F_uuid)
   end
 
-  def station_ck
+  def station_ck_count
     m = TStationInfo.joins(:t_record_infoes).select(:F_uuid).distinct.count
   end
 
@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
     m = TDuanInfo.where.not(:F_name => ["运输处", "局职教基地"]).joins(t_station_infoes: :t_team_infoes).count
   end
 
-  def team_ck
+  def team_ck_count
     m = TTeamInfo.joins(t_station_info: :t_duan_info).where.not("t_duan_info.F_name = '运输处' OR t_duan_info.F_name = '局职教基地'").joins(:t_record_infoes).distinct.count
   end
 
@@ -47,7 +47,7 @@ class ApplicationController < ActionController::Base
     m = TUserInfo.where(:F_type => 0).count
   end
 
-  def student_ck
+  def student_ck_count
     m = TUserInfo.where(:F_type => 0).joins(:t_record_infoes).select(:F_id).distinct.count
 
   end
@@ -56,7 +56,7 @@ class ApplicationController < ActionController::Base
     m = TUserInfo.where(:F_type => 1)
   end
 
-  def program_ck
+  def program_ck_count
     m = TProgramInfo.joins(:t_record_detail_infoes).distinct.count
   end
 

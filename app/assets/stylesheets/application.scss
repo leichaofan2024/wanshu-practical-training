@@ -33,19 +33,18 @@ body {
   input{
     display:inline-block;
   }
-
 }
 
 .root-search-time1{
   display:inline-block;
   margin-left: 10%;
-
 }
 .root-search-time2{
   display:inline-block;
   margin-left: 10px;
 
 }
+
 
 .root-card-frame{
   height:100px;
@@ -71,11 +70,10 @@ body {
       width:150px;
       margin-left: 0;
       float:left;
-
     }
   }
-
 }
+
 
 .root-data-frame{
   height:600px;
@@ -114,6 +112,15 @@ body {
 
     }
   }
+}
 
-
+.welcome_frame{
+  width:90%;
+  margin:0 auto;
+  button {
+    width:160px;
+    height:45px;
+    margin-right:20px;
+    margin-bottom:30px;
+  }
 }

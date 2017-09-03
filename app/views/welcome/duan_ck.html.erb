@@ -1,43 +1,13 @@
-<h3>已参考站段</h3>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>编号</th>
-        <th>站段名称</th>
-        <th>是否参考</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% i= 0 %>
-      <% @ck_duans.each do |d| %>
-      <% i = i+1%>
-      <tr>
-        <td><%= i%></td>
-        <td><%= d%></td>
-        <td><%= "已考试"%></td>
-      </tr>
-      <% end %>
-    </tbody>
-  </table>
+<div class = "welcome_frame">
+  <h3>已参考站段 (共计：<%= @ck_duans.size%>个)</h3><hr>
+    <% @ck_duans.each do |duan|%>
+      <button type="button" name="name"><%= duan%></button>
+    <% end %>
 
-<h3>未参考站段</h3>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>编号</th>
-        <th>站段名称</th>
-        <th>是否参考</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% i= 0 %>
-      <% @wk_duans.each do |d| %>
-        <% i = i+1%>
-        <tr>
-          <td><%= i%></td>
-          <td><%= d%></td>
-          <td><%= "未考试"%></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+  <h3>未参考站段 (共计：<%= @wk_duans.size%>个)</h3><hr>
+    <% @wk_duans.each do |duan|%>
+      <button type="button" name="name"><%= duan%></button>
+    <% end %>
+
+
+</div>
