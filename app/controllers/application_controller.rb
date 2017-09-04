@@ -44,7 +44,7 @@ class ApplicationController < ActionController::Base
   end
 
   def student
-    m = TUserInfo.where(:F_type => 0).count
+    m = TUserInfo.where(:F_type => 0).select(:F_id).distinct.count
   end
 
   def student_ck_count

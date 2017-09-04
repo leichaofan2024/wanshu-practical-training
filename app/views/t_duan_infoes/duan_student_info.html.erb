@@ -1,0 +1,17 @@
+<div class= "pie_duan_frame">
+  <div class="clear">
+    <a href="/">首页</a> > 参考情况
+  </div>
+  <h3>站段总人数:</h3>
+  <div class="">
+    <%= @duans_student %>
+  </div>
+
+  <h3>参加考试的人数:</h3>
+  <div><%= @duans_student_ck %></div>
+
+
+
+
+  <%= line_chart charts_names_path %>
+</div>

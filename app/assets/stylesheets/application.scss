@@ -114,6 +114,7 @@ body {
   }
 }
 
+// 五张卡片内部样式
 .welcome_frame{
   width:90%;
   margin:0 auto;
@@ -123,4 +124,10 @@ body {
     margin-right:20px;
     margin-bottom:30px;
   }
+}
+
+// 饼图展示内部
+.pie_duan_frame{
+  width:85%;
+  margin:0 auto;
 }

@@ -1,0 +1,27 @@
+<div class="pie_duan_frame">
+  <div class="clear">
+    <a href="/">首页</a> > 考试项点
+  </div>
+  <table class="table table-border">
+    <thead>
+      <tr>
+        <th>序号</th>
+        <th>考题名称</th>
+        <th>考试频次</th>
+        <th>查看详情</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% i = 0 %>
+      <% @duan_programs.each do |d| %>
+      <% i = i+1 %>
+      <tr>
+        <td><%= i %></td>
+        <td><%= d.first %></td>
+        <td><%= d.second %></td>
+        <td><%= link_to("查看详情", duan_program_student_info_t_duan_infoes_path(:name => d.first) )%></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

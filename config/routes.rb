@@ -10,7 +10,16 @@ Rails.application.routes.draw do
   get "/student_ck", :to => "welcome#student_ck"
   get "/program_ck", :to => "welcome#program_ck"
 
-  resources :t_duan_infoes
+  resources :t_duan_infoes do
+    collection do
+      get :duan_student_info             #参考学生饼图
+      get :duan_score_info               #得分概览饼图
+      get :duan_program_info             #热点考点饼图
+      get :duan_program_student_info     #做过这道题的学生
+      get :duan_reason_info              #易错题饼图
+      get :duan_reason_student_info      #犯这种错误的学生
+    end
+  end
   resources :t_station_infoes
 
   namespace :charts do

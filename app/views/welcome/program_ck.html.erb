@@ -1,0 +1,14 @@
+<div class = "welcome_frame">
+  <h3>未覆盖考题 (共计：<%= @wk_programs.size%>个)</h3><hr>
+    <% @wk_programs.each do |program|%>
+      <button type="button" name="name"><%= program%></button>
+    <% end %>
+  <h3>已覆盖考题 (共计：<%= @ck_programs.size%>个)</h3><hr>
+    <% @ck_programs.each do |program|%>
+      <button type="button" name="name"><%= program%></button>
+    <% end %>
+
+
+
+
+</div>

@@ -66,22 +66,27 @@
 <div class="root-data-frame">
   <div class="root-data-block">
     <div class="root-data-people">
-      <%= link_to t_duan_infoes_path do %>
+      <%= link_to duan_student_info_t_duan_infoes_path do %>
         <%= student_ck_count.to_f/student %>
       <% end %>
     </div>
     <div class="root-data-score">
+      <%= link_to duan_score_info_t_duan_infoes_path do %>
       <%= score_90%><br>
       <%= score_80%><br>
       <%= score_60%><br>
-      <%= score_60_below%><br>
+      <%= score_60_below%>
+      <% end %>
     </div>
     <div class="root-data-question">
+      <%= link_to duan_program_info_t_duan_infoes_path do %>
       <%= program_type_percent%>
-
+      <% end %>
     </div>
     <div class="root-data-wrong">
+      <%= link_to duan_reason_info_t_duan_infoes_path do %>
       <%= reason_hot_all.first(8)%>
+      <% end %>
     </div>
   </div>
 
