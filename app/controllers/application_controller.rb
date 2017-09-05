@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
     protect_from_forgery with: :exception
 
-    helper_method [:duan, :duan_z, :duan_cw, :duan_ju, :duan_ck_count, :station, :station_ck_count, :team, :team_ju, :team_ck_count, :student_wk_count,:students, :student_ck_count,:student_ck_counts, :teacher, :program_ck_count,
+    helper_method [:duan, :duan_z, :duan_cw, :duan_ju, :duan_ck_count, :station, :station_ck_count, :team, :team_ju, :team_ck_count, :student_wk_count, :students, :student_ck_count, :student_ck_counts, :teacher, :program_ck_count,
                    :score_90, :score_80, :score_60, :score_60_below, :program_type_percent, :reason_hot_all]
     def duan
         m = TDuanInfo.where.not('F_name= ? || F_name= ?', '局职教基地', '运输处').count
@@ -44,20 +44,19 @@ class ApplicationController < ActionController::Base
     end
 
     def students
-      m = TUserInfo.where(F_type: 0).select(:F_id).distinct.count
+        m = TUserInfo.where(F_type: 0).select(:F_id).distinct.count
     end
 
     def student_ck_counts
-      m = TUserInfo.where(F_type: 0).joins(:t_record_infoes).select(:F_id).distinct.count
-
+        m = TUserInfo.where(F_type: 0).joins(:t_record_infoes).select(:F_id).distinct.count
     end
 
     def student_wk_count
         m = TUserInfo.where(F_type: 0).select(:F_id).distinct.count - TUserInfo.where(F_type: 0).joins(:t_record_infoes).select(:F_id).distinct.count
         s = {}
         s['未考人数'] = m
-        @cankao = { name: '未考人数', value: s['未考人数'] }
-        gon.cankao = @cankao
+        @weikao = { name: '未考人数', value: s['未考人数'] }
+        gon.weikao = @weikao
     end
 
     def student_ck_count
@@ -122,23 +121,14 @@ class ApplicationController < ActionController::Base
 
     def reason_hot_all
         # m = TReasonInfo.joins(:t_detail_reason_infoes).group(:F_name).size.sort { |a, b| b[1] <=> a[1] }
-        m = TReasonInfo.joins(:t_detail_reason_infoes).group(:F_name).size.sort_by { |_key, value| value }.to_h
-        @fl = { name: '分路不良道岔未加锁', value: m['分路不良道岔未加锁'] }
+        m = TReasonInfo.joins(:t_detail_reason_infoes).group(:F_name).size.sort_by { |_key, value| value }.reverse.first(4).to_h
+        @fl = { name: '车机联控用语不标准', value: m['车机联控用语不标准'] }
         gon.fl = @fl
-        @dc = { name: '道岔未紧固', value: m['道岔未紧固'] }
+        @dc = { name: '未核对阶段计划', value: m['未核对阶段计划'] }
         gon.dc = @dc
-        @wt = { name: '未通知电务', value: m['未通知电务'] }
+        @wt = { name: '未通知有关人员', value: m['未通知有关人员'] }
         gon.wt = @wt
-        @wz = { name: '未正确开放引导信号', value: m['未正确开放引导信号'] }
+        @wz = { name: '未检查设备备品', value: m['未检查设备备品'] }
         gon.wz = @wz
-        @flbl = { name: '分路不良未确认空闲', value: m['分路不良未确认空闲'] }
-        gon.flbl = @flbl
-        @wtgw = { name: '未通知工务', value: m['未通知工务'] }
-        gon.wtgw = @wtgw
-        @yl = { name: '漏传、错传调度命令', value: m['漏传、错传调度命令'] }
-        gon.yl = @yl
-        @wb = { name: '未办理闭塞（预告）', value: m['未办理闭塞（预告）'] }
-        gon.wb = @wb
     end
-
 end
