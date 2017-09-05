@@ -1,14 +1,14 @@
 
 <div class = "welcome_frame">
-  <h3>已参考车站 (共计：<%= @ck_stations.size%>个)</h3><hr>
-    <% @ck_stations.each do |station|%>
-      <button type="button" name="name"><%= station%></button>
-    <% end %>
 
   <h3>未参考车站 (共计：<%= @wk_stations.size%>个)</h3><hr>
     <% @wk_stations.each do |station|%>
       <button type="button" name="name"><%= station%></button>
     <% end %>
 
+  <h3>已参考车站 (共计：<%= @ck_stations.size%>个)</h3><hr>
+    <% @ck_stations.each do |station|%>
+      <button type="button" name="name"><%= station%></button>
+    <% end %>
 
 </div>

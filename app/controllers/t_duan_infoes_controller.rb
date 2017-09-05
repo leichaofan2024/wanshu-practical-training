@@ -34,7 +34,7 @@ class TDuanInfoesController < ApplicationController
   end
 
   def duan_reason_student_info
-    
+    @records = TRecordInfo.includes(:t_user_info,:t_duan_info,:t_station_info,:t_team_info).joins(t_record_detail_infoes: {t_detail_reason_infoes: :t_reason_info}).where("t_reason_info.F_name = ?", params[:name])
   end
 
   private
