@@ -1,0 +1,27 @@
+<div class="pie_duan_frame">
+  <div class="clear">
+    <a href="/">首页</a> > 易错考点
+  </div>
+  <table class="table table-border">
+    <thead>
+      <tr>
+        <th>序号</th>
+        <th>扣分项名称</th>
+        <th>扣分频次</th>
+        <th>查看详情</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% i = 0 %>
+      <% @duan_reasons.each do |r| %>
+      <% i = i+1 %>
+      <tr>
+        <td><%= i %></td>
+        <td><%= r.first %></td>
+        <td><%= r.second %></td>
+        <td><%= link_to("查看详情", duan_reason_student_info_t_duan_infoes_path(:name => r.first))%></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

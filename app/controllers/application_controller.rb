@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
     protect_from_forgery with: :exception
 
-    helper_method [:duan, :duan_z, :duan_cw, :duan_ju, :duan_ck_count, :station, :station_ck_count, :team, :team_ju, :team_ck_count, :student, :student_ck_count, :teacher, :program_ck_count,
+    helper_method [:duan, :duan_z, :duan_cw, :duan_ju, :duan_ck_count, :station, :station_ck_count, :team, :team_ju, :team_ck_count, :student_wk_count,:students, :student_ck_count,:student_ck_counts, :teacher, :program_ck_count,
                    :score_90, :score_80, :score_60, :score_60_below, :program_type_percent, :reason_hot_all]
     def duan
         m = TDuanInfo.where.not('F_name= ? || F_name= ?', '局职教基地', '运输处').count
@@ -43,11 +43,20 @@ class ApplicationController < ActionController::Base
         m = TTeamInfo.joins(t_station_info: :t_duan_info).where.not("t_duan_info.F_name = '运输处' OR t_duan_info.F_name = '局职教基地'").joins(:t_record_infoes).distinct.count
     end
 
-    def student
-        m = TUserInfo.where(F_type: 0).count
+    def students
+      m = TUserInfo.where(F_type: 0).select(:F_id).distinct.count
+    end
+
+    def student_ck_counts
+      m = TUserInfo.where(F_type: 0).joins(:t_record_infoes).select(:F_id).distinct.count
+
+    end
+
+    def student_wk_count
+        m = TUserInfo.where(F_type: 0).select(:F_id).distinct.count - TUserInfo.where(F_type: 0).joins(:t_record_infoes).select(:F_id).distinct.count
         s = {}
-        s['参考人数'] = m
-        @cankao = { name: '参考人数', value: s['参考人数'] }
+        s['未考人数'] = m
+        @cankao = { name: '未考人数', value: s['未考人数'] }
         gon.cankao = @cankao
     end
 
@@ -131,4 +140,5 @@ class ApplicationController < ActionController::Base
         @wb = { name: '未办理闭塞（预告）', value: m['未办理闭塞（预告）'] }
         gon.wb = @wb
     end
+
 end

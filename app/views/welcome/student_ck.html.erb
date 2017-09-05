@@ -1,0 +1,14 @@
+<div class = "welcome_frame">
+  <h3>未参考学生 (共计：<%= @wk_students.size%>个)</h3><hr>
+    <% @wk_students.each do |student|%>
+      <button type="button" name="name"><%= student.first%></button>
+    <% end %>
+  <h3>已参考学生 (共计：<%= @ck_students.size%>个)</h3><hr>
+    <% @ck_students.each do |student|%>
+      <button type="button" name="name"><%= student.first%></button>
+    <% end %>
+
+
+
+
+</div>

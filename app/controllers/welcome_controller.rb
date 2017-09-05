@@ -19,7 +19,15 @@ class WelcomeController < ApplicationController
   end
 
   def student_ck
-  
+    students = TUserInfo.student_all
+    @ck_students = students.joins(:t_record_infoes).select("t_user_info.F_id,t_user_info.F_name").group("t_user_info.F_id").pluck(:F_name,:F_id)
+    all_students = students.select("t_user_info.F_id,t_user_info.F_name").group("t_user_info.F_id").pluck(:F_name,:F_id)
+    @wk_students = all_students - @ck_students
+
   end
 
+  def program_ck
+    @ck_programs = TProgramInfo.joins(:t_record_detail_infoes).select(:F_name).distinct.pluck(:F_name)
+    @wk_programs = TProgramInfo.pluck(:F_name) - @ck_programs
+  end
 end

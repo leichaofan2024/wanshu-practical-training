@@ -49,8 +49,8 @@
     </div>
     <div class="root-card-block">
       <%= link_to student_ck_path do %>
-        <strong>实训人数：<%= student %> </strong><br>
-        <strong>实考人数：<%= student_ck_count %></strong>
+        <strong>实训人数：<%= students %> </strong><br>
+        <strong>实考人数：<%= student_ck_counts %></strong>
       <% end %>
     </div>
     <div class="root-card-block">
@@ -75,200 +75,217 @@
 
         // 指定图表的配置项和数据
         var option = {
-    title : {
-        text: '考试人数',
-        subtext: '时间段内',
-        x:'center'
-    },
-    tooltip : {
-        trigger: 'item',
-        formatter: "{a} <br/>{b} : {c} ({d}%)"
-    },
-    legend: {
-        orient: 'vertical',
-        left: 'left',
-        data: ['参考人数','实考人数']
-    },
-    series : [
-        {
-            name: '访问来源',
-            type: 'pie',
-            radius : '55%',
-            center: ['50%', '60%'],
-            data: [gon.shikao, gon.cankao],
+            title : {
+                text: '考试人数',
+                subtext: '时间段内',
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: ['参考人数','实考人数']
+            },
+            series : [
+                {
+                    name: '访问来源',
+                    type: 'pie',
+                    radius : '55%',
+                    center: ['50%', '60%'],
+                    data: [gon.shikao, gon.cankao],
 
 
-            itemStyle: {
-                emphasis: {
-                  shadowBlur: 10,
-                  shadowOffsetX: 0,
-                  shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    itemStyle: {
+                        emphasis: {
+                          shadowBlur: 10,
+                          shadowOffsetX: 0,
+                          shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
                 }
-            }
-        }
-    ]
-};
+            ]
+        };
 
 
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
-    </script>
-      <%= link_to t_duan_infoes_path do %>
 
+    </script>
+      <% student_wk_count%>
+      <% student_ck_count %>
+      <%= link_to duan_student_info_t_duan_infoes_path do %>
       <% end %>
     </div>
 
+    <!-- 第二个饼图 -->
+
     <div class="root-data-score">
       <div id="chengjitongji" style="width: 400px;height:300px;"></div>
-       <script type="text/javascript">
+        <script type="text/javascript">
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('chengjitongji'));
 
         // 指定图表的配置项和数据
         var option = {
-    title : {
-        text: '成绩统计',
-        subtext: '时间段内',
-        x:'center'
-    },
-    tooltip : {
-        trigger: 'item',
-        formatter: "{a} <br/>{b} : {c} ({d}%)"
-    },
-    legend: {
-        orient: 'vertical',
-        left: 'left',
-        data: ['90分以上','80分-90分','60分-80分','60分以下']
-    },
-    series : [
-        {
-            name: '访问来源',
-            type: 'pie',
-            radius : '55%',
-            center: ['50%', '60%'],
-            data: [gon.nine, gon.eight, gon.six, gon.below],
+            title : {
+                text: '成绩统计',
+                subtext: '时间段内',
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: ['90分以上','80分-90分','60分-80分','60分以下']
+            },
+            series : [
+                {
+                    name: '访问来源',
+                    type: 'pie',
+                    radius : '55%',
+                    center: ['50%', '60%'],
+                    data: [gon.nine, gon.eight, gon.six, gon.below],
 
 
-            itemStyle: {
-                emphasis: {
-                  shadowBlur: 10,
-                  shadowOffsetX: 0,
-                  shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    itemStyle: {
+                        emphasis: {
+                          shadowBlur: 10,
+                          shadowOffsetX: 0,
+                          shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
                 }
-            }
-        }
-    ]
-};
+            ]
+        };
 
 
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
-    </script>
-      <%= score_90%><br>
-      <%= score_80%><br>
-      <%= score_60%><br>
-      <%= score_60_below%><br>
+
+        </script>
+    <%= link_to duan_score_info_t_duan_infoes_path do %>
+    <% end %>
+      <% score_90%><br>
+      <% score_80%><br>
+      <% score_60%><br>
+      <% score_60_below%>
     </div>
 
-    <div class="root-data-question">
 
+     <!-- 第三个饼图 -->
+
+
+    <div class="root-data-question">
       <div id="kaohexiangdian" style="width: 400px;height:300px;"></div>
-       <script type="text/javascript">
+        <script type="text/javascript">
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('kaohexiangdian'));
 
         // 指定图表的配置项和数据
         var option = {
-    title : {
-        text: '考核项点',
-        subtext: '时间段内',
-        x:'center'
-    },
-    tooltip : {
-        trigger: 'item',
-        formatter: "{a} <br/>{b} : {c} ({d}%)"
-    },
-    legend: {
-        orient: 'vertical',
-        left: 'left',
-        data: ["应急处置", "正常接发车办理科目", "非正常发车办理科目", "非正常接车办理科目"]
-    },
-    series : [
-        {
-            name: '访问来源',
-            type: 'pie',
-            radius : '55%',
-            center: ['50%', '60%'],
-            data: [gon.yj, gon.zc, gon.fzcfche, gon.fzcjche],
+            title : {
+                text: '考核项点',
+                subtext: '时间段内',
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: ["应急处置", "正常接发车办理科目", "非正常发车办理科目", "非正常接车办理科目"]
+            },
+            series : [
+                {
+                    name: '访问来源',
+                    type: 'pie',
+                    radius : '55%',
+                    center: ['50%', '60%'],
+                    data: [gon.yj, gon.zc, gon.fzcfche, gon.fzcjche],
 
 
-            itemStyle: {
-                emphasis: {
-                  shadowBlur: 10,
-                  shadowOffsetX: 0,
-                  shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    itemStyle: {
+                        emphasis: {
+                          shadowBlur: 10,
+                          shadowOffsetX: 0,
+                          shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
                 }
-            }
-        }
-    ]
-};
+            ]
+        };
 
 
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
-    </script>
+        </script>
     <% program_type_percent %>
+      <%= link_to duan_program_info_t_duan_infoes_path do %>
+      <% end %>
     </div>
+
+
+    <!-- 第四个饼图 -->
+
 
     <div class="root-data-wrong">
       <div id="yicuokaodian" style="width: 400px;height:300px;"></div>
-       <script type="text/javascript">
+        <script type="text/javascript">
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('yicuokaodian'));
 
         // 指定图表的配置项和数据
         var option = {
-    title : {
-        text: '易错项点',
-        subtext: '时间段内',
-        x:'center'
-    },
-    tooltip : {
-        trigger: 'item',
-        formatter: "{a} <br/>{b} : {c} ({d}%)"
-    },
-    legend: {
-        orient: 'vertical',
-        left: 'left',
-        data: ["分路不良道岔未加锁", "道岔未紧固", "未通知电务", "未正确开放引导信号",
-              "分路不良未确认空闲","未通知工务","漏传、错传调度命令","未办理闭塞（预告）"]
-    },
-    series : [
-        {
-            name: '访问来源',
-            type: 'pie',
-            radius : '55%',
-            center: ['50%', '60%'],
-            data: [gon.fl, gon.dc, gon.wt, gon.wz, gon.flbl, gon.wtgw, gon.yl, gon.wb],
+            title : {
+                text: '易错项点',
+                subtext: '时间段内',
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: ["分路不良道岔未加锁", "道岔未紧固", "未通知电务", "未正确开放引导信号",
+                      "分路不良未确认空闲","未通知工务","漏传、错传调度命令","未办理闭塞（预告）"]
+            },
+            series : [
+                {
+                    name: '访问来源',
+                    type: 'pie',
+                    radius : '55%',
+                    center: ['50%', '60%'],
+                    data: [gon.fl, gon.dc, gon.wt, gon.wz, gon.flbl, gon.wtgw, gon.yl, gon.wb],
 
 
-            itemStyle: {
-                emphasis: {
-                  shadowBlur: 10,
-                  shadowOffsetX: 0,
-                  shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    itemStyle: {
+                        emphasis: {
+                          shadowBlur: 10,
+                          shadowOffsetX: 0,
+                          shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
                 }
-            }
-        }
-    ]
-};
+            ]
+        };
 
 
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
-    </script>
+        </script>
       <% reason_hot_all.first(8)%>
+      <%= link_to duan_reason_info_t_duan_infoes_path do %>
+      <% end %>
     </div>
   </div>
-
 </div>
