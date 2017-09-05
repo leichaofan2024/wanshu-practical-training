@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
     end
 
     def duan_ck_count
-        m = TRecordInfo.select('F_duan_uuid').group('F_duan_uuid').size.count - 2
+        m = TDuanInfo.duan_orgnization.joins(t_user_infoes: :t_record_infoes).where('t_user_info.F_type = ?', 0).select('t_duan_info.F_uuid').distinct.count
     end
 
     def duan_z
