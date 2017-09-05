@@ -66,7 +66,7 @@
 
 <div class="root-data-frame">
   <div class="root-data-block">
-    <script src="echarts.min.js"></script>
+    <script src="/assets/echarts.min.js"></script>
     <div class="root-data-people">
       <div id="main" style="width: 400px;height:300px;"></div>
        <script type="text/javascript">
@@ -112,13 +112,12 @@
 
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
-
+        myChart.on('click', function (params) {
+          window.location.assign('/t_duan_infoes/duan_student_info');
+        });
     </script>
       <% student_wk_count%>
       <% student_ck_count %>
-      <%= link_to duan_student_info_t_duan_infoes_path do %>
-      11
-      <% end %>
     </div>
 
     <!-- 第二个饼图 -->
@@ -168,11 +167,10 @@
 
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
-
+        myChart.on('click', function (params) {
+          window.location.assign('/t_duan_infoes/duan_score_info');
+        });
         </script>
-    <%= link_to duan_score_info_t_duan_infoes_path do %>
-    11
-    <% end %>
       <% score_90%><br>
       <% score_80%><br>
       <% score_60%><br>
@@ -228,10 +226,11 @@
 
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
+        myChart.on('click', function (params) {
+          window.location.assign('/t_duan_infoes/duan_program_info');
+        });
         </script>
     <% program_type_percent %>
-      <%= link_to duan_program_info_t_duan_infoes_path do %>
-      <% end %>
     </div>
 
 
@@ -284,10 +283,11 @@
 
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
+        myChart.on('click', function (params) {
+          window.location.assign('/t_duan_infoes/duan_reason_info');
+        });
         </script>
       <% reason_hot_all.first(8)%>
-      <%= link_to duan_reason_info_t_duan_infoes_path do %>
-      <% end %>
     </div>
   </div>
 </div>
