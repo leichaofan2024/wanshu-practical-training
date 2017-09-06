@@ -3,18 +3,18 @@
   <div class="clear">
     <a href="/">首页</a> > 考试成绩
   </div>
-  <%= @duan_90_scores%><br>
-  <%= @duan_80_scores%><br>
-  <%= @duan_60_scores%><br>
-  <%= @duan_60_bellow_scores%><br>
+
   <script src="/assets/echarts.min.js"></script>
-    <div id="main" style="width: 1200px;height:800px;"></div>
+    <div id="main" style="width: 1200px;height:500px;margin:40px auto 0;"></div>
      <script type="text/javascript">
       // 基于准备好的dom，初始化echarts实例
       var myChart = echarts.init(document.getElementById('main'));
 
       // 指定图表的配置项和数据
       var option = {
+              title: {
+                  text: '车务段考试成绩分析'
+              },
               tooltip : {
                   trigger: 'axis',
                   axisPointer : {            // 坐标轴指示器，坐标轴触发有效
@@ -101,13 +101,16 @@
 </div>
 
 
-<div id="zhishu" style="width: 1200px;height:800px;"></div>
+<div id="zhishu" style="width: 1200px;height:500px;margin-top:40px;margin:40px auto 0;"></div>
  <script type="text/javascript">
   // 基于准备好的dom，初始化echarts实例
   var myChart = echarts.init(document.getElementById('zhishu'));
 
   // 指定图表的配置项和数据
   var option = {
+          title: {
+              text: '直属站考试成绩分析'
+          },
           tooltip : {
               trigger: 'axis',
               axisPointer : {            // 坐标轴指示器，坐标轴触发有效
