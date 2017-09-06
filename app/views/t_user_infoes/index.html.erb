@@ -2,7 +2,7 @@
   <div class="">
     <a href="/">首页</a> > <a href="/t_duan_infoes">所有站段</a> > <a href="/t_station_infoes?duan=<%= @duan.F_uuid %>"><%= @duan.F_name %></a> > <a href="/t_team_infoes?duan=<%= @duan.F_uuid %>&station=<%= @station.F_uuid %>"><%= @station.F_name %></a> > <%= @team.F_name %>
   </div>
-  <h3>班组 (共计：<%= @users.size%>个)</h3><hr>
+  <h3>职工 (共计：<%= @users.size%>个)</h3><hr>
     <% @users.each do |user|%>
       <%= link_to t_record_infoes_path(:duan => params[:duan],:station => params[:station],:team => params[:team],:F_id => user.F_id) do %>
         <button type="button" name="name"><%= user.F_name %></button>
