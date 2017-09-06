@@ -1,0 +1,7 @@
+
+<div class = "welcome_frame">
+  <h3>站段 (共计：<%= @duans.size%>个)</h3><hr>
+    <% @duans.each do |duan|%>
+      <button type="button" name="name"><%= duan%></button>
+    <% end %>
+</div>
