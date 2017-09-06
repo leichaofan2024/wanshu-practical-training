@@ -20,7 +20,13 @@ Rails.application.routes.draw do
       get :duan_reason_student_info      #犯这种错误的学生
     end
   end
-  resources :t_station_infoes
+  resources :t_station_infoes do
+    collection do
+      get :station_student_info
+      get :station_score_info
+    end
+
+  end
 
   namespace :charts do
     get "names"
