@@ -2,12 +2,59 @@
   <div class="clear">
     <a href="/">首页</a> > <a href="/t_duan_infoes/duan_student_info">各站段参考情况</a> > <%= @duan.F_name%>
   </div>
-  <h3>车站总人数:</h3>
-  <div class="">
-    <%= @station_student %>
-  </div>
 
-  <h3>车站参加考试的人数:</h3>
-  <div><%= @station_student_ck %></div>
+  <script src="/assets/echarts.min.js"></script>
+    <div id="main" style="width: 1600px;height:600px;"></div>
+     <script type="text/javascript">
+      // 基于准备好的dom，初始化echarts实例
+      var myChart = echarts.init(document.getElementById('main'));
 
+      // 指定图表的配置项和数据
+      var option = {
+            title: {
+                text: '沧州车务段参考数据分析'
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: { // 坐标轴指示器，坐标轴触发有效
+                    type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+                }
+            },
+            legend: {
+                data: ['总人数', '参考人数'],
+                align: 'right',
+                right: 10
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: [{
+                type: 'category',
+                data: gon.key
+            }],
+            yAxis: [{
+                type: 'value',
+                name: '人数',
+                axisLabel: {
+                    formatter: '{value}'
+                }
+            }],
+            series: [{
+                name: '参考人数',
+                type: 'bar',
+                data: gon.ckvalue
+            }, {
+                name: '总人数',
+                type: 'bar',
+                data: gon.value
+            }]
+        };
+
+
+              // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+  </script>
 </div>
