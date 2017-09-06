@@ -1,0 +1,11 @@
+<div class = "welcome_frame">
+  <div class="">
+    <a href="/">首页</a> > <a href="/t_duan_infoes">所有站段</a> > <a href="/t_station_infoes?duan=<%= @duan.F_uuid %>"><%= @duan.F_name %></a> > <%= @station.F_name %>
+  </div>
+  <h3>班组 (共计：<%= @teams.size%>个)</h3><hr>
+    <% @teams.each do |team|%>
+      <%= link_to t_user_infoes_path(:duan => params[:duan],:station => params[:station],:team => team.F_uuid) do  %>
+        <button type="button" name="name"><%= team.F_name %></button>
+      <% end %>
+    <% end %>
+</div>

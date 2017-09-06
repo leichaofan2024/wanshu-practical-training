@@ -1,0 +1,49 @@
+
+<div class="pie_duan_frame">
+  <div style = "margin-bottom:40px;">
+    <a href="/">首页</a> > <a href="/t_duan_infoes">所有站段</a> > <a href="/t_station_infoes?duan=<%= @duan.F_uuid %>"><%= @duan.F_name %></a> > <a href="/t_team_infoes?duan=<%= @duan.F_uuid %>&station=<%= @station.F_uuid %>"><%= @station.F_name %></a> >
+    <a href="/t_user_infoes?duan=<%= @duan.F_uuid %>&station=<%= @station.F_uuid %>&team=<%= @team.F_uuid %>"><%= @team.F_name%></a> > <%= @user.F_name %>
+  </div>
+
+  <table class="table table-border">
+    <thead>
+      <tr>
+        <th>序号</th>
+        <th>姓名</th>
+        <th>身份证号</th>
+        <th>考试地点（段）</th>
+        <th>考试地点（站）</th>
+        <th>考试地点（班）</th>
+        <th>考试时间</th>
+        <th>得分</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% i = 0 %>
+      <% @records.each do |r| %>
+      <% i = i+1 %>
+      <tr>
+        <td><%= i %></td>
+        <td>
+            <%= r.t_user_info.F_name %>
+        </td>
+        <td>
+            <%= r.t_user_info.F_id %>
+        </td>
+
+        <td>
+            <%= r.t_duan_info.F_name %>
+        </td>
+        <td>
+            <%= r.t_station_info.F_name %>
+        </td>
+        <td>
+            <%= r.t_team_info.F_name %>
+        </td>
+        <td><%= r.F_time %></td>
+        <td><%= r.F_score %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -1,7 +1,24 @@
 
 <div class = "welcome_frame">
-  <h3>站段 (共计：<%= @duans.size%>个)</h3><hr>
-    <% @duans.each do |duan|%>
+  <div class="">
+    <a href="/">首页</a> > <a href="/t_duan_infoes">所有站段</a> 
+  </div>
+  <h3>车务段 (共计：<%= @duans_cw.size%>个)</h3><hr>
+    <% @duans_cw.each do |duan|%>
+      <%= link_to t_station_infoes_path(:duan => duan.F_uuid) do  %>
+        <button type="button" name="name"><%= duan.F_name %></button>
+      <% end %>
+    <% end %>
+
+  <h3>直属站 (共计：<%= @duans_zs.size%>个)</h3><hr>
+    <% @duans_zs.each do |duan|%>
+      <%= link_to t_station_infoes_path(:duan => duan.F_uuid) do  %>
+        <button type="button" name="name"><%= duan.F_name %></button>
+      <% end %>
+    <% end %>
+
+  <h3>职教基地 (共计：<%= @duans_zj.size%>个)</h3><hr>
+    <% @duans_zj.each do |duan|%>
       <%= link_to t_station_infoes_path(:duan => duan.F_uuid) do  %>
         <button type="button" name="name"><%= duan.F_name %></button>
       <% end %>

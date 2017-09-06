@@ -1,3 +1,13 @@
-<% @stations.each do |s| %>
-  <%= s.F_name %><br>
-<% end %>
+
+
+<div class = "welcome_frame">
+  <div class="">
+    <a href="/">首页</a> > <a href="/t_duan_infoes">所有站段</a> > <%= @duan.F_name %>
+  </div>
+  <h3>车站 (共计：<%= @stations.size%>个)</h3><hr>
+    <% @stations.each do |station|%>
+      <%= link_to t_team_infoes_path(:duan => params[:duan],:station => station.F_uuid) do  %>
+        <button type="button" name="name"><%= station.F_name %></button>
+      <% end %>
+    <% end %>
+</div>

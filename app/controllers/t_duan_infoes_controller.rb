@@ -1,6 +1,8 @@
 class TDuanInfoesController < ApplicationController
     def index
-      @duans= TDuanInfo.all
+      @duans_cw= TDuanInfo.duan_orgnization.where(:F_type => 1)
+      @duans_zs= TDuanInfo.duan_orgnization.where(:F_type => 2)
+      @duans_zj= TDuanInfo.duan_zhijiao
     end
 
     def duan_student_info

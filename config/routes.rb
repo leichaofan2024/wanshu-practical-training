@@ -35,7 +35,9 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :t_user_infoes 
+  resources :t_user_infoes
+
+  resources :t_record_infoes 
 
   namespace :charts do
     get "names"
