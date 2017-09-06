@@ -6,6 +6,7 @@ class TStationInfoesController < ApplicationController
   end
 
   def station_student_info
+    @duan = TDuanInfo.find_by(:F_name => params[:name])
     @station_student = TUserInfo.distinct(:F_id).joins(:t_station_info).where("t_station_info.F_duan_uuid = ?", TDuanInfo.find_by(:F_name => params[:name]).F_uuid).group("t_station_info.F_name").size
     @station_student_ck = TUserInfo.joins(:t_station_info,:t_record_infoes).where("t_station_info.F_duan_uuid = ?", TDuanInfo.find_by(:F_name => params[:name]).F_uuid).select("t_user_info.F_id,t_station_info.F_name").distinct(:F_id).group("t_station_info.F_name").size
   end

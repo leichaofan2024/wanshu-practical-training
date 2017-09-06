@@ -1,0 +1,2 @@
+class TUserInfoesController < ApplicationController
+end

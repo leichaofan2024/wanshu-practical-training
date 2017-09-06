@@ -1,8 +1,7 @@
 class TDuanInfoesController < ApplicationController
 
   def index
-
-
+    @duans= TDuanInfo.all
   end
 
   def duan_student_info
