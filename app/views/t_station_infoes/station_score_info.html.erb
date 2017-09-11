@@ -1,6 +1,6 @@
 <div class= "pie_duan_frame">
   <div class="clear">
-    <a href="/">首页</a> > <a href="/t_duan_infoes/duan_score_info">各站段参考情况</a> >各车站参考情况
+    <a href="/">首页</a> > <a href="/t_duan_infoes/duan_score_info">各站段参考情况</a> > <%= @duan.F_name %>
   </div>
 
   <script src="/assets/echarts.min.js"></script>
@@ -12,7 +12,7 @@
       // 指定图表的配置项和数据
       var option = {
               title: {
-                  text: '车站考试成绩分析'
+                  text: '<%= @duan.F_name %>考试成绩分析'
               },
               tooltip : {
                   trigger: 'axis',
@@ -111,7 +111,7 @@
               // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
         myChart.on('click', function (params) {
-          window.location.assign('/t_team_infoes/team_score_info?name=' + params.name);
+          window.location.assign('/t_team_infoes/team_score_info?duan_name=<%= params[:name]%> &name=' + params.name);
         });
   </script>
 </div>
