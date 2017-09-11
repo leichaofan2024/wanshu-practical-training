@@ -27,7 +27,7 @@
               grid: {
                   left: '3%',
                   right: '4%',
-                  bottom: '3%',
+                  y2:120,
                   containLabel: true
               },
               yAxis:  {
@@ -35,6 +35,25 @@
               },
               xAxis: {
                   type: 'category',
+                  splitLine: {
+                    show: false
+                },
+                axisTick: {
+                    show: false
+                },
+                splitArea: {
+                    show: false
+                },
+                axisLabel: {
+                    interval: 0,
+                    rotate: 45,
+                    show: true,
+                    splitNumber: 15,
+                    textStyle: {
+                        fontFamily: "微软雅黑",
+                        fontSize: 14
+                    }
+                  },
                   data: gon.duan_key
               },
               series: [
@@ -93,7 +112,7 @@
               // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
         myChart.on('click', function (params) {
-          window.location.assign('/t_station_infoes/station_score_info?name=沧州车务段');
+          window.location.assign('/t_station_infoes/station_score_info?name=' + params.name );
         });
 
   </script>
@@ -123,7 +142,7 @@
           grid: {
               left: '3%',
               right: '4%',
-              bottom: '3%',
+              y2:120,
               containLabel: true
           },
           yAxis:  {
@@ -131,6 +150,25 @@
           },
           xAxis: {
               type: 'category',
+              splitLine: {
+                show: false
+            },
+            axisTick: {
+                show: false
+            },
+            splitArea: {
+                show: false
+            },
+            axisLabel: {
+                interval: 0,
+                rotate: 45,
+                show: true,
+                splitNumber: 15,
+                textStyle: {
+                    fontFamily: "微软雅黑",
+                    fontSize: 14
+                }
+              },
               data: gon.zsduan_key
           },
           series: [
@@ -187,6 +225,8 @@
 
           // 使用刚指定的配置项和数据显示图表。
     myChart.setOption(option);
-
+    myChart.on('click', function (params) {
+      window.location.assign('/t_station_infoes/station_score_info?name=' + params.name );
+    });
 </script>
 </div>

@@ -28,11 +28,30 @@
             grid: {
                 left: '3%',
                 right: '4%',
-                bottom: '3%',
+                y2:120,
                 containLabel: true
             },
             xAxis: [{
                 type: 'category',
+                splitLine: {
+                  show: false
+              },
+              axisTick: {
+                  show: false
+              },
+              splitArea: {
+                  show: false
+              },
+              axisLabel: {
+                  interval: 0,
+                  rotate: 45,
+                  show: true,
+                  splitNumber: 15,
+                  textStyle: {
+                      fontFamily: "微软雅黑",
+                      fontSize: 14
+                  }
+                },
                 data: gon.key
             }],
             yAxis: [{

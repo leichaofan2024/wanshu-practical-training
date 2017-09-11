@@ -7,7 +7,7 @@
     <%  @duans_student %>
     <% @duans_student_ck %>
     <script src="/assets/echarts.min.js"></script>
-      <div id="main" style="width: 1000px;height:500px;margin:40px auto 0;"></div>
+      <div id="main" style="width:1000px;height:500px;margin:40px auto 0;"></div>
        <script type="text/javascript">
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('main'));
@@ -31,11 +31,30 @@
               grid: {
                   left: '3%',
                   right: '4%',
-                  bottom: '3%',
+                  y2:120,
                   containLabel: true
               },
               xAxis: [{
                   type: 'category',
+                  splitLine: {
+                    show: false
+                },
+                axisTick: {
+                    show: false
+                },
+                splitArea: {
+                    show: false
+                },
+                axisLabel: {
+                    interval: 0,
+                    rotate: 45,
+                    show: true,
+                    splitNumber: 15,
+                    textStyle: {
+                        fontFamily: "微软雅黑",
+                        fontSize: 14
+                    }
+                  },
                   data: gon.cwkey
               }],
               yAxis: [{
@@ -48,10 +67,17 @@
               series: [{
                   name: '参考人数',
                   type: 'bar',
+                  stack: "总人数",
+                  barMaxWidth: 50,
+                  barGap: "10%",
                   data: gon.cwckvalue
-              }, {
+              },
+               {
                   name: '总人数',
                   type: 'bar',
+                  stack: "总人数",
+                  barMaxWidth: 50,
+                  barGap: "10%",
                   data: gon.cwvalue
               }]
           };
@@ -61,6 +87,7 @@
           myChart.setOption(option);
           myChart.on('click', function (params) {
             window.location.assign('/t_station_infoes/station_student_info?name=' + params.name);
+
           });
     </script>
   </div>
@@ -90,11 +117,30 @@
           grid: {
               left: '3%',
               right: '4%',
-              bottom: '3%',
+              y2:120,
               containLabel: true
           },
           xAxis: [{
               type: 'category',
+              splitLine: {
+                show: false
+            },
+            axisTick: {
+                show: false
+            },
+            splitArea: {
+                show: false
+            },
+            axisLabel: {
+                interval: 0,
+                rotate: 45,
+                show: true,
+                splitNumber: 15,
+                textStyle: {
+                    fontFamily: "微软雅黑",
+                    fontSize: 14
+                }
+              },
               data: gon.zskey
           }],
           yAxis: [{
