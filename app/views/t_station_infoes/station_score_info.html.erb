@@ -110,6 +110,8 @@
 
               // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
-
+        myChart.on('click', function (params) {
+          window.location.assign('/t_team_infoes/team_score_info?name=' + params.name);
+        });
   </script>
 </div>
