@@ -60,7 +60,7 @@
                 // 使用刚指定的配置项和数据显示图表。
           myChart.setOption(option);
           myChart.on('click', function (params) {
-            window.location.assign('/t_station_infoes/station_student_info?name=沧州车务段');
+            window.location.assign('/t_station_infoes/station_student_info?name=' + params.name);
           });
     </script>
   </div>
@@ -120,7 +120,7 @@
             // 使用刚指定的配置项和数据显示图表。
       myChart.setOption(option);
       myChart.on('click', function (params) {
-        window.location.assign('/t_station_infoes/station_student_info?name=沧州车务段');
+        window.location.assign('/t_station_infoes/station_student_info?name='+ params.name);
       });
   </script>
 </div>
