@@ -1,8 +1,8 @@
 
 <div class="pie_duan_frame">
   <div style = "margin-bottom:40px;">
-    <a href="/">首页</a> > <a href="/t_duan_infoes">所有站段</a> > <a href="/t_station_infoes?duan=<%= @duan.F_uuid %>"><%= @duan.F_name %></a> > <a href="/t_team_infoes?duan=<%= @duan.F_uuid %>&station=<%= @station.F_uuid %>"><%= @station.F_name %></a> >
-    <a href="/t_user_infoes?duan=<%= @duan.F_uuid %>&station=<%= @station.F_uuid %>&team=<%= @team.F_uuid %>"><%= @team.F_name%></a> > <%= @user.F_name %>
+    <a href="/">首页</a> > <a href="/t_duan_infoes">所有站段</a> > <a href="/t_station_infoes?duan=<%= @duan.F_name %>"><%= @duan.F_name %></a> > <a href="/t_team_infoes?duan=<%= @duan.F_name %>&station=<%= @station.F_name %>"><%= @station.F_name %></a> >
+    <a href="/t_user_infoes?duan=<%= @duan.F_name %>&station=<%= @station.F_name %>&team=<%= @team.F_name %>"><%= @team.F_name%></a> > <%= @user.F_name %>
   </div>
 
   <table class="table table-border">

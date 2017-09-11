@@ -1,7 +1,7 @@
 class TStationInfoesController < ApplicationController
     def index
-      @duan = TDuanInfo.all.find(params[:duan])
-      @stations = TStationInfo.all.where(F_duan_uuid: params[:duan])
+      @duan = TDuanInfo.find_by(F_name: params[:duan])
+      @stations = TStationInfo.all.where(F_duan_uuid: @duan.F_uuid)
     end
 
     def station_student_info

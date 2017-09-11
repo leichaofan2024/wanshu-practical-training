@@ -6,8 +6,9 @@
   </div>
   <h3>车站 (共计：<%= @stations.size%>个)</h3><hr>
     <% @stations.each do |station|%>
-      <%= link_to t_team_infoes_path(:duan => params[:duan],:station => station.F_uuid) do  %>
+      <%= link_to team_student_info_t_team_infoes_path(:duan_name => params[:duan],:name => station.F_name) do  %>
         <button type="button" name="name"><%= station.F_name %></button>
       <% end %>
     <% end %>
 </div>
+/t_team_infoes/team_student_info?duan_name=北京车务段&name=定州
