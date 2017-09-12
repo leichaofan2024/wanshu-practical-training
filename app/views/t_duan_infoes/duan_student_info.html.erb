@@ -4,6 +4,12 @@
   </div>
 
   <div class="">
+    <div class="pull-right range-query">
+      <%= form_tag duan_student_info_t_duan_infoes_path, method: :get do %>
+      <%= text_field_tag :date %>
+      <%= submit_tag "搜索", class: "btn search-button" %>
+      <% end %>
+    </div>
     <%  @duans_student %>
     <% @duans_student_ck %>
     <script src="/assets/echarts.min.js"></script>

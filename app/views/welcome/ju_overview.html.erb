@@ -13,19 +13,12 @@
   <div class="root-search-time1">
     <b>时间：</b>
     <div style="display:inline-block;">
-      <%= form_for t_station_infoes_path do |f| %>
-        <%= f.text_field  :date, :placeholder => "开始日期...",:style => "height:25px;font-size:10px;"%>
-      <% end %>
-    </div>
-
-  </div>
-  ~
-  <div class="root-search-time2">
-    <%= form_for t_station_infoes_path do |f| %>
-      <%= f.text_field  :date, :placeholder => "截止日期...",:style => "height:25px;font-size:10px;"%>
+      <%= form_tag ju_overview_path,method: :get do %>
+        <%= text_field_tag 'search[date_from]'%>
+        <%= text_field_tag 'search[date_to]'%>
+        <%= submit_tag "搜索" %>
     <% end %>
   </div>
-  <button type="button" name="button">确定</button>
 </div>
 <div class="root-card-frame">
   <div class="root-card">
