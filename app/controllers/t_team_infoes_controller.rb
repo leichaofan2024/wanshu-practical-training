@@ -6,8 +6,13 @@ class TTeamInfoesController < ApplicationController
     end
 
     def team_student_info
-      @duan = TDuanInfo.find_by(F_name: params[:duan_name])
+        @duan = TDuanInfo.find_by(F_name: params[:duan_name])
         @station = TStationInfo.find_by(F_name: params[:name])
+        if params[:team_name].present?
+          @team = TTeamInfo.where(:F_station_uuid => @station.F_uuid).find_by(:F_name => params[:team_name])
+          @student_ck = TUserInfo.student_all.joins(:t_team_info,:t_record_infoes).where("t_team_info.F_uuid =? ", @team.F_uuid).select(:F_name,:F_id).distinct
+          @student_wk = TUserInfo.student_all.joins(:t_team_info).where("t_team_info.F_uuid=?",@team.F_uuid).select(:F_name,:F_id).distinct.where.not(:F_id => @student_ck.pluck(:F_id))
+        end
         @team_student = TUserInfo.student_all.joins(:t_team_info).where('t_team_info.F_station_uuid = ?', TStationInfo.find_by(F_name: params[:name]).F_uuid).select('t_user_info.F_id,t_team_info.F_name').distinct.group('t_team_info.F_name').size
         gon.key = @team_student.keys
         gon.value = @team_student.values

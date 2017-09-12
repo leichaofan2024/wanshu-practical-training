@@ -134,3 +134,23 @@ body {
   width:85%;
   margin:0 auto;
 }
+
+
+.team_chart_frame{
+  width: 450px;
+  height:500px;
+  float:left;
+  margin: 30px;
+}
+.team_student_frame{
+  width:40%;
+  padding-top:40px;
+  float:left;
+  h4 {
+    width:100%;
+
+  }
+  table{
+    width:100%;
+  }
+}
