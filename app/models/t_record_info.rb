@@ -10,4 +10,5 @@ class TRecordInfo < ApplicationRecord
 
 
 
+
 end

@@ -8,7 +8,8 @@ class ApplicationController < ActionController::Base
     end
 
     def duan_ck_count
-        m = TDuanInfo.duan_orgnization.joins(t_user_infoes: :t_record_infoes).where('t_user_info.F_type = ?', 0).select('t_duan_info.F_uuid').distinct.count
+        @search = TimeSearch.new(params[:search])
+        m = @search.scope_duan.select('t_duan_info.F_uuid').distinct.count
     end
 
     def duan_z
@@ -32,7 +33,8 @@ class ApplicationController < ActionController::Base
     end
 
     def station_ck_count
-        m = TStationInfo.joins(:t_record_infoes).select(:F_uuid).distinct.count
+        @search = TimeSearch.new(params[:search])
+        m = @search.scope_station.select(:F_uuid).distinct.count
     end
 
     def team
@@ -40,7 +42,8 @@ class ApplicationController < ActionController::Base
     end
 
     def team_ck_count
-        m = TTeamInfo.joins(t_station_info: :t_duan_info).where.not("t_duan_info.F_name = '运输处' OR t_duan_info.F_name = '局职教基地'").joins(:t_record_infoes).distinct.count
+        @search = TimeSearch.new(params[:search])
+        m = @search.scope_team.distinct.count
     end
 
     def students
@@ -48,11 +51,13 @@ class ApplicationController < ActionController::Base
     end
 
     def student_ck_counts
-        m = TUserInfo.where(F_type: 0).joins(:t_record_infoes).select(:F_id).distinct.count
+        @search = TimeSearch.new(params[:search])
+        m = @search.scope_student.select(:F_id).distinct.count
     end
 
     def student_wk_count
-        m = TUserInfo.where(F_type: 0).select(:F_id).distinct.count - TUserInfo.where(F_type: 0).joins(:t_record_infoes).select(:F_id).distinct.count
+        @search = TimeSearch.new(params[:search])
+        m = TUserInfo.where(F_type: 0).select(:F_id).distinct.count - @search.scope_student_wk.select(:F_id).distinct.count
         s = {}
         s['未考人数'] = m
         @weikao = { name: '未考人数', value: s['未考人数'] }
@@ -60,7 +65,8 @@ class ApplicationController < ActionController::Base
     end
 
     def student_ck_count
-        m = TUserInfo.where(F_type: 0).joins(:t_record_infoes).select(:F_id).distinct.count
+        @search = TimeSearch.new(params[:search])
+        m = @search.scope_student_ck.select(:F_id).distinct.count
         result = {}
         result['实考人数'] = m
         @shikao = { name: '实考人数', value: result['实考人数'] }
@@ -72,7 +78,8 @@ class ApplicationController < ActionController::Base
     end
 
     def program_ck_count
-        m = TProgramInfo.joins(:t_record_detail_infoes).distinct.count
+        @search = TimeSearch.new(params[:search])
+        m = @search.scope_program
     end
 
     def score_90
