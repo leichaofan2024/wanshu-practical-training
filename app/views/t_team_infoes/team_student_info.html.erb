@@ -127,4 +127,21 @@
 
 
   </div>
+
+
+  <div class="team_uploader">
+    <%= simple_form_for @station do |f| %>
+      <%= f.label "上传图片"%>
+      <%= f.input :image,as: :file %>
+      <%= f.submit "上传", data: { disable_with: "提交中。。。"}%>
+    <% end %>
+    <div class="team_uploader_picture">
+      <% if @station.image.present? %>
+        <span>目前站场图</span><br>
+        <%= image_tag(@station.image.thumb.url)%>
+      <% end %>
+    </div>
+  </div>
+
+
 </div>

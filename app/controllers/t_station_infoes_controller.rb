@@ -4,6 +4,22 @@ class TStationInfoesController < ApplicationController
       @stations = TStationInfo.all.where(F_duan_uuid: @duan.F_uuid)
     end
 
+    def edit
+      @station = TStationInfo.find(params[:id])
+
+    end
+
+    def update
+      @station = TStationInfo.find(params[:id])
+      @duan= @station.t_duan_info
+      if @station.update(t_station_info_params)
+        redirect_to team_student_info_t_team_infoes_path(:duan_name => @duan.F_name, :name => @station.F_name)
+      else
+        return :back
+      end
+    end
+
+
     def station_student_info
         @duan = TDuanInfo.find_by(F_name: params[:name])
         @station_student = TUserInfo.student_all.joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', TDuanInfo.find_by(F_name: params[:name]).F_uuid).select("t_user_info.F_id,t_station_info.F_name").distinct.group('t_station_info.F_name').size
@@ -29,6 +45,6 @@ class TStationInfoesController < ApplicationController
     private
 
     def t_station_info_params
-        params.require(:t_station_info).permit(:F_name, :F_duan_uuid, :F_level, :Level)
+        params.require(:t_station_info).permit(:F_name, :F_duan_uuid, :F_level, :Level,:image)
     end
 end

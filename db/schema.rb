@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170911133431) do
+ActiveRecord::Schema.define(version: 20170912140812) do
 
   create_table "attachment", id: :bigint, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", comment: "系统附件表" do |t|
     t.string   "file_name",          limit: 50,                                       null: false, comment: "文件名称"
@@ -286,6 +286,7 @@ ActiveRecord::Schema.define(version: 20170911133431) do
     t.string  "F_duan_uuid", limit: 64,             null: false
     t.integer "F_level",                default: 0, null: false
     t.bigint  "LEVEL"
+    t.string  "image"
     t.index ["F_duan_uuid"], name: "index_t_station_info_on_F_duan_uuid", using: :btree
   end
 
