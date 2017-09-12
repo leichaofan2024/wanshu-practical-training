@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170825112024) do
+ActiveRecord::Schema.define(version: 20170911133431) do
 
   create_table "attachment", id: :bigint, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", comment: "系统附件表" do |t|
     t.string   "file_name",          limit: 50,                                       null: false, comment: "文件名称"
@@ -366,6 +366,7 @@ ActiveRecord::Schema.define(version: 20170825112024) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
+    t.string   "role"
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
