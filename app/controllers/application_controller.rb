@@ -78,7 +78,8 @@ class ApplicationController < ActionController::Base
     end
 
     def program_ck_count
-        m = TProgramInfo.joins(:t_record_detail_infoes).distinct.count
+        @search = TimeSearch.new(params[:search])
+        m = @search.scope_program
     end
 
     def score_90
