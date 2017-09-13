@@ -170,7 +170,25 @@ body {
 .teams_station_picture:hover .dropdown-content{
   display:inline-block;
   top:0;
+}
 
 
-
+// 公告样式
+.call-board-frame{
+  width:80%;
+  margin:30px auto;
+}
+.call-board-show{
+  width:80%;
+  margin:30px auto;
+  padding-top: 30px;
+  background:#fff;
+  h3{
+    text-align: center;
+    color:#453DB8;
+  }
+  p{
+    color:#1C3054;
+    font-size: 15px;
+  }
 }

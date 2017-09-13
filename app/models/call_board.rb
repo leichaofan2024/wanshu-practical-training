@@ -1,0 +1,2 @@
+class CallBoard < ApplicationRecord
+end
