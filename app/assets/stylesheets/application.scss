@@ -155,6 +155,22 @@ body {
   }
 }
 
-.team_uploader{
+.teams_uploader{
   clear:both;
+}
+.teams_station_picture{
+  display:inline-block;
+  position: relative;
+  .dropdown-content{
+    display:none;
+    position: fixed;
+    z-index:1000;
+  }
+}
+.teams_station_picture:hover .dropdown-content{
+  display:inline-block;
+  top:0;
+
+
+
 }

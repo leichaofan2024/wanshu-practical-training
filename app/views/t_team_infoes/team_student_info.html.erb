@@ -129,16 +129,43 @@
   </div>
 
 
-  <div class="team_uploader">
-    <%= simple_form_for @station do |f| %>
-      <%= f.label "上传图片"%>
-      <%= f.input :image,as: :file %>
-      <%= f.submit "上传", data: { disable_with: "提交中。。。"}%>
-    <% end %>
-    <div class="team_uploader_picture">
+  <div class="teams_uploader">
+    <div class="teams_uploader_picture col-md-4">
+      <%= simple_form_for @station do |f| %>
+        <%= f.label "上传图片"%>
+        <%= f.input :image,as: :file %>
+        <%= f.submit "上传", data: { disable_with: "提交中。。。"}%>
+      <% end %>
+
       <% if @station.image.present? %>
-        <span>目前站场图</span><br>
-        <%= image_tag(@station.image.thumb.url)%>
+        <span>目前站场图:</span><br>
+        <div class="teams_station_picture">
+          <%= image_tag(@station.image.thumb.url)%>
+          <div class="dropdown-content">
+            <%= image_tag(@station.image.huge.url)%>
+          </div>
+        </div>
+
+      <% end %>
+    </div>
+    <div class="teams-uploader-file col-md-4">
+      <%= simple_form_for @station do |f| %>
+        <%= f.input :attachment,:label => "上传附件1"%>
+        <%= f.submit "上传", data: { disable_with: "提交中。。。"}%>
+      <% end %>
+      <span>下载附件：</span>
+      <% if @station.attachment.present? %>
+        <%= link_to("Download 附件1",@station.attachment_url)%>
+      <% end %>
+    </div>
+    <div class="teams-uploader-file col-md-4">
+      <%= simple_form_for @station do |f| %>
+        <%= f.input :attachment2,:label => "上传附件2"%>
+        <%= f.submit "上传", data: { disable_with: "提交中。。。"}%>
+      <% end %>
+      <span>下载附件：</span>
+      <% if @station.attachment2.present? %>
+        <%= link_to("Download 附件2",@station.attachment2_url)%>
       <% end %>
     </div>
   </div>

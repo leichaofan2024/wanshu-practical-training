@@ -1,7 +1,9 @@
 class TStationInfo < ApplicationRecord
   mount_uploader :image, ImageUploader
+  mount_uploader :attachment, AttachmentUploader
+  mount_uploader :attachment2, Attachment2Uploader
   self.table_name = "t_station_info"
-  
+
 
   belongs_to :t_duan_info,:class_name => "TDuanInfo", :foreign_key => "F_duan_uuid"
   has_many :t_team_infoes, :class_name => "TTeamInfo", :foreign_key => "F_station_uuid"
