@@ -7,13 +7,13 @@ class TDuanInfoesController < ApplicationController
 
     def duan_student_info
         @duans = TDuanInfo.where.not(F_name: %w(运输处 局职教基地))
-        if params[:date].present?
-            d = Date.parse(params[:date])
+        if params[:search].present?
+            @search = TimeSearch.new(params[:search])
             @duans_student_cw = TUserInfo.where(F_type: 0).joins(:t_duan_info).where.not('t_duan_info.F_name =? or t_duan_info.F_name =? ', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').group('t_duan_info.F_name').size
-            @duans_student_cw_ck = TUserInfo.where(F_type: 0).joins(:t_duan_info, :t_record_infoes).where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 1).where('t_record_info.F_time < ?', d).select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').size
+            @duans_student_cw_ck = @search.scope_duan_student.where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').size
 
             @duans_student_zs = TUserInfo.where(F_type: 0).joins(:t_duan_info).where.not('t_duan_info.F_name =? or t_duan_info.F_name =? ', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').group('t_duan_info.F_name').size
-            @duans_student_zs_ck = TUserInfo.where(F_type: 0).joins(:t_duan_info, :t_record_infoes).where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 2).where('t_record_info.F_time < ?', d).select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').size
+            @duans_student_zs_ck = @search.scope_duan_student.where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').size
         else
             @duans_student_cw = TUserInfo.where(F_type: 0).joins(:t_duan_info).where.not('t_duan_info.F_name =? or t_duan_info.F_name =? ', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').group('t_duan_info.F_name').size
             @duans_student_cw_ck = TUserInfo.where(F_type: 0).joins(:t_duan_info, :t_record_infoes).where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').size

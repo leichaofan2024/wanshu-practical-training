@@ -43,6 +43,10 @@ class TimeSearch
         TReasonInfo.joins(:t_detail_reason_infoes).where('F_time BETWEEN ? AND ?', @date_from, @date_to)
     end
 
+    def scope_duan_student
+        TUserInfo.where(F_type: 0).joins(:t_duan_info, :t_record_infoes).where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('F_time BETWEEN ? AND ?', @date_from, @date_to)
+    end
+
     private
 
     def parsed_date(date_string, default)
