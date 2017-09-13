@@ -177,11 +177,14 @@ body {
 .call-board-frame{
   width:80%;
   margin:30px auto;
+  tr{
+    height:30px;
+  }
 }
 .call-board-show{
   width:80%;
   margin:30px auto;
-  padding-top: 30px;
+  padding: 30px 20px;
   background:#fff;
   h3{
     text-align: center;
