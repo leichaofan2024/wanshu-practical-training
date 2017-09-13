@@ -3,6 +3,17 @@
     <a href="/">首页</a> > <a href="/t_duan_infoes/duan_student_info">各站段参考情况</a> > <%= @duan.F_name%>
   </div>
 
+<div class="">
+  <div class="root-search-time1">
+    <b>时间：</b>
+    <div style="display:inline-block;">
+      <%= form_tag duan_student_info_t_duan_infoes_path, method: :get do %>
+        <%= text_field_tag 'search[date_from]'%>
+        <%= text_field_tag 'search[date_to]'%>
+        <%= submit_tag "搜索" %>
+    <% end %>
+    </div>
+  </div>
   <script src="/assets/echarts.min.js"></script>
     <div id="main" style="width: 1000px;height:500px;margin: 40px auto 0;"></div>
      <script type="text/javascript">
@@ -21,7 +32,7 @@
                 }
             },
             legend: {
-                data: ['总人数', '参考人数'],
+                data: ['未考人数', '参考人数'],
                 align: 'right',
                 right: 10
             },
@@ -64,11 +75,17 @@
             series: [{
                 name: '参考人数',
                 type: 'bar',
+                stack: '未考人数',
+                barMaxWidth: 50,
+                barGap: "10%",
                 data: gon.ckvalue
             }, {
-                name: '总人数',
+                name: '未考人数',
                 type: 'bar',
-                data: gon.value
+                stack: '未考人数',
+                barMaxWidth: 50,
+                barGap: "10%",
+                data: gon.wkvalue
             }]
         };
 
@@ -79,4 +96,5 @@
           window.location.assign('/t_team_infoes/team_student_info?duan_name=<%= params[:name]%>&name=' + params.name);
         });
   </script>
+</div>
 </div>
