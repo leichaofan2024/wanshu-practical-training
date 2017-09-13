@@ -57,7 +57,7 @@ class ApplicationController < ActionController::Base
 
     def student_wk_count
         @search = TimeSearch.new(params[:search])
-        m = TUserInfo.where(F_type: 0).select(:F_id).distinct.count - @search.scope_student_wk.select(:F_id).distinct.count
+        m = TUserInfo.where(F_type: 0).select(:F_id).distinct.count - @search.scope_student_k.select(:F_id).distinct.count
         s = {}
         s['未考人数'] = m
         @weikao = { name: '未考人数', value: s['未考人数'] }
@@ -66,7 +66,7 @@ class ApplicationController < ActionController::Base
 
     def student_ck_count
         @search = TimeSearch.new(params[:search])
-        m = @search.scope_student_ck.select(:F_id).distinct.count
+        m = @search.scope_student_k.select(:F_id).distinct.count
         result = {}
         result['实考人数'] = m
         @shikao = { name: '实考人数', value: result['实考人数'] }
@@ -83,7 +83,8 @@ class ApplicationController < ActionController::Base
     end
 
     def score_90
-        m = TRecordInfo.where('F_score >= ?', 90).count
+        @search = TimeSearch.new(params[:search])
+        m = @search.scope_score.where('F_score >= ?', 90).count
         result = {}
         result['90分以上'] = m
         @nine = { name: '90分以上', value: result['90分以上'] }
@@ -91,7 +92,8 @@ class ApplicationController < ActionController::Base
     end
 
     def score_80
-        m = TRecordInfo.where('F_score >= ? AND F_score<? ', 80, 90).count
+        @search = TimeSearch.new(params[:search])
+        m = @search.scope_score.where('F_score >= ? AND F_score<? ', 80, 90).count
         result = {}
         result['80分-90分'] = m
         @eight = { name: '80分-90分', value: result['80分-90分'] }
@@ -99,7 +101,8 @@ class ApplicationController < ActionController::Base
     end
 
     def score_60
-        m = TRecordInfo.where('F_score >= ? AND F_score<? ', 60, 80).count
+        @search = TimeSearch.new(params[:search])
+        m = @search.scope_score.where('F_score >= ? AND F_score<? ', 60, 80).count
         result = {}
         result['60分-80分'] = m
         @six = { name: '60分-80分', value: result['60分-80分'] }
@@ -107,7 +110,8 @@ class ApplicationController < ActionController::Base
     end
 
     def score_60_below
-        m = TRecordInfo.where('F_score< ? ', 60).count
+        @search = TimeSearch.new(params[:search])
+        m = @search.scope_score.where('F_score< ? ', 60).count
         result = {}
         result['60分以下'] = m
         @below = { name: '60分以下', value: result['60分以下'] }
@@ -115,7 +119,8 @@ class ApplicationController < ActionController::Base
     end
 
     def program_type_percent
-        m = TProgramTypeInfo.joins(t_program_infoes: :t_record_detail_infoes).group(:F_name).size
+        @search = TimeSearch.new(params[:search])
+        m = @search.scope_program_type
         @yjcz = { name: '应急处置', value: m['应急处置'] }
         gon.yj = @yjcz
         @zcjf = { name: '正常接发车办理科目', value: m['正常接发车办理科目'] }
@@ -128,7 +133,8 @@ class ApplicationController < ActionController::Base
 
     def reason_hot_all
         # m = TReasonInfo.joins(:t_detail_reason_infoes).group(:F_name).size.sort { |a, b| b[1] <=> a[1] }
-        m = TReasonInfo.joins(:t_detail_reason_infoes).group(:F_name).size.sort_by { |_key, value| value }.reverse.first(4).to_h
+        @search = TimeSearch.new(params[:search])
+        m = @search.scope_reason_hot.group(:F_name).size.sort_by { |_key, value| value }.reverse.first(4).to_h
         @fl = { name: '车机联控用语不标准', value: m['车机联控用语不标准'] }
         gon.fl = @fl
         @dc = { name: '未核对阶段计划', value: m['未核对阶段计划'] }
