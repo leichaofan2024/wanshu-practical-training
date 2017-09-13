@@ -9,14 +9,23 @@ class TTeamInfoesController < ApplicationController
         @duan = TDuanInfo.find_by(F_name: params[:duan_name])
         @station = TStationInfo.find_by(F_name: params[:name])
         if params[:team_name].present?
-          @team = TTeamInfo.where(:F_station_uuid => @station.F_uuid).find_by(:F_name => params[:team_name])
-          @student_ck = TUserInfo.student_all.joins(:t_team_info,:t_record_infoes).where("t_team_info.F_uuid =? ", @team.F_uuid).select(:F_name,:F_id).distinct
-          @student_wk = TUserInfo.student_all.joins(:t_team_info).where("t_team_info.F_uuid=?",@team.F_uuid).select(:F_name,:F_id).distinct.where.not(:F_id => @student_ck.pluck(:F_id))
+            @team = TTeamInfo.where(F_station_uuid: @station.F_uuid).find_by(F_name: params[:team_name])
+            @student_ck = TUserInfo.student_all.joins(:t_team_info, :t_record_infoes).where('t_team_info.F_uuid =? ', @team.F_uuid).select(:F_name, :F_id).distinct
+            @student_wk = TUserInfo.student_all.joins(:t_team_info).where('t_team_info.F_uuid=?', @team.F_uuid).select(:F_name, :F_id).distinct.where.not(F_id: @student_ck.pluck(:F_id))
         end
+
         @team_student = TUserInfo.student_all.joins(:t_team_info).where('t_team_info.F_station_uuid = ?', @station.F_uuid).select('t_user_info.F_name,t_user_info.F_id,t_team_info.F_name').distinct.group('t_team_info.F_name').size
+        @team_s = TUserInfo.student_all.joins(:t_team_info, :t_record_infoes).where('t_team_info.F_station_uuid = ?', @station.F_uuid).select('t_user_info.F_name,t_user_info.F_id,t_team_info.F_name')
+        if params[:search].present?
+            @search = TimeSearch.new(params[:search])
+            @team_student_ck = @search.scope_team_student.select('t_user_info.F_name,t_user_info.F_id,t_team_info.F_name').distinct.group('t_team_info.F_name').size
+            @team_student_wk = TUserInfo.student_all.joins(:t_team_info).where('t_team_info.F_station_uuid = ?', @station.F_uuid).select('t_user_info.F_name,t_user_info.F_id,t_team_info.F_name').where.not('t_user_info.F_id' => @team_s.pluck('t_user_info.F_id')).distinct.group('t_team_info.F_name').size
+        else
+            @team_student_ck = TUserInfo.student_all.joins(:t_team_info, :t_record_infoes).where('t_team_info.F_station_uuid = ?', @station.F_uuid).select('t_user_info.F_name,t_user_info.F_id,t_team_info.F_name').distinct.group('t_team_info.F_name').size
+            @team_student_wk = TUserInfo.student_all.joins(:t_team_info).where('t_team_info.F_station_uuid = ?', @station.F_uuid).select('t_user_info.F_name,t_user_info.F_id,t_team_info.F_name').where.not('t_user_info.F_id' => @team_s.pluck('t_user_info.F_id')).distinct.group('t_team_info.F_name').size
+        end
         gon.key = @team_student.keys
-        gon.value = @team_student.values
-        @team_student_ck = TUserInfo.student_all.joins(:t_team_info, :t_record_infoes).where('t_team_info.F_station_uuid = ?', @station.F_uuid).select('t_user_info.F_name,t_user_info.F_id,t_team_info.F_name').distinct.group('t_team_info.F_name').size
+        gon.wkvalue = @team_student_wk.values
         gon.ckvalue = @team_student_ck.values
     end
 
