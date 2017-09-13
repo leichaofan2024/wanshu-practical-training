@@ -34,7 +34,7 @@
                   }
               },
               legend: {
-                  data: ['总人数', '参考人数'],
+                  data: ['未考人数', '参考人数'],
                   align: 'right',
                   right: 10
               },
@@ -77,18 +77,18 @@
               series: [{
                   name: '参考人数',
                   type: 'bar',
-                  stack: "总人数",
+                  stack: "未考人数",
                   barMaxWidth: 50,
                   barGap: "10%",
                   data: gon.cwckvalue
               },
                {
-                  name: '总人数',
+                  name: '未考人数',
                   type: 'bar',
-                  stack: "总人数",
+                  stack: "未考人数",
                   barMaxWidth: 50,
                   barGap: "10%",
-                  data: gon.cwvalue
+                  data: gon.cwwkvalue
               }]
           };
 
@@ -120,7 +120,7 @@
               }
           },
           legend: {
-              data: ['总人数', '参考人数'],
+              data: ['未考人数', '参考人数'],
               align: 'right',
               right: 10
           },
@@ -163,11 +163,17 @@
           series: [{
               name: '参考人数',
               type: 'bar',
+              stack: '未考人数',
+              barMaxWidth: 50,
+              barGap: "10%",
               data: gon.zsckvalue
           }, {
-              name: '总人数',
+              name: '未考人数',
               type: 'bar',
-              data: gon.zsvalue
+              stack: '未考人数',
+              barMaxWidth: 50,
+              barGap: "10%",
+              data: gon.zswkvalue
           }]
       };
 
