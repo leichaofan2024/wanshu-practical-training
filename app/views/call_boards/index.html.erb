@@ -19,7 +19,9 @@
       <tr>
         <td><%= i %></td>
         <td><%= link_to(c.name, call_board_path(c)) %></td>
-        <td><%= current_user.email  %></td>
+        <td>
+          <%= current_user.role  %>
+        </td>
         <td><%= c.created_at %></td>
         <td>
           <%= link_to("编辑", edit_call_board_path(c),:class => "btn btn-sm btn-primary")%> |

@@ -1,5 +1,5 @@
 class CallBoardsController < ApplicationController
-
+  before_action :authenticate_user!
   def index
     @call_boards = CallBoard.all.order("id DESC")
   end

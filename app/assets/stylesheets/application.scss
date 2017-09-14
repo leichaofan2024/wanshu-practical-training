@@ -27,6 +27,14 @@ body {
   font-size: 15px;
 }
 
+// 登陆样式：
+.loginpage-frame{
+  width:30%;
+  margin:0 auto;
+}
+
+// 搜索样式：
+
 .root-search{
   display:inline-block;
   margin-left: 18%;
@@ -45,6 +53,7 @@ body {
 
 }
 
+// 五张卡片样式：
 
 .root-card-frame{
   height:100px;
@@ -75,7 +84,20 @@ body {
   }
 }
 
+// 五张卡片内部样式
+.welcome_frame{
+  width:90%;
+  margin:0 auto;
+  button {
+    width:160px;
+    height:45px;
+    margin-right:20px;
+    margin-bottom:30px;
+  }
+}
 
+
+// 四个饼图：
 .root-data-frame{
   height:600px;
   width:100%;
@@ -117,17 +139,7 @@ body {
   }
 }
 
-// 五张卡片内部样式
-.welcome_frame{
-  width:90%;
-  margin:0 auto;
-  button {
-    width:160px;
-    height:45px;
-    margin-right:20px;
-    margin-bottom:30px;
-  }
-}
+
 
 // 饼图展示内部
 .pie_duan_frame{
@@ -194,4 +206,6 @@ body {
     color:#1C3054;
     font-size: 15px;
   }
+
+
 }
