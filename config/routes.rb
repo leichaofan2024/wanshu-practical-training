@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-    devise_for :users
+    devise_for :users, controllers: { registrations: 'users/registrations' , sessions: 'users/sessions'}
     # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
     root 'welcome#ju_overview'
     get '/ju_overview', to: 'welcome#ju_overview'
@@ -43,7 +43,7 @@ Rails.application.routes.draw do
       get :student_records
     end
   end
-  resources :call_boards 
+  resources :call_boards
 
     namespace :charts do
         get 'names'

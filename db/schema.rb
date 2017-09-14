@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170913062122) do
+ActiveRecord::Schema.define(version: 20170914072031) do
 
   create_table "attachment", id: :bigint, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", comment: "系统附件表" do |t|
     t.string   "file_name",          limit: 50,                                       null: false, comment: "文件名称"
