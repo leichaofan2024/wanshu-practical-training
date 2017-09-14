@@ -1,6 +1,11 @@
 
 <div class="root-search-frame">
+  <%= params[:search]%>123 <br>
+
+
+
   <div class="root-search">
+
     <b>搜索：</b>
     <div style="display:inline-block;">
       <%= form_for t_station_infoes_path do |f| %>
@@ -105,9 +110,15 @@
 
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
+        <% if params[:search].present? %>
+        myChart.on('click', function (params) {
+          window.location.assign('/t_duan_infoes/duan_student_info?<%=raw :search => params[:search] %>');
+        });
+        <% else %>
         myChart.on('click', function (params) {
           window.location.assign('/t_duan_infoes/duan_student_info');
         });
+        <% end %>
     </script>
       <% student_wk_count%>
       <% student_ck_count %>
