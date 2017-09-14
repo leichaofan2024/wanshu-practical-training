@@ -20,16 +20,17 @@ class TStationInfoesController < ApplicationController
 
     def station_student_info
         @duan = TDuanInfo.find_by(F_name: params[:name])
-        @m = TUserInfo.student_all.joins(:t_station_info, :t_record_infoes).where('t_station_info.F_duan_uuid = ?', TDuanInfo.find_by(F_name: params[:name]).F_uuid).select('t_user_info.F_id,t_station_info.F_name')
         @station_student = TUserInfo.student_all.joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', TDuanInfo.find_by(F_name: params[:name]).F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct.group('t_station_info.F_name').size
 
         if params[:search].present?
             @search = TimeSearch.new(params[:search])
-            @station_student_wk = TUserInfo.student_all.joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', TDuanInfo.find_by(F_name: params[:name]).F_uuid).select('t_user_info.F_id,t_station_info.F_name').where.not('t_user_info.F_id' => @m.pluck('t_user_info.F_id')).distinct.group('t_station_info.F_name').size
-            @station_student_ck = @search.scope_student_info.select('t_user_info.F_id,t_station_info.F_name').distinct.group('t_station_info.F_name').size
+            m = @search.scope_student_info.select('t_user_info.F_id,t_station_info.F_name').distinct.group('t_station_info.F_name')
+            @station_student_wk = TUserInfo.student_all.joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', TDuanInfo.find_by(F_name: params[:name]).F_uuid).select('t_user_info.F_id,t_station_info.F_name').where.not('t_user_info.F_id' => m.pluck('t_user_info.F_id')).distinct.group('t_station_info.F_name').size
+            @station_student_ck = m.size
         else
-            @station_student_wk = TUserInfo.student_all.joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', TDuanInfo.find_by(F_name: params[:name]).F_uuid).select('t_user_info.F_id,t_station_info.F_name').where.not('t_user_info.F_id' => @m.pluck('t_user_info.F_id')).distinct.group('t_station_info.F_name').size
-            @station_student_ck = TUserInfo.student_all.joins(:t_station_info, :t_record_infoes).where('t_station_info.F_duan_uuid = ?', TDuanInfo.find_by(F_name: params[:name]).F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct.group('t_station_info.F_name').size
+            m = TUserInfo.student_all.joins(:t_station_info, :t_record_infoes).where('t_station_info.F_duan_uuid = ?', TDuanInfo.find_by(F_name: params[:name]).F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct.group('t_station_info.F_name')
+            @station_student_wk = TUserInfo.student_all.joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', TDuanInfo.find_by(F_name: params[:name]).F_uuid).select('t_user_info.F_id,t_station_info.F_name').where.not('t_user_info.F_id' => m.pluck('t_user_info.F_id')).distinct.group('t_station_info.F_name').size
+            @station_student_ck = m.size
         end
         gon.key = @station_student.keys
         gon.wkvalue = @station_student_wk.values
