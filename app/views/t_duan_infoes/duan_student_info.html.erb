@@ -4,11 +4,15 @@
   </div>
 
   <div class="">
-    <div class="pull-right range-query">
-      <%= form_tag duan_student_info_t_duan_infoes_path, method: :get do %>
-      <%= text_field_tag :date %>
-      <%= submit_tag "搜索", class: "btn search-button" %>
+    <div class="root-search-time1">
+      <b>时间：</b>
+      <div style="display:inline-block;">
+        <%= form_tag duan_student_info_t_duan_infoes_path, method: :get do %>
+          <%= text_field_tag 'search[date_from]'%>
+          <%= text_field_tag 'search[date_to]'%>
+          <%= submit_tag "搜索" %>
       <% end %>
+      </div>
     </div>
     <%  @duans_student %>
     <% @duans_student_ck %>
@@ -30,7 +34,7 @@
                   }
               },
               legend: {
-                  data: ['总人数', '参考人数'],
+                  data: ['未考人数', '参考人数'],
                   align: 'right',
                   right: 10
               },
@@ -73,28 +77,39 @@
               series: [{
                   name: '参考人数',
                   type: 'bar',
-                  stack: "总人数",
+                  stack: "未考人数",
                   barMaxWidth: 50,
                   barGap: "10%",
                   data: gon.cwckvalue
               },
                {
-                  name: '总人数',
+                  name: '未考人数',
                   type: 'bar',
-                  stack: "总人数",
+                  stack: "未考人数",
                   barMaxWidth: 50,
                   barGap: "10%",
-                  data: gon.cwvalue
+                  data: gon.cwwkvalue
               }]
           };
 
 
                 // 使用刚指定的配置项和数据显示图表。
           myChart.setOption(option);
+           <% if params[:search].present? %>
+           function GetUrlPara(){
+                var url = document.location.toString();
+                var arrUrl = url.split("?");
+                var para = arrUrl[1];
+                return para;
+                };
           myChart.on('click', function (params) {
-            window.location.assign('/t_station_infoes/station_student_info?name=' + params.name);
-
+            window.location.assign('/t_station_infoes/station_student_info?duan_name=' + params.name +'&'+ GetUrlPara() );
           });
+           <% else %>
+          myChart.on('click', function (params) {
+            window.location.assign('/t_station_infoes/station_student_info?duan_name=' + params.name);
+          });
+          <% end %>
     </script>
   </div>
 
@@ -116,7 +131,7 @@
               }
           },
           legend: {
-              data: ['总人数', '参考人数'],
+              data: ['未考人数', '参考人数'],
               align: 'right',
               right: 10
           },
@@ -159,11 +174,17 @@
           series: [{
               name: '参考人数',
               type: 'bar',
+              stack: '未考人数',
+              barMaxWidth: 50,
+              barGap: "10%",
               data: gon.zsckvalue
           }, {
-              name: '总人数',
+              name: '未考人数',
               type: 'bar',
-              data: gon.zsvalue
+              stack: '未考人数',
+              barMaxWidth: 50,
+              barGap: "10%",
+              data: gon.zswkvalue
           }]
       };
 
