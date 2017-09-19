@@ -11,11 +11,10 @@
         <th>序号</th>
         <th>姓名</th>
         <th>身份证号</th>
-        <th>考试地点（段）</th>
-        <th>考试地点（站）</th>
-        <th>考试地点（班）</th>
+        <th>考试地点</th>
         <th>考试时间</th>
         <th>得分</th>
+        <th>考试详情</th>
       </tr>
     </thead>
     <tbody>
@@ -32,16 +31,20 @@
         </td>
 
         <td>
-            <%= r.t_duan_info.F_name %>
-        </td>
-        <td>
-            <%= r.t_station_info.F_name %>
-        </td>
-        <td>
+            <%= r.t_duan_info.F_name %> /
+            <%= r.t_station_info.F_name %> /
+            <% if r.t_team_info.present? %>
             <%= r.t_team_info.F_name %>
+            <% end %>
         </td>
         <td><%= r.F_time %></td>
         <td><%= r.F_score %></td>
+        <td>
+          <%= link_to("考试详情", "#" )%> ／
+          <%= link_to("录像", "#" )%> /
+          <%= link_to("", t_record_info_path(r,:duan_name => params[:duan_name],:name => params[:name],:team_name=> params[:team_name]),method: :delete,:data => {confirm: "你确定要删除吗？"},class: "fa fa-trash" )%>
+
+        </td>
       </tr>
       <% end %>
     </tbody>

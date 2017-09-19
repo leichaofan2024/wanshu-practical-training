@@ -43,6 +43,13 @@ Rails.application.routes.draw do
       get :student_records
     end
   end
+  resources :t_record_detail_infoes do
+
+    collection do
+      get :record_details
+    end
+  end
+
   resources :call_boards
 
     namespace :charts do

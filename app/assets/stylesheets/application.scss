@@ -12,12 +12,13 @@
  *
  *= require_tree .
  *= require_self
+ *= require font-awesome
  */
 
 @import "bootstrap-sprockets";
 @import "bootstrap";
 @import "bootstrap-datepicker3";
-
+@import "font-awesome";
 
 body {
   min-height:100%;
