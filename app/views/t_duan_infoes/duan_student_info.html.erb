@@ -103,11 +103,11 @@
                 return para;
                 };
           myChart.on('click', function (params) {
-            window.location.assign('/t_station_infoes/station_student_info?name=' + params.name +'&'+ GetUrlPara() );
+            window.location.assign('/t_station_infoes/station_student_info?duan_name=' + params.name +'&'+ GetUrlPara() );
           });
            <% else %>
           myChart.on('click', function (params) {
-            window.location.assign('/t_station_infoes/station_student_info?name=' + params.name);
+            window.location.assign('/t_station_infoes/station_student_info?duan_name=' + params.name);
           });
           <% end %>
     </script>

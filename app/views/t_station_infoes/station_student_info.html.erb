@@ -4,16 +4,7 @@
   </div>
 
 <div class="">
-  <div class="root-search-time1">
-    <b>时间：</b>
-    <div style="display:inline-block;">
-      <%= form_tag duan_student_info_t_duan_infoes_path, method: :get do %>
-        <%= text_field_tag 'search[date_from]'%>
-        <%= text_field_tag 'search[date_to]'%>
-        <%= submit_tag "搜索" %>
-    <% end %>
-    </div>
-  </div>
+  <!--时间搜索功能待做-->
   <script src="/assets/echarts.min.js"></script>
     <div id="main" style="width: 1000px;height:500px;margin: 40px auto 0;"></div>
      <script type="text/javascript">
@@ -92,9 +83,21 @@
 
               // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
+      <% if params[:search].present? %>
+            function GetUrlPara(){
+                      var url = document.location.toString();
+                      var arrUrl = url.split("?");
+                      var para = arrUrl[1];
+                      return para;
+                      };
+      myChart.on('click', function (params) {
+        window.location.assign('/t_team_infoes/team_student_info?duan_name=<%= params[:duan_name]%>&name=' + params.name + '&' + GetUrlPara());
+      });
+      <% else %>
         myChart.on('click', function (params) {
-          window.location.assign('/t_team_infoes/team_student_info?duan_name=<%= params[:name]%>&name=' + params.name);
+          window.location.assign('/t_team_infoes/team_student_info?duan_name=<%= params[:duan_name]%>&name=' + params.name);
         });
+      <% end %>
   </script>
 </div>
 </div>
