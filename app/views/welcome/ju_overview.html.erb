@@ -173,9 +173,21 @@
 
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
+        <% if params[:search].present? %>
+        function GetUrlPara() {
+            var url = document.location.toString();
+            var arrUrl = url.split("?");
+            var para = arrUrl[1];
+            return para;
+        };
+        myChart.on('click', function(params) {
+          window.location.assign('/t_duan_infoes/duan_score_info?'+ GetUrlPara());
+        });
+        <% else %>
         myChart.on('click', function (params) {
           window.location.assign('/t_duan_infoes/duan_score_info');
         });
+        <% end %>
         </script>
       <% score_90%><br>
       <% score_80%><br>
@@ -289,9 +301,21 @@
 
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
+        <% if params[:search].present? %>
+        myChart.on('click', function(params){
+          function GetUrlPara(){
+            var url = document.location.toString();
+            var arrUrl = url.split("?");
+            var para = arrUrl[1];
+            return para;
+          };
+          window.location.assign('/t_duan_infoes/duan_reason_info?'+ '&' + GetUrlPara())
+        });
+        <% else %>
         myChart.on('click', function (params) {
           window.location.assign('/t_duan_infoes/duan_reason_info');
         });
+        <% end %>
         </script>
       <% reason_hot_all.first(8)%>
     </div>

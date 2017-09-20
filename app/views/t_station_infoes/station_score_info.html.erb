@@ -2,7 +2,13 @@
   <div class="clear">
     <a href="/">首页</a> > <a href="/t_duan_infoes/duan_score_info">各站段参考情况</a> > <%= @duan.F_name %>
   </div>
-
+  <div class="">
+    <%= form_tag station_score_info_t_station_infoes_path, method: :get do %>
+    <%= text_field_tag 'search[date_from]'%>
+    <%= text_field_tag 'search[date_to]'%>
+    <%= submit_tag "搜索" %>
+    <% end %>
+  </div>
   <script src="/assets/echarts.min.js"></script>
     <div id="main" style="width: 1000px;height:500px;margin: 40px auto 0;"></div>
      <script type="text/javascript">
@@ -110,8 +116,20 @@
 
               // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
-        myChart.on('click', function (params) {
-          window.location.assign('/t_team_infoes/team_score_info?duan_name=<%= params[:name]%> &name=' + params.name);
+        <% if params[:search].present? %>
+        function GetUrlPara(){
+          var url = document.location.toString();
+          var attrUrl = url.split("?");
+          var para = attrUrl[1];
+          return para;
+        };
+        myChart.on('click', function(params){
+          window.location.assign('/t_team_infoes/team_score_info?station_name=' + params.name + '&' + GetUrlPara())
         });
+        <% else %>
+        myChart.on('click', function (params) {
+          window.location.assign('/t_team_infoes/team_score_info?duan_name=<%= params[:duan_name] %>&station_name=' + params.name);
+        });
+        <% end %>
   </script>
 </div>
