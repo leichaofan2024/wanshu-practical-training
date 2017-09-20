@@ -71,6 +71,10 @@ class TimeSearch
         TStationInfo.where('t_station_info.F_duan_uuid = ?', TDuanInfo.find_by(F_name: params).F_uuid).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
     end
 
+    def scope_team_score(params)
+        TTeamInfo.where('t_team_info.F_station_uuid = ?', TStationInfo.find_by(F_name: params).F_uuid).joins(t_user_infoes: :t_record_infoes)
+    end
+
     private
 
     def parsed_date(date_string, default)
