@@ -192,8 +192,20 @@
 
             // 使用刚指定的配置项和数据显示图表。
       myChart.setOption(option);
+      <% if params[:search].present? %>
+      function GetUrlPara(){
+           var url = document.location.toString();
+           var arrUrl = url.split("?");
+           var para = arrUrl[1];
+           return para;
+           };
+     myChart.on('click', function (params) {
+       window.location.assign('/t_station_infoes/station_student_info?duan_name=' + params.name +'&'+ GetUrlPara() );
+     });
+      <% else %>
       myChart.on('click', function (params) {
-        window.location.assign('/t_station_infoes/station_student_info?name='+ params.name);
+        window.location.assign('/t_station_infoes/station_student_info?duan_name='+ params.name);
       });
+     <% end %>
   </script>
 </div>
