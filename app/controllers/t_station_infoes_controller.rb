@@ -38,11 +38,11 @@ class TStationInfoesController < ApplicationController
     end
 
     def station_score_info
-        @duan = TDuanInfo.find_by(F_name: params[:name])
-        @station_90_scores = TStationInfo.where('t_station_info.F_duan_uuid = ?', TDuanInfo.find_by(F_name: params[:name]).F_uuid).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_score >= ?', 90).group('t_station_info.F_name').size
-        @station_80_scores = TStationInfo.where('t_station_info.F_duan_uuid = ?', TDuanInfo.find_by(F_name: params[:name]).F_uuid).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90).group('t_station_info.F_name').size
-        @station_60_scores = TStationInfo.where('t_station_info.F_duan_uuid = ?', TDuanInfo.find_by(F_name: params[:name]).F_uuid).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80).group('t_station_info.F_name').size
-        @station_60_bellow_scores = TStationInfo.where('t_station_info.F_duan_uuid = ?', TDuanInfo.find_by(F_name: params[:name]).F_uuid).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_score < ?', 60).group('t_station_info.F_name').size
+        @duan = TDuanInfo.find_by(F_name: params[:duan_name])
+        @station_90_scores = TStationInfo.where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_score >= ?', 90).group('t_station_info.F_name').size
+        @station_80_scores = TStationInfo.where('t_station_info.F_duan_uuid = ?',  @duan.F_uuid).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90).group('t_station_info.F_name').size
+        @station_60_scores = TStationInfo.where('t_station_info.F_duan_uuid = ?',  @duan.F_uuid).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80).group('t_station_info.F_name').size
+        @station_60_bellow_scores = TStationInfo.where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_score < ?', 60).group('t_station_info.F_name').size
         gon.station_key = @station_90_scores.keys
         gon.ninefen = @station_90_scores.values
         gon.ef = @station_80_scores.values
@@ -53,7 +53,6 @@ class TStationInfoesController < ApplicationController
     private
 
     def t_station_info_params
-        params.require(:t_station_info).permit(:F_name, :F_duan_uuid, :F_level, :Level,:image,:attachment,:attachment2)
-
+        params.require(:t_station_info).permit(:F_name, :F_duan_uuid, :F_level, :Level, :image, :attachment, :attachment2)
     end
 end
