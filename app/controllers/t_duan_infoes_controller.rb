@@ -39,24 +39,38 @@ class TDuanInfoesController < ApplicationController
     end
 
     def duan_score_info
-        @duan_90_cwscores = TDuanInfo.where('t_duan_info.F_type= ?', 1).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_score > ?', 90).group('t_duan_info.F_name').size
+        @duantype1 = TDuanInfo.where('t_duan_info.F_type= ?', 1).joins(t_user_infoes: :t_record_infoes)
+        @duantype2 = TDuanInfo.where('t_duan_info.F_type= ?', 2).joins(t_user_infoes: :t_record_infoes)
+        if params[:search].present?
+            @search = TimeSearch.new(params[:search])
+
+            @duan_90_cwscores = @search.scope_duan_score1.where('t_record_info.F_score > ?', 90).group('t_duan_info.F_name').size
+            @duan_80_cwscores = @search.scope_duan_score1.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90).group('t_duan_info.F_name').size
+            @duan_60_cwscores = @search.scope_duan_score1.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80).group('t_duan_info.F_name').size
+            @duan_60_cwbellow_scores = @search.scope_duan_score1.where('t_record_info.F_score < ?', 60).group('t_duan_info.F_name').size
+            @duan_90_zsscores = @search.scope_duan_score2.where('t_record_info.F_score > ?', 90).group('t_duan_info.F_name').size
+            @duan_80_zsscores = @search.scope_duan_score2.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90).group('t_duan_info.F_name').size
+            @duan_60_zsscores = @search.scope_duan_score2.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80).group('t_duan_info.F_name').size
+            @duan_60_zsbellow_scores = @search.scope_duan_score2.where('t_record_info.F_score < ?', 60).group('t_duan_info.F_name').size
+        else
+            @duan_90_cwscores = @duantype1.where('t_record_info.F_score > ?', 90).group('t_duan_info.F_name').size
+            @duan_80_cwscores = @duantype1.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90).group('t_duan_info.F_name').size
+            @duan_60_cwscores = @duantype1.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80).group('t_duan_info.F_name').size
+            @duan_60_cwbellow_scores = @duantype1.where('t_record_info.F_score < ?', 60).group('t_duan_info.F_name').size
+            @duan_90_zsscores = @duantype2.where('t_record_info.F_score > ?', 90).group('t_duan_info.F_name').size
+            @duan_80_zsscores = @duantype2.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90).group('t_duan_info.F_name').size
+            @duan_60_zsscores = @duantype2.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80).group('t_duan_info.F_name').size
+            @duan_60_zsbellow_scores = @duantype2.where('t_record_info.F_score < ?', 60).group('t_duan_info.F_name').size
+      end
         gon.duan_key = @duan_90_cwscores.keys
         gon.ninefen = @duan_90_cwscores.values
-        @duan_80_cwscores = TDuanInfo.where('t_duan_info.F_type= ?', 1).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90).group('t_duan_info.F_name').size
         gon.ef = @duan_80_cwscores.values
-        @duan_60_cwscores = TDuanInfo.where('t_duan_info.F_type= ?', 1).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80).group('t_duan_info.F_name').size
         gon.sf = @duan_60_cwscores.values
-        @duan_60_cwbellow_scores = TDuanInfo.where('t_duan_info.F_type= ?', 1).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_score < ?', 60).group('t_duan_info.F_name').size
         gon.sb = @duan_60_cwbellow_scores.values
-
-        @duan_90_zsscores = TDuanInfo.where('t_duan_info.F_type= ?', 2).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_score > ?', 90).group('t_duan_info.F_name').size
         gon.zsduan_key = @duan_90_zsscores.keys
         gon.zsnf = @duan_90_zsscores.values
-        @duan_80_zsscores = TDuanInfo.where('t_duan_info.F_type= ?', 2).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90).group('t_duan_info.F_name').size
         gon.zsef = @duan_80_zsscores.values
-        @duan_60_zsscores = TDuanInfo.where('t_duan_info.F_type= ?', 2).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80).group('t_duan_info.F_name').size
         gon.zssf = @duan_60_zsscores.values
-        @duan_60_zsbellow_scores = TDuanInfo.where('t_duan_info.F_type= ?', 2).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_score < ?', 60).group('t_duan_info.F_name').size
         gon.zssb = @duan_60_zsbellow_scores.values
     end
 
