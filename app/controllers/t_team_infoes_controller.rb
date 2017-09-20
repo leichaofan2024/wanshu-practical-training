@@ -32,11 +32,11 @@ class TTeamInfoesController < ApplicationController
 
     def team_score_info
         @duan = TDuanInfo.find_by(F_name: params[:duan_name])
-        @station = TStationInfo.find_by(F_name: params[:name])
-        @team_90_scores = TTeamInfo.where('t_team_info.F_station_uuid = ?', TStationInfo.find_by(F_name: params[:name]).F_uuid).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_score >= ?', 90).group('t_team_info.F_name').count
-        @team_80_scores = TTeamInfo.where('t_team_info.F_station_uuid = ?', TStationInfo.find_by(F_name: params[:name]).F_uuid).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90).group('t_team_info.F_name').count
-        @team_60_scores = TTeamInfo.where('t_team_info.F_station_uuid = ?', TStationInfo.find_by(F_name: params[:name]).F_uuid).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80).group('t_team_info.F_name').count
-        @team_60_bellow_scores = TTeamInfo.where('t_team_info.F_station_uuid = ?', TStationInfo.find_by(F_name: params[:name]).F_uuid).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_score < ?', 60).group('t_team_info.F_name').count
+        @station = TStationInfo.find_by(F_name: params[:station_name])
+        @team_90_scores = TTeamInfo.where('t_team_info.F_station_uuid = ?', @station.F_uuid).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_score >= ?', 90).group('t_team_info.F_name').count
+        @team_80_scores = TTeamInfo.where('t_team_info.F_station_uuid = ?', @station.F_uuid).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90).group('t_team_info.F_name').count
+        @team_60_scores = TTeamInfo.where('t_team_info.F_station_uuid = ?', @station.F_uuid).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80).group('t_team_info.F_name').count
+        @team_60_bellow_scores = TTeamInfo.where('t_team_info.F_station_uuid = ?', @station.F_uuid).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_score < ?', 60).group('t_team_info.F_name').count
         gon.team_key = @team_90_scores.keys
         gon.ninefen = @team_90_scores.values
         gon.ef = @team_80_scores.values
