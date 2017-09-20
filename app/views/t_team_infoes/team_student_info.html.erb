@@ -84,7 +84,7 @@
               // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
         myChart.on('click', function (params) {
-          window.location.assign('/t_team_infoes/team_student_info?duan_name=<%= params[:duan_name]%>&name=<%= params[:name]%>&team_name=' + params.name);
+          window.location.assign('/t_team_infoes/team_student_info?duan_name=<%= params[:duan_name]%>&station_name=<%= params[:station_name]%>&team_name=' + params.name);
         });
     </script>
 

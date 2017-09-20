@@ -55,6 +55,10 @@ class TimeSearch
         TUserInfo.student_all.joins(:t_team_info, :t_record_infoes).where('t_team_info.F_station_uuid = ?', TStationInfo.find_by(F_name: params).F_uuid).where('F_time BETWEEN ? AND ?', @date_from, @date_to)
     end
 
+    def scope_duan_reason
+        TReasonInfo.joins(:t_detail_reason_infoes).where('F_time BETWEEN ? AND ?', @date_from, @date_to).group('t_reason_info.F_name')
+    end
+
     private
 
     def parsed_date(date_string, default)
