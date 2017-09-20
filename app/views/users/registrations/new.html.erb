@@ -5,7 +5,6 @@
     <%= f.error_notification %>
 
     <div class="form-inputs">
-      <!-- <%= f.input :email, required: true, autofocus: true %> -->
       <%= f.input :role, required: true,label:"用户名", autofocus:true %>
       <%= f.input :password, required: true, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length),label: "密码" %>
       <%= f.input :password_confirmation, required: true ,label: "重新确认密码"%>

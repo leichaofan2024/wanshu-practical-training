@@ -21,7 +21,7 @@ class Users::SessionsController < Devise::SessionsController
 
 
   def configure_sign_in_params
-    params.require(:user).permit(:role)
+    params.require(:user).permit(:role,:orgnize,:permission)
   end
 
   # If you have extra params to permit, append them to the sanitizer.
