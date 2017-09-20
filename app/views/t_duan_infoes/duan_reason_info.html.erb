@@ -26,7 +26,12 @@
         <td><%= i %></td>
         <td><%= r.first %></td>
         <td><%= r.second %></td>
-        <td><%= link_to("查看详情", duan_reason_student_info_t_duan_infoes_path(:name => r.first))%></td>
+        <% if params[:search].present? %>
+        <td><%= link_to("查看详情", '/t_duan_infoes/duan_reason_student_info?name=' +"@duan_reasons.first" + @time)%></td>
+        <% else %>
+        <td>
+          <%= link_to("查看详情", duan_reason_student_info_t_duan_infoes_path(:name => r.first))%></td>
+        <% end %>
       </tr>
       <% end %>
     </tbody>

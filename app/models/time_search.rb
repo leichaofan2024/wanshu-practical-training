@@ -72,7 +72,11 @@ class TimeSearch
     end
 
     def scope_team_score(params)
-        TTeamInfo.where('t_team_info.F_station_uuid = ?', TStationInfo.find_by(F_name: params).F_uuid).joins(t_user_infoes: :t_record_infoes)
+        TTeamInfo.where('t_team_info.F_station_uuid = ?', TStationInfo.find_by(F_name: params).F_uuid).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
+    end
+
+    def scope_duan_reason_student(params)
+        TRecordInfo.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to).joins(t_record_detail_infoes: { t_detail_reason_infoes: :t_reason_info }).where('t_reason_info.F_name = ?', params)
     end
 
     private
