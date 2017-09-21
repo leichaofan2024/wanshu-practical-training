@@ -43,7 +43,11 @@ body {
     display:inline-block;
   }
 }
-
+.root-search-time{
+  height:50px;
+  width:100%;
+  overflow:auto;
+}
 .root-search-time1{
   display:inline-block;
   margin-left: 10%;
@@ -146,6 +150,9 @@ body {
 .pie_duan_frame{
   width:85%;
   margin:0 auto;
+  .clear{
+    clear:both;
+  }
 }
 
 

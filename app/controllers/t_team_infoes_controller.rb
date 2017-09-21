@@ -33,6 +33,11 @@ class TTeamInfoesController < ApplicationController
     def team_score_info
         @duan = TDuanInfo.find_by(F_name: params[:duan_name])
         @station = TStationInfo.find_by(F_name: params[:station_name])
+        if params[:team_name].present?
+            @team = TTeamInfo.where(F_station_uuid: @station.F_uuid).find_by(F_name: params[:team_name])
+            @student_ck = TUserInfo.joins(:t_team_info, :t_record_infoes).where('t_team_info.F_uuid =? ', @team.F_uuid).select(:F_name, :F_id).distinct
+            @student_wk = TUserInfo.joins(:t_team_info).where('t_team_info.F_uuid=?', @team.F_uuid).select(:F_name, :F_id).distinct.where.not(F_id: @student_ck.pluck(:F_id))
+        end
         if params[:search].present?
             @search = TimeSearch.new(params[:search])
             @team_90_scores = @search.scope_team_score(params[:station_name]).where('t_record_info.F_score >= ?', 90).group('t_team_info.F_name').count

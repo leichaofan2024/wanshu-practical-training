@@ -4,8 +4,19 @@
     <a href="/">首页</a> > <a href="/t_duan_infoes/duan_score_info">各站段考试成绩情况</a> > <a href="/t_station_infoes/station_score_info?duan_name=<%= @duan.F_name %>"><%= @duan.F_name %></a> ><%= @station.F_name %>
   </div>
 
+  <div class="root-search-time1">
+    <b>时间：</b>
+    <div style="display:inline-block;">
+      <%= form_tag duan_student_info_t_duan_infoes_path, method: :get do %>
+        <%= text_field_tag 'search[date_from]'%>
+        <%= text_field_tag 'search[date_to]'%>
+        <%= submit_tag "搜索" %>
+    <% end %>
+    </div>
+  </div>
+
   <script src="/assets/echarts.min.js"></script>
-    <div id="main" style="width: 1000px;height:500px;margin: 40px auto 0;"></div>
+    <div class="team_chart_frame" id="main"></div>
      <script type="text/javascript">
       // 基于准备好的dom，初始化echarts实例
       var myChart = echarts.init(document.getElementById('main'));
@@ -108,8 +119,115 @@
           };
 
 
-              // 使用刚指定的配置项和数据显示图表。
-        myChart.setOption(option);
+          // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+    <% if params[:search].present? %>
+    function GetUrlPara(){
+      var url = document.location.toString();
+      var attrUrl = url.split("?");
+      var para = attrUrl[1];
+      return para;
+    };
+    myChart.on('click', function (params) {
+      window.location.assign('/t_team_infoes/team_score_info?team_name=' + params.name + '&' + GetUrlPara());
+    });
+    <% else %>
+    myChart.on('click', function (params) {
+      window.location.assign('/t_team_infoes/team_score_info?duan_name=<%= params[:duan_name]%>&station_name=<%= params[:station_name]%>&team_name=' + params.name);
+    });
+    <% end %>
 
   </script>
+
+  <div class="team_student_frame">
+    <h4>参加考试的考生</h4>
+
+    <table class="table table-border">
+      <thead>
+        <tr>
+          <th>姓名</th>
+          <th>身份证号</th>
+          <th>详情</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if params[:team_name].present? %>
+          <% @student_ck.each do |s| %>
+            <tr>
+              <td><%= s.F_name %></td>
+              <td><%= s.F_id %></td>
+              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id))%></td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+    <h4>未参加考试的考生</h4>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>姓名</th>
+          <th>身份证号</th>
+          <th>详情</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if params[:team_name].present? %>
+          <% @student_wk.each do |s| %>
+            <tr>
+              <td><%= s.F_name %></td>
+              <td><%= s.F_id %></td>
+              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id))%></td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+
+
+  </div>
+
+
+  <div class="teams_uploader">
+    <div class="teams_uploader_picture col-md-4">
+      <%= simple_form_for @station do |f| %>
+        <%= f.label "上传图片"%>
+        <%= f.input :image,as: :file %>
+        <%= f.submit "上传", data: { disable_with: "提交中。。。"}%>
+      <% end %>
+
+      <% if @station.image.present? %>
+        <span>目前站场图:</span><br>
+        <div class="teams_station_picture">
+          <%= image_tag(@station.image.thumb.url)%>
+          <div class="dropdown-content">
+            <%= image_tag(@station.image.huge.url)%>
+          </div>
+        </div>
+
+      <% end %>
+    </div>
+    <div class="teams-uploader-file col-md-4">
+      <%= simple_form_for @station do |f| %>
+        <%= f.input :attachment,:label => "上传附件1"%>
+        <%= f.submit "上传", data: { disable_with: "提交中。。。"}%>
+      <% end %>
+      <span>下载附件：</span>
+      <% if @station.attachment.present? %>
+        <%= link_to("Download 附件1",@station.attachment_url)%>
+      <% end %>
+    </div>
+    <div class="teams-uploader-file col-md-4">
+      <%= simple_form_for @station do |f| %>
+        <%= f.input :attachment2,:label => "上传附件2"%>
+        <%= f.submit "上传", data: { disable_with: "提交中。。。"}%>
+      <% end %>
+      <span>下载附件：</span>
+      <% if @station.attachment2.present? %>
+        <%= link_to("Download 附件2",@station.attachment2_url)%>
+      <% end %>
+    </div>
+  </div>
+
 </div>
