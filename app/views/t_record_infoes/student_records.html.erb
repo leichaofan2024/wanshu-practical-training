@@ -2,7 +2,7 @@
 <div class="pie_duan_frame">
 
   <div class="clear">
-    <a href="/">首页</a> > <a href="/t_duan_infoes/duan_student_info">各站段参考情况</a> > <a href="/t_station_infoes/station_student_info?name=<%= @duan.F_name%>"><%= @duan.F_name %></a> > <a href="/t_team_infoes/team_student_info?duan_name=<%=@duan.F_name%>&name=<%=@station.F_name%>"><%= @station.F_name%></a> > <a href="#">hh</a>
+    <a href="/">首页</a> > <a href="/t_duan_infoes/duan_student_info">各站段参考情况</a> > <a href="/t_station_infoes/station_student_info?duan_name=<%= @duan.F_name%>"><%= @duan.F_name %></a> > <a href="/t_team_infoes/team_student_info?duan_name=<%=@duan.F_name%>&station_name=<%=@station.F_name%>"><%= @station.F_name%></a> > <a href="#">hh</a>
   </div>
 
   <table class="table table-border">
@@ -40,7 +40,7 @@
         <td><%= r.F_time %></td>
         <td><%= r.F_score %></td>
         <td>
-          <%= link_to("考试详情", record_details_t_record_detail_infoes_path(:duan_name => params[:duan_name],:name => params[:name],:team_name=> params[:team_name],:user_name => params[:user_name],:user_id => params[:user_id],:record_uuid=> r.F_uuid) )%> ／
+          <%= link_to("考试详情", record_details_t_record_detail_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name=> params[:team_name],:user_name => params[:user_name],:user_id => params[:user_id],:record_uuid=> r.F_uuid) )%> ／
           <%= link_to("录像",  )%> /
           <%= link_to("", t_record_info_path(r,:duan_name => params[:duan_name],:name => params[:name],:team_name=> params[:team_name]),method: :delete,:data => {confirm: "你确定要删除吗？"},class: "fa fa-trash" )%>
 

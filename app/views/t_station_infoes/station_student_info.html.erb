@@ -4,7 +4,17 @@
   </div>
 
 <div class="">
-  <!--时间搜索功能待做-->
+  <div class="root-search-time1">
+    <b>时间：</b>
+    <div style="display:inline-block;">
+      <%= form_tag station_student_info_t_station_infoes_path, method: :get do %>
+        <%= text_field_tag 'search[date_from]'%>
+        <%= text_field_tag 'search[date_to]'%>
+        <%= text_field_tag :duan_name, params[:duan_name]%>
+        <%= submit_tag "搜索" %>
+    <% end %>
+    </div>
+  </div>
   <script src="/assets/echarts.min.js"></script>
     <div id="main" style="width: 1000px;height:500px;margin: 40px auto 0;"></div>
      <script type="text/javascript">
