@@ -21,7 +21,11 @@
       <tr>
         <td><%= i %></td>
         <td>
+          <% if @teacher.present? %>
             <%= @teacher.F_name %>
+          <% else %>
+            <%= "无教师信息"%>
+          <% end %>
         </td>
         <td>
             <%= r.t_program_info.F_name %>
