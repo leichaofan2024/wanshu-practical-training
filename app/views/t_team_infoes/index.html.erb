@@ -4,7 +4,7 @@
   </div>
   <h3>班组 (共计：<%= @teams.size%>个)</h3><hr>
     <% @teams.each do |team|%>
-      <%= link_to t_user_infoes_path(:duan => params[:duan],:station => params[:station],:team => team.F_name) do  %>
+      <%= link_to t_user_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team => team.F_name) do  %>
         <button type="button" name="name"><%= team.F_name %></button>
       <% end %>
     <% end %>

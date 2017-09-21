@@ -4,7 +4,7 @@
   </div>
   <h3>职工 (共计：<%= @users.size%>个)</h3><hr>
     <% @users.each do |user|%>
-      <%= link_to t_record_infoes_path(:duan => params[:duan],:station => params[:station],:team => params[:team],:F_id => user.F_id) do %>
+      <%= link_to t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:F_id => user.F_id) do %>
         <button type="button" name="name"><%= user.F_name %></button>
       <% end %>
     <% end %>

@@ -1,7 +1,7 @@
 class TTeamInfoesController < ApplicationController
     def index
-        @duan = TDuanInfo.find_by(F_name: params[:duan])
-        @station = TStationInfo.find_by(F_name: params[:station])
+        @duan = TDuanInfo.find_by(F_name: params[:duan_name])
+        @station = TStationInfo.find_by(F_name: params[:station_name])
         @teams = TTeamInfo.where(F_station_uuid: @station.F_uuid)
     end
 
