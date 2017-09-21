@@ -13,6 +13,13 @@ class TRecordInfoesController < ApplicationController
         @team = TTeamInfo.where(F_station_uuid: @station.F_uuid).find_by(F_name: params[:team_name])
         @students = TUserInfo.where(F_name: params[:user_name], F_id: params[:user_id])
         @records = TRecordInfo.where(F_user_uuid: @students.ids)
+        students = TUserInfo.where(F_name: params[:user_name], F_id: params[:user_id])
+        if params[:search].present?
+            @search = TimeSearch.new(params[:search])
+            @records = @search.scope_student_score(params[:user_id], params[:user_name])
+        else
+            @records = TRecordInfo.where(F_user_uuid: students.ids)
+      end
     end
 
     def destroy

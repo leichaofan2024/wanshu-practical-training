@@ -88,7 +88,6 @@ class TDuanInfoesController < ApplicationController
         else
             @duan_reasons = TReasonInfo.joins(:t_detail_reason_infoes).group('t_reason_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
         end
-        @time = request.query_parameters.to_s
     end
 
     def duan_reason_student_info
