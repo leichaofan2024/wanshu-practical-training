@@ -12,7 +12,7 @@ class TStationInfoesController < ApplicationController
         @station = TStationInfo.find(params[:id])
         @duan = @station.t_duan_info
         if @station.update(t_station_info_params)
-            redirect_to team_student_info_t_team_infoes_path(duan_name: @duan.F_name, name: @station.F_name)
+            redirect_to team_student_info_t_team_infoes_path(duan_name: @duan.F_name, station_name: @station.F_name)
         else
             return :back
         end
