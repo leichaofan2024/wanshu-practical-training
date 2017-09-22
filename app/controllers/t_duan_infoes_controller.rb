@@ -88,12 +88,10 @@ class TDuanInfoesController < ApplicationController
         else
             @duan_reasons = TReasonInfo.joins(:t_detail_reason_infoes).group('t_reason_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
         end
-        @t = request.query_parameters
-        @h = hash_to_query(@t)
-    end
-    require 'uri'
-    def hash_to_query(hash)
-        URI.encode_www_form(hash)
+
+        url = request.url
+        arr = url.split('?')
+        @para = arr[1]
     end
 
     def duan_reason_student_info

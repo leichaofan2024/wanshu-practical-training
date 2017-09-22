@@ -27,9 +27,7 @@
         <td><%= r.first %></td>
         <td><%= r.second %></td>
         <% if params[:search].present? %>
-        <td><%= link_to("查看详情", duan_reason_student_info_t_duan_infoes_path(:name => r.first)+'&'+TimeSearch.new(params[:search]))%></td>
-        <%= request.query_parameters %>
-        <%= @h %>
+        <td><%= link_to("查看详情", duan_reason_student_info_t_duan_infoes_path(:name => r.first) +'&'+ @para)%></td>
         <% else %>
         <td>
           <%= link_to("查看详情", duan_reason_student_info_t_duan_infoes_path(:name => r.first))%></td>
