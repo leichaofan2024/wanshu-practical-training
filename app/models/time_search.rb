@@ -56,7 +56,7 @@ class TimeSearch
     end
 
     def scope_duan_reason
-        TReasonInfo.joins(:t_detail_reason_infoes).where('F_time BETWEEN ? AND ?', @date_from, @date_to).group('t_reason_info.F_name')
+        TReasonInfo.joins(:t_detail_reason_infoes).where('F_time BETWEEN ? AND ?', @date_from, @date_to).group('t_reason_info.F_name').distinct
     end
 
     def scope_duan_score1

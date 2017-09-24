@@ -28,6 +28,10 @@ class TTeamInfoesController < ApplicationController
         gon.key = @team_student.keys
         gon.wkvalue = @team_student_wk.values
         gon.ckvalue = @team_student_ck.values
+
+        url = request.original_url
+        arrurl = url.split('?')
+        @para = arrurl[1]
     end
 
     def team_score_info
