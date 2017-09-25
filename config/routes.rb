@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
     devise_for :users, controllers: { registrations: 'users/registrations' , sessions: 'users/sessions'}
     # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-    root 'welcome#ju_overview'
+
+      root :to => 'welcome#ju_overview'
+
     get '/ju_overview', to: 'welcome#ju_overview'
     get '/duan_overview', to: 'welcome#duan_overview'
     get '/station_overview', to: 'welcome#station_overview'
