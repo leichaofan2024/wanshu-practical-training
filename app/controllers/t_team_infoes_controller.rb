@@ -9,6 +9,7 @@ class TTeamInfoesController < ApplicationController
         @duan = TDuanInfo.find_by(F_name: params[:duan_name])
         @station = TStationInfo.find_by(F_name: params[:station_name])
         @team_student = TUserInfo.student_all.joins(:t_team_info).where('t_team_info.F_station_uuid = ?', @station.F_uuid).select('t_user_info.F_name,t_user_info.F_id,t_team_info.F_name').distinct.group('t_team_info.F_name').count
+        n= @team_student.keys
         if params[:team_name].present?
             @team = TTeamInfo.where(F_station_uuid: @station.F_uuid).find_by(F_name: params[:team_name])
             @student_ck = TUserInfo.student_all.joins(:t_team_info, :t_record_infoes).where('t_team_info.F_uuid =? ', @team.F_uuid).select(:F_name, :F_id).distinct
@@ -18,16 +19,37 @@ class TTeamInfoesController < ApplicationController
         if params[:search].present?
             @search = TimeSearch.new(params[:search])
             m = @search.scope_team_student(params[:station_name]).select('t_user_info.F_name,t_user_info.F_id,t_team_info.F_name').distinct.group('t_team_info.F_name')
+
             @team_student_ck = m.count
             @team_student_wk = TUserInfo.student_all.joins(:t_team_info).where('t_team_info.F_station_uuid = ?', @station.F_uuid).select('t_user_info.F_name,t_user_info.F_id,t_team_info.F_name').where.not('t_user_info.F_id' => m.pluck('t_user_info.F_id')).distinct.group('t_team_info.F_name').count
         else
-            m = TUserInfo.student_all.joins(:t_team_info, :t_record_infoes).where('t_team_info.F_station_uuid = ?', @station.F_uuid).select('t_user_info.F_name,t_user_info.F_id,t_team_info.F_name').distinct.group('t_team_info.F_name')
-            @team_student_ck = m.count.sort { |a, b| b <=> a }.to_h
-            @team_student_wk = TUserInfo.student_all.joins(:t_team_info).where('t_team_info.F_station_uuid = ?', @station.F_uuid).select('t_user_info.F_name,t_user_info.F_id,t_team_info.F_name').where.not('t_user_info.F_id' => m.pluck('t_user_info.F_id')).distinct.group('t_team_info.F_name').count.sort { |a, b| b <=> a }.to_h
+            m = TTeamInfo.where('t_team_info.F_station_uuid = ?', @station.F_uuid).joins(t_user_infoes: :t_record_infoes).where("t_user_info.F_type= ?", 0).select('t_user_info.F_name,t_user_info.F_id,t_team_info.F_name').distinct
+            c = m.group('t_team_info.F_name').count
+            c1 = c.keys
+            @team_student_ck= Array.new
+            n.each do |n|
+              if c1.include?(n)
+                @team_student_ck << c[n]
+              else
+                @team_student_ck << 0
+              end
+            end
+
+            w = TTeamInfo.where('t_team_info.F_station_uuid = ?', @station.F_uuid).joins(:t_user_infoes).where("t_user_info.F_type= ?", 0).select('t_user_info.F_name,t_user_info.F_id,t_team_info.F_name').where.not('t_user_info.F_name' => m.pluck('t_user_info.F_name')).distinct.group('t_team_info.F_name').count
+            w1 = w.keys
+            @team_student_wk = Array.new
+            n.each do |n|
+              if w1.include?(n)
+                @team_student_wk << w[n]
+              else
+                @team_student_wk << 0
+              end
+            end
+
         end
-        gon.key = @team_student.keys
-        gon.wkvalue = @team_student_wk.values
-        gon.ckvalue = @team_student_ck.values
+        gon.key = n
+        gon.wkvalue = @team_student_wk
+        gon.ckvalue = @team_student_ck
     end
 
     def team_score_info
