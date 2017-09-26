@@ -20,21 +20,58 @@ class TStationInfoesController < ApplicationController
 
     def station_student_info
         @duan = TDuanInfo.find_by(F_name: params[:duan_name])
-        @station_student = TUserInfo.student_all.joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct.group('t_station_info.F_name').size
-
+        @station_student = TUserInfo.student_all.joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct.group('t_station_info.F_name').count
+        n = @station_student.keys
         if params[:search].present?
           @search = TimeSearch.new(params[:search])
           m = @search.scope_student_info(params[:duan_name]).select('t_user_info.F_id,t_station_info.F_name').distinct
-          @station_student_wk = TUserInfo.student_all.joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct.where.not('t_user_info.F_id' => m.pluck('t_user_info.F_id')).group('t_station_info.F_name').count
-          @station_student_ck = m.group('t_station_info.F_name').count
+          c = m.group('t_station_info.F_name').count
+          c1=c.keys
+          @station_student_ck = Array.new
+          n.each do |n|
+            if c1.include?(n)
+              @station_student_ck << c[n]
+            else
+              @station_student_ck << 0
+            end
+          end
+          w = TUserInfo.student_all.joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct.where.not('t_user_info.F_id' => m.pluck('t_user_info.F_id')).group('t_station_info.F_name').count
+          w1= w.keys
+          @station_student_wk = Array.new
+          n.each do |n|
+            if w1.include?(n)
+              @station_student_wk << w[n]
+            else
+              @station_student_wk << 0
+            end
+          end
         else
           m = TUserInfo.student_all.joins(:t_station_info, :t_record_infoes).where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct
-          @station_student_wk = TUserInfo.student_all.joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct.where.not('t_user_info.F_id' => m.pluck('t_user_info.F_id')).group('t_station_info.F_name').count
-          @station_student_ck = m.group('t_station_info.F_name').count
+          c = m.group('t_station_info.F_name').count
+          c1=c.keys
+          @station_student_ck = Array.new
+          n.each do |n|
+            if c1.include?(n)
+              @station_student_ck << c[n]
+            else
+              @station_student_ck << 0
+            end
+          end
+          w = TUserInfo.student_all.joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct.where.not('t_user_info.F_id' => m.pluck('t_user_info.F_id')).group('t_station_info.F_name').count
+          w1= w.keys
+          @station_student_wk = Array.new
+          n.each do |n|
+            if w1.include?(n)
+              @station_student_wk << w[n]
+            else
+              @station_student_wk << 0
+            end
+          end
+
         end
-        gon.key = @station_student.keys
-        gon.wkvalue = @station_student_wk.values
-        gon.ckvalue = @station_student_ck.values
+        gon.key = n
+        gon.wkvalue = @station_student_wk
+        gon.ckvalue = @station_student_ck
     end
 
     def station_score_info
