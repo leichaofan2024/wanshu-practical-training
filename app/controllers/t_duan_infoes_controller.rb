@@ -84,10 +84,14 @@ class TDuanInfoesController < ApplicationController
     def duan_reason_info
         if params[:search].present?
             @search = TimeSearch.new(params[:search])
-            @duan_reasons = @search.scope_duan_reason.size.sort { |a, b| b[1] <=> a[1] }
+            @duan_reasons = @search.scope_duan_reason.count.sort { |a, b| b[1] <=> a[1] }
         else
             @duan_reasons = TReasonInfo.joins(:t_detail_reason_infoes).group('t_reason_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
         end
+
+        url = request.original_url
+        arr = url.split('?')
+        @para = arr[1]
     end
 
     def duan_reason_student_info

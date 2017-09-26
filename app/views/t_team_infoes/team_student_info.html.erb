@@ -5,9 +5,11 @@
   <div class="root-search-time1">
     <b>时间：</b>
     <div style="display:inline-block;">
-      <%= form_tag duan_student_info_t_duan_infoes_path, method: :get do %>
+      <%= form_tag team_student_info_t_team_infoes_path, method: :get do %>
         <%= text_field_tag 'search[date_from]'%>
         <%= text_field_tag 'search[date_to]'%>
+        <%= hidden_field_tag :duan_name, params[:duan_name]%>
+        <%= hidden_field_tag :station_name, params[:station_name]%>
         <%= submit_tag "搜索" %>
     <% end %>
     </div>
@@ -86,12 +88,12 @@
         <% if params[:search].present? %>
         function GetUrlPara(){
           var url = document.location.toString();
-          var attrUrl = url.split("?");
+          var attrUrl = url.split("utf");
           var para = attrUrl[1];
           return para;
         };
         myChart.on('click', function (params) {
-          window.location.assign('/t_team_infoes/team_student_info?team_name=' + params.name + '&' + GetUrlPara());
+          window.location.assign('/t_team_infoes/team_student_info?team_name=' + params.name + '&' + 'utf'+ GetUrlPara()+'&station_name=<%= params[:station_name]%>&duan_name=<%= params[:duan_name]%>');
         });
         <% else %>
         myChart.on('click', function (params) {
@@ -118,7 +120,11 @@
             <tr>
               <td><%= s.F_name %></td>
               <td><%= s.F_id %></td>
+              <% if params[:search].present? %>
+              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id)+ '&'+ @para)%></td>
+              <% else %>
               <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id))%></td>
+              <% end %>
             </tr>
           <% end %>
         <% end %>
@@ -140,7 +146,11 @@
             <tr>
               <td><%= s.F_name %></td>
               <td><%= s.F_id %></td>
+              <% if params[:search].present? %>
+              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id)+ '&'+ @para)%></td>
+              <% else %>
               <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id))%></td>
+              <% end %>
             </tr>
           <% end %>
         <% end %>
@@ -180,7 +190,7 @@
         <%= link_to("Download 附件1",@station.attachment_url)%>
       <% end %>
     </div>
-    <div class="teams-uploader-file col-md-4">
+    <div class="teams-uploader-file col-md-4" >
       <%= simple_form_for @station do |f| %>
         <%= f.input :attachment2,:label => "上传附件2"%>
         <%= f.submit "上传", data: { disable_with: "提交中。。。"}%>
@@ -191,6 +201,5 @@
       <% end %>
     </div>
   </div>
-
 
 </div>

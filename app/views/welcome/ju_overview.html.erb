@@ -57,7 +57,6 @@
 
 </div>
 
-
 <div class="root-data-frame">
   <div class="root-data-block">
     <script src="/assets/echarts.min.js"></script>
@@ -83,13 +82,25 @@
                 left: 'left',
                 data: ['未考人数','实考人数']
             },
+
             series : [
                 {
-                    name: '访问来源',
+                    name: '',
                     type: 'pie',
                     radius : '55%',
                     center: ['50%', '60%'],
                     data: [gon.shikao, gon.weikao],
+
+                    label: {
+                      normal: {
+                        position: 'inner',
+                        formatter: '{d}%',
+                         textStyle: {
+                            color: '#ffffff',
+                            fontSize: 14
+                          }
+                        }
+                      },
 
 
                     itemStyle: {
@@ -150,6 +161,7 @@
                 left: 'left',
                 data: ['90分以上','80分-90分','60分-80分','60分以下']
             },
+
             series : [
                 {
                     name: '访问来源',

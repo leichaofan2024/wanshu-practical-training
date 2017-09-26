@@ -6,7 +6,7 @@
     <%= form_tag station_score_info_t_station_infoes_path, method: :get do %>
     <%= text_field_tag 'search[date_from]'%>
     <%= text_field_tag 'search[date_to]'%>
-    <%= text_field_tag :duan_name , params[:duan_name]%>
+    <%= hidden_field_tag :duan_name , params[:duan_name]%>
     <%= submit_tag "搜索" %>
     <% end %>
   </div>

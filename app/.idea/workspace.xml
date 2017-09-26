@@ -2,12 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7ebcc756-74d2-461a-975b-2f8abe9bb671" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/t_record_detail_infoes_controller.rb" afterPath="$PROJECT_DIR$/controllers/t_record_detail_infoes_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/t_record_infoes_controller.rb" afterPath="$PROJECT_DIR$/controllers/t_record_infoes_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/t_record_detail_infoes/record_details.html.erb" afterPath="$PROJECT_DIR$/views/t_record_detail_infoes/record_details.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/t_record_infoes/student_records.html.erb" afterPath="$PROJECT_DIR$/views/t_record_infoes/student_records.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/t_station_infoes/station_student_info.html.erb" afterPath="$PROJECT_DIR$/views/t_station_infoes/station_student_info.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/t_team_infoes/team_student_info.html.erb" afterPath="$PROJECT_DIR$/views/t_team_infoes/team_student_info.html.erb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/t_duan_infoes_controller.rb" afterPath="$PROJECT_DIR$/controllers/t_duan_infoes_controller.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/time_search.rb" afterPath="$PROJECT_DIR$/models/time_search.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/t_duan_infoes/duan_reason_info.html.erb" afterPath="$PROJECT_DIR$/views/t_duan_infoes/duan_reason_info.html.erb" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -32,7 +29,7 @@
       <file leaf-file-name="application_controller.rb" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/controllers/application_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="515">
+            <state relative-caret-position="20">
               <caret line="35" column="44" lean-forward="false" selection-start-line="35" selection-start-column="44" selection-end-line="35" selection-end-column="44" />
               <folding />
             </state>
@@ -42,9 +39,13 @@
       <file leaf-file-name="t_duan_infoes_controller.rb" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/controllers/t_duan_infoes_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
+            <state relative-caret-position="1040">
               <caret line="52" column="136" lean-forward="false" selection-start-line="52" selection-start-column="136" selection-end-line="52" selection-end-column="136" />
-              <folding />
+              <folding>
+                <marker date="1505980710000" expanded="true" signature="7234:7739" ph=" ... end" />
+                <marker date="1505980710000" expanded="true" signature="7773:8194" ph=" ... end" />
+                <marker date="1505980710000" expanded="true" signature="7782:8186" ph="if ... end" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -52,9 +53,18 @@
       <file leaf-file-name="t_station_infoes_controller.rb" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/controllers/t_station_infoes_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
+            <state relative-caret-position="440">
               <caret line="22" column="48" lean-forward="false" selection-start-line="22" selection-start-column="37" selection-end-line="22" selection-end-column="48" />
-              <folding />
+              <folding>
+                <marker date="1505975727000" expanded="true" signature="68:208" ph=" ... end" />
+                <marker date="1505975727000" expanded="true" signature="222:280" ph=" ... end" />
+                <marker date="1505975727000" expanded="true" signature="296:600" ph=" ... end" />
+                <marker date="1505975727000" expanded="true" signature="392:592" ph="if ... end" />
+                <marker date="1505975727000" expanded="true" signature="630:2206" ph=" ... end" />
+                <marker date="1505975727000" expanded="true" signature="922:2060" ph="if ... end" />
+                <marker date="1505975727000" expanded="true" signature="2234:4289" ph=" ... end" />
+                <marker date="1505975727000" expanded="true" signature="2305:4047" ph="if ... end" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -78,7 +88,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" fullScreen="true">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="width" value="1920" />
     <option name="height" value="1080" />
   </component>
@@ -183,11 +193,12 @@
       <workItem from="1505918479307" duration="903000" />
       <workItem from="1505919614393" duration="33000" />
       <workItem from="1505957474308" duration="137000" />
+      <workItem from="1505984145935" duration="2000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1073000" />
+    <option name="totallyTimeSpent" value="1075000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -199,7 +210,8 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1920" height="1080" extended-state="0" />
+    <frame x="0" y="23" width="1920" height="1057" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.18636848" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31983384" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -235,6 +247,43 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/controllers/application_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/t_duan_infoes_controller.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1040">
+          <caret line="52" column="136" lean-forward="false" selection-start-line="52" selection-start-column="136" selection-end-line="52" selection-end-column="136" />
+          <folding>
+            <marker date="1505980710000" expanded="true" signature="7234:7739" ph=" ... end" />
+            <marker date="1505980710000" expanded="true" signature="7773:8194" ph=" ... end" />
+            <marker date="1505980710000" expanded="true" signature="7782:8186" ph="if ... end" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/t_station_infoes_controller.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="440">
+          <caret line="22" column="48" lean-forward="false" selection-start-line="22" selection-start-column="37" selection-end-line="22" selection-end-column="48" />
+          <folding>
+            <marker date="1505975727000" expanded="true" signature="68:208" ph=" ... end" />
+            <marker date="1505975727000" expanded="true" signature="222:280" ph=" ... end" />
+            <marker date="1505975727000" expanded="true" signature="296:600" ph=" ... end" />
+            <marker date="1505975727000" expanded="true" signature="392:592" ph="if ... end" />
+            <marker date="1505975727000" expanded="true" signature="630:2206" ph=" ... end" />
+            <marker date="1505975727000" expanded="true" signature="922:2060" ph="if ... end" />
+            <marker date="1505975727000" expanded="true" signature="2234:4289" ph=" ... end" />
+            <marker date="1505975727000" expanded="true" signature="2305:4047" ph="if ... end" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/application_controller.rb">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="525">
           <caret line="35" column="44" lean-forward="false" selection-start-line="35" selection-start-column="44" selection-end-line="35" selection-end-column="44" />
           <folding />
@@ -245,7 +294,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="780">
           <caret line="52" column="136" lean-forward="false" selection-start-line="52" selection-start-column="136" selection-end-line="52" selection-end-column="136" />
-          <folding />
+          <folding>
+            <marker date="1505980710000" expanded="true" signature="7234:7739" ph=" ... end" />
+            <marker date="1505980710000" expanded="true" signature="7773:8194" ph=" ... end" />
+            <marker date="1505980710000" expanded="true" signature="7782:8186" ph="if ... end" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -253,7 +306,16 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
           <caret line="8" column="7" lean-forward="true" selection-start-line="8" selection-start-column="7" selection-end-line="8" selection-end-column="7" />
-          <folding />
+          <folding>
+            <marker date="1505975727000" expanded="true" signature="68:208" ph=" ... end" />
+            <marker date="1505975727000" expanded="true" signature="222:280" ph=" ... end" />
+            <marker date="1505975727000" expanded="true" signature="296:600" ph=" ... end" />
+            <marker date="1505975727000" expanded="true" signature="392:592" ph="if ... end" />
+            <marker date="1505975727000" expanded="true" signature="630:2206" ph=" ... end" />
+            <marker date="1505975727000" expanded="true" signature="922:2060" ph="if ... end" />
+            <marker date="1505975727000" expanded="true" signature="2234:4289" ph=" ... end" />
+            <marker date="1505975727000" expanded="true" signature="2305:4047" ph="if ... end" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -269,7 +331,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1410">
           <caret line="94" column="25" lean-forward="false" selection-start-line="94" selection-start-column="19" selection-end-line="94" selection-end-column="25" />
-          <folding />
+          <folding>
+            <marker date="1505980710000" expanded="true" signature="7234:7739" ph=" ... end" />
+            <marker date="1505980710000" expanded="true" signature="7773:8194" ph=" ... end" />
+            <marker date="1505980710000" expanded="true" signature="7782:8186" ph="if ... end" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -277,29 +343,51 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="6" lean-forward="false" selection-start-line="0" selection-start-column="6" selection-end-line="0" selection-end-column="6" />
-          <folding />
+          <folding>
+            <marker date="1505975727000" expanded="true" signature="68:208" ph=" ... end" />
+            <marker date="1505975727000" expanded="true" signature="222:280" ph=" ... end" />
+            <marker date="1505975727000" expanded="true" signature="296:600" ph=" ... end" />
+            <marker date="1505975727000" expanded="true" signature="392:592" ph="if ... end" />
+            <marker date="1505975727000" expanded="true" signature="630:2206" ph=" ... end" />
+            <marker date="1505975727000" expanded="true" signature="922:2060" ph="if ... end" />
+            <marker date="1505975727000" expanded="true" signature="2234:4289" ph=" ... end" />
+            <marker date="1505975727000" expanded="true" signature="2305:4047" ph="if ... end" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/t_station_infoes_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
+        <state relative-caret-position="440">
           <caret line="22" column="48" lean-forward="false" selection-start-line="22" selection-start-column="37" selection-end-line="22" selection-end-column="48" />
-          <folding />
+          <folding>
+            <marker date="1505975727000" expanded="true" signature="68:208" ph=" ... end" />
+            <marker date="1505975727000" expanded="true" signature="222:280" ph=" ... end" />
+            <marker date="1505975727000" expanded="true" signature="296:600" ph=" ... end" />
+            <marker date="1505975727000" expanded="true" signature="392:592" ph="if ... end" />
+            <marker date="1505975727000" expanded="true" signature="630:2206" ph=" ... end" />
+            <marker date="1505975727000" expanded="true" signature="922:2060" ph="if ... end" />
+            <marker date="1505975727000" expanded="true" signature="2234:4289" ph=" ... end" />
+            <marker date="1505975727000" expanded="true" signature="2305:4047" ph="if ... end" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/t_duan_infoes_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
+        <state relative-caret-position="1040">
           <caret line="52" column="136" lean-forward="false" selection-start-line="52" selection-start-column="136" selection-end-line="52" selection-end-column="136" />
-          <folding />
+          <folding>
+            <marker date="1505980710000" expanded="true" signature="7234:7739" ph=" ... end" />
+            <marker date="1505980710000" expanded="true" signature="7773:8194" ph=" ... end" />
+            <marker date="1505980710000" expanded="true" signature="7782:8186" ph="if ... end" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/application_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="515">
+        <state relative-caret-position="20">
           <caret line="35" column="44" lean-forward="false" selection-start-line="35" selection-start-column="44" selection-end-line="35" selection-end-column="44" />
           <folding />
         </state>
