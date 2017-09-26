@@ -18,10 +18,28 @@ class TTeamInfoesController < ApplicationController
 
         if params[:search].present?
             @search = TimeSearch.new(params[:search])
-            m = @search.scope_team_student(params[:station_name]).select('t_user_info.F_name,t_user_info.F_id,t_team_info.F_name').distinct.group('t_team_info.F_name')
+            m = @search.scope_team_student(params[:station_name]).select('t_user_info.F_name,t_user_info.F_id,t_team_info.F_name').distinct
+            c = m.group('t_team_info.F_name').count
+            c1 = c.keys
+            @team_student_ck= Array.new
+            n.each do |n|
+              if c1.include?(n)
+                @team_student_ck << c[n]
+              else
+                @team_student_ck << 0
+              end
+            end
 
-            @team_student_ck = m.count
-            @team_student_wk = TUserInfo.student_all.joins(:t_team_info).where('t_team_info.F_station_uuid = ?', @station.F_uuid).select('t_user_info.F_name,t_user_info.F_id,t_team_info.F_name').where.not('t_user_info.F_id' => m.pluck('t_user_info.F_id')).distinct.group('t_team_info.F_name').count
+            w = TTeamInfo.where('t_team_info.F_station_uuid = ?', @station.F_uuid).joins(:t_user_infoes).where("t_user_info.F_type= ?", 0).select('t_user_info.F_name,t_user_info.F_id,t_team_info.F_name').where.not('t_user_info.F_name' => m.pluck('t_user_info.F_name')).distinct.group('t_team_info.F_name').count
+            w1 = w.keys
+            @team_student_wk = Array.new
+            n.each do |n|
+              if w1.include?(n)
+                @team_student_wk << w[n]
+              else
+                @team_student_wk << 0
+              end
+            end
         else
             m = TTeamInfo.where('t_team_info.F_station_uuid = ?', @station.F_uuid).joins(t_user_infoes: :t_record_infoes).where("t_user_info.F_type= ?", 0).select('t_user_info.F_name,t_user_info.F_id,t_team_info.F_name').distinct
             c = m.group('t_team_info.F_name').count
