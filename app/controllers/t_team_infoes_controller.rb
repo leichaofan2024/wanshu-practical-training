@@ -10,14 +10,15 @@ class TTeamInfoesController < ApplicationController
         @station = TStationInfo.find_by(F_name: params[:station_name])
         @team_student = TUserInfo.student_all.joins(:t_team_info).where('t_team_info.F_station_uuid = ?', @station.F_uuid).select('t_user_info.F_name,t_user_info.F_id,t_team_info.F_name').distinct.group('t_team_info.F_name').count
         n= @team_student.keys
-        if params[:team_name].present?
-            @team = TTeamInfo.where(F_station_uuid: @station.F_uuid).find_by(F_name: params[:team_name])
-            @student_ck = TUserInfo.student_all.joins(:t_team_info, :t_record_infoes).where('t_team_info.F_uuid =? ', @team.F_uuid).select(:F_name, :F_id).distinct
-            @student_wk = TUserInfo.student_all.joins(:t_team_info).where('t_team_info.F_uuid=?', @team.F_uuid).select(:F_name, :F_id).distinct.where.not(F_id: @student_ck.pluck(:F_id))
-        end
+
 
         if params[:search].present?
             @search = TimeSearch.new(params[:search])
+          if params[:team_name].present?
+              @team = TTeamInfo.where(F_station_uuid: @station.F_uuid).find_by(F_name: params[:team_name])
+              @student_ck = @search.scope_team_student2(@team).select(:F_name, :F_id).distinct
+              @student_wk = TUserInfo.student_all.joins(:t_team_info).where('t_team_info.F_uuid=?', @team.F_uuid).select(:F_name, :F_id).distinct.where.not(F_id: @student_ck.pluck(:F_id))
+          end
             m = @search.scope_team_student(params[:station_name]).select('t_user_info.F_name,t_user_info.F_id,t_team_info.F_name').distinct
             c = m.group('t_team_info.F_name').count
             c1 = c.keys
@@ -41,6 +42,11 @@ class TTeamInfoesController < ApplicationController
               end
             end
         else
+          if params[:team_name].present?
+              @team = TTeamInfo.where(F_station_uuid: @station.F_uuid).find_by(F_name: params[:team_name])
+              @student_ck = TUserInfo.student_all.joins(:t_team_info, :t_record_infoes).where('t_team_info.F_uuid =? ', @team.F_uuid).select(:F_name, :F_id).distinct
+              @student_wk = TUserInfo.student_all.joins(:t_team_info).where('t_team_info.F_uuid=?', @team.F_uuid).select(:F_name, :F_id).distinct.where.not(F_id: @student_ck.pluck(:F_id))
+          end
             m = TTeamInfo.where('t_team_info.F_station_uuid = ?', @station.F_uuid).joins(t_user_infoes: :t_record_infoes).where("t_user_info.F_type= ?", 0).select('t_user_info.F_name,t_user_info.F_id,t_team_info.F_name').distinct
             c = m.group('t_team_info.F_name').count
             c1 = c.keys
