@@ -6,7 +6,7 @@ Devise.setup do |config|
     # confirmation, reset password and unlock tokens in the database.
     # Devise will use the `secret_key_base` as its `secret_key`
     # by default. You can change it below and use your own secret key.
-    # config.secret_key = '637478bac35786c6680120b0262a5ad78a07561e2e1cd37d269e8e5551ee37302b3cdfef43011c40c8fe525cc77321fe3c9455994c4abfd1975bbbdca8d5a77a'
+    config.secret_key = '637478bac35786c6680120b0262a5ad78a07561e2e1cd37d269e8e5551ee37302b3cdfef43011c40c8fe525cc77321fe3c9455994c4abfd1975bbbdca8d5a77a'
 
     # ==> Mailer Configuration
     # Configure the e-mail address which will be shown in Devise::Mailer,
@@ -35,7 +35,6 @@ Devise.setup do |config|
     # You can also supply a hash where the value is a boolean determining whether
     # or not authentication should be aborted when the value is not present.
     config.authentication_keys = [:role]
-    config.secret_key = ENV['DEVISE_SECRET_KEY']
     # Configure parameters from the request object used for authentication. Each entry
     # given should be a request method and it will automatically be passed to the
     # find_for_authentication method and considered in your model lookup. For instance,
