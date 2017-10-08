@@ -42,8 +42,8 @@ class WelcomeController < ApplicationController
   def student_ck
     if current_user.permission == 1
       students = TUserInfo.student_all
-      @ck_students = students.joins(:t_record_infoes).select("t_user_info.F_name,t_user_info.F_id").distinck.pluck(:F_name,:F_id)
-      all_students = students.select("t_user_info.F_name,t_user_info.F_id").distinck.pluck(:F_name,:F_id)
+      @ck_students = students.joins(:t_record_infoes).select("t_user_info.F_name,t_user_info.F_id").distinct.pluck(:F_name,:F_id)
+      all_students = students.select("t_user_info.F_name,t_user_info.F_id").distinct.pluck(:F_name,:F_id)
       @wk_students = all_students - @ck_students
     elsif current_user.permission == 2
       students = TUserInfo.student_all
