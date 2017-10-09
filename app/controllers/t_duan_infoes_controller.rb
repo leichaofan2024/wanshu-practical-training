@@ -149,11 +149,19 @@ class TDuanInfoesController < ApplicationController
     end
 
     def duan_program_info
+      if current_user.permission == 1
         @duan_programs = TProgramInfo.joins(:t_record_detail_infoes).group('t_program_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
+      elsif current_user.permission ==2
+        @duan_programs = TRecordDetailInfo.joins({t_record_info: :t_duan_info},:t_program_info).where('t_duan_info.F_name = ?',current_user.orgnize).group('t_program_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
+      end
     end
 
     def duan_program_student_info
+      if current_user.permission == 1
         @records = TRecordInfo.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(t_record_detail_infoes: :t_program_info).where('t_program_info.F_name = ?', params[:name])
+      elsif current_user.permission == 2
+        @records = TRecordInfo.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins({t_record_detail_infoes: :t_program_info},:t_duan_info).where('t_program_info.F_name = ?,t_duan_info.F_name=?', params[:name], current_user.orgnize)
+      end
     end
 
     def duan_reason_info
@@ -161,7 +169,11 @@ class TDuanInfoesController < ApplicationController
             @search = TimeSearch.new(params[:search])
             @duan_reasons = @search.scope_duan_reason.count.sort { |a, b| b[1] <=> a[1] }
         else
-            @duan_reasons = TReasonInfo.joins(:t_detail_reason_infoes).group('t_reason_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
+          if current_user.permission == 1
+            @duan_reasons = TDetailReasonInfo.joins(:t_reason_info).group('t_reason_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
+          elsif current_user.permission ==2
+            @duan_reasons = TDetailReasonInfo.joins(:t_reason_info,t_record_detail_info: {t_record_info: :t_duan_info}).where('t_duan_info.F_name = ?',current_user.orgnize).group('t_reason_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
+          end
         end
 
         url = request.original_url
@@ -174,7 +186,11 @@ class TDuanInfoesController < ApplicationController
             @search = TimeSearch.new(params[:search])
             @records = @search.scope_duan_reason_student(params[:name])
         else
+          if current_user.permission == 1
             @records = TRecordInfo.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(t_record_detail_infoes: { t_detail_reason_infoes: :t_reason_info }).where('t_reason_info.F_name = ?', params[:name])
+          elsif current_user.permission ==2
+            @records = TRecordInfo.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(t_record_detail_infoes: { t_detail_reason_infoes: :t_reason_info }).where('t_reason_info.F_name = ?', params[:name]).where('t_record_info.F_duan_uuid=?',TDuanInfo.find_by(:F_name => current_user.orgnize).F_uuid)
+          end
         end
     end
 

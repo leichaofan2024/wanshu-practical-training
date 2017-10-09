@@ -109,11 +109,11 @@
                    return para;
                    };
         myChart.on('click', function (params) {
-          window.location.assign('/t_duan_infoes/duan_student_info?'+ GetUrlPara());
+          window.location.assign('/t_station_infoes/station_student_info?'+'duan_name=<%= current_user.orgnize%>'+GetUrlPara());
         });
         <% else %>
         myChart.on('click', function (params) {
-          window.location.assign('/t_duan_infoes/duan_student_info');
+          window.location.assign('/t_station_infoes/station_student_info?'+'duan_name=<%= current_user.orgnize%>');
         });
         <% end %>
     </script>
@@ -176,11 +176,11 @@
             return para;
         };
         myChart.on('click', function(params) {
-          window.location.assign('/t_duan_infoes/duan_score_info?'+ GetUrlPara());
+          window.location.assign('/t_station_infoes/station_score_info?'+'duan_name=<%= current_user.orgnize%>'+ GetUrlPara());
         });
         <% else %>
         myChart.on('click', function (params) {
-          window.location.assign('/t_duan_infoes/duan_score_info');
+          window.location.assign('/t_station_infoes/station_score_info?'+'duan_name=<%= current_user.orgnize%>');
         });
         <% end %>
         </script>

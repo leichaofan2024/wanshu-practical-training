@@ -21,7 +21,7 @@ class WelcomeController < ApplicationController
       @ck_stations = station.joins(:t_record_infoes).distinct.pluck("t_station_info.F_name")
       @wk_stations = station.map{|s| s.F_name} - @ck_stations
     elsif current_user.permission ==2
-      station = TStationInfo.where(:F_duan_uuid => TDuanInfo.find_by(:F_name => crrent_user.orgnize).F_uuid )
+      station = TStationInfo.where(:F_duan_uuid => TDuanInfo.find_by(:F_name => current_user.orgnize).F_uuid )
       @ck_stations = station.joins(t_user_infoes: :t_record_infoes).distinct.pluck("t_station_info.F_name")
       @wk_stations = station.pluck("t_station_info.F_name") - @ck_stations
     end
@@ -47,8 +47,8 @@ class WelcomeController < ApplicationController
       @wk_students = all_students - @ck_students
     elsif current_user.permission == 2
       students = TUserInfo.student_all
-      @ck_students = students.joins(:t_duan_info,:t_record_detail_infoes).where("t_duan_info.F_name= ?",current_user.orgnize ).select("t_user_info.F_name,t_user_info.F_id").distinck.pluck(:F_name,:F_id)
-      all_students = students.select("t_user_info.F_name,t_user_info.F_id").distinck.pluck(:F_name,:F_id)
+      @ck_students = students.joins(:t_duan_info,:t_record_infoes).where("t_duan_info.F_name= ?",current_user.orgnize ).select("t_user_info.F_name,t_user_info.F_id").distinct.pluck(:F_name,:F_id)
+      all_students = students.select("t_user_info.F_name,t_user_info.F_id").distinct.pluck(:F_name,:F_id)
       @wk_students = all_students - @ck_students
     end
   end
