@@ -160,7 +160,7 @@ class TDuanInfoesController < ApplicationController
       if current_user.permission == 1
         @records = TRecordInfo.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(t_record_detail_infoes: :t_program_info).where('t_program_info.F_name = ?', params[:name])
       elsif current_user.permission == 2
-        @records = TRecordInfo.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins({t_record_detail_infoes: :t_program_info},:t_duan_info).where('t_program_info.F_name = ?,t_duan_info.F_name=?', params[:name], current_user.orgnize)
+        @records = TRecordInfo.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(t_record_detail_infoes: :t_program_info).where('t_program_info.F_name = ?', params[:name]).where('t_record_info.F_duan_uuid=?',TDuanInfo.find_by(:F_name => current_user.orgnize).F_uuid)
       end
     end
 
