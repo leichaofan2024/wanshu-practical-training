@@ -74,10 +74,22 @@
             series: [{
                 name: '参考人数',
                 type: 'bar',
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'insideRight'
+                    }
+                },
                 data: gon.ckvalue
             }, {
                 name: '未考人数',
                 type: 'bar',
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'insideRight'
+                    }
+                },
                 data: gon.wkvalue
             }]
         };
