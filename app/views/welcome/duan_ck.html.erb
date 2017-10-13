@@ -1,13 +1,123 @@
-<div class = "welcome_frame">
-  <h3>已参考站段 (共计：<%= @ck_duans.size%>个)</h3><hr>
-    <% @ck_duans.each do |duan|%>
-      <button type="button" name="name"><%= duan%></button>
-    <% end %>
-
-  <h3>未参考站段 (共计：<%= @wk_duans.size%>个)</h3><hr>
-    <% @wk_duans.each do |duan|%>
-      <button type="button" name="name"><%= duan%></button>
-    <% end %>
 
 
+
+
+<div class="welcome_frame">
+  <h4>未参考站段：</h4>
+
+  <!-- 关于未参考的车务段： -->
+    <table class = "table table-striped">
+      <thead >
+        <tr>
+          <th colspan=6>车务段</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if @wk_cw.present? %>
+          <tr>
+            <% @wk_cw.first(6).each do |cw| %>
+            <td><%=cw%></td>
+            <% end %>
+          </tr>
+          <% if @wk_cw[5,6].present? %>
+          <tr>
+            <% @wk_cw[5,6].each do |cw| %>
+            <td><%=cw%></td>
+            <% end %>
+          </tr>
+          <% end %>
+        <% else %>
+          <tr><td><legend>所有车务段均已参加了考试！</legend></td></tr>
+        <% end %>
+      </tbody>
+    </table>
+
+<!-- 关于未参考的直属站： -->
+    <table class = "table table-striped">
+      <thead >
+        <tr>
+          <th colspan=6>直属站</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if @wk_zhi.present? %>
+          <tr>
+            <% @wk_zhi.first(6).each do |zhi| %>
+            <td><%=zhi%></td>
+            <% end %>
+          </tr>
+          <% if @wk_zhi[5,6].present? %>
+            <tr>
+              <% @wk_zhi[5,6].each do |zhi| %>
+              <td><%= zhi%></td>
+              <% end %>
+            </tr>
+          <% end %>
+        <% else %>
+        <tr>
+          <td > <legend style= "color:red;">所有直属站均已参加了考试！</legend> </td>
+        </tr>
+
+        <% end %>
+      </tbody>
+    </table>
+
+  <h4>已参考站段：</h4>
+
+  <!-- 关于已参考的车务段： -->
+  <table class = "table table-striped">
+    <thead >
+      <tr>
+        <th colspan=6>车务段</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if @ck_cw.present? %>
+        <tr>
+          <% @ck_cw.first(6).each do |cw| %>
+          <td><%=cw%></td>
+          <% end %>
+        </tr>
+        <% if @ck_cw[5,6].present? %>
+        <tr>
+          <% @ck_cw[5,6].each do |cw| %>
+          <td><%=cw%></td>
+          <% end %>
+        </tr>
+        <% end %>
+      <% else %>
+        <tr><td><legend>所有车务段均未参加考试！</legend></td></tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <!-- 关于已参考的直属站： -->
+      <table class = "table table-striped">
+        <thead >
+          <tr>
+            <th colspan=6>直属站</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if @ck_zhi.present? %>
+            <tr>
+              <% @ck_zhi.first(6).each do |zhi| %>
+              <td><%=zhi%></td>
+              <% end %>
+            </tr>
+            <% if @ck_zhi[5,6].present? %>
+              <tr>
+                <% @ck_zhi[5,6].each do |zhi| %>
+                <td><%= zhi%></td>
+                <% end %>
+              </tr>
+            <% end %>
+          <% else %>
+          <tr>
+            <td > <legend style= "color:red;">所有直属站均未参加考试！</legend> </td>
+          </tr>
+
+          <% end %>
+        </tbody>
+      </table>
 </div>

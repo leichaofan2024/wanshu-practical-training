@@ -5,14 +5,18 @@ class WelcomeController < ApplicationController
       if current_user.permission == 2
         redirect_to duan_overview_path
       elsif current_user.permission == 3
-        redirect_to station_overview
+        redirect_to station_overview_path
       end
   end
 
   def duan_ck
-    duan = TDuanInfo.where.not("F_name = ? OR F_name = ?", "运输处","局职教基地")
-    @ck_duans = duan.joins(:t_record_infoes).distinct(:F_uuid).select(:F_name).map{|a| a.F_name}
-    @wk_duans = duan.select(:F_name).map{|a| a.F_name} - @ck_duans
+    duan = TDuanInfo.where.not("t_duan_info.F_name = ? OR t_duan_info.F_name = ?", "运输处","局职教基地")
+    cw = duan.where(:F_type => 1)
+    zhi = duan.where(:F_type => 2)
+    @ck_cw = cw.joins(t_user_infoes: :t_record_infoes).distinct.group('t_duan_info.F_name').count.keys
+    @ck_zhi = zhi.joins(t_user_infoes: :t_record_infoes).distinct.group("t_duan_info.F_name").count.keys
+    @wk_cw = cw.pluck(:F_name) - @ck_cw
+    @wk_zhi = zhi.pluck(:F_name) - @ck_zhi
   end
 
   def station_ck
