@@ -9,22 +9,29 @@
     <table class = "table table-striped">
       <thead >
         <tr>
-          <th colspan=6>车务段</th>
+          <th colspan=5>车务段</th>
         </tr>
       </thead>
       <tbody>
         <% if @wk_cw.present? %>
           <tr>
-            <% @wk_cw.first(6).each do |cw| %>
+            <% @wk_cw.first(5).each do |cw| %>
             <td><%=cw%></td>
             <% end %>
           </tr>
-          <% if @wk_cw[5,6].present? %>
-          <tr>
-            <% @wk_cw[5,6].each do |cw| %>
-            <td><%=cw%></td>
-            <% end %>
-          </tr>
+          <% if @wk_cw[5,5].present? %>
+            <tr>
+              <% @wk_cw[5,5].each do |cw| %>
+              <td><%=cw%></td>
+              <% end %>
+            </tr>
+          <% end %>
+          <% if @wk_cw[10,5].present? %>
+            <tr>
+              <% @wk_cw[10,5].each do |cw| %>
+              <td><%=cw%></td>
+              <% end %>
+            </tr>
           <% end %>
         <% else %>
           <tr><td><legend>所有车务段均已参加了考试！</legend></td></tr>
@@ -36,19 +43,26 @@
     <table class = "table table-striped">
       <thead >
         <tr>
-          <th colspan=6>直属站</th>
+          <th colspan=5>直属站</th>
         </tr>
       </thead>
       <tbody>
         <% if @wk_zhi.present? %>
           <tr>
-            <% @wk_zhi.first(6).each do |zhi| %>
+            <% @wk_zhi.first(5).each do |zhi| %>
             <td><%=zhi%></td>
             <% end %>
           </tr>
-          <% if @wk_zhi[5,6].present? %>
+          <% if @wk_zhi[5,5].present? %>
             <tr>
-              <% @wk_zhi[5,6].each do |zhi| %>
+              <% @wk_zhi[5,5].each do |zhi| %>
+              <td><%= zhi%></td>
+              <% end %>
+            </tr>
+          <% end %>
+          <% if @wk_zhi[10,5].present? %>
+            <tr>
+              <% @wk_zhi[10,5].each do |zhi| %>
               <td><%= zhi%></td>
               <% end %>
             </tr>
@@ -68,22 +82,29 @@
   <table class = "table table-striped">
     <thead >
       <tr>
-        <th colspan=6>车务段</th>
+        <th colspan=5>车务段</th>
       </tr>
     </thead>
     <tbody>
       <% if @ck_cw.present? %>
         <tr>
-          <% @ck_cw.first(6).each do |cw| %>
+          <% @ck_cw.first(5).each do |cw| %>
           <td><%=cw%></td>
           <% end %>
         </tr>
-        <% if @ck_cw[5,6].present? %>
-        <tr>
-          <% @ck_cw[5,6].each do |cw| %>
-          <td><%=cw%></td>
-          <% end %>
-        </tr>
+        <% if @ck_cw[5,5].present? %>
+          <tr>
+            <% @ck_cw[5,5].each do |cw| %>
+            <td><%=cw%></td>
+            <% end %>
+          </tr>
+        <% end %>
+        <% if @ck_cw[10,5].present? %>
+          <tr>
+            <% @ck_cw[10,5].each do |cw| %>
+            <td><%=cw%></td>
+            <% end %>
+          </tr>
         <% end %>
       <% else %>
         <tr><td><legend>所有车务段均未参加考试！</legend></td></tr>
@@ -95,19 +116,26 @@
       <table class = "table table-striped">
         <thead >
           <tr>
-            <th colspan=6>直属站</th>
+            <th colspan=5>直属站</th>
           </tr>
         </thead>
         <tbody>
           <% if @ck_zhi.present? %>
             <tr>
-              <% @ck_zhi.first(6).each do |zhi| %>
+              <% @ck_zhi.first(5).each do |zhi| %>
               <td><%=zhi%></td>
               <% end %>
             </tr>
-            <% if @ck_zhi[5,6].present? %>
+            <% if @ck_zhi[5,5].present? %>
               <tr>
-                <% @ck_zhi[5,6].each do |zhi| %>
+                <% @ck_zhi[5,5].each do |zhi| %>
+                <td><%= zhi%></td>
+                <% end %>
+              </tr>
+            <% end %>
+            <% if @ck_zhi[10,5].present? %>
+              <tr>
+                <% @ck_zhi[10,5].each do |zhi| %>
                 <td><%= zhi%></td>
                 <% end %>
               </tr>

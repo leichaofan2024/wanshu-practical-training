@@ -21,8 +21,8 @@ class WelcomeController < ApplicationController
 
   def station_ck
     if current_user.permission == 1
-      station = TDuanInfo.where.not(:F_name => ["运输处", "局职教基地"]).joins(:t_station_infoes).select("t_station_info.F_name,t_station_info.F_uuid")
-      @ck_stations = station.joins(:t_record_infoes).distinct.pluck("t_station_info.F_name")
+      station = TStationInfo.joins(:t_duan_info).where.not("t_duan_info.F_name=? OR t_duan_info.F_name =?","运输处", "局职教基地")
+      @ck_stations = station.joins(t_user_infoes: :t_record_infoes).distinct.pluck("t_station_info.F_name")
       @wk_stations = station.map{|s| s.F_name} - @ck_stations
     elsif current_user.permission ==2
       station = TStationInfo.where(:F_duan_uuid => TDuanInfo.find_by(:F_name => current_user.orgnize).F_uuid )

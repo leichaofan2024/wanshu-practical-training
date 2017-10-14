@@ -24,6 +24,12 @@ body {
   min-height:100%;
   background:rgba(143,145,157,0.17);
 }
+
+table {
+  tr {
+    th{ text-align: center;}
+  }
+}
 .nav-size{
   font-size: 15px;
 }
