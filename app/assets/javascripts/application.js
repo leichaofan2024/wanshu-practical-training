@@ -12,8 +12,14 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery-ui
+//= require jquery-ui/widgets/datepicker
 //= require turbolinks
 //= require bootstrap-sprockets
-//= require bootstrap-datepicker
 //= require ckeditor/init
 //= require_tree .
+
+$( function() {
+  $( "#search_date_from" ).datepicker();
+  $( "#search_date_to" ).datepicker();
+} );
