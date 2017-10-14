@@ -243,7 +243,7 @@
     // 指定图表的配置项和数据
     var option = {
           title: {
-              text: '直属站参考数据分析'
+              text: '站段参考数据分析'
           },
           tooltip: {
               trigger: 'axis',
@@ -284,7 +284,7 @@
               type: 'value',
               name: '百分比',
               axisLabel: {
-                  formatter: '{value}'
+                  formatter: '{value}%'
               }
           }],
           series: [{
@@ -295,7 +295,7 @@
               label: {
                   normal: {
                       show: true,
-                      position: 'insideRight'
+                      formatter: '{c}%'
                   }
               },
               data: gon.cwblvalue
@@ -306,21 +306,7 @@
 
             // 使用刚指定的配置项和数据显示图表。
       myChart.setOption(option);
-      <% if params[:search].present? %>
-      function GetUrlPara(){
-           var url = document.location.toString();
-           var arrUrl = url.split("?");
-           var para = arrUrl[1];
-           return para;
-           };
-     myChart.on('click', function (params) {
-       window.location.assign('/t_station_infoes/station_student_info?duan_name=' + params.name +'&'+ GetUrlPara() );
-     });
-      <% else %>
-      myChart.on('click', function (params) {
-        window.location.assign('/t_station_infoes/station_student_info?duan_name='+ params.name);
-      });
-     <% end %>
+
   </script>
 
   <div id="zhishubili" style="width: 1000px;height:500px;margin:40px auto 0;"></div>
@@ -338,11 +324,6 @@
               axisPointer: { // 坐标轴指示器，坐标轴触发有效
                   type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
               }
-          },
-          legend: {
-              data: ['未考人数', '参考人数'],
-              align: 'right',
-              right: 10
           },
           grid: {
               left: '3%',
@@ -375,58 +356,26 @@
           }],
           yAxis: [{
               type: 'value',
-              name: '人数',
+              name: '百分比',
               axisLabel: {
-                  formatter: '{value}'
+                  formatter: '{value}%'
               }
           }],
           series: [{
-              name: '参考人数',
+              name: '参考百分比',
               type: 'bar',
-              stack: '未考人数',
               barMaxWidth: 50,
               barGap: "10%",
               label: {
                   normal: {
                       show: true,
-                      position: 'insideRight'
+                      formatter: '{c}%'
                   }
               },
-              data: gon.zsckvalue
-          }, {
-              name: '未考人数',
-              type: 'bar',
-              stack: '未考人数',
-              barMaxWidth: 50,
-              barGap: "10%",
-              label: {
-                  normal: {
-                      show: true,
-                      position: 'insideRight'
-                  }
-              },
-              data: gon.zswkvalue
+              data: gon.zsckblvalue
           }]
       };
-
-
-
             // 使用刚指定的配置项和数据显示图表。
       myChart.setOption(option);
-      <% if params[:search].present? %>
-      function GetUrlPara(){
-           var url = document.location.toString();
-           var arrUrl = url.split("?");
-           var para = arrUrl[1];
-           return para;
-           };
-     myChart.on('click', function (params) {
-       window.location.assign('/t_station_infoes/station_student_info?duan_name=' + params.name +'&'+ GetUrlPara() );
-     });
-      <% else %>
-      myChart.on('click', function (params) {
-        window.location.assign('/t_station_infoes/station_student_info?duan_name='+ params.name);
-      });
-     <% end %>
   </script>
 </div>

@@ -1,3 +1,4 @@
+require 'bigdecimal'
 class TDuanInfoesController < ApplicationController
     def index
         @duans_cw = TDuanInfo.duan_orgnization.where(F_type: 1)
@@ -12,6 +13,7 @@ class TDuanInfoesController < ApplicationController
         vcw = @duans_student_cw.values
         @duans_student_zs = TUserInfo.where(F_type: 0).joins(:t_duan_info).where.not('t_duan_info.F_name =? or t_duan_info.F_name =? ', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
         nzs = @duans_student_zs.keys
+        vzs = @duans_student_zs.values
         if params[:search].present?
             @search = TimeSearch.new(params[:search])
             cw = @search.scope_duan_student.where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').distinct
@@ -25,6 +27,12 @@ class TDuanInfoesController < ApplicationController
                                         else
                                             0
                                         end
+            end
+            @duans_student_cw_ck_bl = []
+            i = 0
+            @duans_student_cw_ck.each do |v|
+                @duans_student_cw_ck_bl << (BigDecimal(v) / BigDecimal(vcw[i])).round(3) * 100
+                i += 1
             end
             cw_wk = TUserInfo.where(F_type: 0).joins(:t_duan_info).where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => cw.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
             cw_wk1 = cw_ck.keys
@@ -46,6 +54,12 @@ class TDuanInfoesController < ApplicationController
                                         else
                                             0
                                         end
+            end
+            @duans_student_zs_ck_bl = []
+            i = 0
+            @duans_student_zs_ck.each do |v|
+                @duans_student_zs_ck_bl << (BigDecimal(v) / BigDecimal(vzs[i])).round(3) * 100
+                i += 1
             end
             zs_wk = TUserInfo.where(F_type: 0).joins(:t_duan_info).where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => zs.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
             zs_wk1 = zs_wk.keys
@@ -75,7 +89,8 @@ class TDuanInfoesController < ApplicationController
             @duans_student_cw_ck_bl = []
             i = 0
             @duans_student_cw_ck.each do |v|
-                @duans_student_cw_ck_bl << (v.to_f / vcw[i]).round(2)
+                @duans_student_cw_ck_bl << (BigDecimal(v) / BigDecimal(vcw[i])).round(3) * 100
+                i += 1
             end
 
             cw_wk = TUserInfo.where(F_type: 0).joins(:t_duan_info).where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => cw.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
@@ -99,6 +114,13 @@ class TDuanInfoesController < ApplicationController
                                             0
                                         end
             end
+            @duans_student_zs_ck_bl = []
+            i = 0
+            @duans_student_zs_ck.each do |v|
+                @duans_student_zs_ck_bl << (BigDecimal(v) / BigDecimal(vzs[i])).round(3) * 100
+                i += 1
+            end
+
             zs_wk = TUserInfo.where(F_type: 0).joins(:t_duan_info).where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => zs.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
             zs_wk1 = zs_wk.keys
             @duans_student_zs_wk = []
@@ -115,7 +137,7 @@ class TDuanInfoesController < ApplicationController
         gon.cwwkvalue = @duans_student_cw_wk
         gon.cwckvalue = @duans_student_cw_ck
         gon.cwblvalue = @duans_student_cw_ck_bl
-
+        gon.zsckblvalue = @duans_student_zs_ck_bl
         gon.zskey = nzs
         gon.zswkvalue = @duans_student_zs_wk
         gon.zsckvalue = @duans_student_zs_ck
