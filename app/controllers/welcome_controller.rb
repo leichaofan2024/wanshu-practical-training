@@ -21,13 +21,15 @@ class WelcomeController < ApplicationController
 
   def station_ck
     if current_user.permission == 1
-      station = TStationInfo.joins(:t_duan_info).where.not("t_duan_info.F_name=? OR t_duan_info.F_name =?","运输处", "局职教基地")
-      @ck_stations = station.joins(t_user_infoes: :t_record_infoes).distinct.pluck("t_station_info.F_name")
-      @wk_stations = station.map{|s| s.F_name} - @ck_stations
+      station = TStationInfo.where.not("t_station_info.F_duan_uuid = ? OR t_station_info.F_duan_uuid=?",TDuanInfo.find_by(:F_name => "运输处").F_uuid, TDuanInfo.find_by(:F_name => "局职教基地").F_uuid)
+      station_ck = station.joins(t_user_infoes: :t_record_infoes).distinct
+      @ck_stations = station_ck.group_by{|u| u.F_duan_uuid}
+      @wk_stations = station.where.not(:F_uuid => station_ck.ids).group_by{|u| u.F_duan_uuid}
     elsif current_user.permission ==2
       station = TStationInfo.where(:F_duan_uuid => TDuanInfo.find_by(:F_name => current_user.orgnize).F_uuid )
-      @ck_stations = station.joins(t_user_infoes: :t_record_infoes).distinct.pluck("t_station_info.F_name")
-      @wk_stations = station.pluck("t_station_info.F_name") - @ck_stations
+      station_ck = station.joins(t_user_infoes: :t_record_infoes).distinct
+      @ck_stations = station_ck.group_by{|u| u.F_duan_uuid}
+      @wk_stations = station.where.not(:F_uuid => station_ck.ids).group_by{|u| u.F_duan_uuid}
     end
   end
 
