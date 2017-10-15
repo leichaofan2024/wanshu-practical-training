@@ -38,4 +38,8 @@ User.create(:role => "通州车务段", orgnize: "通州车务段", permission: 
 User.create(:role => "邯郸车务段", orgnize: "邯郸车务段", permission: 2,password:"123456",password_confirmation:"123456")
 
 
+
+User.create(:role => "北京站车站管理员", orgnize: "北京站", permission: 3,password:"123456",password_confirmation:"123456")
+
+
  puts "创建成功"

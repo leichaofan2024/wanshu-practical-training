@@ -1,67 +1,70 @@
-<div class = "welcome_frame">
-  <h4 style="color:#4444C1;">未参考学生：</h4>
+<% if current_user.permission == 3%>
 
-    <% @duans_wk.each do |duan| %>
-      <div class="station-card-head">
-        <%= link_to student_ck_path(:duan_name => duan.F_name) do  %>
-          <%= duan.F_name %> >> <br>
-        <% end %>
-      </div>
-
-      <% if duan.F_name == params[:duan_name]%>
-        <% if @wk_students.present? %>
-          <% @wk_students.each do |station_uuid,students|%>
-            <% s=TStationInfo.find(station_uuid) %>
-            <% if s.t_team_infoes.present? %>
-              <% s.t_team_infoes.each do |t|%>
-                <% u1= t.t_user_infoes.pluck(:F_id).uniq %>
-                <% u=[] %>
-                <% students.each do |m| %>
-                  <% if u1.include?(m.F_id) %>
-                    <% u << m%>
-                  <% end %>
-                <% end %>
-                <% if u.present? %>
-                  <p ><%= s.F_name%> => <%= t.F_name %></p>
-                  <div class="station-card" >
-                    <% u.each do |student| %>
-                      <div class="station-card1">
-                        <%= student.F_name%>
-                      </div>
-                    <% end %>
-                  </div>
-                <% end %>
-              <% end %>
-            <% else %>
-              <p ><%= s.F_name%> => 无班组信息</p>
-              <div class="station-card" >
-                <% students.each do |student| %>
-                  <div class="station-card2">
-                    <%= student.F_name%>
-                  </div>
-                <% end %>
+  <div class = "welcome_frame">
+    <h4 style="color:#4444C1;">未参考学生：</h4>
+      <% if @wk_students.present? %>
+        <% @wk_students.group_by{|u| u.F_team_uuid}.each do |team_uuid,students|%>
+          <p><%= TTeamInfo.find_by(:F_uuid => team_uuid).F_name%></p>
+          <div class="station-card" >
+            <% students.each do |student| %>
+              <div class="station-card1">
+                <%= student.F_name%>
               </div>
             <% end %>
-          <% end %>
-        <% else %>
-          <span>本站段已全部参考!</span>
+          </div>
         <% end %>
       <% end %>
-    <% end %>
+      <% if @wk_students_noteam.present? %>
+        <p>没有班组信息</p>
+        <div class="station-card" >
+          <% @wk_students_noteam.each do |student| %>
+            <div class="station-card1">
+              <%= student.F_name%>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
 
-  <h4 style="color:#4444C1;">已参考学生：</h4>
-
-    <% @duans_ck.each do |duan| %>
-      <div class="station-card-head">
-        <%= link_to student_ck_path(:duan_name => duan.F_name) do  %>
-          <%= duan.F_name %> >> <br>
-        <% end %>
-      </div>
-
-      <% if duan.F_name == params[:duan_name]%>
+      <h4 style="color:#4444C1;">已参考学生：</h4>
         <% if @ck_students.present? %>
-          <% @ck_students.each do |station_uuid,students|%>
-            <% if TStationInfo.ids.include?(station_uuid) %>
+          <% @ck_students.group_by{|u| u.F_team_uuid}.each do |team_uuid,students|%>
+            <p><%= TTeamInfo.find_by(:F_uuid => team_uuid).F_name%></p>
+            <div class="station-card" >
+              <% students.each do |student| %>
+                <div class="station-card1">
+                  <%= student.F_name%>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+        <% if @ck_students_noteam.present? %>
+          <p>没有班组信息</p>
+          <div class="station-card" >
+            <% @ck_students_noteam.each do |student| %>
+              <div class="station-card1">
+                <%= student.F_name%>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+  </div>
+
+<% else %>
+
+  <div class = "welcome_frame">
+    <h4 style="color:#4444C1;">未参考学生：</h4>
+
+      <% @duans_wk.each do |duan| %>
+        <div class="station-card-head">
+          <%= link_to student_ck_path(:duan_name => duan.F_name) do  %>
+            <%= duan.F_name %> >> <br>
+          <% end %>
+        </div>
+
+        <% if duan.F_name == params[:duan_name]%>
+          <% if @wk_students.present? %>
+            <% @wk_students.each do |station_uuid,students|%>
               <% s=TStationInfo.find(station_uuid) %>
               <% if s.t_team_infoes.present? %>
                 <% s.t_team_infoes.each do |t|%>
@@ -76,14 +79,13 @@
                     <p ><%= s.F_name%> => <%= t.F_name %></p>
                     <div class="station-card" >
                       <% u.each do |student| %>
-                        <div class="station-card1">
+                        <div class="station-card2">
                           <%= student.F_name%>
                         </div>
                       <% end %>
                     </div>
                   <% end %>
                 <% end %>
-
               <% else %>
                 <p ><%= s.F_name%> => 无班组信息</p>
                 <div class="station-card" >
@@ -95,10 +97,64 @@
                 </div>
               <% end %>
             <% end %>
+          <% else %>
+            <span>本站段已全部参考!</span>
           <% end %>
-        <% else %>
-          <span>本站段考生均未参考！</span>
         <% end %>
       <% end %>
-    <% end %>
-</div>
+
+    <h4 style="color:#4444C1;">已参考学生：</h4>
+
+      <% @duans_ck.each do |duan| %>
+        <div class="station-card-head">
+          <%= link_to student_ck_path(:duan_name => duan.F_name) do  %>
+            <%= duan.F_name %> >> <br>
+          <% end %>
+        </div>
+
+        <% if duan.F_name == params[:duan_name]%>
+          <% if @ck_students.present? %>
+            <% @ck_students.each do |station_uuid,students|%>
+              <% if TStationInfo.ids.include?(station_uuid) %>
+                <% s=TStationInfo.find(station_uuid) %>
+                <% if s.t_team_infoes.present? %>
+                  <% s.t_team_infoes.each do |t|%>
+                    <% u1= t.t_user_infoes.pluck(:F_id).uniq %>
+                    <% u=[] %>
+                    <% students.each do |m| %>
+                      <% if u1.include?(m.F_id) %>
+                        <% u << m%>
+                      <% end %>
+                    <% end %>
+                    <% if u.present? %>
+                      <p ><%= s.F_name%> => <%= t.F_name %></p>
+                      <div class="station-card" >
+                        <% u.each do |student| %>
+                          <div class="station-card2">
+                            <%= student.F_name%>
+                          </div>
+                        <% end %>
+                      </div>
+                    <% end %>
+                  <% end %>
+
+                <% else %>
+                  <p ><%= s.F_name%> => 无班组信息</p>
+                  <div class="station-card" >
+                    <% students.each do |student| %>
+                      <div class="station-card2">
+                        <%= student.F_name%>
+                      </div>
+                    <% end %>
+                  </div>
+                <% end %>
+              <% end %>
+            <% end %>
+          <% else %>
+            <span>本站段考生均未参考！</span>
+          <% end %>
+        <% end %>
+      <% end %>
+  </div>
+
+<% end %>

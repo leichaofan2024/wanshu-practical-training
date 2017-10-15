@@ -1,55 +1,92 @@
-<div class = "welcome_frame">
-  <h4 style="color:#4444C1;">未参考班组：</h4>
+<% if current_user.permission == 3 %>
 
-    <% @duans_wk.each do |duan| %>
-      <div class="station-card-head">
-        <%= link_to team_ck_path(:duan_name => duan.F_name) do  %>
-          <%= duan.F_name %> >> <br>
-        <% end %>
-      </div>
+  <div class = "welcome_frame">
+    <h4 style="color:#4444C1;">未参考班组：</h4>
+      <p><%= current_user.orgnize %></p>
+      <% if @wk_teams.present? %>
+          <div class="station-card" >
+            <% @wk_teams.each do |team|%>
+              <div class="station-card1">
+                <%= team.F_name%>
+              </div>
+            <% end %>
+          </div>
+      <% else %>
+        <span>所有班组均已参考！</span>
+      <% end %>
 
-      <% if duan.F_name == params[:duan_name]%>
-        <% if @wk_teams.present? %>
-          <% @wk_teams.each do |station,teams|%>
-            <p ><%= TStationInfo.find_by(:F_uuid => station).F_name %></p>
-            <div class="station-card" >
-              <% teams.each do |team| %>
-                <div class="station-card1">
-                  <%= team.F_name%>
-                </div>
-              <% end %>
-            </div>
+    <h4 style="color:#4444C1;">已参考班组：</h4>
+
+      <p><%= current_user.orgnize %></p>
+      <% if @ck_teams.present? %>
+          <div class="station-card" >
+            <% @ck_teams.each do |team|%>
+              <div class="station-card1">
+                <%= team.F_name%>
+              </div>
+            <% end %>
+          </div>
+      <% else %>
+        <span>所有班组均未参考！</span>
+      <% end %>
+  </div>
+
+<% else %>
+
+  <div class = "welcome_frame">
+    <h4 style="color:#4444C1;">未参考班组：</h4>
+
+      <% @duans_wk.each do |duan| %>
+        <div class="station-card-head">
+          <%= link_to team_ck_path(:duan_name => duan.F_name) do  %>
+            <%= duan.F_name %> >> <br>
           <% end %>
-        <% else %>
-          <span>所有班组均已参考！</span>
+        </div>
+
+        <% if duan.F_name == params[:duan_name]%>
+          <% if @wk_teams.present? %>
+            <% @wk_teams.each do |station,teams|%>
+              <p ><%= TStationInfo.find_by(:F_uuid => station).F_name %></p>
+              <div class="station-card" >
+                <% teams.each do |team| %>
+                  <div class="station-card1">
+                    <%= team.F_name%>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          <% else %>
+            <span>所有班组均已参考！</span>
+          <% end %>
         <% end %>
       <% end %>
-    <% end %>
 
-  <h4 style="color:#4444C1;">已参考班组：</h4>
+    <h4 style="color:#4444C1;">已参考班组：</h4>
 
-    <% @duans_ck.each do |duan| %>
-      <div class="station-card-head">
-        <%= link_to team_ck_path(:duan_name => duan.F_name) do  %>
-          <%= duan.F_name %> >> <br>
-        <% end %>
-      </div>
-
-      <% if duan.F_name == params[:duan_name]%>
-        <% if @ck_teams.present? %>
-          <% @ck_teams.each do |station,teams|%>
-            <p ><%= TStationInfo.find_by(:F_uuid => station).F_name %></p>
-            <div class="station-card" >
-              <% teams.each do |team| %>
-                <div class="station-card1">
-                  <%= team.F_name%>
-                </div>
-              <% end %>
-            </div>
+      <% @duans_ck.each do |duan| %>
+        <div class="station-card-head">
+          <%= link_to team_ck_path(:duan_name => duan.F_name) do  %>
+            <%= duan.F_name %> >> <br>
           <% end %>
-        <% else %>
-          <span>所有班组均未参考！</span>
+        </div>
+
+        <% if duan.F_name == params[:duan_name]%>
+          <% if @ck_teams.present? %>
+            <% @ck_teams.each do |station,teams|%>
+              <p ><%= TStationInfo.find_by(:F_uuid => station).F_name %></p>
+              <div class="station-card" >
+                <% teams.each do |team| %>
+                  <div class="station-card1">
+                    <%= team.F_name%>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          <% else %>
+            <span>所有班组均未参考！</span>
+          <% end %>
         <% end %>
       <% end %>
-    <% end %>
-</div>
+  </div>
+
+<% end %>

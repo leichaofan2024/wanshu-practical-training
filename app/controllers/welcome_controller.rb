@@ -59,6 +59,10 @@ class WelcomeController < ApplicationController
         @ck_teams = team_ck.group_by{|u| u.F_station_uuid}
         @wk_teams = team_duan.where.not(:F_uuid => team_ck.ids).group_by{|u| u.F_station_uuid}
       end
+    elsif current_user.permission == 3
+      team_station = TTeamInfo.joins(:t_station_info,:t_user_infoes).where("t_station_info.F_name": current_user.orgnize).where("t_user_info.F_type": 0).distinct
+      @ck_teams = team_station.joins(t_user_infoes: :t_record_infoes).where("t_user_info.F_type": 0).distinct
+      @wk_teams = team_station.where.not(:F_uuid => @ck_teams.ids)
     end
   end
 
@@ -84,6 +88,15 @@ class WelcomeController < ApplicationController
         @ck_students = students_duan_ck.joins(t_duan_info: :t_station_infoes).where("t_duan_info.F_name": params[:duan_name]).select("t_user_info.F_id,t_user_info.F_name,t_user_info.F_duan_uuid,t_user_info.F_station_uuid,t_user_info.F_team_uuid").distinct.group_by{|u| u.F_station_uuid}
         @wk_students = students_duan_wk.joins(t_duan_info: :t_station_infoes).where("t_duan_info.F_name": params[:duan_name]).select("t_user_info.F_id,t_user_info.F_name,t_user_info.F_duan_uuid,t_user_info.F_station_uuid,t_user_info.F_team_uuid").distinct.group_by{|u| u.F_station_uuid}
       end
+    elsif current_user.permission ==3
+      teams = TStationInfo.find_by(F_name: current_user.orgnize).t_team_infoes
+      student_station = TUserInfo.student_all.joins(:t_station_info).where("t_station_info.F_name": current_user.orgnize)
+      student_station_ck = student_station.joins(:t_record_infoes).distinct
+      student_station_wk = student_station.where.not("t_user_info.F_uuid": student_station_ck.ids)
+      @ck_students = student_station_ck.joins(:t_team_info).where("t_team_info.F_uuid": teams.ids).select("t_user_info.F_id,t_user_info.F_name,t_user_info.F_team_uuid").distinct
+      @ck_students_noteam = student_station_ck.select("t_user_info.F_id,t_user_info.F_name").distinct.where.not("t_user_info.F_id": @ck_students.pluck(:F_id))
+      @wk_students = student_station_wk.joins(:t_team_info).where("t_team_info.F_uuid": teams.ids).select("t_user_info.F_id,t_user_info.F_name,t_user_info.F_team_uuid").distinct
+      @wk_students_noteam = student_station_wk.select("t_user_info.F_id,t_user_info.F_name").distinct.where.not(:F_id => @wk_students.pluck(:F_id))
     end
   end
 
