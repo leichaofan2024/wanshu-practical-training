@@ -12,8 +12,8 @@ class WelcomeController < ApplicationController
     duan = TDuanInfo.where.not("t_duan_info.F_name = ? OR t_duan_info.F_name = ?", "运输处","局职教基地")
     cw = duan.where(:F_type => 1)
     zhi = duan.where(:F_type => 2)
-    @ck_cw = cw.joins(t_user_infoes: :t_record_infoes).where("t_user_info.F_type": 0).distinct.group('t_duan_info.F_name').count.keys
-    @ck_zhi = zhi.joins(t_user_infoes: :t_record_infoes).where("t_user_info.F_type": 0).distinct.group("t_duan_info.F_name").count.keys
+    @ck_cw = cw.joins(t_user_infoes: :t_record_infoes).datetime.where("t_user_info.F_type": 0).distinct.group('t_duan_info.F_name').count.keys
+    @ck_zhi = zhi.joins(t_user_infoes: :t_record_infoes).datetime.where("t_user_info.F_type": 0).distinct.group("t_duan_info.F_name").count.keys
     @wk_cw = cw.pluck(:F_name) - @ck_cw
     @wk_zhi = zhi.pluck(:F_name) - @ck_zhi
   end
@@ -21,12 +21,12 @@ class WelcomeController < ApplicationController
   def station_ck
     if current_user.permission == 1
       station = TStationInfo.where.not("t_station_info.F_duan_uuid = ? OR t_station_info.F_duan_uuid=?",TDuanInfo.find_by(:F_name => "运输处").F_uuid, TDuanInfo.find_by(:F_name => "局职教基地").F_uuid)
-      station_ck = station.joins(t_user_infoes: :t_record_infoes).where("t_user_info.F_type": 0).distinct
+      station_ck = station.joins(t_user_infoes: :t_record_infoes).datetime.where("t_user_info.F_type": 0).distinct
       @ck_stations = station_ck.group_by{|u| u.F_duan_uuid}
       @wk_stations = station.where.not(:F_uuid => station_ck.ids).group_by{|u| u.F_duan_uuid}
     elsif current_user.permission ==2
       station = TStationInfo.where(:F_duan_uuid => TDuanInfo.find_by(:F_name => current_user.orgnize).F_uuid )
-      station_ck = station.joins(t_user_infoes: :t_record_infoes).where("t_user_info.F_type": 0).distinct
+      station_ck = station.joins(t_user_infoes: :t_record_infoes).datetime.where("t_user_info.F_type": 0).distinct
       @ck_stations = station_ck.group_by{|u| u.F_duan_uuid}
       @wk_stations = station.where.not(:F_uuid => station_ck.ids).group_by{|u| u.F_duan_uuid}
     end
@@ -64,7 +64,7 @@ class WelcomeController < ApplicationController
   def student_ck
     if current_user.permission == 1
       student = TUserInfo.student_all
-      students_duan_ck = student.joins(:t_record_infoes).distinct
+      students_duan_ck = student.joins(:t_record_infoes).datetime.distinct
       students_duan_wk = student.where.not("t_user_info.F_uuid": students_duan_ck.ids)
       @duans_ck = TDuanInfo.duan_orgnization.joins(:t_user_infoes).where("t_user_info.F_uuid": students_duan_ck.ids).distinct
       @duans_wk = TDuanInfo.duan_orgnization.joins(:t_user_infoes).where("t_user_info.F_uuid": students_duan_wk.ids).distinct
@@ -74,7 +74,7 @@ class WelcomeController < ApplicationController
       end
     elsif current_user.permission == 2
       student = TUserInfo.joins(:t_duan_info).where("t_duan_info.F_name": current_user.orgnize).student_all
-      students_duan_ck = student.joins(:t_record_infoes)
+      students_duan_ck = student.joins(:t_record_infoes).datetime
       students_duan_wk = student.where.not("t_user_info.F_uuid": students_duan_ck.ids)
       @duans_ck = TDuanInfo.where("t_duan_info.F_name= ?",current_user.orgnize )
       @duans_wk = TDuanInfo.where("t_duan_info.F_name= ?",current_user.orgnize )
