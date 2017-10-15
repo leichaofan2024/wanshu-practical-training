@@ -21,5 +21,9 @@
 
 $( function() {
   $( "#search_date_from" ).datepicker();
+
+
+
+
   $( "#search_date_to" ).datepicker();
-} );
+});
