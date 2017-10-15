@@ -91,14 +91,14 @@ class WelcomeController < ApplicationController
     @program_types = TProgramTypeInfo.pluck(:F_name)
     if current_user.permission == 1
       if params[:program_type].present?
-        programs = TProgramInfo.where("t_program_info.F_type_id": TProgramTypeInfo.find_by(:F_name => params[:program_type]))
+        programs = TProgramInfo.where("t_program_info.F_type_id": TProgramTypeInfo.find_by(:F_name => params[:program_type]).F_id)
         ck_programs = TProgramInfo.joins(:t_record_detail_infoes,:t_program_type_info).where("t_program_type_info.F_name": params[:program_type]).select("t_program_info.F_name,t_program_info.F_id").distinct
         @ck_programs = ck_programs.pluck("t_program_info.F_name")
         @wk_programs = programs.where.not(:F_id => ck_programs.ids).pluck("t_program_info.F_name")
       end
     elsif current_user.permission == 2
       if params[:program_type].present?
-        programs = TProgramInfo.where("t_program_info.F_type_id": TProgramTypeInfo.find_by(:F_name => params[:program_type])).joins(t_record_detail_infoes: {t_record_info: :t_duan_info}).where("t_duan_info.F_name= ?", current_user.orgnize).distinct
+        programs = TProgramInfo.where("t_program_info.F_type_id": TProgramTypeInfo.find_by(:F_name => params[:program_type]).F_id)
         ck_programs = TProgramInfo.joins({t_record_detail_infoes: {t_record_info: :t_duan_info}},:t_program_type_info).where("t_duan_info.F_name= ?", current_user.orgnize).where("t_program_type_info.F_name": params[:program_type]).select(:F_name,:F_type_id).distinct
         @ck_programs = ck_programs.pluck("t_program_info.F_name")
         @wk_programs = programs.where.not(:F_id => ck_programs.ids).pluck("t_program_info.F_name")

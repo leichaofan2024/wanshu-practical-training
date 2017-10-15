@@ -104,6 +104,11 @@ table {
 .welcome_frame{
   width:90%;
   margin:0 auto 50px;
+  span{
+    text-align: center;
+    color:red;
+    margin-left:40%;
+  }
   p{
     font-weight:900;
     text-align: center;
