@@ -48,13 +48,13 @@ class TTeamInfoesController < ApplicationController
         else
           if params[:team_name].present?
             @team = TTeamInfo.where(F_station_uuid: @station.F_uuid).find_by(F_name: params[:team_name])
-            @student_ck = TUserInfo.student_all.joins(:t_team_info, :t_record_infoes).where('t_team_info.F_uuid =? ', @team.F_uuid).select(:F_name, :F_id,:F_work_uuid,:F_team_uuid).distinct
+            @student_ck = TUserInfo.student_all.joins(:t_team_info, :t_record_infoes).where('t_team_info.F_uuid =? ', @team.F_uuid).datetime.select(:F_name, :F_id,:F_work_uuid,:F_team_uuid).distinct
             @student_wk = TUserInfo.student_all.joins(:t_team_info).where('t_team_info.F_uuid=?', @team.F_uuid).select(:F_name, :F_id,:F_work_uuid,:F_team_uuid).distinct.where.not(F_id: @student_ck.pluck(:F_id))
           else
-            @student_ck = TUserInfo.student_all.joins(:t_station_info, :t_record_infoes).where('t_station_info.F_uuid': @station.F_uuid).select(:F_name, :F_id,:F_work_uuid,:F_team_uuid).distinct
+            @student_ck = TUserInfo.student_all.joins(:t_station_info, :t_record_infoes).where('t_station_info.F_uuid': @station.F_uuid).datetime.select(:F_name, :F_id,:F_work_uuid,:F_team_uuid).distinct
             @student_wk = TUserInfo.student_all.joins(:t_station_info).where('t_station_info.F_uuid': @station.F_uuid).select(:F_name, :F_id,:F_work_uuid,:F_team_uuid).distinct.where.not(F_id: @student_ck.pluck(:F_id))
           end
-            m = TTeamInfo.where('t_team_info.F_station_uuid = ?', @station.F_uuid).joins(t_user_infoes: :t_record_infoes).where("t_user_info.F_type= ?", 0).select('t_user_info.F_name,t_user_info.F_id,t_team_info.F_name').distinct
+            m = TTeamInfo.where('t_team_info.F_station_uuid = ?', @station.F_uuid).joins(t_user_infoes: :t_record_infoes).datetime.where("t_user_info.F_type= ?", 0).select('t_user_info.F_name,t_user_info.F_id,t_team_info.F_name').distinct
             c = m.group('t_team_info.F_name').count
             c1 = c.keys
             @team_student_ck= Array.new
