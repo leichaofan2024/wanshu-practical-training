@@ -10,7 +10,9 @@ class TRecordInfoesController < ApplicationController
     def student_records
         @duan = TDuanInfo.find_by(F_name: params[:duan_name])
         @station = TStationInfo.find_by(F_name: params[:station_name])
-        @team = TTeamInfo.where(F_station_uuid: @station.F_uuid).find_by(F_name: params[:team_name])
+        if params[:team_name].present?
+          @team = TTeamInfo.where(F_station_uuid: @station.F_uuid).find_by(F_name: params[:team_name])
+        end 
         @students = TUserInfo.where(F_name: params[:user_name], F_id: params[:user_id])
         @records = TRecordInfo.where(F_user_uuid: @students.ids)
         students = TUserInfo.where(F_name: params[:user_name], F_id: params[:user_id])

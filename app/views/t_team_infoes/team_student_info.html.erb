@@ -141,7 +141,20 @@
               <% end %>
             </tr>
           <% end %>
+        <% else %>
+          <% @student_ck.each do |s| %>
+            <tr>
+              <td><%= s.F_name %></td>
+              <td><%= s.F_id %></td>
+              <% if params[:search].present? %>
+              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:user_name => s.F_name, :user_id => s.F_id)+ '&'+ @para)%></td>
+              <% else %>
+              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:user_name => s.F_name, :user_id => s.F_id))%></td>
+              <% end %>
+            </tr>
+          <% end %>
         <% end %>
+
       </tbody>
     </table>
     <h4>未参加考试的考生</h4>
@@ -164,6 +177,18 @@
               <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id)+ '&'+ @para)%></td>
               <% else %>
               <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id))%></td>
+              <% end %>
+            </tr>
+          <% end %>
+        <% else %>
+          <% @student_wk.each do |s| %>
+            <tr>
+              <td><%= s.F_name %></td>
+              <td><%= s.F_id %></td>
+              <% if params[:search].present? %>
+              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:user_name => s.F_name, :user_id => s.F_id)+ '&'+ @para)%></td>
+              <% else %>
+              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:user_name => s.F_name, :user_id => s.F_id))%></td>
               <% end %>
             </tr>
           <% end %>
