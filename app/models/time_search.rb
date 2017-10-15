@@ -76,11 +76,15 @@ class TimeSearch
     end
 
     def scope_duan_reason
-      if current_user.permission == 1
-        TReasonInfo.joins(:t_detail_reason_infoes).where('F_time BETWEEN ? AND ?', @date_from, @date_to).group('t_reason_info.F_name').distinct
-      else current_user.permission == 2
-        TDetailReasonInfo.joins(:t_reason_info,t_record_detail_info: {t_record_info: :t_duan_info}).where('t_duan_info.F_name = ?',current_user.orgnize).where('t_detail_reason_info.F_time BETWEEN ? AND ?', @date_from, @date_to).group('t_reason_info.F_name').distinct
-      end
+      TReasonInfo.joins(:t_detail_reason_infoes).where('F_time BETWEEN ? AND ?', @date_from, @date_to).group('t_reason_info.F_name').distinct
+    end
+
+    def scope_duan_reason1(params)
+      TDetailReasonInfo.joins(:t_reason_info,t_record_detail_info: {t_record_info: :t_duan_info}).where('t_duan_info.F_name = ?',params).where('t_detail_reason_info.F_time BETWEEN ? AND ?', @date_from, @date_to).group('t_reason_info.F_name').distinct
+    end
+
+    def scope_duan_reason2(params)
+      TDetailReasonInfo.joins(:t_reason_info,t_record_detail_info: {t_record_info: :t_station_info}).where('t_station_info.F_name = ?',params).where('t_detail_reason_info.F_time BETWEEN ? AND ?', @date_from, @date_to).group('t_reason_info.F_name').distinct
     end
 
     def scope_duan_score1

@@ -2,6 +2,7 @@ class WelcomeController < ApplicationController
 
 
   def ju_overview
+
       if current_user.permission == 2
         redirect_to duan_overview_path
       elsif current_user.permission == 3

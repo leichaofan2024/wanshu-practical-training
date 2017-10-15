@@ -196,8 +196,13 @@ class TDuanInfoesController < ApplicationController
 
     def duan_reason_info
         if params[:search].present?
+          if current_user.permission == 1
             @search = TimeSearch.new(params[:search])
             @duan_reasons = @search.scope_duan_reason.count.sort { |a, b| b[1] <=> a[1] }
+          else current_user.permission == 2
+            @search = TimeSearch.new(params[:search])
+            @duan_reasons = @search.scope_duan_reason1(current_user.orgnize).count.sort { |a, b| b[1] <=> a[1] }
+          end
         else
             if current_user.permission == 1
                 @duan_reasons = TDetailReasonInfo.joins(:t_reason_info).group('t_reason_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
