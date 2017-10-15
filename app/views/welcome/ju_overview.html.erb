@@ -1,16 +1,4 @@
-
 <div class="root-search-frame">
-  <div class="root-search">
-
-    <b>搜索：</b>
-    <div style="display:inline-block;">
-      <%= form_for t_station_infoes_path do |f| %>
-        <%= f.text_field  :date,:placeholder => "输入搜索内容", :style => "height:25px;font-size:10px;"%>
-      <% end %>
-    </div>
-
-  </div>
-
   <div class="root-search-time1">
     <b>时间：</b>
     <div style="display:inline-block;">
@@ -21,6 +9,7 @@
     <% end %>
   </div>
 </div>
+
 <div class="root-card-frame">
   <div class="root-card">
     <div class="root-card-block">
@@ -168,20 +157,7 @@
                     radius : '55%',
                     center: ['50%', '60%'],
                     data: [gon.nine, gon.eight, gon.six, gon.below],
-
-                    label: {
-                      normal: {
-                        position: 'inner',
-                        formatter: '{d}%',
-                         textStyle: {
-                            color: '#ffffff',
-                            fontSize: 14
-                          }
-                        }
-                      },
-
-
-                    itemStyle: {
+                  itemStyle: {
                         emphasis: {
                           shadowBlur: 10,
                           shadowOffsetX: 0,

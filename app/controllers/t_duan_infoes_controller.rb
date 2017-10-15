@@ -1,3 +1,4 @@
+require 'bigdecimal'
 class TDuanInfoesController < ApplicationController
     def index
         @duans_cw = TDuanInfo.duan_orgnization.where(F_type: 1)
@@ -7,107 +8,136 @@ class TDuanInfoesController < ApplicationController
 
     def duan_student_info
         @duans = TDuanInfo.where.not(F_name: %w(运输处 局职教基地))
-        @duans_student_cw = TUserInfo.where(F_type: 0).joins(:t_duan_info).where.not('t_duan_info.F_name' => ['局职教基地', '运输处']).where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
+        @duans_student_cw = TUserInfo.where(F_type: 0).joins(:t_duan_info).where.not('t_duan_info.F_name' => %w(局职教基地 运输处)).where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
         ncw = @duans_student_cw.keys
+        vcw = @duans_student_cw.values
         @duans_student_zs = TUserInfo.where(F_type: 0).joins(:t_duan_info).where.not('t_duan_info.F_name =? or t_duan_info.F_name =? ', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
-        nzs= @duans_student_zs.keys
+        nzs = @duans_student_zs.keys
+        vzs = @duans_student_zs.values
         if params[:search].present?
             @search = TimeSearch.new(params[:search])
             cw = @search.scope_duan_student.where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').distinct
             zs = @search.scope_duan_student.where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').distinct
-            cw_ck= cw.group('t_duan_info.F_name').count
+            cw_ck = cw.group('t_duan_info.F_name').count
             cw_ck1 = cw_ck.keys
-            @duans_student_cw_ck = Array.new
+            @duans_student_cw_ck = []
             ncw.each do |c|
-              if cw_ck1.include?(c)
-                @duans_student_cw_ck << cw_ck[c]
-              else
-                @duans_student_cw_ck << 0
-              end
+                @duans_student_cw_ck << if cw_ck1.include?(c)
+                                            cw_ck[c]
+                                        else
+                                            0
+                                        end
+            end
+            @duans_student_cw_ck_bl = []
+            i = 0
+            @duans_student_cw_ck.each do |v|
+                @duans_student_cw_ck_bl << (BigDecimal(v) / BigDecimal(vcw[i])).round(3) * 100
+                i += 1
             end
             cw_wk = TUserInfo.where(F_type: 0).joins(:t_duan_info).where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => cw.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
             cw_wk1 = cw_ck.keys
-            @duans_student_cw_wk = Array.new
+            @duans_student_cw_wk = []
             ncw.each do |c|
-              if cw_wk1.include?(c)
-                @duans_student_cw_wk << cw_wk[c]
-              else
-                @duans_student_cw_wk << 0
-              end
+                @duans_student_cw_wk << if cw_wk1.include?(c)
+                                            cw_wk[c]
+                                        else
+                                            0
+                                        end
             end
 
-
             zs_ck = zs.group('t_duan_info.F_name').count
-            zs_ck1= zs_ck.keys
-            @duans_student_zs_ck = Array.new
+            zs_ck1 = zs_ck.keys
+            @duans_student_zs_ck = []
             nzs.each do |c|
-              if zs_ck1.include?(c)
-                @duans_student_zs_ck << zs_ck[c]
-              else
-                @duans_student_zs_ck << 0
-              end
+                @duans_student_zs_ck << if zs_ck1.include?(c)
+                                            zs_ck[c]
+                                        else
+                                            0
+                                        end
+            end
+            @duans_student_zs_ck_bl = []
+            i = 0
+            @duans_student_zs_ck.each do |v|
+                @duans_student_zs_ck_bl << (BigDecimal(v) / BigDecimal(vzs[i])).round(3) * 100
+                i += 1
             end
             zs_wk = TUserInfo.where(F_type: 0).joins(:t_duan_info).where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => zs.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
             zs_wk1 = zs_wk.keys
-            @duans_student_zs_wk = Array.new
+            @duans_student_zs_wk = []
             nzs.each do |c|
-              if zs_wk1.include?(c)
-                @duans_student_zs_wk << zs_wk[c]
-              else
-                @duans_student_zs_wk << 0
-              end
+                @duans_student_zs_wk << if zs_wk1.include?(c)
+                                            zs_wk[c]
+                                        else
+                                            0
+                                        end
             end
 
         else
             cw = TUserInfo.where(F_type: 0).joins(:t_duan_info, :t_record_infoes).where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').distinct
             zs = TUserInfo.where(F_type: 0).joins(:t_duan_info, :t_record_infoes).where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').distinct
-            cw_ck= cw.group('t_duan_info.F_name').count
+            cw_ck = cw.group('t_duan_info.F_name').count
             cw_ck1 = cw_ck.keys
-            @duans_student_cw_ck = Array.new
+            @duans_student_cw_ck = []
             ncw.each do |c|
-              if cw_ck1.include?(c)
-                @duans_student_cw_ck << cw_ck[c]
-              else
-                @duans_student_cw_ck << 0
-              end
+                @duans_student_cw_ck << if cw_ck1.include?(c)
+                                            cw_ck[c]
+                                        else
+                                            0
+                                        end
             end
+
+            @duans_student_cw_ck_bl = []
+            i = 0
+            @duans_student_cw_ck.each do |v|
+                @duans_student_cw_ck_bl << (BigDecimal(v) / BigDecimal(vcw[i])).round(3) * 100
+                i += 1
+            end
+
             cw_wk = TUserInfo.where(F_type: 0).joins(:t_duan_info).where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => cw.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
             cw_wk1 = cw_ck.keys
-            @duans_student_cw_wk = Array.new
+            @duans_student_cw_wk = []
             ncw.each do |c|
-              if cw_wk1.include?(c)
-                @duans_student_cw_wk << cw_wk[c]
-              else
-                @duans_student_cw_wk << 0
-              end
+                @duans_student_cw_wk << if cw_wk1.include?(c)
+                                            cw_wk[c]
+                                        else
+                                            0
+                                        end
             end
 
             zs_ck = zs.group('t_duan_info.F_name').count
-            zs_ck1= zs_ck.keys
-            @duans_student_zs_ck = Array.new
+            zs_ck1 = zs_ck.keys
+            @duans_student_zs_ck = []
             nzs.each do |c|
-              if zs_ck1.include?(c)
-                @duans_student_zs_ck << zs_ck[c]
-              else
-                @duans_student_zs_ck << 0
-              end
+                @duans_student_zs_ck << if zs_ck1.include?(c)
+                                            zs_ck[c]
+                                        else
+                                            0
+                                        end
             end
+            @duans_student_zs_ck_bl = []
+            i = 0
+            @duans_student_zs_ck.each do |v|
+                @duans_student_zs_ck_bl << (BigDecimal(v) / BigDecimal(vzs[i])).round(3) * 100
+                i += 1
+            end
+
             zs_wk = TUserInfo.where(F_type: 0).joins(:t_duan_info).where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => zs.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
             zs_wk1 = zs_wk.keys
-            @duans_student_zs_wk = Array.new
+            @duans_student_zs_wk = []
             nzs.each do |c|
-              if zs_wk1.include?(c)
-                @duans_student_zs_wk << zs_wk[c]
-              else
-                @duans_student_zs_wk << 0
-              end
+                @duans_student_zs_wk << if zs_wk1.include?(c)
+                                            zs_wk[c]
+                                        else
+                                            0
+                                        end
             end
 
         end
         gon.cwkey = ncw
         gon.cwwkvalue = @duans_student_cw_wk
         gon.cwckvalue = @duans_student_cw_ck
-
+        gon.cwblvalue = @duans_student_cw_ck_bl
+        gon.zsckblvalue = @duans_student_zs_ck_bl
         gon.zskey = nzs
         gon.zswkvalue = @duans_student_zs_wk
         gon.zsckvalue = @duans_student_zs_ck
@@ -149,19 +179,19 @@ class TDuanInfoesController < ApplicationController
     end
 
     def duan_program_info
-      if current_user.permission == 1
-        @duan_programs = TProgramInfo.joins(:t_record_detail_infoes).group('t_program_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
-      elsif current_user.permission ==2
-        @duan_programs = TRecordDetailInfo.joins({t_record_info: :t_duan_info},:t_program_info).where('t_duan_info.F_name = ?',current_user.orgnize).group('t_program_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
-      end
+        if current_user.permission == 1
+            @duan_programs = TProgramInfo.joins(:t_record_detail_infoes).group('t_program_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
+        elsif current_user.permission == 2
+            @duan_programs = TRecordDetailInfo.joins({ t_record_info: :t_duan_info }, :t_program_info).where('t_duan_info.F_name = ?', current_user.orgnize).group('t_program_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
+        end
     end
 
     def duan_program_student_info
-      if current_user.permission == 1
-        @records = TRecordInfo.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(t_record_detail_infoes: :t_program_info).where('t_program_info.F_name = ?', params[:name])
-      elsif current_user.permission == 2
-        @records = TRecordInfo.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(t_record_detail_infoes: :t_program_info).where('t_program_info.F_name = ?', params[:name]).where('t_record_info.F_duan_uuid=?',TDuanInfo.find_by(:F_name => current_user.orgnize).F_uuid)
-      end
+        if current_user.permission == 1
+            @records = TRecordInfo.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(t_record_detail_infoes: :t_program_info).where('t_program_info.F_name = ?', params[:name])
+        elsif current_user.permission == 2
+            @records = TRecordInfo.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(t_record_detail_infoes: :t_program_info).where('t_program_info.F_name = ?', params[:name]).where('t_record_info.F_duan_uuid=?', TDuanInfo.find_by(F_name: current_user.orgnize).F_uuid)
+        end
     end
 
     def duan_reason_info
@@ -169,11 +199,11 @@ class TDuanInfoesController < ApplicationController
             @search = TimeSearch.new(params[:search])
             @duan_reasons = @search.scope_duan_reason.count.sort { |a, b| b[1] <=> a[1] }
         else
-          if current_user.permission == 1
-            @duan_reasons = TDetailReasonInfo.joins(:t_reason_info).group('t_reason_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
-          elsif current_user.permission ==2
-            @duan_reasons = TDetailReasonInfo.joins(:t_reason_info,t_record_detail_info: {t_record_info: :t_duan_info}).where('t_duan_info.F_name = ?',current_user.orgnize).group('t_reason_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
-          end
+            if current_user.permission == 1
+                @duan_reasons = TDetailReasonInfo.joins(:t_reason_info).group('t_reason_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
+            elsif current_user.permission == 2
+                @duan_reasons = TDetailReasonInfo.joins(:t_reason_info, t_record_detail_info: { t_record_info: :t_duan_info }).where('t_duan_info.F_name = ?', current_user.orgnize).group('t_reason_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
+            end
         end
 
         url = request.original_url
@@ -186,11 +216,11 @@ class TDuanInfoesController < ApplicationController
             @search = TimeSearch.new(params[:search])
             @records = @search.scope_duan_reason_student(params[:name])
         else
-          if current_user.permission == 1
-            @records = TRecordInfo.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(t_record_detail_infoes: { t_detail_reason_infoes: :t_reason_info }).where('t_reason_info.F_name = ?', params[:name])
-          elsif current_user.permission ==2
-            @records = TRecordInfo.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(t_record_detail_infoes: { t_detail_reason_infoes: :t_reason_info }).where('t_reason_info.F_name = ?', params[:name]).where('t_record_info.F_duan_uuid=?',TDuanInfo.find_by(:F_name => current_user.orgnize).F_uuid)
-          end
+            if current_user.permission == 1
+                @records = TRecordInfo.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(t_record_detail_infoes: { t_detail_reason_infoes: :t_reason_info }).where('t_reason_info.F_name = ?', params[:name])
+            elsif current_user.permission == 2
+                @records = TRecordInfo.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(t_record_detail_infoes: { t_detail_reason_infoes: :t_reason_info }).where('t_reason_info.F_name = ?', params[:name]).where('t_record_info.F_duan_uuid=?', TDuanInfo.find_by(F_name: current_user.orgnize).F_uuid)
+            end
         end
     end
 
