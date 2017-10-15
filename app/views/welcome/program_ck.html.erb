@@ -1,14 +1,52 @@
 <div class = "welcome_frame">
-  <h3>未覆盖考题 (共计：<%= @wk_programs.size%>个)</h3><hr>
-    <% @wk_programs.each do |program|%>
-      <button type="button" name="name"><%= program%></button>
-    <% end %>
-  <h3>已覆盖考题 (共计：<%= @ck_programs.size%>个)</h3><hr>
-    <% @ck_programs.each do |program|%>
-      <button type="button" name="name"><%= program%></button>
-    <% end %>
+  <h4 style="color:#4444C1;">未覆盖考点：</h4>
 
+  <% @program_types.each do |type| %>
+    <div class="station-card-head">
+      <%= link_to program_ck_path(:program_type => type) do  %>
+        <%= type %> >> <br>
+      <% end %>
+    </div>
+      <% if type == params[:program_type]%>
+        <div class="station-card" >
+          <% if @wk_programs.present? %>
+            <% @wk_programs.each do |program| %>
+              <div class="station-card2">
+                <%= program%>
+              </div>
+            <% end %>
+          <% else %>
+            <div style="color:red;text-align:center;">
+              考点全覆盖
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+  <% end %>
 
+  <h4 style="color:#4444C1;">已覆盖考点：</h4>
 
+  <% @program_types.each do |type| %>
+    <div class="station-card-head">
+      <%= link_to program_ck_path(:program_type => type) do  %>
+        <%= type %> >> <br>
+      <% end %>
+    </div>
+      <% if type == params[:program_type]%>
+        <div class="station-card" >
+          <% if @ck_programs.present? %>
+            <% @ck_programs.each do |program| %>
+              <div class="station-card2">
+                <%= program%>
+              </div>
+            <% end %>
+          <% else %>
+            <div style="color:red;text-align:center;">
+              考点未涉及
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+  <% end %>
 
 </div>

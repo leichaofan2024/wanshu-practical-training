@@ -20,6 +20,7 @@
 @import "bootstrap-datepicker3";
 @import "font-awesome";
 
+
 body {
   min-height:100%;
   background:rgba(143,145,157,0.17);
@@ -101,21 +102,35 @@ table {
 // 五张卡片内部样式
 .welcome_frame{
   width:90%;
-  margin:0 auto;
+  margin:0 auto 50px;
   p{
     font-weight:900;
     text-align: center;
     font-size: 15px;
     clear:both;
     line-height: 50px;
-    // border-bottom: solid 1px white;
+  }
+  .station-card-head{
+    margin: 20px;
+
   }
   .station-card{
     background-color: #fff;
     overflow: auto;
+    width:90%;
+    margin:0 auto;
+    .station-card1{
+      float:left;
+      width:16.6%;
+      height:15px;
+      text-align: center;
+      margin-top: 10px;
+      margin-bottom:10px;
+    }
     .station-card2{
       float:left;
       width:16.6%;
+      height:58px;
       text-align: center;
       margin-top: 10px;
       margin-bottom:10px;
