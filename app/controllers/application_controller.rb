@@ -7,13 +7,14 @@ class ApplicationController < ActionController::Base
     def duan
         m = TDuanInfo.where.not('F_name= ? || F_name= ?', '局职教基地', '运输处').count
     end
-
+    
+# 这个是第一个卡片
     def duan_ck_count
         if params[:search].present?
             @search = TimeSearch.new(params[:search])
             m = @search.scope_duan.select('t_duan_info.F_uuid').distinct.count
         else
-            m = TDuanInfo.duan_orgnization.joins(t_user_infoes: :t_record_infoes).where('t_user_info.F_type = ?', 0).select('t_duan_info.F_uuid').distinct.count
+            m = TDuanInfo.duan_orgnization.joins(t_user_infoes: :t_record_infoes).where('t_user_info.F_type = ?', 0).datetime.select('t_duan_info.F_uuid').distinct.count
       end
     end
 
@@ -41,21 +42,21 @@ class ApplicationController < ActionController::Base
     def station_ju
         m = TStationInfo.includes(:t_record_infoes).where('F_duan_uuid = ? || F_duan_uuid = ? ', duan_ju.first.F_uuid, duan_ju.last.F_uuid)
     end
-
+# 这是第二个卡片
     def station_ck_count
       if current_user.permission == 1
         if params[:search].present?
             @search = TimeSearch.new(params[:search])
             m = @search.scope_station.distinct.count
         else
-            m = TStationInfo.joins(t_user_infoes: :t_record_infoes).distinct.count
+            m = TStationInfo.joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', Date.today.beginning_of_month, Date.today.end_of_month).distinct.count
         end
       elsif current_user.permission == 2
         if params[:search].present?
             @search = TimeSearch.new(params[:search])
             m = @search.scope_station.joins(:t_duan_info).where("t_duan_info.F_name=?", current_user.orgnize).distinct.count
         else
-            m = TStationInfo.joins(:t_duan_info,t_user_infoes: :t_record_infoes).where("t_duan_info.F_name=?", current_user.orgnize).distinct.count
+            m = TStationInfo.joins(:t_duan_info,t_user_infoes: :t_record_infoes).where("t_duan_info.F_name=?", current_user.orgnize).datetime.distinct.count
         end
       end
     end
@@ -68,14 +69,14 @@ class ApplicationController < ActionController::Base
       end
 
     end
-
+# 这是第三个卡片
     def team_ck_count
       if current_user.permission == 1
         if params[:search].present?
             @search = TimeSearch.new(params[:search])
             m = @search.scope_team.distinct.count
         else
-            m = TTeamInfo.joins(t_station_info: :t_duan_info).where.not("t_duan_info.F_name = '运输处' OR t_duan_info.F_name = '局职教基地'").joins(:t_record_infoes).distinct.count
+            m = TTeamInfo.joins(t_station_info: :t_duan_info).where.not("t_duan_info.F_name = '运输处' OR t_duan_info.F_name = '局职教基地'").datetime.joins(:t_record_infoes).distinct.count
         end
       elsif current_user.permission == 2
         if params[:search].present?
