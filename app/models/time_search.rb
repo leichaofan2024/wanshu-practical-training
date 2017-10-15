@@ -120,6 +120,14 @@ class TimeSearch
       TDuanInfo.where.not("t_duan_info.F_name = ? OR t_duan_info.F_name = ?", "运输处","局职教基地").where(:F_type => 2).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
     end
 
+    def scope_station_ck
+      TStationInfo.where.not("t_station_info.F_duan_uuid = ? OR t_station_info.F_duan_uuid=?",TDuanInfo.find_by(:F_name => "运输处").F_uuid, TDuanInfo.find_by(:F_name => "局职教基地").F_uuid).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
+    end
+
+    def scope_station1_ck
+      TStationInfo.where(:F_duan_uuid => TDuanInfo.find_by(:F_name => current_user.orgnize).F_uuid ).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
+    end
+
     private
 
     def parsed_date(date_string)

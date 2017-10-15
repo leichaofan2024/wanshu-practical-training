@@ -25,16 +25,31 @@ class WelcomeController < ApplicationController
   end
 
   def station_ck
-    if current_user.permission == 1
-      station = TStationInfo.where.not("t_station_info.F_duan_uuid = ? OR t_station_info.F_duan_uuid=?",TDuanInfo.find_by(:F_name => "运输处").F_uuid, TDuanInfo.find_by(:F_name => "局职教基地").F_uuid)
-      station_ck = station.joins(t_user_infoes: :t_record_infoes).datetime.where("t_user_info.F_type": 0).distinct
-      @ck_stations = station_ck.group_by{|u| u.F_duan_uuid}
-      @wk_stations = station.where.not(:F_uuid => station_ck.ids).group_by{|u| u.F_duan_uuid}
-    elsif current_user.permission ==2
-      station = TStationInfo.where(:F_duan_uuid => TDuanInfo.find_by(:F_name => current_user.orgnize).F_uuid )
-      station_ck = station.joins(t_user_infoes: :t_record_infoes).datetime.where("t_user_info.F_type": 0).distinct
-      @ck_stations = station_ck.group_by{|u| u.F_duan_uuid}
-      @wk_stations = station.where.not(:F_uuid => station_ck.ids).group_by{|u| u.F_duan_uuid}
+    if params[:search].present?
+        @search = TimeSearch.new(params[:search])
+          if current_user.permission == 1
+            station = TStationInfo.where.not("t_station_info.F_duan_uuid = ? OR t_station_info.F_duan_uuid=?",TDuanInfo.find_by(:F_name => "运输处").F_uuid, TDuanInfo.find_by(:F_name => "局职教基地").F_uuid)
+            station_ck = @search.scope_station_ck.where("t_user_info.F_type": 0).distinct
+            @ck_stations = station_ck.group_by{|u| u.F_duan_uuid}
+            @wk_stations = station.where.not(:F_uuid => station_ck.ids).group_by{|u| u.F_duan_uuid}
+          elsif current_user.permission ==2
+            station = TStationInfo.where(:F_duan_uuid => TDuanInfo.find_by(:F_name => current_user.orgnize).F_uuid )
+            station_ck = @search.scope_station2_ck.where("t_user_info.F_type": 0).distinct
+            @ck_stations = station_ck.group_by{|u| u.F_duan_uuid}
+            @wk_stations = station.where.not(:F_uuid => station_ck.ids).group_by{|u| u.F_duan_uuid}
+          end
+    else
+          if current_user.permission == 1
+            station = TStationInfo.where.not("t_station_info.F_duan_uuid = ? OR t_station_info.F_duan_uuid=?",TDuanInfo.find_by(:F_name => "运输处").F_uuid, TDuanInfo.find_by(:F_name => "局职教基地").F_uuid)
+            station_ck = station.joins(t_user_infoes: :t_record_infoes).datetime.where("t_user_info.F_type": 0).distinct
+            @ck_stations = station_ck.group_by{|u| u.F_duan_uuid}
+            @wk_stations = station.where.not(:F_uuid => station_ck.ids).group_by{|u| u.F_duan_uuid}
+          elsif current_user.permission ==2
+            station = TStationInfo.where(:F_duan_uuid => TDuanInfo.find_by(:F_name => current_user.orgnize).F_uuid )
+            station_ck = station.joins(t_user_infoes: :t_record_infoes).datetime.where("t_user_info.F_type": 0).distinct
+            @ck_stations = station_ck.group_by{|u| u.F_duan_uuid}
+            @wk_stations = station.where.not(:F_uuid => station_ck.ids).group_by{|u| u.F_duan_uuid}
+          end
     end
   end
 
