@@ -73,8 +73,8 @@ class TDuanInfoesController < ApplicationController
             end
 
         else
-            cw = TUserInfo.where(F_type: 0).joins(:t_duan_info, :t_record_infoes).where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').distinct
-            zs = TUserInfo.where(F_type: 0).joins(:t_duan_info, :t_record_infoes).where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').distinct
+            cw = TUserInfo.where(F_type: 0).joins(:t_duan_info, :t_record_infoes).datetime.where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').distinct
+            zs = TUserInfo.where(F_type: 0).joins(:t_duan_info, :t_record_infoes).datetime.where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').distinct
             cw_ck = cw.group('t_duan_info.F_name').count
             cw_ck1 = cw_ck.keys
             @duans_student_cw_ck = []
@@ -196,13 +196,13 @@ class TDuanInfoesController < ApplicationController
 
     def duan_reason_info
         if params[:search].present?
-          if current_user.permission == 1
-            @search = TimeSearch.new(params[:search])
-            @duan_reasons = @search.scope_duan_reason.count.sort { |a, b| b[1] <=> a[1] }
-          else current_user.permission == 2
-            @search = TimeSearch.new(params[:search])
-            @duan_reasons = @search.scope_duan_reason1(current_user.orgnize).count.sort { |a, b| b[1] <=> a[1] }
-          end
+            if current_user.permission == 1
+                @search = TimeSearch.new(params[:search])
+                @duan_reasons = @search.scope_duan_reason.count.sort { |a, b| b[1] <=> a[1] }
+            else current_user.permission == 2
+                 @search = TimeSearch.new(params[:search])
+                 @duan_reasons = @search.scope_duan_reason1(current_user.orgnize).count.sort { |a, b| b[1] <=> a[1] }
+            end
         else
             if current_user.permission == 1
                 @duan_reasons = TDetailReasonInfo.joins(:t_reason_info).group('t_reason_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
