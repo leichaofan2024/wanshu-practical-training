@@ -12,10 +12,16 @@ class WelcomeController < ApplicationController
     duan = TDuanInfo.where.not("t_duan_info.F_name = ? OR t_duan_info.F_name = ?", "运输处","局职教基地")
     cw = duan.where(:F_type => 1)
     zhi = duan.where(:F_type => 2)
-    @ck_cw = cw.joins(t_user_infoes: :t_record_infoes).datetime.where("t_user_info.F_type": 0).distinct.group('t_duan_info.F_name').count.keys
-    @ck_zhi = zhi.joins(t_user_infoes: :t_record_infoes).datetime.where("t_user_info.F_type": 0).distinct.group("t_duan_info.F_name").count.keys
-    @wk_cw = cw.pluck(:F_name) - @ck_cw
-    @wk_zhi = zhi.pluck(:F_name) - @ck_zhi
+        if params[:search].present?
+          @search = TimeSearch.new(params[:search])
+          @ck_cw = @search.scope_duan_cw_ck.where("t_user_info.F_type": 0).distinct.group('t_duan_info.F_name').count.keys
+          @ck_zhi = @search.scope_duan_zhi_ck.where("t_user_info.F_type": 0).distinct.group("t_duan_info.F_name").count.keys
+      else
+        @ck_cw = cw.joins(t_user_infoes: :t_record_infoes).datetime.where("t_user_info.F_type": 0).distinct.group('t_duan_info.F_name').count.keys
+        @ck_zhi = zhi.joins(t_user_infoes: :t_record_infoes).datetime.where("t_user_info.F_type": 0).distinct.group("t_duan_info.F_name").count.keys
+      end
+        @wk_cw = cw.pluck(:F_name) - @ck_cw
+        @wk_zhi = zhi.pluck(:F_name) - @ck_zhi
   end
 
   def station_ck

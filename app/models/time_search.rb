@@ -112,6 +112,14 @@ class TimeSearch
         TRecordInfo.where(F_user_uuid: TUserInfo.where(F_name: user_name, F_id: user_id).ids).where('F_time BETWEEN ? AND ?', @date_from, @date_to)
     end
 
+    def scope_duan_cw_ck
+      TDuanInfo.where.not("t_duan_info.F_name = ? OR t_duan_info.F_name = ?", "运输处","局职教基地").where(:F_type => 1).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
+    end
+
+    def scope_duan_zhi_ck
+      TDuanInfo.where.not("t_duan_info.F_name = ? OR t_duan_info.F_name = ?", "运输处","局职教基地").where(:F_type => 2).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
+    end
+
     private
 
     def parsed_date(date_string)
