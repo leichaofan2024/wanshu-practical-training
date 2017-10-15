@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
     before_action :authenticate_user!
     helper_method [:duan, :duan_z, :duan_cw, :duan_ju, :duan_ck_count, :station, :station_ck_count, :team, :team_ju, :team_ck_count, :student_wk_count, :students, :student_ck_count, :student_ck_counts, :teacher, :program_ck_count,
                    :score_90, :score_80, :score_60, :score_60_below, :program_type_percent, :reason_hot_all]
+
     def duan
         m = TDuanInfo.where.not('F_name= ? || F_name= ?', '局职教基地', '运输处').count
     end

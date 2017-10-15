@@ -20,7 +20,22 @@
 
 //= require_tree .
 
-$( function() {
-  $( "#search_date_from" ).datepicker();
-  $( "#search_date_to" ).datepicker();
-});
+
+jQuery(function() {
+    $( "#search_date_from" ).datepicker({
+      defaultDate: "+1w",
+      changeMonth: true,
+      inline: true,
+      onClose: function( selectedDate ) {
+        $( "#search_date_from" ).datepicker( "option", "minDate", selectedDate );
+      }
+    });
+    $( "#search_date_to" ).datepicker({
+      defaultDate: "+1w",
+      changeMonth: true,
+      inline: true,
+      onClose: function( selectedDate ) {
+        $( "#search_date_to" ).datepicker( "option", "maxDate", selectedDate );
+      }
+    });
+  });
