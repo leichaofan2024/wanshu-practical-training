@@ -20,7 +20,7 @@ class TRecordInfoesController < ApplicationController
             @search = TimeSearch.new(params[:search])
             @records = @search.scope_student_score(params[:user_id], params[:user_name])
         else
-            @records = TRecordInfo.where(F_user_uuid: students.ids).datetime
+            @records = TRecordInfo.datetime1.where(F_user_uuid: students.ids)
       end
     end
 
