@@ -12,7 +12,7 @@ class ApplicationRecord < ActiveRecord::Base
   scope :team_orgnization, -> {joins(t_station_info: :t_duan_info).duan_orgnization}
   scope :student_all , -> {where("t_user_info.F_type": 0)}
   scope :datetime, -> {where('t_record_info.F_time BETWEEN ? AND ?', Date.today.beginning_of_month, Date.today.end_of_month)}
-  scope :datetime1, -> {where('F_time BETWEEN ? AND ?', Date.today.beginning_of_month, Date.today.end_of_month)}
+  scope :datetime1, -> {where('t_record_detail_info.F_time BETWEEN ? AND ?', Date.today.beginning_of_month, Date.today.end_of_month)}
 
-  
+
 end

@@ -109,7 +109,7 @@
                    return para;
                    };
         myChart.on('click', function (params) {
-          window.location.assign('/t_station_infoes/station_student_info?'+'duan_name=<%= current_user.orgnize%>'+GetUrlPara());
+          window.location.assign('/t_station_infoes/station_student_info?'+'duan_name=<%= current_user.orgnize%>'+'&'+GetUrlPara());
         });
         <% else %>
         myChart.on('click', function (params) {
@@ -176,7 +176,7 @@
             return para;
         };
         myChart.on('click', function(params) {
-          window.location.assign('/t_station_infoes/station_score_info?'+'duan_name=<%= current_user.orgnize%>'+ GetUrlPara());
+          window.location.assign('/t_station_infoes/station_score_info?'+'duan_name=<%= current_user.orgnize%>'+'&'+ GetUrlPara());
         });
         <% else %>
         myChart.on('click', function (params) {
