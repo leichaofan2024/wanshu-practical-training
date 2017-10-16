@@ -12,8 +12,8 @@
     <b>时间：</b>
     <div style="display:inline-block;">
       <%= form_tag station_student_info_t_station_infoes_path, method: :get do %>
-        <%= text_field_tag 'search[date_from]'%>
-        <%= text_field_tag 'search[date_to]'%>
+      <%= text_field_tag 'search[date_from]', @date_from %>
+      <%= text_field_tag 'search[date_to]', @date_to %>
         <%= hidden_field_tag :duan_name, params[:duan_name]%>
         <%= submit_tag "搜索" %>
     <% end %>

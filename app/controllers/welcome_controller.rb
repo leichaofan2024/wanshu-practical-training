@@ -1,6 +1,8 @@
 class WelcomeController < ApplicationController
 
   def ju_overview
+    @date_from = parsed_date(params[:date_from], Date.today.beginning_of_month.to_s)
+    @date_to = parsed_date(params[:date_to], Date.today.end_of_month.to_s)
     if current_user.permission == 2
       redirect_to duan_overview_path
     elsif current_user.permission == 3
