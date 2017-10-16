@@ -147,6 +147,9 @@ class TDuanInfoesController < ApplicationController
     end
 
     def duan_score_info
+        @date_from = parsed_date(params[:date_from], Date.today.beginning_of_month.to_s)
+        @date_to = parsed_date(params[:date_to], Date.today.end_of_month.to_s)
+        # 这个是时间搜索框中默认时间
         @duantype1 = TDuanInfo.where('t_duan_info.F_type= ?', 1).joins(t_user_infoes: :t_record_infoes)
         @duantype2 = TDuanInfo.where('t_duan_info.F_type= ?', 2).joins(t_user_infoes: :t_record_infoes)
         if params[:search].present?
@@ -198,6 +201,9 @@ class TDuanInfoesController < ApplicationController
     end
 
     def duan_reason_info
+        @date_from = parsed_date(params[:date_from], Date.today.beginning_of_month.to_s)
+        @date_to = parsed_date(params[:date_to], Date.today.end_of_month.to_s)
+        # 这个是时间搜索框中默认时间
         if params[:search].present?
             if current_user.permission == 1
                 @search = TimeSearch.new(params[:search])
@@ -220,6 +226,9 @@ class TDuanInfoesController < ApplicationController
     end
 
     def duan_reason_student_info
+        @date_from = parsed_date(params[:date_from], Date.today.beginning_of_month.to_s)
+        @date_to = parsed_date(params[:date_to], Date.today.end_of_month.to_s)
+        # 这个是时间搜索框中默认时间
         if params[:search].present?
             @search = TimeSearch.new(params[:search])
             @records = @search.scope_duan_reason_student(params[:name])

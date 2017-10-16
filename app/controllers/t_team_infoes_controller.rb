@@ -91,6 +91,9 @@ class TTeamInfoesController < ApplicationController
     end
 
     def team_score_info
+        @date_from = parsed_date(params[:date_from], Date.today.beginning_of_month.to_s)
+        @date_to = parsed_date(params[:date_to], Date.today.end_of_month.to_s)
+        # 这个是时间搜索框中默认时间
         @duan = TDuanInfo.find_by(F_name: params[:duan_name])
         @station = TStationInfo.find_by(F_name: params[:station_name])
         if params[:search].present?
