@@ -189,14 +189,19 @@ class TDuanInfoesController < ApplicationController
             @duan_programs = TProgramInfo.joins(:t_record_detail_infoes).group('t_program_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
         elsif current_user.permission == 2
             @duan_programs = TRecordDetailInfo.joins({ t_record_info: :t_duan_info }, :t_program_info).where('t_duan_info.F_name = ?', current_user.orgnize).group('t_program_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
+        elsif current_user.permission == 3
+            @duan_programs = TRecordDetailInfo.joins({ t_record_info: :t_station_info }, :t_program_info).where('t_station_info.F_name = ?', current_user.orgnize).group('t_program_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
         end
+
     end
 
     def duan_program_student_info
         if current_user.permission == 1
             @records = TRecordInfo.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(t_record_detail_infoes: :t_program_info).where('t_program_info.F_name = ?', params[:name])
         elsif current_user.permission == 2
-            @records = TRecordInfo.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(t_record_detail_infoes: :t_program_info).where('t_program_info.F_name = ?', params[:name]).where('t_record_info.F_duan_uuid=?', TDuanInfo.find_by(F_name: current_user.orgnize).F_uuid)
+            @records = TRecordInfo.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(t_record_detail_infoes: :t_program_info).where('t_program_info.F_name = ?', params[:name]).where('t_record_info.F_duan_uuid=?', TDuanInfo.find_by(F_name: current_user.orgnize).F_uuid).distinct
+        elsif current_user.permission == 3
+            @records = TRecordInfo.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(t_record_detail_infoes: :t_program_info).where('t_program_info.F_name = ?', params[:name]).where('t_record_info.F_station_uuid=?', TStationInfo.find_by(F_name: current_user.orgnize).F_uuid).distinct
         end
     end
 
@@ -211,12 +216,17 @@ class TDuanInfoesController < ApplicationController
             else current_user.permission == 2
                  @search = TimeSearch.new(params[:search])
                  @duan_reasons = @search.scope_duan_reason1(current_user.orgnize).count.sort { |a, b| b[1] <=> a[1] }
+            else current_user.permission == 3
+                 @search = TimeSearch.new(params[:search])
+                 @duan_reasons = @search.scope_duan_reason2(current_user.orgnize).count.sort { |a, b| b[1] <=> a[1] }
             end
         else
             if current_user.permission == 1
                 @duan_reasons = TDetailReasonInfo.joins(:t_reason_info).datetime1.group('t_reason_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
             elsif current_user.permission == 2
                 @duan_reasons = TDetailReasonInfo.joins(:t_reason_info, t_record_detail_info: { t_record_info: :t_duan_info }).datetime1.where('t_duan_info.F_name = ?', current_user.orgnize).group('t_reason_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
+            elsif current_user.permission == 3
+                @duan_reasons = TDetailReasonInfo.joins(:t_reason_info, t_record_detail_info: { t_record_info: :t_station_info }).datetime1.where('t_station_info.F_name = ?', current_user.orgnize).group('t_reason_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
             end
         end
 
@@ -231,13 +241,21 @@ class TDuanInfoesController < ApplicationController
         # 这个是时间搜索框中默认时间
         if params[:search].present?
             @search = TimeSearch.new(params[:search])
+          if current_user.permission == 1
             @records = @search.scope_duan_reason_student(params[:name])
+          elsif current_user.permission == 2
+            @records = @search.scope_duan_reason_student(params[:name])
+          elsif current_user.permission == 3
+            @records = @search.scope_duan_reason_student(params[:name])
+          end
         else
-            if current_user.permission == 1
-                @records = TRecordInfo.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(t_record_detail_infoes: { t_detail_reason_infoes: :t_reason_info }).datetime.where('t_reason_info.F_name = ?', params[:name])
-            elsif current_user.permission == 2
-                @records = TRecordInfo.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(t_record_detail_infoes: { t_detail_reason_infoes: :t_reason_info }).datetime.where('t_reason_info.F_name = ?', params[:name]).where('t_record_info.F_duan_uuid=?', TDuanInfo.find_by(F_name: current_user.orgnize).F_uuid)
-            end
+          if current_user.permission == 1
+              @records = TRecordInfo.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(t_record_detail_infoes: { t_detail_reason_infoes: :t_reason_info }).datetime.where('t_reason_info.F_name = ?', params[:name])
+          elsif current_user.permission == 2
+              @records = TRecordInfo.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(t_record_detail_infoes: { t_detail_reason_infoes: :t_reason_info }).datetime.where('t_reason_info.F_name = ?', params[:name]).where('t_record_info.F_duan_uuid=?', TDuanInfo.find_by(F_name: current_user.orgnize).F_uuid)
+          elsif current_user.permission == 3
+              @records = TRecordInfo.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(t_record_detail_infoes: { t_detail_reason_infoes: :t_reason_info }).datetime.where('t_reason_info.F_name = ?', params[:name]).where('t_record_info.F_station_uuid=?', TStationInfo.find_by(F_name: current_user.orgnize).F_uuid)
+          end
         end
     end
 

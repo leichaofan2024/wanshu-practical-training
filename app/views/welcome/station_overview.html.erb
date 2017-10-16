@@ -4,7 +4,7 @@
   <div class="root-search-time1">
     <b>时间：</b>
     <div style="display:inline-block;">
-      <%= form_tag duan_overview_path,method: :get do %>
+      <%= form_tag station_overview_path,method: :get do %>
       <%= text_field_tag 'search[date_from]', @date_from %>
       <%= text_field_tag 'search[date_to]', @date_to %>
         <%= submit_tag "搜索" %>
@@ -104,11 +104,11 @@
                    return para;
                    };
         myChart.on('click', function (params) {
-          window.location.assign('/t_station_infoes/station_student_info?'+'duan_name=<%= current_user.orgnize%>'+GetUrlPara());
+          window.location.assign('/t_team_infoes/team_student_info?'+'duan_name=<%=TDuanInfo.find_by(:F_uuid => TStationInfo.find_by(F_name: current_user.orgnize).F_duan_uuid).F_name%>'+'station_name=<%= current_user.orgnize%>'+GetUrlPara());
         });
         <% else %>
         myChart.on('click', function (params) {
-          window.location.assign('/t_station_infoes/station_student_info?'+'duan_name=<%= current_user.orgnize%>');
+          window.location.assign('/t_team_infoes/team_student_info?'+'duan_name=<%=TDuanInfo.find_by(:F_uuid => TStationInfo.find_by(F_name: current_user.orgnize).F_duan_uuid).F_name%>'+'station_name=<%= current_user.orgnize%>');
         });
         <% end %>
     </script>
@@ -171,11 +171,11 @@
             return para;
         };
         myChart.on('click', function(params) {
-          window.location.assign('/t_station_infoes/station_score_info?'+'duan_name=<%= current_user.orgnize%>'+ GetUrlPara());
+          window.location.assign('/t_team_infoes/team_score_info?'+'duan_name=<%=TDuanInfo.find_by(:F_uuid => TStationInfo.find_by(F_name: current_user.orgnize).F_duan_uuid).F_name%>'+'station_name=<%= current_user.orgnize%>'+ GetUrlPara());
         });
         <% else %>
         myChart.on('click', function (params) {
-          window.location.assign('/t_station_infoes/station_score_info?'+'duan_name=<%= current_user.orgnize%>');
+          window.location.assign('/t_team_infoes/team_score_info?'+'duan_name=<%=TDuanInfo.find_by(:F_uuid => TStationInfo.find_by(F_name: current_user.orgnize).F_duan_uuid).F_name%>'+'station_name=<%= current_user.orgnize%>');
         });
         <% end %>
         </script>
