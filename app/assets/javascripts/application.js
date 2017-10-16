@@ -17,6 +17,9 @@
 //= require turbolinks
 //= require bootstrap-sprockets
 //= require ckeditor/init
+//= require material-kit
+//= require material.min
+//= require nouislider.min
 
 //= require_tree .
 
