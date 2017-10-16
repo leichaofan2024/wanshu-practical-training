@@ -9,9 +9,9 @@
 puts "创建角色"
 User.delete_all
 User.create(:role => "局职教基地", orgnize: "局职教基地", permission: 1,password: "123456",password_confirmation:"123456")
-
-User.create(:role => "北京站", orgnize: "北京站", permission: 2,password:"123456",password_confirmation:"123456")
 User.create(:role => "北京西站", orgnize: "北京西站", permission: 2,password:"123456",password_confirmation:"123456")
+User.create(:role => "北京站", orgnize: "北京站", permission: 2,password:"123456",password_confirmation:"123456")
+
 User.create(:role => "北京南站", orgnize: "北京南站", permission: 2,password:"123456",password_confirmation:"123456")
 User.create(:role => "丰台西站", orgnize: "丰台西站", permission: 2,password:"123456",password_confirmation:"123456")
 User.create(:role => "南仓站", orgnize: "南仓站", permission: 2,password:"123456",password_confirmation:"123456")
