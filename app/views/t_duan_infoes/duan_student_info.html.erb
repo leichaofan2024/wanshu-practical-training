@@ -8,8 +8,8 @@
       <b>时间：</b>
       <div style="display:inline-block;">
         <%= form_tag duan_student_info_t_duan_infoes_path, method: :get do %>
-          <%= text_field_tag 'search[date_from]'%>
-          <%= text_field_tag 'search[date_to]'%>
+        <%= text_field_tag 'search[date_from]', @date_from %>
+        <%= text_field_tag 'search[date_to]', @date_to %>
           <%= submit_tag "搜索" %>
       <% end %>
       </div>

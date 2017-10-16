@@ -19,6 +19,9 @@ class TStationInfoesController < ApplicationController
     end
 
     def station_student_info
+        @date_from = parsed_date(params[:date_from], Date.today.beginning_of_month.to_s)
+        @date_to = parsed_date(params[:date_to], Date.today.end_of_month.to_s)
+        # 这个是时间搜索框中默认时间
         @duan = TDuanInfo.find_by(F_name: params[:duan_name])
         @station_student = TUserInfo.student_all.joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct.group('t_station_info.F_name').count
         n = @station_student.keys
@@ -75,6 +78,9 @@ class TStationInfoesController < ApplicationController
     end
 
     def station_score_info
+        @date_from = parsed_date(params[:date_from], Date.today.beginning_of_month.to_s)
+        @date_to = parsed_date(params[:date_to], Date.today.end_of_month.to_s)
+        # 这个是时间搜索框中默认时间
         @duan = TDuanInfo.find_by(F_name: params[:duan_name])
         if params[:search].present?
             @search = TimeSearch.new(params[:search])

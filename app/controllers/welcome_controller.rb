@@ -1,6 +1,8 @@
 class WelcomeController < ApplicationController
 
   def ju_overview
+    @date_from = parsed_date(params[:date_from], Date.today.beginning_of_month.to_s)
+    @date_to = parsed_date(params[:date_to], Date.today.end_of_month.to_s)
     if current_user.permission == 2
       redirect_to duan_overview_path
     elsif current_user.permission == 3
@@ -12,6 +14,8 @@ class WelcomeController < ApplicationController
   end
 
   def duan_ck
+    @date_from = parsed_date(params[:date_from], Date.today.beginning_of_month.to_s)
+    @date_to = parsed_date(params[:date_to], Date.today.end_of_month.to_s)
     duan = TDuanInfo.where.not("t_duan_info.F_name = ? OR t_duan_info.F_name = ?", "运输处","局职教基地")
     cw = duan.where(:F_type => 1)
     zhi = duan.where(:F_type => 2)
@@ -28,6 +32,8 @@ class WelcomeController < ApplicationController
   end
 
   def station_ck
+    @date_from = parsed_date(params[:date_from], Date.today.beginning_of_month.to_s)
+    @date_to = parsed_date(params[:date_to], Date.today.end_of_month.to_s)
     if params[:search].present?
         @search = TimeSearch.new(params[:search])
           if current_user.permission == 1
@@ -57,6 +63,8 @@ class WelcomeController < ApplicationController
   end
 
   def team_ck
+    @date_from = parsed_date(params[:date_from], Date.today.beginning_of_month.to_s)
+    @date_to = parsed_date(params[:date_to], Date.today.end_of_month.to_s)
 
     if params[:search].present?
           @search = TimeSearch.new(params[:search])
@@ -123,6 +131,8 @@ class WelcomeController < ApplicationController
   end
 
   def student_ck
+    @date_from = parsed_date(params[:date_from], Date.today.beginning_of_month.to_s)
+    @date_to = parsed_date(params[:date_to], Date.today.end_of_month.to_s)
 
     if params[:search].present?
           @search = TimeSearch.new(params[:search])

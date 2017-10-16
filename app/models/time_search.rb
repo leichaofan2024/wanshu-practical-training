@@ -1,10 +1,10 @@
 class TimeSearch
-    attr_reader :date_to, :date_from
+    attr_reader :date_from, :date_to
 
     def initialize(params)
         params ||= {}
-        @date_from = parsed_date(params[:date_from])
-        @date_to = parsed_date(params[:date_to])
+        @date_from = parsed_date(params[:date_from], Date.today.beginning_of_month.to_s)
+        @date_to = parsed_date(params[:date_to], Date.today.to_s)
     end
 
     def scope_student
@@ -158,7 +158,9 @@ class TimeSearch
 
     private
 
-    def parsed_date(date_string)
+    def parsed_date(date_string, default)
         Date.parse(date_string)
+      rescue ArgumentError, TypeError
+        default
     end
 end

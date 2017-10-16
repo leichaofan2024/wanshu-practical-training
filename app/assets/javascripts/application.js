@@ -14,7 +14,6 @@
 //= require jquery_ujs
 //= require jquery-ui/widgets/datepicker
 //= require jquery-ui/i18n/datepicker-zh-CN
-//= require turbolinks
 //= require bootstrap-sprockets
 //= require ckeditor/init
 
