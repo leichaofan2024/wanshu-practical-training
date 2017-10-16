@@ -144,6 +144,10 @@ class TimeSearch
       TUserInfo.joins(:t_duan_info).where("t_duan_info.F_name": current_user.orgnize).student_all.joins(:t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
     end
 
+    def scope_student_ck
+      TUserInfo.student_all.joins(:t_team_info, :t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
+    end
+
     private
 
     def parsed_date(date_string)

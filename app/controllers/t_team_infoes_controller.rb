@@ -90,12 +90,12 @@ class TTeamInfoesController < ApplicationController
     def team_score_info
         @duan = TDuanInfo.find_by(F_name: params[:duan_name])
         @station = TStationInfo.find_by(F_name: params[:station_name])
-        if params[:team_name].present?
-            @team = TTeamInfo.where(F_station_uuid: @station.F_uuid).find_by(F_name: params[:team_name])
-            @student_ck = TUserInfo.joins(:t_team_info, :t_record_infoes).where('t_team_info.F_uuid =? ', @team.F_uuid).select(:F_name, :F_id).distinct
-            @student_wk = TUserInfo.joins(:t_team_info).where('t_team_info.F_uuid=?', @team.F_uuid).select(:F_name, :F_id).distinct.where.not(F_id: @student_ck.pluck(:F_id))
-        end
         if params[:search].present?
+          if params[:team_name].present?
+              @team = TTeamInfo.where(F_station_uuid: @station.F_uuid).find_by(F_name: params[:team_name])
+              @student_ck = @search.scope_student_ck.where('t_team_info.F_uuid =? ', @team.F_uuid).select(:F_name, :F_id).distinct
+              @student_wk = TUserInfo.student_all.joins(:t_team_info).where('t_team_info.F_uuid=?', @team.F_uuid).select(:F_name, :F_id).distinct.where.not(F_id: @student_ck.pluck(:F_id))
+          end
             @search = TimeSearch.new(params[:search])
             @team_90_scores = @search.scope_team_score(params[:station_name]).where('t_record_info.F_score >= ?', 90).group('t_team_info.F_name').count
             @team_80_scores = @search.scope_team_score(params[:station_name]).where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90).group('t_team_info.F_name').count
@@ -103,6 +103,11 @@ class TTeamInfoesController < ApplicationController
             @team_60_bellow_scores = @search.scope_team_score(params[:station_name]).where('t_record_info.F_score < ?', 60).group('t_team_info.F_name').count
 
         else
+          if params[:team_name].present?
+              @team = TTeamInfo.where(F_station_uuid: @station.F_uuid).find_by(F_name: params[:team_name])
+              @student_ck = TUserInfo.student_all.joins(:t_team_info, :t_record_infoes).datetime.where('t_team_info.F_uuid =? ', @team.F_uuid).select(:F_name, :F_id).distinct
+              @student_wk = TUserInfo.student_all.joins(:t_team_info).where('t_team_info.F_uuid=?', @team.F_uuid).select(:F_name, :F_id).distinct.where.not(F_id: @student_ck.pluck(:F_id))
+          end
             @team_90_scores = TTeamInfo.where('t_team_info.F_station_uuid = ?', @station.F_uuid).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_score >= ?', 90).datetime.group('t_team_info.F_name').count
             @team_80_scores = TTeamInfo.where('t_team_info.F_station_uuid = ?', @station.F_uuid).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90).datetime.group('t_team_info.F_name').count
             @team_60_scores = TTeamInfo.where('t_team_info.F_station_uuid = ?', @station.F_uuid).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80).datetime.group('t_team_info.F_name').count
