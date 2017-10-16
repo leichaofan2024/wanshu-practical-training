@@ -213,10 +213,10 @@ class TDuanInfoesController < ApplicationController
             if current_user.permission == 1
                 @search = TimeSearch.new(params[:search])
                 @duan_reasons = @search.scope_duan_reason.count.sort { |a, b| b[1] <=> a[1] }
-            else current_user.permission == 2
+            elsif current_user.permission == 2
                  @search = TimeSearch.new(params[:search])
                  @duan_reasons = @search.scope_duan_reason1(current_user.orgnize).count.sort { |a, b| b[1] <=> a[1] }
-            else current_user.permission == 3
+            elsif current_user.permission == 3
                  @search = TimeSearch.new(params[:search])
                  @duan_reasons = @search.scope_duan_reason2(current_user.orgnize).count.sort { |a, b| b[1] <=> a[1] }
             end
