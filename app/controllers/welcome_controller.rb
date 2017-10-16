@@ -8,6 +8,9 @@ class WelcomeController < ApplicationController
     end
   end
 
+  def role
+  end
+
   def duan_ck
     duan = TDuanInfo.where.not("t_duan_info.F_name = ? OR t_duan_info.F_name = ?", "运输处","局职教基地")
     cw = duan.where(:F_type => 1)

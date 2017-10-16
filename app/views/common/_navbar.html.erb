@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="navbar-head">
       <a class="navbar-brand" href="/">实训平台 </a>
-      <a class= "navbar-brand nav-size" href="#">角色管理</a>
+      <a class= "navbar-brand nav-size" href="/users">角色管理</a>
       <a class= "navbar-brand nav-size" href="/t_duan_infoes">组织机构</a>
       <a class= "navbar-brand nav-size" href="/call_boards" style = "color:#C14452">公告</a>
     </div>
@@ -11,7 +11,6 @@
 
       <ul class="nav navbar-nav navbar-right">
         <% if !current_user %>
-        <li><%= link_to("注册", new_user_registration_path) %> </li>
         <li><%= link_to("登入", new_user_session_path) %></li>
         <% else %>
         <li class="dropdown">
