@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 
   def index
-
+    @users = User.where(:orgnize =>TDuanInfo.where(:F_name => current_user.orgnize).t_station_infoes.pluck(:F_name))
   end
 
   def new
