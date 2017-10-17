@@ -31,3 +31,5 @@ $( function() {
 
   $( "#search_date_to" ).datepicker();
 });
+
+$('[data-toggle="tooltip"]').tooltip();

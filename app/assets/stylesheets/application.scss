@@ -26,6 +26,7 @@
 body {
   min-height:100%;
   background:rgba(143,145,157,0.17);
+  background-color:#CEE5EE;
 }
 
 table {
@@ -73,20 +74,21 @@ table {
 // 五张卡片样式：
 
 .root-card-frame{
-  height:150px;
+  height:200px;
   width:100%;
-  margin:30px auto;
+  margin-top:70px;
+  margin-buttom:30px;
   .root-card{
     width:1085px;
     margin:30px auto;
-    background-color:red;
     padding-left:-30px;
+    a{display:inline-block;}
     .root-card-block{
       height:100px;
       width:150px;
       margin-left:45px;
       background-color: #fff;
-      float:left;
+      // float:left;
       padding-top:35px;
 
       strong{
@@ -258,5 +260,25 @@ table {
     font-size: 15px;
   }
 
+}
 
+// 提示消息样式
+
+  .tooltip > .tooltip-inner {
+    min-width: 40px;
+    padding: 5px 15px;
+    color: rgb(23,44,66);
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+
+// 导航栏样式
+
+.navbar-collapse{
+  width:80%;
+}
+
+.navbar-nav{
+  width:20%;
 }
