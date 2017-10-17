@@ -19,11 +19,13 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 @import "font-awesome";
+@import "material-kit";
 
 
 body {
   min-height:100%;
   background:rgba(143,145,157,0.17);
+  background-color:#CEE5EE;
 }
 
 table {
@@ -72,29 +74,34 @@ table {
 // 五张卡片样式：
 
 .root-card-frame{
-  height:100px;
+  height:200px;
   width:100%;
-  margin:30px auto;
+  margin-top:70px;
+  margin-buttom:30px;
   .root-card{
-    width:950px;
-    margin:0 auto;
+    width:1085px;
+    margin:30px auto;
+    padding-left:-30px;
+    a{display:inline-block;}
     .root-card-block{
       height:100px;
       width:150px;
-      margin-left: 45px;
+      margin-left:45px;
       background-color: #fff;
-      float:left;
+      // float:left;
+      padding-top:35px;
 
       strong{
         color: #4A4A4A !important;
         line-height: 30px;
-        margin-left:20px;
+        margin-left:30px;
+        font-size:17px;
       }
     }
     .root-card-block:first-of-type{
-      height:100px;
-      width:150px;
-      margin-left: 0;
+      height:140px;
+      width:175px;
+      margin-left: 35px;
       float:left;
     }
   }
@@ -151,8 +158,8 @@ table {
   width:100%;
   .root-data-block{
     height:700px;
-    width:1000px;
-    margin:0 auto;
+    width:1050px;
+    margin:30px auto;
     .root-data-people{
       height:335px;
       width:490px;
@@ -258,5 +265,25 @@ table {
     font-size: 15px;
   }
 
+}
 
+// 提示消息样式
+
+  .tooltip > .tooltip-inner {
+    min-width: 40px;
+    padding: 5px 15px;
+    color: rgb(23,44,66);
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+
+// 导航栏样式
+
+.navbar-collapse{
+  width:80%;
+}
+
+.navbar-nav{
+  width:20%;
 }

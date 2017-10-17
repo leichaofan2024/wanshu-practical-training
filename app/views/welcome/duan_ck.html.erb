@@ -2,93 +2,95 @@
   <b>时间：</b>
   <div style="display:inline-block;">
     <%= form_tag duan_ck_path,method: :get do %>
-    <%= text_field_tag 'search[date_from]', @date_from %>
-    <%= text_field_tag 'search[date_to]', @date_to %>
+      <%= text_field_tag 'search[date_from]', @date_from %>
+      <%= text_field_tag 'search[date_to]', @date_to %>
       <%= submit_tag "搜索" %>
-  <% end %>
+    <% end %>
+  </div>
 </div>
-</div>
+
 <div class="welcome_frame">
   <h4 style="color:#4444C1;">未参考站段：</h4>
 
   <!-- 关于未参考的车务段： -->
-    <table class = "table table-striped">
-      <thead >
+  <table class="table">
+    <thead>
+      <tr>
+        <th class="text-center">车务段</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if @wk_cw.present? %>
         <tr>
-          <th colspan=5>车务段</th>
+          <% @wk_cw.first(5).each do |cw| %>
+          <td><%=cw%></td>
+          <% end %>
         </tr>
-      </thead>
-      <tbody>
-        <% if @wk_cw.present? %>
+
+        <% if @wk_cw[5,5].present? %>
           <tr>
-            <% @wk_cw.first(5).each do |cw| %>
+            <% @wk_cw[5,5].each do |cw| %>
             <td><%=cw%></td>
             <% end %>
           </tr>
-          <% if @wk_cw[5,5].present? %>
-            <tr>
-              <% @wk_cw[5,5].each do |cw| %>
-              <td><%=cw%></td>
-              <% end %>
-            </tr>
-          <% end %>
-          <% if @wk_cw[10,5].present? %>
-            <tr>
-              <% @wk_cw[10,5].each do |cw| %>
-              <td><%=cw%></td>
-              <% end %>
-            </tr>
-          <% end %>
-        <% else %>
-          <tr><td><span>所有车务段均已参加了考试！</span></td></tr>
         <% end %>
-      </tbody>
-    </table>
-
-<!-- 关于未参考的直属站： -->
-    <table class = "table table-striped">
-      <thead >
-        <tr>
-          <th colspan=5>直属站</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% if @wk_zhi.present? %>
+        <% if @wk_cw[10,5].present? %>
           <tr>
-            <% @wk_zhi.first(5).each do |zhi| %>
-            <td><%=zhi%></td>
+            <% @wk_cw[10,5].each do |cw| %>
+            <td><%=cw%></td>
             <% end %>
           </tr>
-          <% if @wk_zhi[5,5].present? %>
-            <tr>
-              <% @wk_zhi[5,5].each do |zhi| %>
-              <td><%= zhi%></td>
-              <% end %>
-            </tr>
-          <% end %>
-          <% if @wk_zhi[10,5].present? %>
-            <tr>
-              <% @wk_zhi[10,5].each do |zhi| %>
-              <td><%= zhi%></td>
-              <% end %>
-            </tr>
-          <% end %>
-        <% else %>
-        <tr>
-          <td > <span>所有直属站均已参加了考试！</span> </td>
-        </tr>
-
         <% end %>
-      </tbody>
-    </table>
+      <% else %>
+        <tr><td><span>所有车务段均已参加了考试！</span></td></tr>
+      <% end %>
+    </tbody>
+  </table>
+
+<!-- 关于未参考的直属站： -->
+
+<table class="table">
+  <thead>
+    <tr>
+      <th class="text-center">直属站</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if @wk_zhi.present? %>
+      <tr>
+        <% @wk_zhi.first(5).each do |zhi| %>
+        <td><%=zhi%></td>
+        <% end %>
+      </tr>
+      <% if @wk_zhi[5,5].present? %>
+        <tr>
+          <% @wk_zhi[5,5].each do |zhi| %>
+          <td><%= zhi%></td>
+          <% end %>
+        </tr>
+      <% end %>
+      <% if @wk_zhi[10,5].present? %>
+        <tr>
+          <% @wk_zhi[10,5].each do |zhi| %>
+          <td><%= zhi%></td>
+          <% end %>
+        </tr>
+      <% end %>
+    <% else %>
+      <tr>
+        <td > <legend>所有直属站均已参加了考试！</legend> </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 
   <h4 style="color:#4444C1;">已参考站段：</h4>
 
   <!-- 关于已参考的车务段： -->
-  <table class = "table table-striped">
-    <thead >
+  <table class="table">
+    <thead>
       <tr>
-        <th colspan=5>车务段</th>
+        <th class="text-center">车务段</th>
       </tr>
     </thead>
     <tbody>
@@ -119,39 +121,38 @@
   </table>
 
   <!-- 关于已参考的直属站： -->
-      <table class = "table table-striped">
-        <thead >
-          <tr>
-            <th colspan=5>直属站</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% if @ck_zhi.present? %>
-            <tr>
-              <% @ck_zhi.first(5).each do |zhi| %>
-              <td><%=zhi%></td>
-              <% end %>
-            </tr>
-            <% if @ck_zhi[5,5].present? %>
-              <tr>
-                <% @ck_zhi[5,5].each do |zhi| %>
-                <td><%= zhi%></td>
-                <% end %>
-              </tr>
-            <% end %>
-            <% if @ck_zhi[10,5].present? %>
-              <tr>
-                <% @ck_zhi[10,5].each do |zhi| %>
-                <td><%= zhi%></td>
-                <% end %>
-              </tr>
-            <% end %>
-          <% else %>
-          <tr>
-            <td > <span>所有直属站均未参加考试！</span> </td>
-          </tr>
 
+  <table class="table">
+    <thead>
+      <tr>
+        <th class="text-center">直属站</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if @ck_zhi.present? %>
+        <tr>
+          <% @ck_zhi.first(5).each do |zhi| %>
+          <td><%=zhi%></td>
           <% end %>
-        </tbody>
-      </table>
+        </tr>
+        <% if @ck_zhi[5,5].present? %>
+          <tr>
+            <% @ck_zhi[5,5].each do |zhi| %>
+            <td><%= zhi%></td>
+            <% end %>
+          </tr>
+        <% end %>
+        <% if @ck_zhi[10,5].present? %>
+          <tr>
+            <% @ck_zhi[10,5].each do |zhi| %>
+              <td><%= zhi%></td>
+            <% end %>
+          </tr>
+        <% end %>
+      <% else %>
+        <tr>
+          <td > <legend style= "color:red;">所有直属站均未参加考试！</legend> </td>
+        </tr>
+      <% end %>
+    </tbody>
 </div>

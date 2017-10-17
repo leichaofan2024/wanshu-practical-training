@@ -16,10 +16,13 @@
 //= require jquery-ui/i18n/datepicker-zh-CN
 //= require bootstrap-sprockets
 //= require ckeditor/init
+//= require material-kit
+//= require material.min
+//= require nouislider.min
 
 //= require_tree .
 
-
+// 搜索框效果
 jQuery(function() {
     $( "#search_date_from" ).datepicker({
       defaultDate: "+1w",
@@ -32,3 +35,11 @@ jQuery(function() {
       inline: true
     });
   });
+
+
+
+
+
+
+// 首页五张卡片上的提示消息
+$('[data-toggle="tooltip"]').tooltip();
