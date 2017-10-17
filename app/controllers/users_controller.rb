@@ -1,7 +1,12 @@
 class UsersController < ApplicationController
 
   def index
-    @users = User.where(:orgnize =>TDuanInfo.where(:F_name => current_user.orgnize).t_station_infoes.pluck(:F_name))
+    if current_user.permission ==1
+      @users = User.all
+    elsif current_user.permission ==2
+      @users = User.where(:orgnize =>TDuanInfo.where(:F_name => current_user.orgnize).t_station_infoes.pluck(:F_name))
+    end
+
   end
 
   def new
@@ -10,8 +15,11 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    @user.save
-    redirect_to users_path
+    if @user.save
+      redirect_to users_path
+    else
+      render :new 
+    end
   end
 
   private
