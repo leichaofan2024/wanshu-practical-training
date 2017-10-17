@@ -20,28 +20,28 @@
       </div>
     <% end %>
 
-    <%= link_to duan_ck_path, {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
+    <%= link_to station_ck_path, {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
       <div class="root-card-block">
         <strong>车站总数：<%= station%> </strong><br>
         <strong>实考车站：<%= station_ck_count %></strong>
       </div>
     <% end %>
 
-    <%= link_to duan_ck_path, {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
+    <%= link_to team_ck_path, {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
       <div class="root-card-block">
         <strong>班组总数：<%= team %> </strong><br>
         <strong>实考班组：<%= team_ck_count %></strong>
       </div>
     <% end %>
 
-    <%= link_to duan_ck_path, {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
+    <%= link_to student_ck_path, {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
       <div class="root-card-block">
         <strong>实训人数：<%= students %> </strong><br>
         <strong>实考人数：<%= student_ck_counts %></strong>
       </div>
     <% end %>
 
-    <%= link_to duan_ck_path, {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
+    <%= link_to program_ck_path, {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
       <div class="root-card-block">
         <strong>考点总数：<%= TProgramInfo.count %> </strong><br>
         <strong>覆盖考点：<%= program_ck_count %></strong>

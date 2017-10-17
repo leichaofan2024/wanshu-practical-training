@@ -23,13 +23,14 @@
 
 //= require_tree .
 
+
+// 搜索框效果
 $( function() {
   $( "#search_date_from" ).datepicker();
-
-
-
 
   $( "#search_date_to" ).datepicker();
 });
 
+
+// 首页五张卡片上的提示消息
 $('[data-toggle="tooltip"]').tooltip();
