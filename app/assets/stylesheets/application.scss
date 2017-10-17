@@ -165,14 +165,14 @@ table {
       width:490px;
       float:left;
       border-bottom: 1px solid rgba(143,145,157,0.17);
-      background-color: #fff;
+      background-color: rgba(243,243,243,1);
     }
     .root-data-score{
       height:335px;
       width:490px;
       border-bottom: 1px solid rgba(143,145,157,0.17);
       float:right;
-      background-color: #fff;
+      background-color: rgba(243,243,243,1);
 
     }
     .root-data-question{
@@ -180,15 +180,15 @@ table {
       width:490px;
       margin-top:30px;
       float:left;
-      background-color: #fff;
+      background-color: rgba(243,243,243,1);
 
     }
     .root-data-wrong{
-      height:335px;
+      height:330px;
       width:490px;
       margin-top:30px;
       float:right;
-      background-color: #fff;
+      background-color: rgba(243,243,243,1);
 
     }
   }
