@@ -25,8 +25,14 @@ class TRecordInfoesController < ApplicationController
     end
 
     def destroy
-        @record = TRecordInfo.find(params[:id])
-        @record.destroy
-        redirect_to team_student_info_t_team_infoes_path(duan_name: params[:duan_name], station_name: params[:station_name], team_name: params[:team_name])
+      @record = TRecordInfo.find(params[:id])
+      @record.destroy
+
+      if params[:team_name].present?
+        redirect_to student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name=> params[:team_name],:user_name => params[:user_name],:user_id => params[:user_id])
+      else
+        redirect_to student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:user_name => params[:user_name],:user_id => params[:user_id])
+      end
+
     end
 end
