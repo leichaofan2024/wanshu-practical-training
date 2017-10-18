@@ -16,7 +16,7 @@
   </div>
 
   <script src="/assets/echarts.min.js"></script>
-    <div class="team_chart_frame" id="main"></div>
+    <div class="team_chart_frame" id="main" style="width: 650px;height:400px;margin:40px auto 0;"></div>
      <script type="text/javascript">
       // 基于准备好的dom，初始化echarts实例
       var myChart = echarts.init(document.getElementById('main'));
@@ -30,6 +30,7 @@
                   trigger: 'axis',
                   axisPointer : {            // 坐标轴指示器，坐标轴触发有效
                       type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+
                   }
               },
               legend: {
@@ -107,6 +108,7 @@
                       name: '60分以下',
                       type: 'bar',
                       stack: '总分',
+                      barWidth: 60,
                       label: {
                           normal: {
                               show: true,
