@@ -76,7 +76,7 @@ table {
 .root-card-frame{
   height:200px;
   width:100%;
-  margin-top:70px;
+  margin-top:15px;
   margin-buttom:30px;
   .root-card{
     width:1085px;
@@ -85,9 +85,11 @@ table {
     a{display:inline-block;}
     .root-card-block{
       height:100px;
-      width:150px;
+      width:200px;
+      border-radius:5px;
       margin-left:45px;
-      background-color: #fff;
+      margin-right:18px;
+      background-color: rgba(243,243,243,1);
       // float:left;
       padding-top:35px;
 
@@ -100,8 +102,8 @@ table {
     }
     .root-card-block:first-of-type{
       height:140px;
-      width:175px;
-      margin-left: 35px;
+      width:180px;
+      margin-left:15px;
       float:left;
     }
   }
@@ -156,6 +158,7 @@ table {
 .root-data-frame{
   height:600px;
   width:100%;
+  margin-top:-70px;
   .root-data-block{
     height:700px;
     width:1050px;
@@ -163,6 +166,7 @@ table {
     .root-data-people{
       height:335px;
       width:490px;
+      border-radius:5px;
       float:left;
       border-bottom: 1px solid rgba(143,145,157,0.17);
       background-color: rgba(243,243,243,1);
@@ -170,6 +174,7 @@ table {
     .root-data-score{
       height:335px;
       width:490px;
+      border-radius:5px;
       border-bottom: 1px solid rgba(143,145,157,0.17);
       float:right;
       background-color: rgba(243,243,243,1);
@@ -178,6 +183,7 @@ table {
     .root-data-question{
       height:335px;
       width:490px;
+      border-radius:5px;
       margin-top:30px;
       float:left;
       background-color: rgba(243,243,243,1);
@@ -186,6 +192,7 @@ table {
     .root-data-wrong{
       height:330px;
       width:490px;
+      border-radius:5px;
       margin-top:30px;
       float:right;
       background-color: rgba(243,243,243,1);
