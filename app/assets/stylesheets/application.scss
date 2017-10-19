@@ -78,10 +78,11 @@ table {
 // 五张卡片样式：
 
 .root-card-frame{
-  height:200px;
+  height:300px;
   width:100%;
   margin-top:15px;
-  margin-buttom:30px;
+  margin-bottom:30px;
+  overflow: auto;
   .root-card{
     width:1085px;
     margin:30px auto;
@@ -90,13 +91,12 @@ table {
       display:inline-block;
     }
     .root-card-block{
-      height:100px;
-      width:200px;
+      height:175px;
+      width:175px;
       border-radius:5px;
-      margin-left:45px;
-      margin-right:18px;
+      margin-left:10px;
+      margin-right:15px;
       background-color: rgba(243,243,243,1);
-      // float:left;
       padding-top:35px;
 
       i{
@@ -118,10 +118,13 @@ table {
     }
     .root-card-block:first-of-type{
 
-      height:190px;
+      height:175px;
       width:175px;
-      margin-left: 35px;
-      float:left;
+      border-radius:5px;
+      margin-left:20px;
+      margin-right:15px;
+      background-color: rgba(243,243,243,1);
+      padding-top:35px;
     }
   }
 }
