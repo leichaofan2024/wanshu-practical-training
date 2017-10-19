@@ -47,6 +47,10 @@ table {
   margin:0 auto;
 }
 
+.simple_form input[type='submit']{
+  background-color:#3D74B8;
+}
+
 // 搜索样式：
 
 .root-search{
@@ -82,7 +86,9 @@ table {
     width:1085px;
     margin:30px auto;
     padding-left:-30px;
-    a{display:inline-block;}
+    a{
+      display:inline-block;
+    }
     .root-card-block{
       height:100px;
       width:200px;
@@ -93,17 +99,28 @@ table {
       // float:left;
       padding-top:35px;
 
+      i{
+        margin-left:40%;
+      }
+
       strong{
-        color: #4A4A4A !important;
+        color: #ffffff !important;
         line-height: 30px;
         margin-left:30px;
         font-size:17px;
       }
+
+      .root-card-content{
+        background-color:#4b73b2;
+        height:70px;
+        margin-top:35px;
+      }
     }
     .root-card-block:first-of-type{
-      height:140px;
-      width:180px;
-      margin-left:15px;
+
+      height:190px;
+      width:175px;
+      margin-left: 35px;
       float:left;
     }
   }
@@ -287,10 +304,6 @@ table {
 
 // 导航栏样式
 
-.navbar-collapse{
-  width:80%;
-}
-
-.navbar-nav{
-  width:20%;
+.login-block{
+  float:right;
 }

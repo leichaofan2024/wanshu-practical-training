@@ -8,9 +8,10 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
     		</button>
-    		<a class="navbar-brand" href="/">实训平台</a>
+    		<a class="navbar-brand" href="/">首页</a>
       </div>
 
+			<div class="collapse navbar-collapse menu" id="bs-example-navbar-collapse-1">
     		<ul class="nav navbar-nav">
 				  <li class="active"><a href="#">角色管理</a></li>
       		<li><a href="/t_duan_infoes">组织机构</a></li>
@@ -18,8 +19,8 @@
     		</ul>
 
 
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <div class="nav navbar-nav navbar-right">
+
+      <div class="nav navbar-nav navbar-right login-block">
         <% if !current_user %>
           <li><%= link_to("注册", new_user_registration_path) %> </li>
           <li><%= link_to("登入", new_user_session_path) %></li>
