@@ -86,7 +86,9 @@ table {
     width:1085px;
     margin:30px auto;
     padding-left:-30px;
-    a{display:inline-block;}
+    a{
+      display:inline-block;
+    }
     .root-card-block{
       height:100px;
       width:150px;
@@ -284,10 +286,6 @@ table {
 
 // 导航栏样式
 
-.navbar-collapse{
-  width:80%;
-}
-
-.navbar-nav{
-  width:20%;
+.login-block{
+  float:right;
 }

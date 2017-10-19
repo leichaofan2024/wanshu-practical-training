@@ -232,7 +232,7 @@
 				} else if ((prevM > month && prevY === year) || prevY > year) {
 					clsName += ' new';
 				}
-				if (prevMonth.valueOf() === currentDate) {
+        if (prevMonth.valueOf() === currentDate) {
 					clsName += ' active ' + this.color;
 				}
 				html.push('<td class="day '+clsName+'"><p>'+prevMonth.getDate() + '</p></td>');
