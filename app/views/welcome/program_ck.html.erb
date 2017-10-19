@@ -4,7 +4,7 @@
   <% @program_types.each do |type| %>
     <div class="station-card-head">
       <%= link_to program_ck_path(:program_type => type) do  %>
-        <%= type %> >> <br>
+        <%= type %>(<%= @wk_programs.size%>) >> <br>
       <% end %>
     </div>
       <% if type == params[:program_type]%>
@@ -29,7 +29,7 @@
   <% @program_types.each do |type| %>
     <div class="station-card-head">
       <%= link_to program_ck_path(:program_type => type) do  %>
-        <%= type %> >> <br>
+        <%= type %>(<%= @ck_programs.size%>) >> <br>
       <% end %>
     </div>
       <% if type == params[:program_type]%>

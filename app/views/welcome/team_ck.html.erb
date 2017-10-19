@@ -13,7 +13,7 @@
 <% if current_user.permission == 3 %>
   <div class = "welcome_frame">
     <h4 style="color:#4444C1;">未参考班组：</h4>
-      <p><%= current_user.orgnize %></p>
+      <p><%= current_user.orgnize %>(<%= @wk_teams.size%>)</p>
       <% if @wk_teams.present? %>
           <div class="station-card" >
             <% @wk_teams.each do |team|%>
@@ -28,7 +28,7 @@
 
     <h4 style="color:#4444C1;">已参考班组：</h4>
 
-      <p><%= current_user.orgnize %></p>
+      <p><%= current_user.orgnize %>(<%= @ck_teams.size%>)</p>
       <% if @ck_teams.present? %>
           <div class="station-card" >
             <% @ck_teams.each do |team|%>
@@ -50,14 +50,14 @@
       <% @duans_wk.each do |duan| %>
         <div class="station-card-head">
           <%= link_to team_ck_path(:duan_name => duan.F_name) do  %>
-            <%= duan.F_name %> >> <br>
+            <%= duan.F_name %>(<%= @wk_z.where("t_duan_info.F_name": duan.F_name).count %>) >> <br>
           <% end %>
         </div>
 
         <% if duan.F_name == params[:duan_name]%>
           <% if @wk_teams.present? %>
             <% @wk_teams.each do |station,teams|%>
-              <p ><%= TStationInfo.find_by(:F_uuid => station).F_name %></p>
+              <p ><%= TStationInfo.find_by(:F_uuid => station).F_name %>(<%= teams.size%>)</p>
               <div class="station-card" >
                 <% teams.each do |team| %>
                   <div class="station-card1">
@@ -77,14 +77,14 @@
       <% @duans_ck.each do |duan| %>
         <div class="station-card-head">
           <%= link_to team_ck_path(:duan_name => duan.F_name) do  %>
-            <%= duan.F_name %> >> <br>
+            <%= duan.F_name %>(<%= @ck_z.where("t_duan_info.F_name": duan.F_name).count %>) >> <br>
           <% end %>
         </div>
 
         <% if duan.F_name == params[:duan_name]%>
           <% if @ck_teams.present? %>
             <% @ck_teams.each do |station,teams|%>
-              <p ><%= TStationInfo.find_by(:F_uuid => station).F_name %></p>
+              <p ><%= TStationInfo.find_by(:F_uuid => station).F_name %>(<%= teams.size%>)</p>
               <div class="station-card" >
                 <% teams.each do |team| %>
                   <div class="station-card1">

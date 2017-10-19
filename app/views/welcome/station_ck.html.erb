@@ -10,12 +10,12 @@
 </div>
 <div class = "welcome_frame">
   <!-- 关于未参考的车务段： -->
-  <h4 style="color:#4444C1;">未参考车站：</h4>
+  <h4 style="color:#4444C1;">未参考车站：(<%= @wk_z.size %>)</h4>
 
 
     <% if @wk_stations.present? %>
       <% @wk_stations.each do |duan,stations|%>
-        <p ><%= TDuanInfo.find_by(:F_uuid => duan).F_name %></p>
+        <p ><%= TDuanInfo.find_by(:F_uuid => duan).F_name %>(<%= stations.size%>)</p>
         <div class="station-card" >
           <% stations.each do |station| %>
             <div class="station-card1">
@@ -30,12 +30,12 @@
 
 
     <!-- 关于已参考的车站： -->
-  <h4 style="color:#4444C1;">已参考车站：</h4>
+  <h4 style="color:#4444C1;">已参考车站：(<%= @ck_z.size %>)</h4>
 
 
     <% if @ck_stations.present? %>
       <% @ck_stations.each do |duan,stations|%>
-        <p ><%= TDuanInfo.find_by(:F_uuid => duan).F_name %></p>
+        <p ><%= TDuanInfo.find_by(:F_uuid => duan).F_name %>(<%= stations.size%>)</p>
         <div class="station-card" >
           <% stations.each do |station| %>
             <div class="station-card1">
