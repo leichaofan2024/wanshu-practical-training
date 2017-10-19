@@ -47,23 +47,29 @@
         <td>
           <%= link_to("考试详情", record_details_t_record_detail_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name=> params[:team_name],:user_name => params[:user_name],:user_id => params[:user_id],:record_uuid=> r.F_uuid) )%> ／
 
-    /${url?substring(13)}
-          <a id="player"  href="192.168.1.10:3306/C:/ProgramData/MySQL Server 5.7/Data/<%= r.F_record%>">播放录像</a>   <!-- 视频相对地址 -->
-    <script>
+    <!-- /${url?substring(13)}
+    192.168.1.10:3306/C:/ProgramData/MySQL Server 5.7/Data/<%= r.F_record%>
+    <br>
+    <%= r.F_record%> <br> -->
+
+    <script src="/assets/javascript/player/flowplayer-3.2.8.min.js" type="text/javascript"></script>
+
+    <a id="player"  href="/uploaders/flv-vedio/f1baf71152bd4f4881300e87c33a3a21_2017-10-18_171154.flv">播放录像</a> ／   <!-- 视频相对地址 -->
+    <script src="assets/javascript/player/flowplayer-3.2.8.min.js" type="text/javascript">
      flowplayer(
         "player",
-        "js/player/flowplayer.commercial-3.2.6-dev.swf",{
+        "assets/javascripts/player/flowplayer.commercial-3.2.6-dev.swf",{
           clip: {
             autoPlay: true,
             autoBuffering: true ,
             playlist: [//播放列表
                    {
-                       url: "js/player/play1.png",//默认显示图片（如果没有这显示播放视频的第一个画面）
+                       url: "assets/javascripts/player/play1.png",//默认显示图片（如果没有这显示播放视频的第一个画面）
                        scaling: 'orig'//缩放
                    },
                    {
                       //  url: url,//需要播放的文件
-                       url: 192.168.1.10:3306/C:/ProgramData/MySQL Server 5.7/Data/<%= r.F_record%>,
+                       url: href="/uploaders/flv-vedio/f1baf71152bd4f4881300e87c33a3a21_2017-10-18_171154.flv",
                        autoPlay: false,
                        provider: 'http',
                        autoBuffering: true
@@ -103,7 +109,7 @@
     </script>
 
 
-          <%= link_to("录像",  )%> /
+          <!-- <%= link_to("录像",  )%> / -->
           <%= link_to("", t_record_info_path(r,:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name=> params[:team_name],:user_name => params[:user_name],:user_id => params[:user_id]),method: :delete,:data => {confirm: "你确定要删除吗？"},class: "fa fa-trash" )%>
 
         </td>

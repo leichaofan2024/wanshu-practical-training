@@ -7,6 +7,9 @@ class TRecordInfoesController < ApplicationController
         @records = TRecordInfo.joins(:t_user_info).where('t_user_info.F_id = ?', params[:F_id])
     end
 
+    def show
+      @t_record_info = TRecordInfo.find(params[:id]).F_record
+    end
     def student_records
         @duan = TDuanInfo.find_by(F_name: params[:duan_name])
         @station = TStationInfo.find_by(F_name: params[:station_name])
