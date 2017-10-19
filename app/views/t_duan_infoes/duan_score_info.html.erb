@@ -103,6 +103,7 @@
                       name: '60分以下',
                       type: 'bar',
                       stack: '总分',
+                      barWidth : 60,
                       label: {
                           normal: {
                               show: true,
@@ -137,7 +138,7 @@
 </div>
 
 
-<div id="zhishu" style="width: 1200px;height:500px;margin-top:40px;margin:40px auto 0;"></div>
+<div id="zhishu" style="width: 1000px;height:500px;margin:40px auto 0;"></div>
  <script type="text/javascript">
   // 基于准备好的dom，初始化echarts实例
   var myChart = echarts.init(document.getElementById('zhishu'));
@@ -157,7 +158,7 @@
               data: ['90分以上', '80-90分','60-80分','60分以下']
           },
           grid: {
-              left: '11%',
+              left: '3%',
               right: '4%',
               y2:100,
               containLabel: true
@@ -229,6 +230,7 @@
                   name: '60分以下',
                   type: 'bar',
                   stack: '总分',
+                  barWidth : 60,
                   label: {
                       normal: {
                           show: true,
