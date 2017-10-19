@@ -407,10 +407,4 @@ class ApplicationController < ActionController::Base
         @wz = { name: '未检查设备备品', value: m['未检查设备备品'] }
         gon.wz = @wz
     end
-
-    def parsed_date(date_string, default)
-        Date.parse(date_string)
-      rescue ArgumentError, TypeError
-        default
-    end
 end
