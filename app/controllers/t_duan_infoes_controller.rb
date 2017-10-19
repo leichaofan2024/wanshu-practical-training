@@ -1,5 +1,5 @@
-require 'bigdecimal'
 class TDuanInfoesController < ApplicationController
+  require 'bigdecimal'
     def index
         @duans_cw = TDuanInfo.duan_orgnization.where(F_type: 1)
         @duans_zs = TDuanInfo.duan_orgnization.where(F_type: 2)
