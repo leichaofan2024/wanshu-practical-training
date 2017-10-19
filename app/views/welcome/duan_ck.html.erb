@@ -1,13 +1,12 @@
-<div class="root-search-time1">
-  <b>时间：</b>
-  <div style="display:inline-block;">
-    <%= form_tag duan_ck_path,method: :get do %>
-      <%= text_field_tag 'search[date_from]', @date_from %>
-      <%= text_field_tag 'search[date_to]', @date_to %>
-      <%= submit_tag "搜索" %>
+<div class="row">
+    <div class="pull-right range-query">
+      <%= form_tag duan_ck_path, method: :get do %>
+        <%= text_field_tag 'search[date_from]'," 开始时间"%>
+        <%= text_field_tag 'search[date_to]',"结束时间" %>
+        <%= submit_tag "搜索", class: "btn search-button"%>
     <% end %>
+    </div>
   </div>
-</div>
 
 <div class="welcome_frame">
   <h4 style="color:#4444C1;">未参考站段：</h4>

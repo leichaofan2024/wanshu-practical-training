@@ -8,14 +8,13 @@
   </div>
 
 <div class="">
-  <div class="root-search-time1">
-    <b>时间：</b>
-    <div style="display:inline-block;">
+  <div class="row">
+    <div class="pull-right range-query">
       <%= form_tag station_student_info_t_station_infoes_path, method: :get do %>
-        <%= text_field_tag 'search[date_from]', @date_from %>
-        <%= text_field_tag 'search[date_to]', @date_to %>
+        <%= text_field_tag 'search[date_from]'," 开始时间"%>
+        <%= text_field_tag 'search[date_to]',"结束时间" %>
         <%= hidden_field_tag :duan_name, params[:duan_name]%>
-        <%= submit_tag "搜索" %>
+        <%= submit_tag "搜索", class: "btn search-button"%>
     <% end %>
     </div>
   </div>

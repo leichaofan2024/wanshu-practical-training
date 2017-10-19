@@ -6,13 +6,15 @@
       <a href="/">首页</a> >  <%= @duan.F_name%>
     <% end %>
   </div>
-  <div class="">
-    <%= form_tag station_score_info_t_station_infoes_path, method: :get do %>
-    <%= text_field_tag 'search[date_from]', @date_from %>
-    <%= text_field_tag 'search[date_to]', @date_to %>
-    <%= hidden_field_tag :duan_name , params[:duan_name]%>
-    <%= submit_tag "搜索" %>
+  <div class="row">
+    <div class="pull-right range-query">
+      <%= form_tag station_score_info_t_station_infoes_path, method: :get do %>
+        <%= text_field_tag 'search[date_from]'," 开始时间"%>
+        <%= text_field_tag 'search[date_to]',"结束时间" %>
+        <%= hidden_field_tag :duan_name , params[:duan_name]%>
+        <%= submit_tag "搜索", class: "btn search-button"%>
     <% end %>
+    </div>
   </div>
   <script src="/assets/echarts.min.js"></script>
     <div id="main" style="width: 1000px;height:500px;margin: 40px auto 0;"></div>
