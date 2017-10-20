@@ -39,7 +39,14 @@ User.create(:role => "邯郸车务段", orgnize: "邯郸车务段", permission: 
 
 
 
-User.create(:role => "北京站车站管理员", orgnize: "北京站", permission: 3,password:"123456",password_confirmation:"123456")
+TDuanInfo.duan_orgnization.each do |d|
+  d.t_station_infoes.each do |s|
+    if s.F_name != "邯郸西场" and s.F_name!="八里庄"
+      User.create(:role => "#{s.F_name}管理员", orgnize: "#{s.F_name}", permission: 3,password:"123456",password_confirmation:"123456")
+    end
+  end
+end
+
 
 
  puts "创建成功"
