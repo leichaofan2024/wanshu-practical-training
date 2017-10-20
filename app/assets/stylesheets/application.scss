@@ -254,6 +254,10 @@ table {
 
 .teams_uploader{
   clear:both;
+
+  .simple_form input[type='submit']{
+    background-color:#4b73b2;
+  }
 }
 .teams_station_picture{
   display:inline-block;

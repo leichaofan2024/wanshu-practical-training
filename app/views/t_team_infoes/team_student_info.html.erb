@@ -248,9 +248,9 @@
   <div class="teams_uploader">
     <div class="teams_uploader_picture col-md-4">
       <%= simple_form_for @station do |f| %>
-        <%= f.label "上传图片"%>
+        <%= f.label "点击上传图片"%>
         <%= f.input :image,as: :file %>
-        <%= f.submit "上传", data: { disable_with: "提交中。。。"}%>
+        <%= f.submit "点击上传", data: { disable_with: "提交中。。。"}%>
       <% end %>
 
       <% if @station.image.present? %>
@@ -266,8 +266,8 @@
     </div>
     <div class="teams-uploader-file col-md-4">
       <%= simple_form_for @station do |f| %>
-        <%= f.input :attachment,:label => "上传附件1"%>
-        <%= f.submit "上传", data: { disable_with: "提交中。。。"}%>
+        <%= f.input :attachment,:label => "选择附件1"%>
+        <%= f.submit "点击上传", data: { disable_with: "提交中。。。"}%>
       <% end %>
       <span>下载附件：</span>
       <% if @station.attachment.present? %>
@@ -276,8 +276,8 @@
     </div>
     <div class="teams-uploader-file col-md-4" >
       <%= simple_form_for @station do |f| %>
-        <%= f.input :attachment2,:label => "上传附件2"%>
-        <%= f.submit "上传", data: { disable_with: "提交中。。。"}%>
+        <%= f.input :attachment2,:label => "选择附件2"%>
+        <%= f.submit "点击上传", data: { disable_with: "提交中。。。"}%>
       <% end %>
       <span>下载附件：</span>
       <% if @station.attachment2.present? %>
