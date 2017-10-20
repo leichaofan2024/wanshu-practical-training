@@ -8,12 +8,15 @@
   </div>
   <div class="row">
     <div class="pull-right range-query">
-      <%= form_tag station_score_info_t_station_infoes_path, method: :get do %>
-        <%= text_field_tag 'search[date_from]'," 开始时间"%>
-        <%= text_field_tag 'search[date_to]',"结束时间" %>
-        <%= hidden_field_tag :duan_name , params[:duan_name]%>
-        <%= submit_tag "搜索", class: "btn search-button"%>
-    <% end %>
+      <div class="searchtime">时间：</div>
+      <div class="searchtime">
+        <%= form_tag station_score_info_t_station_infoes_path, method: :get do %>
+          <%= text_field_tag 'search[date_from]'%>
+          <%= text_field_tag 'search[date_to]' %>
+          <%= hidden_field_tag :duan_name , params[:duan_name]%>
+          <%= submit_tag "搜索", id:"time_id",class: "btn search-button"%>
+        <% end %>
+      </div>
     </div>
   </div>
   <script src="/assets/echarts.min.js"></script>
