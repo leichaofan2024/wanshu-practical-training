@@ -273,6 +273,15 @@ table {
 
 .teams_uploader{
   clear:both;
+
+  .uploader-submit{
+    background-color:#4B73B2;
+    color:#ffffff;
+  }
+
+  .uploader-label{
+    color:#4B73B2;
+  }
 }
 .teams_station_picture{
   display:inline-block;

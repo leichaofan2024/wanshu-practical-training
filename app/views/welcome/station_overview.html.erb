@@ -10,30 +10,42 @@
     <% end %>
     </div>
   </div>
+</div>
+
 <div class="root-card-frame">
   <div class="root-card">
 
-    <div class="root-card-block">
-      <%= link_to team_ck_path do %>
-        <strong>班组总数：<%= team %> </strong><br>
-        <strong>实考班组：<%= team_ck_count %></strong>
-      <% end %>
-    </div>
-    <div class="root-card-block">
-      <%= link_to student_ck_path do %>
-        <strong>实训人数：<%= students %> </strong><br>
-        <strong>实考人数：<%= student_ck_counts %></strong>
-      <% end %>
-    </div>
-    <div class="root-card-block">
-      <%= link_to program_ck_path do %>
-        <strong>考点总数：<%= TProgramInfo.count %> </strong><br>
-        <strong>覆盖考点：<%= program_ck_count %></strong>
-      <% end %>
+    <%= link_to team_ck_path, {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
+      <div class="root-card-block">
+        <i class="fa fa-users fa-4x" aria-hidden="true"></i><br>
+        <div class="root-card-content">
+          <strong>班组总数：<%= team %> </strong><br>
+          <strong>实考班组：<%= team_ck_count %></strong>
+        </div>
+      </div>
+    <% end %>
+
+    <%= link_to student_ck_path, {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
+      <div class="root-card-block">
+        <i class="fa fa-user fa-4x" aria-hidden="true"></i><br>
+        <div class="root-card-content">
+          <strong>实训人数：<%= students %> </strong><br>
+          <strong>实考人数：<%= student_ck_counts %></strong>
+        </div>
+      </div>
+    <% end %>
+
+    <%= link_to program_ck_path, {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
+      <div class="root-card-block">
+        <i class="fa fa-file-text fa-4x" aria-hidden="true"></i><br>
+        <div class="root-card-content">
+          <strong>考点总数：<%= TProgramInfo.count %> </strong><br>
+          <strong>覆盖考点：<%= program_ck_count %></strong>
+        </div>
+      </div>
+    <% end %>
     </div>
   </div>
-
-</div>
 
 
 <div class="root-data-frame">
