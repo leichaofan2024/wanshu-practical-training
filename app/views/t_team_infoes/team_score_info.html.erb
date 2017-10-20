@@ -196,12 +196,12 @@
         <tr>
           <div class="teams_uploader_picture col-md-4">
             <%= simple_form_for @station do |f| %>
-              <td class="text-center"><%= f.label "上传站场图"%></td>
-              <td><%= f.input :点击选择图片,as: :file %></td>
-              <td><%= f.submit "点击上传", data: { disable_with: "提交中。。。"}%></td>
+              <td class="text-center"><%= f.label "上传站场图", class: "uploader-label"%></td>
+              <td><%= f.input :点击选择图片, as: :file %></td>
+              <td><%= f.submit "点击上传", data: { disable_with: "上传中。。。"}, class: "uploader-submit" %></td>
             <% end %>
             <td>
-              <span>目前站场图:</span>
+              <span style="color:#4B73B2"><i class="fa fa-download fa-1x" aria-hidden="true"></i>目前站场图:</span>
               <% if @station.image.present? %>
                 <div class="teams_station_picture">
                   <%= image_tag(@station.image.thumb.url)%>
@@ -216,12 +216,12 @@
         <tr>
           <div class="teams-uploader-file col-md-4">
             <%= simple_form_for @station do |f| %>
-              <td class="text-center"><%= f.label "上传岗位作业指导书"%></td>
+              <td class="text-center"><%= f.label "上传岗位作业指导书", class: "uploader-label"%></td>
               <td><%= f.input :attachment,:label => "选择附件"%></td>
-              <td><%= f.submit "点击上传", data: { disable_with: "提交中。。。"}%></td>
+              <td><%= f.submit "点击上传", data: { disable_with: "上传中。。。"}, class: "uploader-submit"%></td>
             <% end %>
             <td>
-              <span><i class="fa fa-download fa-1x" aria-hidden="true"></i>下载附件：</span>
+              <span style="color:#4B73B2"><i class="fa fa-download fa-1x" aria-hidden="true"></i>下载附件：</span>
               <% if @station.attachment.present? %>
                 <%= link_to("Download 附件1",@station.attachment_url)%>
               <% end %>
@@ -232,12 +232,12 @@
         <tr>
           <div class="teams-uploader-file col-md-4">
             <%= simple_form_for @station do |f| %>
-              <td class="text-center"><%= f.label "上传文字站导"%></td>
+              <td class="text-center"><%= f.label "上传文字站导", class: "uploader-label"%></td>
               <td><%= f.input :attachment2,:label => "选择附件"%></td>
-              <td><%= f.submit "点击上传", data: { disable_with: "提交中。。。"}%></td>
+              <td><%= f.submit "点击上传", data: { disable_with: "上传中。。。"}, class: "uploader-submit"%></td>
             <% end %>
             <td>
-              <span><i class="fa fa-download fa-1x" aria-hidden="true"></i>下载附件：</span>
+              <span style="color:#4B73B2"><i class="fa fa-download fa-1x" aria-hidden="true"></i>下载附件：</span>
               <% if @station.attachment2.present? %>
                 <%= link_to("Download 附件2",@station.attachment2_url)%>
               <% end %>
