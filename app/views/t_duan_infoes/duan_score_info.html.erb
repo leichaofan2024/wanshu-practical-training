@@ -3,12 +3,14 @@
   <div class="clear">
     <a href="/">首页</a> > 各站段考试成绩
   </div>
-  <div class="">
-    <%= form_tag duan_score_info_t_duan_infoes_path, method: :get do %>
-    <%= text_field_tag 'search[date_from]', @date_from %>
-    <%= text_field_tag 'search[date_to]', @date_to %>
-    <%= submit_tag "搜索"%>
+  <div class="row">
+    <div class="pull-right range-query">
+      <%= form_tag duan_score_info_t_duan_infoes_path, method: :get do %>
+        <%= text_field_tag 'search[date_from]'," 开始时间"%>
+        <%= text_field_tag 'search[date_to]',"结束时间" %>
+        <%= submit_tag "搜索", class: "btn search-button"%>
     <% end %>
+    </div>
   </div>
   <script src="/assets/echarts.min.js"></script>
     <div id="main" style="width: 1000px;height:500px;margin:40px auto 0;"></div>

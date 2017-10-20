@@ -4,16 +4,15 @@
   </div>
 
   <div class="">
-    <div class="root-search-time1">
-      <b>时间：</b>
-      <div style="display:inline-block;">
-        <%= form_tag duan_student_info_t_duan_infoes_path, method: :get do %>
-        <%= text_field_tag 'search[date_from]', @date_from %>
-        <%= text_field_tag 'search[date_to]', @date_to %>
-          <%= submit_tag "搜索" %>
-      <% end %>
-      </div>
+    <div class="row">
+    <div class="pull-right range-query">
+      <%= form_tag duan_student_info_t_duan_infoes_path, method: :get do %>
+        <%= text_field_tag 'search[date_from]'," 开始时间"%>
+        <%= text_field_tag 'search[date_to]',"结束时间" %>
+        <%= submit_tag "搜索", class: "btn search-button"%>
+    <% end %>
     </div>
+  </div>
     <%  @duans_student %>
     <% @duans_student_ck %>
     <script src="/assets/echarts.min.js"></script>
@@ -302,7 +301,21 @@
 
             // 使用刚指定的配置项和数据显示图表。
       myChart.setOption(option);
-
+      <% if params[:search].present? %>
+      function GetUrlPara(){
+           var url = document.location.toString();
+           var arrUrl = url.split("?");
+           var para = arrUrl[1];
+           return para;
+           };
+     myChart.on('click', function (params) {
+       window.location.assign('/t_station_infoes/station_student_info?duan_name=' + params.name +'&'+ GetUrlPara() );
+     });
+      <% else %>
+      myChart.on('click', function (params) {
+        window.location.assign('/t_station_infoes/station_student_info?duan_name='+ params.name);
+      });
+     <% end %>
   </script>
 
   <div id="zhishubili" style="width: 1000px;height:500px;margin:40px auto 0;"></div>
@@ -373,5 +386,20 @@
       };
             // 使用刚指定的配置项和数据显示图表。
       myChart.setOption(option);
+      <% if params[:search].present? %>
+      function GetUrlPara(){
+           var url = document.location.toString();
+           var arrUrl = url.split("?");
+           var para = arrUrl[1];
+           return para;
+           };
+     myChart.on('click', function (params) {
+       window.location.assign('/t_station_infoes/station_student_info?duan_name=' + params.name +'&'+ GetUrlPara() );
+     });
+      <% else %>
+      myChart.on('click', function (params) {
+        window.location.assign('/t_station_infoes/station_student_info?duan_name='+ params.name);
+      });
+     <% end %>
   </script>
 </div>
