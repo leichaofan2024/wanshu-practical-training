@@ -10,7 +10,7 @@
 
 <% if current_user.permission == 3 %>
   <div class = "welcome_frame">
-    <h4 style="color:#4444C1;">未参考班组：</h4>
+    <h4 style="color:#c0392b;">未参考班组</h4>
       <p><%= current_user.orgnize %>(<%= @wk_teams.size%>)</p>
       <% if @wk_teams.present? %>
           <div class="station-card" >
@@ -43,12 +43,12 @@
 <% else %>
 
   <div class = "welcome_frame">
-    <h4 style="color:#4444C1;">未参考班组：</h4>
+    <h4 style="color:#c0392b;">未参考班组：</h4>
 
       <% @duans_wk.each do |duan| %>
         <div class="station-card-head">
           <%= link_to team_ck_path(:duan_name => duan.F_name) do  %>
-            <%= duan.F_name %>(<%= @wk_z.where("t_duan_info.F_name": duan.F_name).count %>) >> <br>
+            <h6 style="color:#c0392b;"><%= duan.F_name %>(<%= @wk_z.where("t_duan_info.F_name": duan.F_name).count %>)>><h6>
           <% end %>
         </div>
 
