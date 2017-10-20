@@ -33,9 +33,11 @@ table {
     th{ text-align: center;}
     td{ text-align: center;}
   }
+
   legend {
     color:red;
   }
+  border-bottom:#fff;
 }
 .range-query{
   .search-button{
@@ -165,7 +167,6 @@ table {
   }
   .station-card-head{
     margin: 20px;
-
   }
   .station-card{
     background-color: #fff;

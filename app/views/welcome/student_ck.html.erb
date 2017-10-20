@@ -10,7 +10,7 @@
 
 <% if current_user.permission == 3%>
   <div class = "welcome_frame">
-    <h4 style="color:#4444C1;">未参考学生：</h4>
+    <h4 style="color:#c0392b;">未参考学生：</h4>
       <% if @wk_students.present? %>
         <% @wk_students.group_by{|u| u.F_team_uuid}.each do |team_uuid,students|%>
           <p><%= TTeamInfo.find_by(:F_uuid => team_uuid).F_name%></p>
@@ -62,12 +62,12 @@
 <% else %>
 
   <div class = "welcome_frame">
-    <h4 style="color:#4444C1;">未参考学生：</h4>
+    <h4 style="color:#c0392b;">未参考学生：</h4>
 
       <% @duans_wk.each do |duan| %>
         <div class="station-card-head">
           <%= link_to student_ck_path(:duan_name => duan.F_name) do  %>
-            <%= duan.F_name %> >> <br>
+            <h6 style="color:#c0392b;"><%= duan.F_name %> >></h6> <br>
           <% end %>
         </div>
 
