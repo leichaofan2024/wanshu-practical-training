@@ -37,14 +37,7 @@ jQuery(function() {
   });
 
 
-  $(document).ready(function(){
-    $("#time_id").click(function(){
-      var result1 = $("#search_date_from").val();
-      var result2 = $("#search_date_to").val();
-      alert("时间： " + result1 );
-
-  });
-});
+  
 
 
 
