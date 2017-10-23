@@ -57,6 +57,10 @@ table {
   }
 }
 
+.searchtime{
+  display: inline-block;
+}
+
 .nav-size{
   font-size: 15px;
 }
@@ -332,6 +336,17 @@ table {
     font-size: 14px;
   }
 
+// 日期显示框
+.time-panel {
+  height:30px;
+  .time-panel-body{
+    line-height: 30px;
+    text-align: center;
+    color:#4b73b2;
+    font-weight: bolder;
+    font-size: 20px
+  }
+}
 
 // 导航栏样式
 

@@ -3,16 +3,18 @@
   <div class="clear">
     <a href="/">首页</a> > <a href="/t_duan_infoes/duan_score_info">各站段考试成绩情况</a> > <a href="/t_station_infoes/station_score_info?duan_name=<%= @duan.F_name %>"><%= @duan.F_name %></a> ><%= @station.F_name %>
   </div>
-
-  <div class="row">
-    <div class="pull-right range-query">
-        <%= form_tag team_score_info_t_team_infoes_path, method: :get do %>
-          <%= text_field_tag 'search[date_from]'," 开始时间"%>
-          <%= text_field_tag 'search[date_to]',"结束时间" %>
-          <%= hidden_field_tag :duan_name, params[:duan_name]%>
-          <%= hidden_field_tag :station_name, params[:station_name]%>
-          <%= submit_tag "搜索", class: "btn search-button"%>
-        <% end %>
+    <div class="row">
+      <div class="pull-right range-query">
+        <div class="searchtime">时间：</div>
+        <div class="searchtime">
+          <%= form_tag team_score_info_t_team_infoes_path, method: :get do %>
+            <%= text_field_tag 'search[date_from]'%>
+            <%= text_field_tag 'search[date_to]' %>
+            <%= hidden_field_tag :duan_name, params[:duan_name]%>
+            <%= hidden_field_tag :station_name, params[:station_name]%>
+            <%= submit_tag "搜索", id:"time_id",class: "btn search-button"%>
+          <% end %>
+        </div>
       </div>
     </div>
 

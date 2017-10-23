@@ -1,12 +1,15 @@
-<div class="row">
-    <div class="pull-right range-query">
-      <%= form_tag station_ck_path, method: :get do %>
-        <%= text_field_tag 'search[date_from]'," 开始时间"%>
-        <%= text_field_tag 'search[date_to]',"结束时间" %>
-        <%= submit_tag "搜索", class: "btn search-button"%>
-    <% end %>
+    <div class="row">
+      <div class="pull-right range-query">
+        <div class="searchtime">时间：</div>
+        <div class="searchtime">
+          <%= form_tag station_ck_path, method: :get do %>
+            <%= text_field_tag 'search[date_from]'%>
+            <%= text_field_tag 'search[date_to]' %>
+            <%= submit_tag "搜索", id:"time_id",class: "btn search-button"%>
+          <% end %>
+        </div>
+      </div>
     </div>
-  </div>
 <div class = "welcome_frame">
   <!-- 关于未参考的车务段： -->
   <h4 style="color:#c0392b;">未参考车站：(<%= @wk_z.size %>)</h4>

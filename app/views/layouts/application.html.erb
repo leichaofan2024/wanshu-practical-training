@@ -10,6 +10,16 @@
 
   <body>
     <%= render "common/navbar" %>
+    <!--这个是显示时间框的模版-->
+    <div class="time-panel">
+      <div class="time-panel-body">
+        <% if params[:search].present? %>
+        <%= params[:search].values.first + " 到 " + params[:search].values.last %>
+        <% else %>
+        <%= Date.today.beginning_of_month %> 到 <%= Date.today.end_of_month %>
+        <% end %>
+      </div>
+    </div>
     <%= yield %>
   </body>
 </html>
