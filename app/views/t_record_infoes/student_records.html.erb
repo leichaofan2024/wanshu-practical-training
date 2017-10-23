@@ -44,10 +44,11 @@
         </td>
         <td><%= r.F_time %></td>
         <td><%= r.F_score %></td>
+        <td><a href="/404.html">404页面</a></td>
         <td>
           <%= link_to("考试详情", record_details_t_record_detail_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name=> params[:team_name],:user_name => params[:user_name],:user_id => params[:user_id],:record_uuid=> r.F_uuid) )%> ／
 
-          <a id="player<%= i%>"  href="/f1baf71152bd4f4881300e87c33a3a21_2017-10-18_171154.flv">播放录像</a> ／
+          <a id="player<%= i%>"  href="/0a0f01bc8af64e5e914429664e0b6972_2017-09-27_092221.flv">播放录像</a> ／
           <!-- <a id="player<%= i%>"  href="/<%= r.F_record%>">播放录像</a> ／   视频相对地址 -->
           <script type="text/javascript">
            flowplayer(
@@ -63,7 +64,7 @@
                          },
                          {
                             //  url: url,//需要播放的文件
-                             url: href="/f1baf71152bd4f4881300e87c33a3a21_2017-10-18_171154.flv",
+                             url: href="/0a0f01bc8af64e5e914429664e0b6972_2017-09-27_092221.flv",
                              autoPlay: false,
                              provider: 'http',
                              autoBuffering: true
