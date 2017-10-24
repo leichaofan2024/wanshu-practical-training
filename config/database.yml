@@ -15,7 +15,7 @@ default: &default
 
 development:
   <<: *default
-  database: wanshu11
+  database: shiyuewanshu
   reconnect: false
   port: 3306
 
