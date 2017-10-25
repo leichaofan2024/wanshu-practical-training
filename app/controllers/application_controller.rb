@@ -398,13 +398,18 @@ class ApplicationController < ActionController::Base
           m = TReasonInfo.joins(:t_record_detail_infoes).where("t_record_detail_info.F_uuid": record.ids).group("t_reason_info.F_name").count.sort_by { |_key, value| value }.reverse.first(4).to_h
         end
       end
-        @fl = { name: '车机联控用语不标准', value: m['车机联控用语不标准'] }
+        a,b,c,d = m.keys
+        gon.a = a
+        gon.b = b
+        gon.c = c
+        gon.d = d 
+        @fl = { name: a, value: m[a] }
         gon.fl = @fl
-        @dc = { name: '未核对阶段计划', value: m['未核对阶段计划'] }
+        @dc = { name: b, value: m[b] }
         gon.dc = @dc
-        @wt = { name: '未通知有关人员', value: m['未通知有关人员'] }
+        @wt = { name: c, value: m[c] }
         gon.wt = @wt
-        @wz = { name: '未检查设备备品', value: m['未检查设备备品'] }
+        @wz = { name: d, value: m[d] }
         gon.wz = @wz
     end
 end
