@@ -176,6 +176,18 @@ class TimeSearch
       TProgramInfo.where("t_program_info.F_type_id": TProgramTypeInfo.find_by(:F_name => params[:program_type]).F_id).joins(t_record_infoes: :t_station_info).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
     end
 
+    def scope_duan_program
+      TProgramInfo.joins(:t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
+    end
+
+    def scope_duan_program1
+      TProgramInfo.joins(t_record_infoes: :t_duan_info ).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
+    end
+
+    def scope_duan_program2
+      TProgramInfo.joins(t_record_infoes: :t_station_info ).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)      
+    end
+
     private
 
     def parsed_date(date_string, default)

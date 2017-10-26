@@ -179,14 +179,24 @@ class TDuanInfoesController < ApplicationController
     end
 
     def duan_program_info
+      if  params[:search].present?
+        @search = TimeSearch.new(params[:search])
         if current_user.permission == 1
-            @duan_programs = TProgramInfo.joins(:t_record_infoes).group('t_program_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
+            @duan_programs = @search.scope_duan_program.group('t_program_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
         elsif current_user.permission == 2
-            @duan_programs = TProgramInfo.joins(t_record_infoes: :t_duan_info ).where('t_duan_info.F_name = ?', current_user.orgnize).group('t_program_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
+            @duan_programs = @search.scope_duan_program1.where('t_duan_info.F_name = ?', current_user.orgnize).group('t_program_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
         elsif current_user.permission == 3
-            @duan_programs = TProgramInfo.joins(t_record_infoes: :t_station_info ).where('t_station_info.F_name = ?', current_user.orgnize).group('t_program_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
+            @duan_programs = @search.scope_duan_program2.where('t_station_info.F_name = ?', current_user.orgnize).group('t_program_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
         end
-
+      else
+        if current_user.permission == 1
+            @duan_programs = TProgramInfo.joins(:t_record_infoes).datetime.group('t_program_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
+        elsif current_user.permission == 2
+            @duan_programs = TProgramInfo.joins(t_record_infoes: :t_duan_info ).datetime.where('t_duan_info.F_name = ?', current_user.orgnize).group('t_program_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
+        elsif current_user.permission == 3
+            @duan_programs = TProgramInfo.joins(t_record_infoes: :t_station_info ).datetime.where('t_station_info.F_name = ?', current_user.orgnize).group('t_program_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
+        end
+      end
     end
 
     def duan_program_student_info
