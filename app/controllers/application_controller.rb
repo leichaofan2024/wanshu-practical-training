@@ -402,7 +402,7 @@ class ApplicationController < ActionController::Base
         gon.a = a
         gon.b = b
         gon.c = c
-        gon.d = d 
+        gon.d = d
         @fl = { name: a, value: m[a] }
         gon.fl = @fl
         @dc = { name: b, value: m[b] }
