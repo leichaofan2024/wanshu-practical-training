@@ -180,22 +180,22 @@ class TDuanInfoesController < ApplicationController
 
     def duan_program_info
         if current_user.permission == 1
-            @duan_programs = TProgramInfo.joins(:t_record_detail_infoes).group('t_program_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
+            @duan_programs = TProgramInfo.joins(:t_record_infoes).group('t_program_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
         elsif current_user.permission == 2
-            @duan_programs = TRecordDetailInfo.joins({ t_record_info: :t_duan_info }, :t_program_info).where('t_duan_info.F_name = ?', current_user.orgnize).group('t_program_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
+            @duan_programs = TProgramInfo.joins(t_record_infoes: :t_duan_info ).where('t_duan_info.F_name = ?', current_user.orgnize).group('t_program_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
         elsif current_user.permission == 3
-            @duan_programs = TRecordDetailInfo.joins({ t_record_info: :t_station_info }, :t_program_info).where('t_station_info.F_name = ?', current_user.orgnize).group('t_program_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
+            @duan_programs = TProgramInfo.joins(t_record_infoes: :t_station_info ).where('t_station_info.F_name = ?', current_user.orgnize).group('t_program_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
         end
 
     end
 
     def duan_program_student_info
         if current_user.permission == 1
-            @records = TRecordInfo.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(t_record_detail_infoes: :t_program_info).where('t_program_info.F_name = ?', params[:name])
+            @records = TRecordInfo.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(:t_program_infoes).where('t_program_info.F_name = ?', params[:name])
         elsif current_user.permission == 2
-            @records = TRecordInfo.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(t_record_detail_infoes: :t_program_info).where('t_program_info.F_name = ?', params[:name]).where('t_record_info.F_duan_uuid=?', TDuanInfo.find_by(F_name: current_user.orgnize).F_uuid).distinct
+            @records = TRecordInfo.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(:t_program_infoes).where('t_program_info.F_name = ?', params[:name]).where('t_record_info.F_duan_uuid=?', TDuanInfo.find_by(F_name: current_user.orgnize).F_uuid).distinct
         elsif current_user.permission == 3
-            @records = TRecordInfo.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(t_record_detail_infoes: :t_program_info).where('t_program_info.F_name = ?', params[:name]).where('t_record_info.F_station_uuid=?', TStationInfo.find_by(F_name: current_user.orgnize).F_uuid).distinct
+            @records = TRecordInfo.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(:t_program_infoes).where('t_program_info.F_name = ?', params[:name]).where('t_record_info.F_station_uuid=?', TStationInfo.find_by(F_name: current_user.orgnize).F_uuid).distinct
         end
     end
 
