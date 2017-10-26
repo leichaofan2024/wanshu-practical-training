@@ -7,11 +7,11 @@
   <div class="program-student-info-bar">
     <ul class = "nav navbar-nav">
       <li class = "first-li">  <a> 综合排序 </a> </li>
-      <li><%= link_to("按站段",duan_program_student_info_t_duan_infoes_path(:order => "by_duan",:name => params[:name]))%></li>
-      <li><%= link_to("按车站",duan_program_student_info_t_duan_infoes_path(:order => "by_station",:name => params[:name]))%></li>
-      <li><%= link_to("按班组",duan_program_student_info_t_duan_infoes_path(:order => "by_team",:name => params[:name]))%></li>
-      <li><%= link_to("时间",duan_program_student_info_t_duan_infoes_path(:order => "by_time",:name => params[:name]))%></li>
-      <li><%= link_to("分数",duan_program_student_info_t_duan_infoes_path(:name => params[:name]))%></li>
+      <li><%= link_to("按站段",duan_program_student_info_t_duan_infoes_path(:order => "by_duan",:name => params[:name],"utf8": params[:utf8],"search": params[:search],"commit": params[:commit]))%></li>
+      <li><%= link_to("按车站",duan_program_student_info_t_duan_infoes_path(:order => "by_station",:name => params[:name],"utf8": params[:utf8],"search": params[:search],"commit": params[:commit]))%></li>
+      <li><%= link_to("按班组",duan_program_student_info_t_duan_infoes_path(:order => "by_team",:name => params[:name],"utf8": params[:utf8],"search": params[:search],"commit": params[:commit]))%></li>
+      <li><%= link_to("时间",duan_program_student_info_t_duan_infoes_path(:order => "by_time",:name => params[:name],"utf8": params[:utf8],"search": params[:search],"commit": params[:commit]))%></li>
+      <li><%= link_to("分数",duan_program_student_info_t_duan_infoes_path(:name => params[:name],"utf8": params[:utf8],"search": params[:search],"commit": params[:commit]))%></li>
     </ul>
 
   </div>

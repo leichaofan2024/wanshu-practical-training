@@ -334,8 +334,11 @@ table {
   margin-bottom: 10px;
   ul{
 
-    background-color: #FBF4FB;
+    background-color: #DEF1D5;
     width:100%;
+    li{
+      font-weight: bold;
+    }
     .first-li {
       font-weight: bold;
       background-color:rgba(64, 117, 181, 1);

@@ -31,7 +31,7 @@
         <td><%= i %></td>
         <td><%= d.first %></td>
         <td><%= d.second %></td>
-        <td><%= link_to("查看详情", duan_program_student_info_t_duan_infoes_path(:name => d.first) )%></td>
+        <td><%= link_to("查看详情", duan_program_student_info_t_duan_infoes_path(:name => d.first,"utf8": params[:utf8],"search": params[:search],"commit": params[:commit]) )%></td>
       </tr>
       <% end %>
     </tbody>

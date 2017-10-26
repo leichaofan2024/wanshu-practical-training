@@ -200,8 +200,10 @@ class TDuanInfoesController < ApplicationController
     end
 
     def duan_program_student_info
+      if params[:search].present?
+        @search = TimeSearch.new(params[:search])
         if current_user.permission == 1
-          records = TRecordInfo.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(:t_program_infoes).where('t_program_info.F_name = ?', params[:name])
+          records = @search.scope_duan_program_student.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(:t_program_infoes).where('t_program_info.F_name = ?', params[:name])
           @records =  case params[:order]
                       when "by_duan"
                         @records = records.order("F_duan_uuid DESC")
@@ -216,7 +218,7 @@ class TDuanInfoesController < ApplicationController
                       end
 
         elsif current_user.permission == 2
-          records = TRecordInfo.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(:t_program_infoes).where('t_program_info.F_name = ?', params[:name]).where('t_record_info.F_duan_uuid=?', TDuanInfo.find_by(F_name: current_user.orgnize).F_uuid)
+          records = @search.scope_duan_program_student.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(:t_program_infoes).where('t_program_info.F_name = ?', params[:name]).where('t_record_info.F_duan_uuid=?', TDuanInfo.find_by(F_name: current_user.orgnize).F_uuid)
           @records = case params[:order]
                       when "by_duan"
                         @records = records.order("F_duan_uuid DESC")
@@ -232,7 +234,7 @@ class TDuanInfoesController < ApplicationController
 
 
         elsif current_user.permission == 3
-          records = TRecordInfo.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(:t_program_infoes).where('t_program_info.F_name = ?', params[:name]).where('t_record_info.F_station_uuid=?', TStationInfo.find_by(F_name: current_user.orgnize).F_uuid)
+          records = @search.scope_duan_program_student.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(:t_program_infoes).where('t_program_info.F_name = ?', params[:name]).where('t_record_info.F_station_uuid=?', TStationInfo.find_by(F_name: current_user.orgnize).F_uuid)
             @records = case params[:order]
                         when "by_duan"
                           @records = records.order("F_duan_uuid DESC")
@@ -245,8 +247,59 @@ class TDuanInfoesController < ApplicationController
                         else
                           @records = records.order("F_score DESC")
                         end
-            .distinct
+
         end
+
+      else
+
+        if current_user.permission == 1
+          records = TRecordInfo.datetime.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(:t_program_infoes).where('t_program_info.F_name = ?', params[:name])
+          @records =  case params[:order]
+                      when "by_duan"
+                        @records = records.order("F_duan_uuid DESC")
+                      when "by_station"
+                        @records = records.order("F_station_uuid DESC")
+                      when "by_team"
+                        @records = records.order("F_team_uuid DESC")
+                      when "by_time"
+                        @records = records.order("F_time DESC")
+                      else
+                        @records = records.order("F_score DESC")
+                      end
+
+        elsif current_user.permission == 2
+          records = TRecordInfo.datetime.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(:t_program_infoes).where('t_program_info.F_name = ?', params[:name]).where('t_record_info.F_duan_uuid=?', TDuanInfo.find_by(F_name: current_user.orgnize).F_uuid)
+          @records = case params[:order]
+                      when "by_duan"
+                        @records = records.order("F_duan_uuid DESC")
+                      when "by_station"
+                        @records = records.order("F_station_uuid DESC")
+                      when "by_team"
+                        @records = records.order("F_team_uuid DESC")
+                      when "by_time"
+                        @records = records.order("F_time DESC")
+                      else
+                        @records = records.order("F_score DESC")
+                      end
+
+
+        elsif current_user.permission == 3
+          records = TRecordInfo.datetime.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(:t_program_infoes).where('t_program_info.F_name = ?', params[:name]).where('t_record_info.F_station_uuid=?', TStationInfo.find_by(F_name: current_user.orgnize).F_uuid)
+            @records = case params[:order]
+                        when "by_duan"
+                          @records = records.order("F_duan_uuid DESC")
+                        when "by_station"
+                          @records = records.order("F_station_uuid DESC")
+                        when "by_team"
+                          @records = records.order("F_team_uuid DESC")
+                        when "by_time"
+                          @records = records.order("F_time DESC")
+                        else
+                          @records = records.order("F_score DESC")
+                        end
+        end
+      end
+
     end
 
     def duan_reason_info

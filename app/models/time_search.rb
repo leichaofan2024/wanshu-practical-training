@@ -185,8 +185,12 @@ class TimeSearch
     end
 
     def scope_duan_program2
-      TProgramInfo.joins(t_record_infoes: :t_station_info ).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)      
+      TProgramInfo.joins(t_record_infoes: :t_station_info ).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
     end
+
+    def scope_duan_program_student
+      TRecordInfo.where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
+    end 
 
     private
 
