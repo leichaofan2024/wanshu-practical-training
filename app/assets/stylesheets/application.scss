@@ -326,6 +326,26 @@ table {
 
 }
 
+
+// 第三个饼图内部样式
+
+.program-student-info-bar{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  ul{
+
+    background-color: #FBF4FB;
+    width:100%;
+    .first-li {
+      font-weight: bold;
+      background-color:rgba(64, 117, 181, 1);
+      a{
+        color:black;
+      }
+    }
+  }
+}
+
 // 提示消息样式
 
   .tooltip > .tooltip-inner {
