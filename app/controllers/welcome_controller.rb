@@ -194,26 +194,52 @@ class WelcomeController < ApplicationController
 
   def program_ck
     @program_types = TProgramTypeInfo.pluck(:F_name)
+  if params[:search].present?
+    @search = TimeSearch.new(params[:search])
     if current_user.permission == 1
       if params[:program_type].present?
         programs = TProgramInfo.where("t_program_info.F_type_id": TProgramTypeInfo.find_by(:F_name => params[:program_type]).F_id)
-        ck_programs = programs.joins(:t_record_infoes).select("t_program_info.F_name,t_program_info.F_id").distinct
+        ck_programs = @search.scope_program_ck.select("t_program_info.F_name,t_program_info.F_id").distinct
         @ck_programs = ck_programs.pluck("t_program_info.F_name")
         @wk_programs = programs.where.not(:F_id => ck_programs.ids).pluck("t_program_info.F_name")
       end
     elsif current_user.permission == 2
       if params[:program_type].present?
         programs = TProgramInfo.where("t_program_info.F_type_id": TProgramTypeInfo.find_by(:F_name => params[:program_type]).F_id)
-        ck_programs = programs.joins(t_record_infoes: :t_duan_info).where("t_duan_info.F_name= ?", current_user.orgnize).select(:F_name,:F_type_id).distinct
+        ck_programs = @search.scope_program_ck1.where("t_duan_info.F_name= ?", current_user.orgnize).select(:F_name,:F_type_id).distinct
         @ck_programs = ck_programs.pluck("t_program_info.F_name")
         @wk_programs = programs.where.not(:F_id => ck_programs.ids).pluck("t_program_info.F_name")
       end
     elsif current_user.permission == 3
       if params[:program_type].present?
         programs = TProgramInfo.where("t_program_info.F_type_id": TProgramTypeInfo.find_by(:F_name => params[:program_type]).F_id)
-        ck_programs = programs.joins(t_record_infoes: :t_station_info).where("t_station_info.F_name= ?", current_user.orgnize).select(:F_name,:F_type_id).distinct
+        ck_programs = @search.scope_program_ck2.where("t_station_info.F_name= ?", current_user.orgnize).select(:F_name,:F_type_id).distinct
         @ck_programs = ck_programs.pluck("t_program_info.F_name")
         @wk_programs = programs.where.not(:F_id => ck_programs.ids).pluck("t_program_info.F_name")
+        end
+      end
+  else
+    if current_user.permission == 1
+      if params[:program_type].present?
+        programs = TProgramInfo.where("t_program_info.F_type_id": TProgramTypeInfo.find_by(:F_name => params[:program_type]).F_id)
+        ck_programs = programs.joins(:t_record_infoes).datetime.select("t_program_info.F_name,t_program_info.F_id").distinct
+        @ck_programs = ck_programs.pluck("t_program_info.F_name")
+        @wk_programs = programs.where.not(:F_id => ck_programs.ids).pluck("t_program_info.F_name")
+      end
+    elsif current_user.permission == 2
+      if params[:program_type].present?
+        programs = TProgramInfo.where("t_program_info.F_type_id": TProgramTypeInfo.find_by(:F_name => params[:program_type]).F_id)
+        ck_programs = programs.joins(t_record_infoes: :t_duan_info).datetime.where("t_duan_info.F_name= ?", current_user.orgnize).select(:F_name,:F_type_id).distinct
+        @ck_programs = ck_programs.pluck("t_program_info.F_name")
+        @wk_programs = programs.where.not(:F_id => ck_programs.ids).pluck("t_program_info.F_name")
+      end
+    elsif current_user.permission == 3
+      if params[:program_type].present?
+        programs = TProgramInfo.where("t_program_info.F_type_id": TProgramTypeInfo.find_by(:F_name => params[:program_type]).F_id)
+        ck_programs = programs.joins(t_record_infoes: :t_station_info).datetime.where("t_station_info.F_name= ?", current_user.orgnize).select(:F_name,:F_type_id).distinct
+        @ck_programs = ck_programs.pluck("t_program_info.F_name")
+        @wk_programs = programs.where.not(:F_id => ck_programs.ids).pluck("t_program_info.F_name")
+        end
       end
     end
   end

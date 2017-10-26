@@ -2,6 +2,18 @@
   <div class="clear">
     <a href="/">首页</a> > 考试项点
   </div>
+  <div class="row">
+    <div class="pull-right range-query">
+      <div class="searchtime">时间：</div>
+      <div class="searchtime">
+        <%= form_tag duan_program_info_t_duan_infoes_path, method: :get do %>
+          <%= text_field_tag 'search[date_from]'%>
+          <%= text_field_tag 'search[date_to]' %>
+          <%= submit_tag "搜索", id:"time_id",class: "btn search-button"%>
+        <% end %>
+      </div>
+    </div>
+  </div>
   <table class="table table-border">
     <thead>
       <tr>

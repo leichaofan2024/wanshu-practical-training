@@ -13,7 +13,7 @@
 
 <div class="root-card-frame">
   <div class="root-card">
-    <%= link_to duan_ck_path, {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
+    <%= link_to duan_ck_path(:"uf8" => params[:uf8],:"search" => params[:search],:"commit" => params[:commit]), {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
       <div class="root-card-block">
         <i class="fa fa-train fa-4x" aria-hidden="true"></i><br>
         <div class="root-card-content">
@@ -23,7 +23,7 @@
       </div>
     <% end %>
 
-    <%= link_to station_ck_path, {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
+    <%= link_to station_ck_path(:"uf8" => params[:uf8],:"search" => params[:search],:"commit" => params[:commit]), {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
       <div class="root-card-block">
         <i class="fa fa-building fa-4x" aria-hidden="true"></i><br>
         <div class="root-card-content">
@@ -33,7 +33,7 @@
       </div>
     <% end %>
 
-    <%= link_to team_ck_path, {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
+    <%= link_to team_ck_path(:"uf8" => params[:uf8],:"search" => params[:search],:"commit" => params[:commit]), {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
       <div class="root-card-block">
         <i class="fa fa-users fa-4x" aria-hidden="true"></i><br>
         <div class="root-card-content">
@@ -43,7 +43,7 @@
       </div>
     <% end %>
 
-    <%= link_to student_ck_path, {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
+    <%= link_to student_ck_path(:"uf8" => params[:uf8],:"search" => params[:search],:"commit" => params[:commit]), {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
       <div class="root-card-block">
         <i class="fa fa-user fa-4x" aria-hidden="true"></i><br>
         <div class="root-card-content">
@@ -53,7 +53,7 @@
       </div>
     <% end %>
 
-    <%= link_to program_ck_path, {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
+    <%= link_to program_ck_path(:"uf8" => params[:uf8],:"search" => params[:search],:"commit" => params[:commit]), {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
       <div class="root-card-block">
         <i class="fa fa-file-text fa-4x" aria-hidden="true"></i><br>
         <div class="root-card-content">
@@ -272,9 +272,21 @@
 
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
+        <% if params[:search].present? %>
+        function GetUrlPara() {
+            var url = document.location.toString();
+            var arrUrl = url.split("?");
+            var para = arrUrl[1];
+            return para;
+        };
+        myChart.on('click', function(params) {
+          window.location.assign('/t_duan_infoes/duan_program_info?'+ GetUrlPara());
+        });
+        <% else %>
         myChart.on('click', function (params) {
           window.location.assign('/t_duan_infoes/duan_program_info');
         });
+        <% end %>
         </script>
     <% program_type_percent %>
     </div>
