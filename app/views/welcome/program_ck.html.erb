@@ -1,6 +1,18 @@
 <div class = "welcome_frame">
-  <h4 style="color:#c0392b;">未覆盖考点：</h4>
+  <div class="row">
+    <div class="pull-right range-query">
+      <div class="searchtime">时间：</div>
+      <div class="searchtime">
+        <%= form_tag program_ck_path, method: :get do %>
+          <%= text_field_tag 'search[date_from]'%>
+          <%= text_field_tag 'search[date_to]' %>
+          <%= submit_tag "搜索", id:"time_id",class: "btn search-button"%>
+        <% end %>
+      </div>
+    </div>
+  </div>
 
+  <h4 style="color:#c0392b;">未覆盖考点：</h4>
   <% @program_types.each do |type| %>
     <div class="station-card-head">
       <%= link_to program_ck_path(:program_type => type) do  %>
@@ -48,5 +60,4 @@
         </div>
       <% end %>
   <% end %>
-
 </div>
