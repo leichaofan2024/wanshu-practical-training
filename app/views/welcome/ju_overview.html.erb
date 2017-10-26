@@ -53,7 +53,7 @@
       </div>
     <% end %>
 
-    <%= link_to program_ck_path, {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
+    <%= link_to program_ck_path(:"uf8" => params[:uf8],:"search" => params[:search],:"commit" => params[:commit]), {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
       <div class="root-card-block">
         <i class="fa fa-file-text fa-4x" aria-hidden="true"></i><br>
         <div class="root-card-content">
