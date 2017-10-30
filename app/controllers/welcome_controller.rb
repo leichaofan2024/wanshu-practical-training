@@ -39,7 +39,7 @@ class WelcomeController < ApplicationController
             @wk_stations = @wk_z.group_by{|u| u.F_duan_uuid}
           elsif current_user.permission ==2
             station = TStationInfo.where(:F_duan_uuid => TDuanInfo.find_by(:F_name => current_user.orgnize).F_uuid )
-            station_ck = @search.scope_station2_ck.where("t_user_info.F_type": 0).distinct
+            station_ck = @search.scope_station_ck.where("t_user_info.F_type": 0).distinct
             @wk_z = station.where.not(:F_uuid => station_ck.ids)
             @ck_z = station_ck
             @ck_stations = station_ck.group_by{|u| u.F_duan_uuid}

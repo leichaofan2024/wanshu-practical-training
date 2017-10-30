@@ -67,6 +67,16 @@ class TimeSearch
         TReasonInfo.joins(:t_detail_reason_infoes).where('F_time BETWEEN ? AND ?', @date_from, @date_to)
     end
 
+    def scope_reason_hot1(params)
+        record = TRecordDetailInfo.joins(t_record_info: :t_duan_info).where("t_duan_info.F_name=?", params)
+        TReasonInfo.joins(:t_record_detail_infoes).where("t_record_detail_info.F_uuid": record.ids).where('F_time BETWEEN ? AND ?', @date_from, @date_to)
+    end
+
+    def scope_reason_hot2(params)
+      record = TRecordDetailInfo.joins(t_record_info: :t_station_info).where("t_station_info.F_name=?", params)
+      TReasonInfo.joins(:t_record_detail_infoes).where("t_record_detail_info.F_uuid": record.ids)
+    end
+
 
     def scope_duan_student
       TUserInfo.where(F_type: 0).joins(:t_duan_info, :t_record_infoes).where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
@@ -177,8 +187,8 @@ class TimeSearch
       TUserInfo.joins(:t_duan_info).where("t_duan_info.F_name": params).student_all.joins(:t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
     end
 
-    def scope_student_duan_ck3(current_user,params)
-      TUserInfo.joins(:t_duan_info).where("t_duan_info.F_name": current_user.orgnize).student_all.joins(t_duan_info: :t_station_infoes).where("t_duan_info.F_name": params).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
+    def scope_student_duan_ck3(user,params)
+      TUserInfo.joins(:t_duan_info).where("t_duan_info.F_name": user).student_all.joins(t_duan_info: :t_station_infoes).where("t_duan_info.F_name": params).joins(:t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
     end
 
     def scope_student_duan_ck4(params)
