@@ -79,7 +79,7 @@ class WelcomeController < ApplicationController
 
             if params[:duan_name].present?
               team_duan = TTeamInfo.joins({t_station_info: :t_duan_info},:t_user_infoes).where("t_duan_info.F_name=?",params[:duan_name]).where("t_user_info.F_type": 0).distinct
-              team_ck = @search.scope_team_duan_ck.where("t_user_info.F_type": 0).distinct
+              team_ck = @search.scope_team_ck1(params[:duan_name]).where("t_user_info.F_type": 0).distinct
               @ck_teams = team_ck.group_by{|u| u.F_station_uuid}
               @wk_teams = team_duan.where.not(:F_uuid => team_ck.ids).group_by{|u| u.F_station_uuid}
             end
@@ -89,13 +89,13 @@ class WelcomeController < ApplicationController
 
             if params[:duan_name].present?
               team_duan = TTeamInfo.joins({t_station_info: :t_duan_info},:t_user_infoes).where("t_duan_info.F_name=?",params[:duan_name]).where("t_user_info.F_type": 0).distinct
-              team_ck = @search.scope_team_duan_ck.where("t_user_info.F_type": 0).distinct
+              team_ck = @search.scope_team_ck2(params[:duan_name]).where("t_user_info.F_type": 0).distinct
               @ck_teams = team_ck.group_by{|u| u.F_station_uuid}
               @wk_teams = team_duan.where.not(:F_uuid => team_ck.ids).group_by{|u| u.F_station_uuid}
             end
           elsif current_user.permission == 3
             team_station = TTeamInfo.joins(:t_station_info,:t_user_infoes).where("t_station_info.F_name": current_user.orgnize).where("t_user_info.F_type": 0).distinct
-            @ck_teams = team_station.joins(t_user_infoes: :t_record_infoes).where("t_user_info.F_type": 0).distinct
+            @ck_teams = @search.scope_team_ck3(current_user.orgnize).where("t_user_info.F_type": 0).distinct
             @wk_teams = team_station.where.not(:F_uuid => @ck_teams.ids)
           end
     else

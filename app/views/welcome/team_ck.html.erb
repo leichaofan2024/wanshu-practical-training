@@ -50,7 +50,7 @@
 
       <% @duans_wk.each do |duan| %>
         <div class="station-card-head">
-          <%= link_to team_ck_path(:duan_name => duan.F_name) do  %>
+          <%= link_to team_ck_path(:duan_name => duan.F_name,"utf8": params[:utf8],"search": params[:search],"commit": params[:commit]) do  %>
             <h6 style="color:#c0392b;"><%= duan.F_name %>(<%= @wk_z.where("t_duan_info.F_name": duan.F_name).count %>)>><h6>
           <% end %>
         </div>
@@ -77,7 +77,7 @@
 
       <% @duans_ck.each do |duan| %>
         <div class="station-card-head">
-          <%= link_to team_ck_path(:duan_name => duan.F_name) do  %>
+          <%= link_to team_ck_path(:duan_name => duan.F_name,"utf8": params[:utf8],"search": params[:search],"commit": params[:commit]) do  %>
             <%= duan.F_name %>(<%= @ck_z.where("t_duan_info.F_name": duan.F_name).count %>) >> <br>
           <% end %>
         </div>

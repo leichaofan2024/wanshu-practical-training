@@ -148,8 +148,16 @@ class TimeSearch
       TTeamInfo.joins({t_station_info: :t_duan_info},:t_user_infoes).where("t_duan_info.F_name != '运输处' AND t_duan_info.F_name != '局职教基地'").where("t_user_info.F_type": 0).distinct.joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
     end
 
-    def scope_team_duan_ck
-      TTeamInfo.joins({t_station_info: :t_duan_info},:t_user_infoes).where("t_duan_info.F_name=?",params[:duan_name]).where("t_user_info.F_type": 0).distinct.joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
+    def scope_team_ck1(params)
+      TTeamInfo.joins({t_station_info: :t_duan_info},:t_user_infoes).where("t_duan_info.F_name=?",params).where("t_user_info.F_type": 0).distinct.joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
+    end
+
+    def scope_team_ck2(params)
+      TTeamInfo.joins({t_station_info: :t_duan_info},:t_user_infoes).where("t_duan_info.F_name = ?",params).where("t_user_info.F_type": 0).distinct.joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
+    end
+
+    def scope_team_ck3(params)
+      TTeamInfo.joins(:t_station_info,:t_user_infoes).where("t_station_info.F_name": params).where("t_user_info.F_type": 0).distinct.joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
     end
 
     def scope_student_duan_ck
@@ -190,7 +198,7 @@ class TimeSearch
 
     def scope_duan_program_student
       TRecordInfo.where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
-    end 
+    end
 
     private
 
