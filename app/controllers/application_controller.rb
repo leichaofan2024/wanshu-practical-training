@@ -90,7 +90,7 @@ class ApplicationController < ActionController::Base
       elsif current_user.permission ==3
         if params[:search].present?
           @search = TimeSearch.new(params[:search])
-          m= @search.scope_team_station.distinct.count
+          m= @search.scope_team_station(current_user.orgnize).distinct.count
         else
           m = TTeamInfo.joins(:t_station_info,{t_user_infoes: :t_record_infoes}).where("t_station_info.F_name": current_user.orgnize,"t_user_info.F_uuid": TUserInfo.student_all.ids).distinct.count
         end
