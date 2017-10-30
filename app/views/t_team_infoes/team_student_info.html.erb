@@ -275,7 +275,7 @@
           <div class="teams-uploader-file col-md-4">
             <%= simple_form_for @station do |f| %>
               <td class="text-center"><%= f.label "上传岗位作业指导书", class: "uploader-label"%></td>
-              <td><%= f.input :attachment, :label => "选择附件" %></td>
+              <td><%= f.input :attachment,as: :file, :label => "选择附件" %></td>
               <td><%= f.submit "点击上传", data: { disable_with: "上传中。。。"}, class: "uploader-submit"%></td>
             <% end %>
             <td>
@@ -291,7 +291,7 @@
           <div class="teams-uploader-file col-md-4">
             <%= simple_form_for @station do |f| %>
               <td class="text-center"><%= f.label "上传文字站导", class: "uploader-label"%></td>
-              <td><%= f.input :attachment2,:label => "选择附件"%></td>
+              <td><%= f.input :attachment2,as: :file,:label => "选择附件"%></td>
               <td><%= f.submit "点击上传", data: { disable_with: "上传中。。。"}, class: "uploader-submit"%></td>
             <% end %>
             <td>
