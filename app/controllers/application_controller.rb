@@ -83,7 +83,7 @@ class ApplicationController < ActionController::Base
       elsif current_user.permission == 2
         if params[:search].present?
             @search = TimeSearch.new(params[:search])
-            m = @search.scope_team_duan.distinct.count
+            m = @search.scope_team_duan(current_user.orgnize).distinct.count
         else
             m = TTeamInfo.joins(t_station_info: :t_duan_info).where("t_duan_info.F_name= ?",current_user.orgnize).joins(:t_record_infoes).datetime.distinct.count
         end
@@ -205,14 +205,14 @@ class ApplicationController < ActionController::Base
       elsif current_user.permission == 2
         if params[:search].present?
           @search = TimeSearch.new(params[:search])
-          m = @search.scope_program_duan.joins(:t_duan_info).where("t_duan_info.F_name= ?", current_user.orgnize).distinct.count
+          m = @search.scope_program_duan.where("t_duan_info.F_name= ?", current_user.orgnize).distinct.count
         else
           m = TProgramInfo.joins(t_record_infoes: :t_duan_info).datetime.where("t_duan_info.F_name= ?", current_user.orgnize).distinct.count
         end
       elsif current_user.permission == 3
         if params[:search].present?
           @search = TimeSearch.new(params[:search])
-          m = @search.scope_program_duan.joins(:t_station_info).where("t_station_info.F_name= ?", current_user.orgnize).distinct.count
+          m = @search.scope_program_station.where("t_station_info.F_name= ?", current_user.orgnize).distinct.count
         else
           m = TProgramInfo.joins(t_record_infoes: :t_station_info).where("t_station_info.F_name= ?", current_user.orgnize).distinct.count
         end
@@ -384,7 +384,7 @@ class ApplicationController < ActionController::Base
         if params[:search].present?
           # m = TReasonInfo.joins(:t_detail_reason_infoes).group(:F_name).size.sort { |a, b| b[1] <=> a[1] }
           @search = TimeSearch.new(params[:search])
-          m = @search.scope_reason_hot.joins(:t_record_detail_infoes).where("t_record_detail_info.F_uuid": record.ids).group("t_reason_info.F_name").count.sort_by { |_key, value| value }.reverse.first(4).to_h
+          m = @search.scope_reason_hot.where("t_record_detail_info.F_uuid": record.ids).group("t_reason_info.F_name").count.sort_by { |_key, value| value }.reverse.first(4).to_h
         else
           m = TReasonInfo.joins(:t_record_detail_infoes).where("t_record_detail_info.F_uuid": record.ids).datetime1.group("t_reason_info.F_name").count.sort_by { |_key, value| value }.reverse.first(4).to_h
         end
