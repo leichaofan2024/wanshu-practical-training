@@ -1,0 +1,22 @@
+<h4><%= link_to("新建站段账号",new_duan_users_path)%></h4>
+<br>
+<h4><%= link_to("新建车站账号",new_duan_station_users_path, method: :get)%></h4>
+<table class="table">
+  <thead>
+    <tr>
+      <td>角色名称</td>
+      <td>角色管理</td>
+    </tr>
+  </thead>
+  <tbody>
+    <% if @users.present? %>
+      <% @users.each do |u| %>
+        <tr>
+          <td><%= u.role %></td>
+          <td><%= link_to "编辑角色", edit_user_path(u) %></td>
+          <td><%= link_to "删除角色", user_path(u), method: :delete, data: { confirm: "您确定要删除本角色吗？"} %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>

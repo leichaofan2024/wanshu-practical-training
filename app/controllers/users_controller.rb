@@ -46,6 +46,10 @@ class UsersController < ApplicationController
     redirect_to users_path
   end
 
+  def duan_users
+    @users = User.where(:orgnize =>TDuanInfo.find_by(:F_name => current_user.orgnize).t_station_infoes.pluck(:F_name))
+  end
+
   private
 
   def user_params
