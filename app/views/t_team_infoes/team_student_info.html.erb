@@ -255,7 +255,7 @@
           <div class="teams_uploader_picture col-md-4">
             <%= simple_form_for @station do |f| %>
               <td class="text-center"><%= f.label "上传站场图", class: "uploader-label"%></td>
-              <td><%= f.input :点击选择图片, as: :file %></td>
+              <td><%= f.input :image, as: :file %></td>
               <td><%= f.submit "点击上传", data: { disable_with: "上传中。。。"}, class: "uploader-submit" %></td>
             <% end %>
             <td>
