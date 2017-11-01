@@ -262,9 +262,9 @@
               <span style="color:#4B73B2"><i class="fa fa-download fa-1x" aria-hidden="true"></i>目前站场图:</span>
               <% if @station.image.present? %>
                 <div class="teams_station_picture">
-                  <%= image_tag(@station.image.thumb.url)%>
+                  <%= image_tag("http://10.64.2.108:8033"+@station.image.thumb.url)%>
                   <div class="dropdown-content">
-                    <%= image_tag(@station.image.huge.url)%>
+                    <%= image_tag("http://10.64.2.108:8033"+@station.image.huge.url)%>
                   </div>
                 </div>
               <% end %>
@@ -281,7 +281,7 @@
             <td>
               <span style="color:#4B73B2"><i class="fa fa-download fa-1x" aria-hidden="true"></i>下载附件：</span>
               <% if @station.attachment.present? %>
-                <%= link_to("Download 附件1",@station.attachment_url)%>
+                <%= link_to("Download 附件1","http://10.64.2.108:8033"+@station.attachment_url)%>
               <% end %>
             </td>
           </div>
@@ -297,7 +297,7 @@
             <td>
               <span style="color:#4B73B2"><i class="fa fa-download fa-1x" aria-hidden="true"></i>下载附件：</span>
               <% if @station.attachment2.present? %>
-                <%= link_to("Download 附件2",@station.attachment2_url)%>
+                <%= link_to("Download 附件2","http://10.64.2.108:8033"+@station.attachment2_url)%>
               <% end %>
             </td>
           </div>
