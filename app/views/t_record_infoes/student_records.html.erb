@@ -101,9 +101,9 @@
           );
           </script>
 
-
-          <%= link_to("", t_record_info_path(r,:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name=> params[:team_name],:user_name => params[:user_name],:user_id => params[:user_id]),method: :delete,:data => {confirm: "你确定要删除吗？"},class: "fa fa-trash" )%>
-
+          <% if current_user.permission == 1 %>
+            <%= link_to("", t_record_info_path(r,:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name=> params[:team_name],:user_name => params[:user_name],:user_id => params[:user_id]),method: :delete,:data => {confirm: "你确定要删除吗？"},class: "fa fa-trash" )%>
+          <% end %>
         </td>
       </tr>
       <% end %>
