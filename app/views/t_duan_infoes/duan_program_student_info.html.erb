@@ -1,6 +1,10 @@
 <div class="pie_duan_frame">
   <div class="clear">
+    <% if params[:search].present? %>
+    <%= link_to("考试项点", duan_program_info_t_duan_infoes_path("utf8": params[:utf8],"search": params[:search],"commit": params[:commit]))%> > 该项点考生
+    <% else %>
     <a href="/">首页</a> > <a href="/t_duan_infoes/duan_program_info ">考试项点</a>  > 该项点考生
+    <% end %>
   </div>
 
   <!-- 排序导航 -->
