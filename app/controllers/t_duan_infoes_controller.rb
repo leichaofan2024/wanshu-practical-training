@@ -141,6 +141,9 @@ class TDuanInfoesController < ApplicationController
         gon.zskey = nzs
         gon.zswkvalue = @duans_student_zs_wk
         gon.zsckvalue = @duans_student_zs_ck
+        url = request.original_url
+        arrurl = url.split('?')
+        @para = arrurl[1]
     end
 
     def duan_score_info
@@ -323,10 +326,6 @@ class TDuanInfoesController < ApplicationController
                 @duan_reasons = TDetailReasonInfo.joins(:t_reason_info, t_record_detail_info: { t_record_info: :t_station_info }).datetime1.where('t_station_info.F_name = ?', current_user.orgnize).group('t_reason_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
             end
         end
-
-        url = request.original_url
-        arr = url.split('?')
-        @para = arr[1]
     end
 
     def duan_reason_student_info

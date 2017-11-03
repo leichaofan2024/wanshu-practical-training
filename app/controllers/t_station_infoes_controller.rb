@@ -81,6 +81,9 @@ class TStationInfoesController < ApplicationController
         gon.wkvalue = @station_student_wk
         gon.ckvalue = @station_student_ck
         gon.ckblvalue = @station_student_ckbl
+        url = request.original_url
+        arr = url.split('?')
+        @para = arr[1]
     end
 
     def station_score_info
