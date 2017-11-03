@@ -184,7 +184,7 @@ class TDuanInfoesController < ApplicationController
         if current_user.permission == 1
             @duan_programs = @search.scope_duan_program.group('t_program_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
         elsif current_user.permission == 2
-            @duan_programs = @search.scope_duan_program1.where('t_duan_info.F_name = ?', current_user.orgnize).group('t_program_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
+            @duan_programs = @search.scope_duan_program1(current_user.orgnize).group('t_program_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
         elsif current_user.permission == 3
             @duan_programs = @search.scope_duan_program2.where('t_station_info.F_name = ?', current_user.orgnize).group('t_program_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
         end
