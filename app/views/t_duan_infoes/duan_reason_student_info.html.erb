@@ -3,6 +3,20 @@
   <div class="clear">
     <a href="/">首页</a> > <a href="/t_duan_infoes/duan_reason_info ">易错考点</a>  > 该考点犯错考生
   </div>
+
+  <!-- 排序导航 -->
+  <div class="program-student-info-bar">
+    <ul class = "nav navbar-nav">
+      <li class = "first-li">  <a> 综合排序 </a> </li>
+      <li><%= link_to("按站段",duan_reason_student_info_t_duan_infoes_path(:order => "by_duan",:name => params[:name],"utf8": params[:utf8],"search": params[:search],"commit": params[:commit]))%></li>
+      <li><%= link_to("按车站",duan_reason_student_info_t_duan_infoes_path(:order => "by_station",:name => params[:name],"utf8": params[:utf8],"search": params[:search],"commit": params[:commit]))%></li>
+      <li><%= link_to("按班组",duan_reason_student_info_t_duan_infoes_path(:order => "by_team",:name => params[:name],"utf8": params[:utf8],"search": params[:search],"commit": params[:commit]))%></li>
+      <li><%= link_to("时间",duan_reason_student_info_t_duan_infoes_path(:order => "by_time",:name => params[:name],"utf8": params[:utf8],"search": params[:search],"commit": params[:commit]))%></li>
+      <li><%= link_to("分数",duan_reason_student_info_t_duan_infoes_path(:name => params[:name],"utf8": params[:utf8],"search": params[:search],"commit": params[:commit]))%></li>
+    </ul>
+  </div>
+
+  <!-- 学生信息 -->
   <table class="table table-border">
     <thead>
       <tr>
