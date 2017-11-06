@@ -1,8 +1,12 @@
 class TStationInfoesController < ApplicationController
   require 'bigdecimal'
     def index
-        @duan = TDuanInfo.find_by(F_name: params[:duan_name])
-        @stations = TStationInfo.all.where(F_duan_uuid: @duan.F_uuid)
+        if current_user.permission == 1 
+          @duan = TDuanInfo.find_by(F_name: params[:duan_name])
+          @stations = TStationInfo.all.where(F_duan_uuid: @duan.F_uuid)
+        elsif current_user.permission == 2
+          @stations = TDuanInfo.find_by(:F_name => current_user.orgnize).t_station_infoes
+        end
     end
 
     def edit

@@ -1,26 +1,35 @@
 
 <div class = "welcome_frame">
-  <div class="">
-    <a href="/">首页</a> > <a href="/t_duan_infoes">所有站段</a>
-  </div>
-  <h3>车务段 (共计：<%= @duans_cw.size%>个)</h3><hr>
-    <% @duans_cw.each do |duan|%>
-      <%= link_to t_station_infoes_path(:duan_name => duan.F_name) do  %>
-        <button type="button" name="name"><%= duan.F_name %></button>
+  <% if current_user.permission == 1 %>
+    <div class="">
+      <a href="/">首页</a> > 所有站段
+    </div>
+    <h3>车务段 (共计：<%= @duans_cw.size%>个)</h3><hr>
+      <% @duans_cw.each do |duan|%>
+        <%= link_to t_station_infoes_path(:duan_name => duan.F_name) do  %>
+          <button type="button" name="name"><%= duan.F_name %></button>
+        <% end %>
       <% end %>
-    <% end %>
 
-  <h3>直属站 (共计：<%= @duans_zs.size%>个)</h3><hr>
-    <% @duans_zs.each do |duan|%>
-      <%= link_to t_station_infoes_path(:duan_name => duan.F_name) do  %>
-        <button type="button" name="name"><%= duan.F_name %></button>
+    <h3>直属站 (共计：<%= @duans_zs.size%>个)</h3><hr>
+      <% @duans_zs.each do |duan|%>
+        <%= link_to t_station_infoes_path(:duan_name => duan.F_name) do  %>
+          <button type="button" name="name"><%= duan.F_name %></button>
+        <% end %>
       <% end %>
-    <% end %>
 
-  <h3>职教基地 (共计：<%= @duans_zj.size%>个)</h3><hr>
-    <% @duans_zj.each do |duan|%>
-      <%= link_to t_station_infoes_path(:duan_name => duan.F_name) do  %>
-        <button type="button" name="name"><%= duan.F_name %></button>
+    <h3>职教基地 (共计：<%= @duans_zj.size%>个)</h3><hr>
+      <% @duans_zj.each do |duan|%>
+        <%= link_to t_station_infoes_path(:duan_name => duan.F_name) do  %>
+          <button type="button" name="name"><%= duan.F_name %></button>
+        <% end %>
       <% end %>
-    <% end %>
+  <% elsif current_user.permission == 2 %>
+    <div class="">
+      <a href="/">首页</a> > 当前站段
+    </div>
+    <div class="">
+      <button type="button" name="button"><%= link_to(current_user.orgnize,t_station_infoes_path) %></button>
+    </div>
+  <% end %>
 </div>
