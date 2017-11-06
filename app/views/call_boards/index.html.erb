@@ -1,6 +1,8 @@
 <div class="call-board-frame">
   <div class="pull-right">
+    <% if current_user.permission == 1 %>
     <%= link_to("发布消息>>", new_call_board_path, :class => "btn btn-primary") %>
+    <% end %>
   </div>
   <table class="table table-border">
     <thead>
