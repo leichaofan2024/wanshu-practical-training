@@ -115,11 +115,11 @@
           return para;
         };
         myChart.on('click', function (params) {
-          window.location.assign('/t_team_infoes/team_student_info?team_name=' + params.name + '&' + 'utf'+ GetUrlPara()+'&station_name=<%= params[:station_name]%>&duan_name=<%= params[:duan_name]%>');
+          window.location.assign('<%= team_student_info_t_team_infoes_path('duan_name': params[:duan_name], 'station_name': params[:station_name], "utf8": params[:utf8], "search": params[:search], "commit": params[:commit])%>&team_name=' + params.name);
         });
         <% else %>
         myChart.on('click', function (params) {
-          window.location.assign('/t_team_infoes/team_student_info?duan_name=<%= params[:duan_name]%>&station_name=<%= params[:station_name]%>&team_name=' + params.name);
+          window.location.assign('<%= team_student_info_t_team_infoes_path('duan_name': params[:duan_name], 'station_name': params[:station_name])%>&team_name=' + params.name);
         });
         <% end %>
     </script>
