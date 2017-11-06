@@ -27,7 +27,7 @@
         <td><%= c.created_at %></td>
         <td>
           <%= link_to("编辑", edit_call_board_path(c),:class => "btn btn-sm btn-primary")%> |
-          <%= link_to("删除", call_board_path(c),method: :delete, :class=> "btn btn-sm btn-danger")%>
+          <%= link_to("删除", call_board_path(c),method: :delete,data: {confirm: "确定删除吗？"}, :class=> "btn btn-sm btn-danger")%>
         </td>
       </tr>
       <% end %>

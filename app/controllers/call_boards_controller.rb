@@ -1,5 +1,6 @@
 class CallBoardsController < ApplicationController
   before_action :authenticate_user!
+  layout "notime_frame"
   def index
     @call_boards = CallBoard.all.order("id DESC")
   end
@@ -44,7 +45,7 @@ class CallBoardsController < ApplicationController
 
 
   def call_board_params
-    params.require(:call_board).permit(:name,:content)
+    params.require(:call_board).permit(:name,:content,{call_board_attachments: []})
   end
 
 

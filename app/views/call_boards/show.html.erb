@@ -1,4 +1,5 @@
 <div class="call-board-show">
   <h3><%= @call_board.name %></h3>
   <p><%= simple_format(@call_board.content) %></p>
+  <p><%= link_to(@call_board.call_board_attachments,@call_board.call_board_attachments_url)%></p>
 </div>
