@@ -108,12 +108,6 @@
               // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
         <% if params[:search].present? %>
-        function GetUrlPara(){
-          var url = document.location.toString();
-          var attrUrl = url.split("utf");
-          var para = attrUrl[1];
-          return para;
-        };
         myChart.on('click', function (params) {
           window.location.assign('<%= team_student_info_t_team_infoes_path('duan_name': params[:duan_name], 'station_name': params[:station_name], "utf8": params[:utf8], "search": params[:search], "commit": params[:commit])%>&team_name=' + params.name);
         });
