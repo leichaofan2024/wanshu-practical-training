@@ -2,7 +2,13 @@
 <div class="pie_duan_frame">
 
   <div class="clear">
+    <% if params[:search].present? %>
+    <a href="/">首页</a> > <%= link_to("各站段参考情况", duan_student_info_t_duan_infoes_path("utf8": params[:utf8], "search": params[:search], "commit": params[:commit])) %> >
+    <%= link_to(@duan.F_name, station_student_info_t_station_infoes_path("utf8": params[:utf8], "search": params[:search], "commit": params[:commit], 'duan_name': @duan.F_name)) %> >
+    <%= link_to(@station.F_name, team_student_info_t_team_infoes_path("utf8": params[:utf8], "search": params[:search], "commit": params[:commit], 'duan_name': @duan.F_name, 'station_name': @station.F_name)) %>
+    <% else%>
     <a href="/">首页</a> > <a href="/t_duan_infoes/duan_student_info">各站段参考情况</a> > <a href="/t_station_infoes/station_student_info?duan_name=<%= @duan.F_name%>"><%= @duan.F_name %></a> > <a href="/t_team_infoes/team_student_info?duan_name=<%=@duan.F_name%>&station_name=<%=@station.F_name%>"><%= @station.F_name%></a> >
+    <% end %>
     <% if @team.present? %>
       <%=@team.F_name %>:
     <% end %>
