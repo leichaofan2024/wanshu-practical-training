@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(version: 20171106065013) do
     t.string   "content",                limit: 5000
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
-    t.string   "call_board_attachments"
+    t.json     "call_board_attachments"
   end
 
   create_table "monitor_receiver_log", id: :bigint, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", comment: "访问服务监控日志表" do |t|
