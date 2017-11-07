@@ -159,7 +159,7 @@
             <tr>
               <td><%= s.F_name %></td>
               <td><%= s.F_id %></td>
-              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id))%></td>
+              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id, "utf8": params[:utf8], "search": params[:search], "commit": params[:commit]))%></td>
             </tr>
           <% end %>
         <% end %>
@@ -181,7 +181,7 @@
             <tr>
               <td><%= s.F_name %></td>
               <td><%= s.F_id %></td>
-              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id))%></td>
+              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id), "utf8": params[:utf8], "search": params[:search], "commit": params[:commit])%></td>
             </tr>
           <% end %>
         <% end %>
