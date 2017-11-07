@@ -224,7 +224,11 @@ class TimeSearch
     end
 
     def scope_student_ck(params)
-      TUserInfo.student_all.joins(:t_team_info, :t_record_infoes).where('t_team_info.F_uuid =? ', params.F_uuid)
+      TUserInfo.student_all.joins(:t_team_info, :t_record_infoes).where('t_team_info.F_uuid =? ', params.F_uuid).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
+    end
+
+    def scope_student_ck1(params)
+      TUserInfo.student_all.joins(:t_station_info, :t_record_infoes).where('t_station_info.F_uuid = ? ', params.F_uuid).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
     end
 
     private
