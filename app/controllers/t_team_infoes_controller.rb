@@ -92,9 +92,9 @@ class TTeamInfoesController < ApplicationController
         @station = TStationInfo.find_by(F_name: params[:station_name])
         if params[:search].present?
           if params[:team_name].present?
-            @search = TimeSearch.new(params[:search])
+              @search = TimeSearch.new(params[:search])
               @team = TTeamInfo.where(F_station_uuid: @station.F_uuid).find_by(F_name: params[:team_name])
-              @student_ck = @search.scope_student_ck.where('t_team_info.F_uuid =? ', @team.F_uuid).select(:F_name, :F_id).distinct
+              @student_ck = @search.scope_student_ck(@team).select(:F_name, :F_id).distinct
               @student_wk = TUserInfo.student_all.joins(:t_team_info).where('t_team_info.F_uuid=?', @team.F_uuid).select(:F_name, :F_id).distinct.where.not(F_id: @student_ck.pluck(:F_id))
           end
             @search = TimeSearch.new(params[:search])
