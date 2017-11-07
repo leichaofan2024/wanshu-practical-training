@@ -23,7 +23,7 @@
       </div>
     </div>
 
-  <script src="/assets/echarts.min.js"></script>
+
     <div class="team_chart_frame" id="main" style="width: 650px;height:400px;margin:40px auto 0;"></div>
      <script type="text/javascript">
       // 基于准备好的dom，初始化echarts实例
@@ -141,10 +141,8 @@
     });
     <% end %>
   </script>
-
   <div class="team_student_frame">
-    <h4>参加考试的考生</h4>
-
+  <h4> 90 分考生 </h4>
     <table class="table table-border">
       <thead>
         <tr>
@@ -155,79 +153,63 @@
       </thead>
       <tbody>
       <% if params[:team_name].present? %>
-        <% @student_ck.each do |s| %>
-          <tr>
-            <td><%= s.F_name %></td>
-            <td>
-              <% if s.t_team_info.present? %>
-                <%= s.t_team_info.F_name %>:
-              <% else %>
-                <span style="color:red;">未录入班组信息:</span>
-              <% end %>
-              <% if s.F_work_uuid.present? %>
-                <%= s.t_work_info.F_name %>
-              <% else %>
-                <span style="color:red;">未录入职务信息</span>
-              <% end %>
-            </td>
-              <% if params[:search].present? %>
-              <td><%= link_to("查看详情", score_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id, "utf8": params[:utf8], "search": params[:search], "commit": params[:commit]))%></td>
-              <% else %>
-              <td><%= link_to("查看详情", score_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id))%></td>
-              <% end %>
-            </tr>
-        <% end %>
+        <%= render :partial => "score_link", collection: @team_score_90, as: :s %>
       <% else %>
-          <% @student_ck.each do |s| %>
-            <tr>
-              <td><%= s.F_name %></td>
-              <td>
-                <% if s.t_team_info.present? %>
-                  <%= s.t_team_info.F_name %>:
-                <% else %>
-                  <span style="color:red;">未录入班组信息:</span>
-                <% end %>
-                <% if s.F_work_uuid.present? %>
-                  <%= s.t_work_info.F_name %>
-                <% else %>
-                  <span style="color:red;">未录入职务信息</span>
-                <% end %>
-              </td>
-              <% if params[:search].present? %>
-              <td><%= link_to("查看详情", score_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id, "utf8": params[:utf8], "search": params[:search], "commit": params[:commit]))%></td>
-              <% else %>
-              <td><%= link_to("查看详情", score_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id))%></td>
-              <% end %>
-            </tr>
-          <% end %>
+        <%= render :partial => "score_link", collection: @team_score_90, as: :s %>
         <% end %>
       </tbody>
     </table>
-
-    
-    <h4>未参加考试的考生</h4>
-
-    <table class="table">
-      <thead>
-        <tr>
-          <th>姓名</th>
-          <th>职位</th>
-          <th>详情</th>
-        </tr>
-      </thead>
-      <tbody>
+    <h4> 80-90 分考生 </h4>
+      <table class="table table-border">
+        <thead>
+          <tr>
+            <th>姓名</th>
+            <th>职位</th>
+            <th>详情</th>
+          </tr>
+        </thead>
+        <tbody>
         <% if params[:team_name].present? %>
-          <% @student_wk.each do |s| %>
-            <tr>
-              <td><%= s.F_name %></td>
-              <td><%= s.F_id %></td>
-              <td><%= link_to("查看详情", score_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id), "utf8": params[:utf8], "search": params[:search], "commit": params[:commit])%></td>
-            </tr>
+          <%= render :partial => "score_link", collection: @team_score_80, as: :s %>
+        <% else %>
+          <%= render :partial => "score_link", collection: @team_score_80, as: :s %>
           <% end %>
-        <% end %>
-      </tbody>
-    </table>
-
-
+        </tbody>
+      </table>
+      <h4> 60-80 分考生 </h4>
+        <table class="table table-border">
+          <thead>
+            <tr>
+              <th>姓名</th>
+              <th>职位</th>
+              <th>详情</th>
+            </tr>
+          </thead>
+          <tbody>
+          <% if params[:team_name].present? %>
+            <%= render :partial => "score_link", collection: @team_score_60, as: :s %>
+          <% else %>
+            <%= render :partial => "score_link", collection: @team_score_60, as: :s %>
+            <% end %>
+          </tbody>
+        </table>
+        <h4> 60 分以下考生 </h4>
+          <table class="table table-border">
+            <thead>
+              <tr>
+                <th>姓名</th>
+                <th>职位</th>
+                <th>详情</th>
+              </tr>
+            </thead>
+            <tbody>
+            <% if params[:team_name].present? %>
+              <%= render :partial => "score_link", collection: @team_score_60_bellow, as: :s %>
+            <% else %>
+              <%= render :partial => "score_link", collection: @team_score_60_bellow, as: :s %>
+              <% end %>
+            </tbody>
+          </table>
   </div>
 </div>
+<script src="/assets/echarts.min.js"></script>
