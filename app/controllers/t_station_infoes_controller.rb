@@ -1,7 +1,7 @@
 class TStationInfoesController < ApplicationController
   require 'bigdecimal'
     def index
-        if current_user.permission == 1 
+        if current_user.permission == 1
           @duan = TDuanInfo.find_by(F_name: params[:duan_name])
           @stations = TStationInfo.all.where(F_duan_uuid: @duan.F_uuid)
         elsif current_user.permission == 2
@@ -89,23 +89,89 @@ class TStationInfoesController < ApplicationController
 
     def station_score_info
         @duan = TDuanInfo.find_by(F_name: params[:duan_name])
+        @station = TStationInfo.where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).joins(t_user_infoes: :t_record_infoes).group('t_station_info.F_name').size
+        @station_keys = @station.keys
         if params[:search].present?
             @search = TimeSearch.new(params[:search])
-            @station_90_scores = @search.scope_station_score(params[:duan_name]).where('t_record_info.F_score >= ?', 90).group('t_station_info.F_name').size
-            @station_80_scores = @search.scope_station_score(params[:duan_name]).where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90).group('t_station_info.F_name').size
-            @station_60_scores = @search.scope_station_score(params[:duan_name]).where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80).group('t_station_info.F_name').size
-            @station_60_bellow_scores = @search.scope_station_score(params[:duan_name]).where('t_record_info.F_score < ?', 60).group('t_station_info.F_name').size
+            station_90_scores = @search.scope_station_score(params[:duan_name]).where('t_record_info.F_score >= ?', 90).group('t_station_info.F_name').size
+            @station_90_scores = []
+            @station_keys.each do |key|
+              @station_90_scores << if station_90_scores.keys.include?(key)
+                                        station_90_scores[key]
+                                      else
+                                        0
+                                      end
+            end
+            station_80_scores = @search.scope_station_score(params[:duan_name]).where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90).group('t_station_info.F_name').size
+            @station_80_scores = []
+            @station_keys.each do |key|
+              @station_80_scores << if station_80_scores.keys.include?(key)
+                                        station_80_scores[key]
+                                      else
+                                        0
+                                      end
+            end
+            station_60_scores = @search.scope_station_score(params[:duan_name]).where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80).group('t_station_info.F_name').size
+            @station_60_scores = []
+            @station_keys.each do |key|
+              @station_80_scores << if station_60_scores.keys.include?(key)
+                                        station_60_scores[key]
+                                      else
+                                        0
+                                      end
+            end
+            station_60_bellow_scores = @search.scope_station_score(params[:duan_name]).where('t_record_info.F_score < ?', 60).group('t_station_info.F_name').size
+            @station_60_bellow_scores = []
+            @station_keys.each do |key|
+              @station_60_bellow_scores << if station_60_bellow_scores.keys.include?(key)
+                                        station_60_bellow_scores[key]
+                                      else
+                                        0
+                                      end
+            end
         else
-            @station_90_scores = TStationInfo.where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).joins(t_user_infoes: :t_record_infoes).datetime.where('t_record_info.F_score >= ?', 90).group('t_station_info.F_name').size
-            @station_80_scores = TStationInfo.where('t_station_info.F_duan_uuid = ?',  @duan.F_uuid).joins(t_user_infoes: :t_record_infoes).datetime.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90).group('t_station_info.F_name').size
-            @station_60_scores = TStationInfo.where('t_station_info.F_duan_uuid = ?',  @duan.F_uuid).joins(t_user_infoes: :t_record_infoes).datetime.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80).group('t_station_info.F_name').size
-            @station_60_bellow_scores = TStationInfo.where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).joins(t_user_infoes: :t_record_infoes).datetime.where('t_record_info.F_score < ?', 60).group('t_station_info.F_name').size
+            station_90_scores = TStationInfo.where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).joins(t_user_infoes: :t_record_infoes).datetime.where('t_record_info.F_score >= ?', 90).group('t_station_info.F_name').size
+            @station_90_scores = []
+            @station_keys.each do |key|
+              @station_90_scores << if station_90_scores.keys.include?(key)
+                                        station_90_scores[key]
+                                      else
+                                        0
+                                      end
+            end
+            station_80_scores = TStationInfo.where('t_station_info.F_duan_uuid = ?',  @duan.F_uuid).joins(t_user_infoes: :t_record_infoes).datetime.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90).group('t_station_info.F_name').size
+            @station_80_scores = []
+            @station_keys.each do |key|
+              @station_80_scores << if station_80_scores.keys.include?(key)
+                                        station_80_scores[key]
+                                      else
+                                        0
+                                      end
+            end
+            station_60_scores = TStationInfo.where('t_station_info.F_duan_uuid = ?',  @duan.F_uuid).joins(t_user_infoes: :t_record_infoes).datetime.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80).group('t_station_info.F_name').size
+            @station_60_scores = []
+            @station_keys.each do |key|
+              @station_80_scores << if station_60_scores.keys.include?(key)
+                                        station_60_scores[key]
+                                      else
+                                        0
+                                      end
+            end
+            station_60_bellow_scores = TStationInfo.where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).joins(t_user_infoes: :t_record_infoes).datetime.where('t_record_info.F_score < ?', 60).group('t_station_info.F_name').size
+            @station_60_bellow_scores = []
+            @station_keys.each do |key|
+              @station_60_bellow_scores << if station_60_bellow_scores.keys.include?(key)
+                                        station_60_bellow_scores[key]
+                                      else
+                                        0
+                                      end
+            end
       end
-        gon.station_key = @station_90_scores.keys
-        gon.ninefen = @station_90_scores.values
-        gon.ef = @station_80_scores.values
-        gon.sf = @station_60_scores.values
-        gon.sb = @station_60_bellow_scores.values
+        gon.station_key = @station_keys
+        gon.ninefen = @station_90_scores
+        gon.ef = @station_80_scores
+        gon.sf = @station_60_scores
+        gon.sb = @station_60_bellow_scores
     end
 
     private
