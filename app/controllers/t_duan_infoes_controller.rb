@@ -149,36 +149,171 @@ class TDuanInfoesController < ApplicationController
     def duan_score_info
         @duantype1 = TDuanInfo.where('t_duan_info.F_type= ?', 1).joins(t_user_infoes: :t_record_infoes)
         @duantype2 = TDuanInfo.where('t_duan_info.F_type= ?', 2).joins(t_user_infoes: :t_record_infoes)
+        @duan = TDuanInfo.where('t_duan_info.F_type= ?', 1).joins(t_user_infoes: :t_record_infoes).group('t_duan_info.F_name').distinct.count
+        @duan_keys = @duan.keys
+        @duan_keys2 = @duantype2.group('t_duan_info.F_name').distinct.count.keys
+
         if params[:search].present?
             @search = TimeSearch.new(params[:search])
-            @duan_90_cwscores = @search.scope_duan_score1.where('t_record_info.F_score > ?', 90).group('t_duan_info.F_name').size
-            @duan_80_cwscores = @search.scope_duan_score1.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90).group('t_duan_info.F_name').size
-            @duan_60_cwscores = @search.scope_duan_score1.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80).group('t_duan_info.F_name').size
-            @duan_60_cwbellow_scores = @search.scope_duan_score1.where('t_record_info.F_score < ?', 60).group('t_duan_info.F_name').size
-            @duan_90_zsscores = @search.scope_duan_score2.where('t_record_info.F_score > ?', 90).group('t_duan_info.F_name').size
-            @duan_80_zsscores = @search.scope_duan_score2.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90).group('t_duan_info.F_name').size
-            @duan_60_zsscores = @search.scope_duan_score2.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80).group('t_duan_info.F_name').size
-            @duan_60_zsbellow_scores = @search.scope_duan_score2.where('t_record_info.F_score < ?', 60).group('t_duan_info.F_name').size
+            duan_90_cwscores = @search.scope_duan_score1.where('t_record_info.F_score > ?', 90).group('t_duan_info.F_name').size
+            @duan_90_cwscores = []
+            @duan_keys.each do |key|
+              @duan_90_cwscores << if duan_90_cwscores.keys.include?(key)
+                                    duan_90_cwscores[key]
+                                  else
+                                    0
+                                  end
+            end
+            duan_80_cwscores = @search.scope_duan_score1.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90).group('t_duan_info.F_name').size
+            @duan_80_cwscores = []
+            @duan_keys.each do |key|
+              @duan_80_cwscores << if duan_80_cwscores.keys.include?(key)
+                                    duan_80_cwscores[key]
+                                  else
+                                    0
+                                  end
+            end
+            duan_60_cwscores = @search.scope_duan_score1.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80).group('t_duan_info.F_name').size
+            @duan_60_cwscores = []
+            @duan_keys.each do |key|
+              @duan_60_cwscores << if duan_60_cwscores.keys.include?(key)
+                                    duan_60_cwscores[key]
+                                  else
+                                    0
+                                  end
+            end
+            duan_60_cwbellow_scores = @search.scope_duan_score1.where('t_record_info.F_score < ?', 60).group('t_duan_info.F_name').size
+            @duan_60_cwbellow_scores = []
+            @duan_keys.each do |key|
+              @duan_60_cwbellow_scores << if duan_60_cwbellow_scores.keys.include?(key)
+                                          duan_60_cwbellow_scores
+                                        else
+                                          0
+                                        end
+            end
+            #下面这段是直属站的柱状图信息
+            duan_90_zsscores = @search.scope_duan_score2.where('t_record_info.F_score > ?', 90).group('t_duan_info.F_name').size
+            @duan_90_zsscores = []
+            @duan_keys2.each do |key|
+              @duan_90_zsscores << if duan_90_zsscores.keys.include?(key)
+                                    duan_90_zsscores[key]
+                                  else
+                                    0
+                                  end
+            end
+            duan_80_zsscores = @search.scope_duan_score2.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90).group('t_duan_info.F_name').size
+            @duan_80_zsscores = []
+            @duan_keys2.each do |key|
+              @duan_80_zsscores << if duan_80_zsscores.keys.include?(key)
+                                    duan_80_zsscores[key]
+                                  else
+                                    0
+                                  end
+            end
+            duan_60_zsscores = @search.scope_duan_score2.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80).group('t_duan_info.F_name').size
+            @duan_60_zsscores = []
+            @duan_keys2.each do |key|
+              @duan_60_zsscores << if duan_60_zsscores.keys.include?(key)
+                                    duan_60_zsscores[key]
+                                  else
+                                    0
+                                  end
+            end
+            duan_60_zsbellow_scores = @search.scope_duan_score2.where('t_record_info.F_score < ?', 60).group('t_duan_info.F_name').size
+            @duan_60_zsbellow_scores = []
+            @duan_keys2.each do |key|
+              @duan_60_zsbellow_scores << if duan_60_zsbellow_scores.keys.include?(key)
+                                          duan_60_zsbellow_scores[key]
+                                        else
+                                          0
+                                        end
+            end
         else
-            @duan_90_cwscores = @duantype1.where('t_record_info.F_score > ?', 90).datetime.group('t_duan_info.F_name').size
-            @duan_80_cwscores = @duantype1.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90).datetime.group('t_duan_info.F_name').size
-            @duan_60_cwscores = @duantype1.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80).datetime.group('t_duan_info.F_name').size
-            @duan_60_cwbellow_scores = @duantype1.where('t_record_info.F_score < ?', 60).datetime.group('t_duan_info.F_name').size
-            @duan_90_zsscores = @duantype2.where('t_record_info.F_score > ?', 90).datetime.group('t_duan_info.F_name').size
-            @duan_80_zsscores = @duantype2.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90).datetime.group('t_duan_info.F_name').size
-            @duan_60_zsscores = @duantype2.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80).datetime.group('t_duan_info.F_name').size
-            @duan_60_zsbellow_scores = @duantype2.where('t_record_info.F_score < ?', 60).datetime.group('t_duan_info.F_name').size
+            duan_90_cwscores = @duantype1.where('t_record_info.F_score > ?', 90).datetime.group('t_duan_info.F_name').size
+            @duan_90_cwscores = []
+            @duan_keys.each do |key|
+              @duan_90_cwscores << if duan_90_cwscores.keys.include?(key)
+                                    duan_90_cwscores[key]
+                                  else
+                                    0
+                                  end
+            end
+            duan_80_cwscores = @duantype1.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90).datetime.group('t_duan_info.F_name').size
+            @duan_80_cwscores = []
+            @duan_keys.each do |key|
+              @duan_80_cwscores << if duan_80_cwscores.keys.include?(key)
+                                    duan_80_cwscores[key]
+                                  else
+                                    0
+                                  end
+            end
+            duan_60_cwscores = @duantype1.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80).datetime.group('t_duan_info.F_name').size
+            @duan_60_cwscores = []
+            @duan_keys.each do |key|
+              @duan_60_cwscores << if duan_60_cwscores.keys.include?(key)
+                                    duan_60_cwscores[key]
+                                  else
+                                    0
+                                  end
+            end
+            duan_60_cwbellow_scores = @duantype1.where('t_record_info.F_score < ?', 60).datetime.group('t_duan_info.F_name').size
+            @duan_60_cwbellow_scores = []
+            @duan_keys.each do |key|
+              @duan_60_cwbellow_scores << if duan_60_cwbellow_scores.keys.include?(key)
+                                          duan_60_cwbellow_scores[key]
+                                        else
+                                          0
+                                        end
+            end
+            #下面这段是直属站的柱状图信息
+            duan_90_zsscores = @duantype2.where('t_record_info.F_score > ?', 90).datetime.group('t_duan_info.F_name').size
+            @duan_90_zsscores = []
+            @duan_keys2.each do |key|
+              @duan_90_zsscores << if duan_90_zsscores.keys.include?(key)
+                                    duan_90_zsscores[key]
+                                  else
+                                    0
+                                  end
+            end
+            duan_80_zsscores = @duantype2.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90).datetime.group('t_duan_info.F_name').size
+            @duan_80_zsscores = []
+            @duan_keys2.each do |key|
+              @duan_80_zsscores << if duan_80_zsscores.keys.include?(key)
+                                    duan_80_zsscores[key]
+                                  else
+                                    0
+                                  end
+            end
+            duan_60_zsscores = @duantype2.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80).datetime.group('t_duan_info.F_name').size
+            @duan_60_zsscores = []
+            @duan_keys2.each do |key|
+              @duan_60_zsscores << if duan_60_zsscores.keys.include?(key)
+                                    duan_60_zsscores[key]
+                                  else
+                                    0
+                                  end
+            end
+            duan_60_zsbellow_scores = @duantype2.where('t_record_info.F_score < ?', 60).datetime.group('t_duan_info.F_name').size
+            @duan_60_zsbellow_scores = []
+            @duan_keys2.each do |key|
+              @duan_60_zsbellow_scores << if duan_60_zsbellow_scores.keys.include?(key)
+                                          duan_60_zsbellow_scores[key]
+                                        else
+                                          0
+                                        end
+            end
       end
-        gon.duan_key = @duan_90_cwscores.keys
-        gon.ninefen = @duan_90_cwscores.values
-        gon.ef = @duan_80_cwscores.values
-        gon.sf = @duan_60_cwscores.values
-        gon.sb = @duan_60_cwbellow_scores.values
-        gon.zsduan_key = @duan_90_zsscores.keys
-        gon.zsnf = @duan_90_zsscores.values
-        gon.zsef = @duan_80_zsscores.values
-        gon.zssf = @duan_60_zsscores.values
-        gon.zssb = @duan_60_zsbellow_scores.values
+        gon.duan_key = @duan_keys
+        gon.ninefen = @duan_90_cwscores
+        gon.ef = @duan_80_cwscores
+        gon.sf = @duan_60_cwscores
+        gon.sb = @duan_60_cwbellow_scores
+        #下列数据为直属站的柱状图
+        gon.zsduan_key = @duan_keys2
+        gon.zsnf = @duan_90_zsscores
+        gon.zsef = @duan_80_zsscores
+        gon.zssf = @duan_60_zsscores
+        gon.zssb = @duan_60_zsbellow_scores
     end
 
     def duan_program_info
