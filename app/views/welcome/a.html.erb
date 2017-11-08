@@ -1,0 +1,28 @@
+<script type="text/javascript">
+var arr2 = new Array(4);
+arr2["数码设备"] = new Array("数码相机","打印机");
+arr2["家用电器"] = new Array("电视机","电冰箱");
+arr2["礼品工艺"] = new Array("鲜花","彩带");
+function removeinfo(classMenu){//将下拉框各选项清空
+ for (var i=0; i < classMenu.options.length; i++){
+ classMenu.options[i]=null;
+ }
+}
+function changeMenu(classList,classMenu){
+ removeinfo(classMenu)
+ for (var i=0; i < classList.length; i++){
+ classMenu[i]=new Option(classList[i],classList[i]);
+ }
+}
+</script>
+
+
+<select name="类别" id="类别" onChange="changeMenu(arr2[document.form1.类别.options[document.form1.类别.selectedIndex].text],document.form1.分类);">
+  <option selected>数码设备</option>
+  <option>家用电器</option>
+  <option>礼品工艺</option>
+  </select>
+  <select name="分类" id="分类">
+  <option>数码相机</option>
+  <option>打印机</option>
+  </select></td>

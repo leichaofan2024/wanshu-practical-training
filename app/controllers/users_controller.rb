@@ -19,10 +19,19 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    if @user.save
-      redirect_to users_path
-    else
-      render :new
+    if current_user.premission == 1
+      if @user.save
+        redirect_to ju_users_path
+      else
+        render :back
+      end
+    end
+    if current_user.premission == 2
+      if @user.save
+        redirect_to duan_users_path
+      else
+        render :back
+      end
     end
   end
 
@@ -48,6 +57,19 @@ class UsersController < ApplicationController
 
   def duan_users
     @users = User.where(:orgnize =>TDuanInfo.find_by(:F_name => current_user.orgnize).t_station_infoes.pluck(:F_name))
+  end
+
+  def ju_users
+    @users = User.where(:orgnize => TDuanInfo.duan_orgnization + TStationInfo.station_orgnization.pluck(:F_name))
+  end
+
+  def new_duan
+    @user = User.new
+  end
+
+  def new_duan_station
+    @user = User.new
+    @duans = TDuanInfo.duan_orgnization
   end
 
   private
