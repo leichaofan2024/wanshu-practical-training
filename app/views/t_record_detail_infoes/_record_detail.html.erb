@@ -1,0 +1,38 @@
+<table class="table table-border">
+  <thead>
+    <tr>
+      <th>序号</th>
+      <th>老师</th>
+      <th>考核项点</th>
+      <th>扣分项点</th>
+      <th>得分</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% i = 0 %>
+    <% @t_record_detail_infoes.each do |r| %>
+    <% i = i+1 %>
+    <tr>
+      <td><%= i %></td>
+      <td>
+        <% if @teacher.present? %>
+          <%= @teacher.F_name %>
+        <% else %>
+          <%= "无教师信息"%>
+        <% end %>
+      </td>
+      <td>
+          <%= r.t_program_info.F_name %>
+      </td>
+
+      <td>
+          <% r.t_detail_reason_infoes.each do |reason| %>
+            <%= reason.t_reason_info.F_name %> 扣分：<%= reason.F_score %><br>
+          <% end %>
+      </td>
+      <td><%= r.F_score %></td>
+
+    </tr>
+    <% end %>
+  </tbody>
+</table>

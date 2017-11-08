@@ -50,6 +50,7 @@ Rails.application.routes.draw do
 
     collection do
       get :record_details
+      get :record_score_details
     end
   end
 
