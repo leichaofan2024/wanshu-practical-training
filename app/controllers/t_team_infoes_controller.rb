@@ -91,6 +91,7 @@ class TTeamInfoesController < ApplicationController
         @duan = TDuanInfo.find_by(F_name: params[:duan_name])
         @station = TStationInfo.find_by(F_name: params[:station_name])
         @team = TTeamInfo.where(F_station_uuid: @station.F_uuid).find_by(F_name: params[:team_name])
+        @team_keys = TTeamInfo.where('t_team_info.F_station_uuid = ?', @station.F_uuid).joins(t_user_infoes: :t_record_infoes).group('t_team_info.F_name').size.keys
         if params[:search].present?
               @search = TimeSearch.new(params[:search])
           if params[:team_name].present?
@@ -98,10 +99,42 @@ class TTeamInfoesController < ApplicationController
           else
               @student_ck = @search.scope_student_ck1(@station).select(:F_name, :F_id,:F_work_uuid,:F_team_uuid,:F_score)
           end
-            @team_90_scores = @search.scope_team_score(@station).where('t_record_info.F_score >= ?', 90).group('t_team_info.F_name').size
-            @team_80_scores = @search.scope_team_score(@station).where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90).group('t_team_info.F_name').size
-            @team_60_scores = @search.scope_team_score(@station).where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80).group('t_team_info.F_name').size
-            @team_60_bellow_scores = @search.scope_team_score(@station).where('t_record_info.F_score < ?', 60).group('t_team_info.F_name').size
+            team_90_scores = @search.scope_team_score(@station).where('t_record_info.F_score >= ?', 90).group('t_team_info.F_name').size
+            @team_90_scores = []
+              @team_keys.each do |key|
+                @team_90_scores << if team_90_scores.keys.include?(key)
+                                      team_90_scores[key]
+                                    else
+                                      0
+                                    end
+            end
+            team_80_scores = @search.scope_team_score(@station).where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90).group('t_team_info.F_name').size
+            @team_80_scores = []
+              @team_keys.each do |key|
+                @team_80_scores << if team_80_scores.keys.include?(key)
+                                      team_80_scores[key]
+                                    else
+                                      0
+                                    end
+            end
+            team_60_scores = @search.scope_team_score(@station).where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80).group('t_team_info.F_name').size
+            @team_60_scores = []
+              @team_keys.each do |key|
+                @team_60_scores << if team_60_scores.keys.include?(key)
+                                      team_60_scores[key]
+                                    else
+                                      0
+                                    end
+            end
+            team_60_bellow_scores = @search.scope_team_score(@station).where('t_record_info.F_score < ?', 60).group('t_team_info.F_name').size
+            @team_60_bellow_scores = []
+              @team_keys.each do |key|
+                @team_60_bellow_scores << if team_60_bellow_scores.keys.include?(key)
+                                      team_60_bellow_scores[key]
+                                    else
+                                      0
+                                    end
+            end
             #下面信息为成绩页面中，按照成绩进行筛选所用信息。
             @team_score_90 = @student_ck.where('t_record_info.F_score >= ?', 90)
             @team_score_80 = @student_ck.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90)
@@ -117,16 +150,48 @@ class TTeamInfoesController < ApplicationController
               @team_score_80 = @student_ck.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90)
               @team_score_60 = @student_ck.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80)
               @team_score_60_bellow = @student_ck.where('t_record_info.F_score < ?', 60)
-          #下面这一层，为饼图中所用信息。
-            @team_90_scores = TTeamInfo.where('t_team_info.F_station_uuid = ?', @station.F_uuid).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_score >= ?', 90).datetime.group('t_team_info.F_name').size
-            @team_80_scores = TTeamInfo.where('t_team_info.F_station_uuid = ?', @station.F_uuid).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_score >= ? AND t_record_info.F_score < ?', 80, 90).datetime.group('t_team_info.F_name').size
-            @team_60_scores = TTeamInfo.where('t_team_info.F_station_uuid = ?', @station.F_uuid).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_score >= ? AND t_record_info.F_score < ?', 60, 80).datetime.group('t_team_info.F_name').size
-            @team_60_bellow_scores = TTeamInfo.where('t_team_info.F_station_uuid = ?', @station.F_uuid).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_score < ?', 60).datetime.group('t_team_info.F_name').size
+          #下面这一层，为柱状图中所用信息。
+            team_90_scores = TTeamInfo.where('t_team_info.F_station_uuid = ?', @station.F_uuid).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_score >= ?', 90).datetime.group('t_team_info.F_name').size
+            @team_90_scores = []
+              @team_keys.each do |key|
+                @team_90_scores << if team_90_scores.keys.include?(key)
+                                      team_90_scores[key]
+                                    else
+                                      0
+                                    end
+            end
+            team_80_scores = TTeamInfo.where('t_team_info.F_station_uuid = ?', @station.F_uuid).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_score >= ? AND t_record_info.F_score < ?', 80, 90).datetime.group('t_team_info.F_name').size
+            @team_80_scores = []
+              @team_keys.each do |key|
+                @team_80_scores << if team_80_scores.keys.include?(key)
+                                      team_80_scores[key]
+                                    else
+                                      0
+                                    end
+            end
+            team_60_scores = TTeamInfo.where('t_team_info.F_station_uuid = ?', @station.F_uuid).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_score >= ? AND t_record_info.F_score < ?', 60, 80).datetime.group('t_team_info.F_name').size
+            @team_60_scores = []
+              @team_keys.each do |key|
+                @team_60_scores << if team_60_scores.keys.include?(key)
+                                      team_60_scores[key]
+                                    else
+                                      0
+                                    end
+            end
+            team_60_bellow_scores = TTeamInfo.where('t_team_info.F_station_uuid = ?', @station.F_uuid).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_score < ?', 60).datetime.group('t_team_info.F_name').size
+            @team_60_bellow_scores = []
+              @team_keys.each do |key|
+                @team_60_bellow_scores << if team_60_bellow_scores.keys.include?(key)
+                                      team_60_bellow_scores[key]
+                                    else
+                                      0
+                                    end
+            end
         end
-        gon.team_key = @team_90_scores.keys
-        gon.ninefen = @team_90_scores.values
-        gon.ef = @team_80_scores.values
-        gon.sf = @team_60_scores.values
-        gon.sb = @team_60_bellow_scores.values
+        gon.team_key = @team_keys
+        gon.ninefen = @team_90_scores
+        gon.ef = @team_80_scores
+        gon.sf = @team_60_scores
+        gon.sb = @team_60_bellow_scores
     end
 end
