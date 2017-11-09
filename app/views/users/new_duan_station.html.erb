@@ -1,16 +1,11 @@
-<h2>新增站段角色</h2>
-
-<%= simple_form_for @user do |f| %>
-
-  <%= f.input :role %>
-
-  <%= form_tag '', {method: 'post'} do %>
-  <%= select_tag(:duan, options_from_collection_for_select(@duans,'F_uuid','F_name')) %>
-  <%= select_tag(:station, "<option value=\"0\">--请选择上级--</option>") %>
-  <% end %><br>
-
-  <%= f.input :permission,collection: [3], prompt: "请选择权限"%>
-  <%= f.input :password %>
-  <%= f.input :password_confirmation%>
-  <%= f.submit "提交" ,data: {disable_with: "提交中..."} %>
-<% end %>
+<div class="pie_duan_frame">
+  <h2>新增车站角色</h2>
+  <%= simple_form_for @user do |f| %>
+    <%= f.input :role %>
+    <%= f.input :orgnize, collection: TStationInfo.station_orgnization.pluck(:F_name) %>
+    <%= f.input :permission,collection: [3], prompt: "请选择权限"%>
+    <%= f.input :password %>
+    <%= f.input :password_confirmation%>
+    <%= f.submit "提交" ,data: {disable_with: "提交中..."} %>
+  <% end %>
+</div>

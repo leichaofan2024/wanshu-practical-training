@@ -1,4 +1,0 @@
-<%= form_tag '', {id: 'stationsQuery', method: 'post'} do %>
-<%= select_tag(:duan, options_from_collection_for_select(@duans,'F_uuid','F_name'), :onchange => "get_options(this.value)") %>
-<%= select_tag(:station, "<option value=\"0\">--请选择上级--</option>") %>
-<% end %><br>

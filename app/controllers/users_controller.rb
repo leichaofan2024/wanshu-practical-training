@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-
+layout "notime_frame"
   def index
     if current_user.permission ==1
       @users = User.all
@@ -19,14 +19,13 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    if current_user.premission == 1
+    if current_user.permission == 1
       if @user.save
         redirect_to ju_users_path
       else
         render :back
       end
-    end
-    if current_user.premission == 2
+    else current_user.permission == 2
       if @user.save
         redirect_to duan_users_path
       else
@@ -42,7 +41,11 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     if @user.update(user_params)
-      redirect_to users_path
+      if current_user.permission == 1
+        redirect_to ju_users_path
+      elsif current_user.permission == 2
+        redirect_to duan_users_path
+      end
     else
       render :edit
     end
@@ -52,7 +55,11 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @user.destroy
     flash[:alert] = "已删除该角色"
-    redirect_to users_path
+    if current_user.permission == 1
+      redirect_to ju_users_path
+    elsif current_user.permission == 2
+      redirect_to duan_users_path
+    end
   end
 
   def duan_users
@@ -60,7 +67,7 @@ class UsersController < ApplicationController
   end
 
   def ju_users
-    @users = User.where(:orgnize => TDuanInfo.duan_orgnization + TStationInfo.station_orgnization.pluck(:F_name))
+    @users = User.where(:orgnize => TDuanInfo.duan_orgnization.pluck(:F_name) + TStationInfo.station_orgnization.pluck(:F_name))
   end
 
   def new_duan
