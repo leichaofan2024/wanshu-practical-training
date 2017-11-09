@@ -12,7 +12,14 @@ Rails.application.routes.draw do
     get '/team_ck', to: 'welcome#team_ck'
     get '/student_ck', to: 'welcome#student_ck'
     get '/program_ck', to: 'welcome#program_ck'
+    get '/duan_users', to: 'users#duan_users'
+    get '/ju_users', to: 'users#ju_users'
+    get '/new_duan', to: 'users#new_duan'
+    get '/new_station', to: 'users#new_station'
+    get '/new_duan_station', to: 'users#new_duan_station'
+
     resources :users
+
     resources :t_duan_infoes do
         collection do
             get :duan_student_info # 参考学生饼图

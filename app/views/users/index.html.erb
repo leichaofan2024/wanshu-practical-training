@@ -1,7 +1,0 @@
-<h4><%= link_to("新建",new_user_path)%></h4>
-<br>
-<% if @users.present? %>
-  <% @users.each do |u| %>
-    <%= u.role%><br>
-  <% end %>
-<% end %>

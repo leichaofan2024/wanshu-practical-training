@@ -1,0 +1,20 @@
+<div class="pie_duan_frame">
+  <h2>编辑角色</h2>
+  <%= simple_form_for @user do |f| %>
+  <%= f.input :role %>
+  <% if @user.permission == 2 %>
+    <%= f.input :orgnize, collection: TDuanInfo.duan_orgnization.pluck(:F_name) %>
+    <%= f.input :permission,collection: [2]%>
+  <% elsif @user.permission == 3 %>
+    <% if current_user.permission == 1 %>
+      <%= f.input :orgnize, collection: TStationInfo.station_orgnization.pluck(:F_name) %>
+    <% elsif current_user.permission == 2 %>
+      <%= f.input :orgnize, collection: TStationInfo.where(:F_duan_uuid => TDuanInfo.find_by(:F_name => current_user.orgnize).F_uuid).pluck(:F_name) %>
+    <% end %>
+    <%= f.input :permission,collection: [3]%>
+  <% end %>
+  <%= f.input :password %>
+  <%= f.input :password_confirmation%>
+  <%= f.submit "提交" ,data: {disable_with: "提交中..."} %>
+  <% end %>
+</div>

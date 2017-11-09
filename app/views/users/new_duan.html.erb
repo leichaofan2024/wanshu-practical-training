@@ -1,0 +1,11 @@
+<div class="pie_duan_frame">
+  <h2>新增站段角色</h2>
+  <%= simple_form_for @user do |f| %>
+    <%= f.input :role %>
+    <%= f.input :orgnize, collection: TDuanInfo.duan_orgnization.pluck(:F_name) %>
+    <%= f.input :permission,collection: [2]%>
+    <%= f.input :password %>
+    <%= f.input :password_confirmation%>
+    <%= f.submit "提交" ,data: {disable_with: "提交中..."} %>
+  <% end %>
+</div>
