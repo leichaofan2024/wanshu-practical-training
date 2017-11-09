@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171106065013) do
+ActiveRecord::Schema.define(version: 20171109014956) do
 
   create_table "attachment", id: :bigint, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", comment: "系统附件表" do |t|
     t.string   "file_name",          limit: 50,                                       null: false, comment: "文件名称"
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(version: 20171106065013) do
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.json     "call_board_attachments"
+    t.integer  "user_id"
   end
 
   create_table "monitor_receiver_log", id: :bigint, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", comment: "访问服务监控日志表" do |t|

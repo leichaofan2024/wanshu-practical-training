@@ -15,6 +15,7 @@ class CallBoardsController < ApplicationController
 
   def create
     @call_board = CallBoard.new(call_board_params)
+    @call_board.user_id = current_user.id
     if @call_board.save
       redirect_to call_boards_path
     else
@@ -45,7 +46,7 @@ class CallBoardsController < ApplicationController
 
 
   def call_board_params
-    params.require(:call_board).permit(:name,:content,{call_board_attachments: []})
+    params.require(:call_board).permit(:name,:content,:user_id,{call_board_attachments: []})
   end
 
 
