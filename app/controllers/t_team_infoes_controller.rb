@@ -136,20 +136,20 @@ class TTeamInfoesController < ApplicationController
                                     end
             end
             #下面信息为成绩页面中，按照成绩进行筛选所用信息。
-            @team_score_90 = @student_ck.where('t_record_info.F_score >= ?', 90)
-            @team_score_80 = @student_ck.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90)
-            @team_score_60 = @student_ck.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80)
-            @team_score_60_bellow = @student_ck.where('t_record_info.F_score < ?', 60)
+            @team_score_90 = @student_ck.where('t_record_info.F_score >= ?', 90).sort_by{|s| s.F_score}.reverse
+            @team_score_80 = @student_ck.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90).sort_by{|s| s.F_score}.reverse
+            @team_score_60 = @student_ck.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80).sort_by{|s| s.F_score}.reverse
+            @team_score_60_bellow = @student_ck.where('t_record_info.F_score < ?', 60).sort_by{|s| s.F_score}.reverse
         else
           if params[:team_name].present?
               @student_ck = TUserInfo.student_all.joins(:t_team_info, :t_record_infoes).where('t_team_info.F_uuid =? ', @team.F_uuid).datetime.select(:F_name, :F_id,:F_work_uuid,:F_team_uuid,:F_score)
           else
               @student_ck = TUserInfo.student_all.joins(:t_station_info, :t_record_infoes).where('t_station_info.F_uuid': @station.F_uuid).datetime.select(:F_name, :F_id,:F_work_uuid,:F_team_uuid,:F_score)
           end
-              @team_score_90 = @student_ck.where('t_record_info.F_score >= ?', 90)
-              @team_score_80 = @student_ck.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90)
-              @team_score_60 = @student_ck.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80)
-              @team_score_60_bellow = @student_ck.where('t_record_info.F_score < ?', 60)
+              @team_score_90 = @student_ck.where('t_record_info.F_score >= ?', 90).sort_by{|s| s.F_score}.reverse
+              @team_score_80 = @student_ck.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90).sort_by{|s| s.F_score}.reverse
+              @team_score_60 = @student_ck.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80).sort_by{|s| s.F_score}.reverse
+              @team_score_60_bellow = @student_ck.where('t_record_info.F_score < ?', 60).sort_by{|s| s.F_score}.reverse 
           #下面这一层，为柱状图中所用信息。
             team_90_scores = TTeamInfo.where('t_team_info.F_station_uuid = ?', @station.F_uuid).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_score >= ?', 90).datetime.group('t_team_info.F_name').size
             @team_90_scores = []
