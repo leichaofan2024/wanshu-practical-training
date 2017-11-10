@@ -23,7 +23,9 @@
 
       		<li><a href="/t_duan_infoes">组织机构</a></li>
           <li><a href="/call_boards">公告</a></li>
-					<li><a href="/duan_call_boards">站段公告</a></li>
+					<% if current_user.permission == 1%>
+					  <li><a href="/duan_call_boards">站段公告</a></li>
+					<% end %>
     		</ul>
 
 
