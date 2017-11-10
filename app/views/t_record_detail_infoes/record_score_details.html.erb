@@ -7,7 +7,7 @@
     <%= link_to(@station.F_name, team_score_info_t_team_infoes_path("utf8": params[:utf8], "search": params[:search], "commit": params[:commit], 'duan_name': @duan.F_name, 'station_name': @station.F_name)) %>
     <% else %>
     <a href="/">首页</a> > <a href="/t_duan_infoes/duan_score_info">各站段参考情况</a> > <a href="/t_station_infoes/station_score_info?duan_name=<%= @duan.F_name%>"><%= @duan.F_name %></a> > <a href="/t_team_infoes/team_score_info?duan_name=<%=@duan.F_name%>&station_name=<%=@station.F_name%>"><%= @station.F_name%></a> >
-    <a href="/t_record_infoes/student_records?duan_name=<%=@duan.F_name%>&station_name=<%=@station.F_name%>&team_name=
+    <a href="/t_record_infoes/score_records?duan_name=<%=@duan.F_name%>&station_name=<%=@station.F_name%>&team_name=
       <% if @team.present? %>
         <%=@team.F_name%>
       <% end %>
