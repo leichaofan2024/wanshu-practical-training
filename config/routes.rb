@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     get '/new_duan', to: 'users#new_duan'
     get '/new_station', to: 'users#new_station'
     get '/new_duan_station', to: 'users#new_duan_station'
+    get '/duan_call_boards', to: 'call_boards#duan_call_boards'
 
     resources :users
 

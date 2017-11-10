@@ -5,6 +5,10 @@ class CallBoardsController < ApplicationController
     @call_boards = CallBoard.all.order("id DESC")
   end
 
+  def duan_call_boards
+    @call_boards = CallBoard.joins(:user).where("users.permission" => 2).order("id DESC").group_by{|c| c.user.orgnize}
+  end
+
   def show
     @call_board = CallBoard.find(params[:id])
   end
