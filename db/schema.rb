@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171109014956) do
+ActiveRecord::Schema.define(version: 20171110101520) do
 
   create_table "attachment", id: :bigint, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", comment: "系统附件表" do |t|
     t.string   "file_name",          limit: 50,                                       null: false, comment: "文件名称"
@@ -24,6 +24,13 @@ ActiveRecord::Schema.define(version: 20171109014956) do
     t.bigint   "update_userid",                                                                    comment: "修改记录用户id"
     t.datetime "update_time",                                                         null: false, comment: "记录最后修改时间"
     t.index ["file_name"], name: "INX_ATTACHMENT_FILE_NAME", unique: true, using: :btree
+  end
+
+  create_table "browses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "user_id"
+    t.integer  "call_board_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   create_table "call_boards", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
