@@ -1,3 +1,11 @@
+<div class="call-board-show-head">
+  <p>共<%= @browses.size%>位管理员浏览了本公告:
+    <% if current_user.permission ==1 %>
+      <%= link_to("查看 >>",browses_path(:call_board_id => @call_board.id))%>
+    <% end %>
+  </p>
+</div>
+<hr>
 <div class="call-board-show">
   <h3><%= @call_board.name %></h3>
   <p><%= simple_format(@call_board.content) %></p>

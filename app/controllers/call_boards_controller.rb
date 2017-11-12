@@ -12,7 +12,7 @@ class CallBoardsController < ApplicationController
   def show
     @call_board = CallBoard.find(params[:id])
     Browse.create(:user_id => current_user.id,:call_board_id => @call_board.id)
-    @browses = @call_board.browses.group(:user_id)
+    @browses = @call_board.browses.group(:user_id).count
   end
 
   def new

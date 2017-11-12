@@ -1,0 +1,29 @@
+<div class="browse-index-head">
+  <a href="/call_boards/<%= @call_board.id%>"><< 返回</a>
+</div>
+<table class="table">
+  <thead>
+    <tr>
+      <th>编号</th>
+      <th>用户名</th>
+      <th>所属机构</th>
+      <th>浏览次数</th>
+      <th>最近浏览时间</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% i = 0 %>
+    <% @users.each do |role, browses|%>
+    <% i+=1%>
+    <tr>
+      <td><%= i%></td>
+      <td><%= role%></td>
+      <td>
+        <%= browses.first.user.orgnize%>
+      </td>
+      <td><%= browses.count%></td>
+      <td><%= browses.first.created_at%></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
