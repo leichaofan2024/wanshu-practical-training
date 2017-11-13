@@ -22,7 +22,7 @@
           <% i= i+1%>
           <tr>
             <td><%= i %></td>
-            <td><%= link_to(c.name, call_board_path(c)) %></td>
+            <td><%= link_to(c.name, call_board_path(c)) %>  <span style="color:red;margin-left:10px;"><%= if_browsed?(current_user,c)%></span></td>
             <td><%= c.created_at %></td>
             <% if current_user.permission ==1%>
               <td>

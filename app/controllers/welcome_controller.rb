@@ -1,5 +1,5 @@
 class WelcomeController < ApplicationController
-
+  before_action :all_browsed?
   def ju_overview
     if current_user.permission == 2
       redirect_to duan_overview_path
