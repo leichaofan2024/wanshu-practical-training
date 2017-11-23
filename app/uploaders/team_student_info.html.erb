@@ -1,0 +1,306 @@
+<div class= "pie_duan_frame">
+  <div class="clear">
+    <% if params[:search].present? %>
+    <a href="/">首页</a> > <%= link_to("各站段参考情况", duan_student_info_t_duan_infoes_path("utf8": params[:utf8], "search": params[:search], "commit": params[:commit])) %> >
+    <%= link_to(@duan.F_name, station_student_info_t_station_infoes_path("utf8": params[:utf8], "search": params[:search], "commit": params[:commit], 'duan_name': @duan.F_name)) %> > <%= @station.F_name%>
+    <% else %>
+    <a href="/">首页</a> > <a href="/t_duan_infoes/duan_student_info">各站段参考情况</a> > <a href="/t_station_infoes/station_student_info?duan_name=<%= @duan.F_name%>"><%= @duan.F_name %></a> > <%= @station.F_name%>
+    <% end %>
+  </div>
+  <div class="row">
+    <div class="pull-right range-query">
+      <div class="searchtime">时间：</div>
+      <div class="searchtime">
+        <%= form_tag team_student_info_t_team_infoes_path, method: :get do %>
+          <%= text_field_tag 'search[date_from]'%>
+          <%= text_field_tag 'search[date_to]' %>
+          <%= hidden_field_tag :duan_name, params[:duan_name]%>
+          <%= hidden_field_tag :station_name, params[:station_name]%>
+          <%= submit_tag "搜索", id:"time_id",class: "btn search-button"%>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <script src="/assets/echarts.min.js"></script>
+    <div class="team_chart_frame" id="main"></div>
+    <script type="text/javascript">
+      // 基于准备好的dom，初始化echarts实例
+      var myChart = echarts.init(document.getElementById('main'));
+
+      // 指定图表的配置项和数据
+      var option = {
+            title: {
+                text: '参考数据分析'
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: { // 坐标轴指示器，坐标轴触发有效
+                    type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+                }
+            },
+            legend: {
+                data: ['未考人数', '参考人数'],
+                align: 'right',
+                right: 10
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                y2:120,
+                containLabel: true
+            },
+            xAxis: [{
+                type: 'category',
+                splitLine: {
+                  show: false
+              },
+              axisTick: {
+                  show: false
+              },
+              splitArea: {
+                  show: false
+              },
+              axisLabel: {
+                  interval: 0,
+                  show: true,
+                  splitNumber: 15,
+                  textStyle: {
+                      fontFamily: "微软雅黑",
+                      fontSize: 14
+                  }
+                },
+                data: gon.key
+            }],
+            yAxis: [{
+                type: 'value',
+                name: '人数',
+                axisLabel: {
+                    formatter: '{value}'
+                }
+            }],
+            series: [{
+                name: '参考人数',
+                type: 'bar',
+                stack: "未考人数",
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'insideRight'
+                    }
+                },
+                data: gon.ckvalue
+            }, {
+                name: '未考人数',
+                type: 'bar',
+                stack: "未考人数",
+                barMaxWidth: 50,
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'insideRight'
+                    }
+                },
+                data: gon.wkvalue
+            }]
+        };
+
+
+              // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+        <% if params[:search].present? %>
+        myChart.on('click', function (params) {
+          window.location.assign('<%= team_student_info_t_team_infoes_path('duan_name': params[:duan_name], 'station_name': params[:station_name], "utf8": params[:utf8], "search": params[:search], "commit": params[:commit])%>&team_name=' + params.name);
+        });
+        <% else %>
+        myChart.on('click', function (params) {
+          window.location.assign('<%= team_student_info_t_team_infoes_path('duan_name': params[:duan_name], 'station_name': params[:station_name])%>&team_name=' + params.name);
+        });
+        <% end %>
+    </script>
+
+
+  <div class="team_student_frame">
+    <h4>参加考试的考生</h4>
+
+    <table class="table table-border">
+      <thead>
+        <tr>
+          <th>姓名</th>
+          <th>职务</th>
+          <th>详情</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if params[:team_name].present? %>
+          <% @student_ck.each do |s| %>
+            <tr>
+              <td><%= s.F_name %></td>
+              <td>
+                <% if s.t_team_info.present? %>
+                  <%= s.t_team_info.F_name %>:
+                <% else %>
+                  <span style="color:red;">未录入班组信息:</span>
+                <% end %>
+                <% if s.F_work_uuid.present? %>
+                  <%= s.t_work_info.F_name %>
+                <% else %>
+                  <span style="color:red;">未录入职务信息</span>
+                <% end %>
+              </td>
+              <% if params[:search].present? %>
+              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id, "utf8": params[:utf8], "search": params[:search], "commit": params[:commit]))%></td>
+              <% else %>
+              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id))%></td>
+              <% end %>
+            </tr>
+          <% end %>
+        <% else %>
+          <% @student_ck.each do |s| %>
+            <tr>
+              <td><%= s.F_name %></td>
+              <td>
+                <% if s.t_team_info.present? %>
+                  <%= s.t_team_info.F_name %>:
+                <% else %>
+                  <span style="color:red;">未录入班组信息:</span>
+                <% end %>
+                <% if s.F_work_uuid.present? %>
+                  <%= s.t_work_info.F_name %>
+                <% else %>
+                  <span style="color:red;">未录入职务信息</span>
+                <% end %>
+              </td>
+              <% if params[:search].present? %>
+              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:user_name => s.F_name, :user_id => s.F_id, "utf8": params[:utf8],"search": params[:search],"commit": params[:commit]))%></td>
+              <% else %>
+              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:user_name => s.F_name, :user_id => s.F_id))%></td>
+              <% end %>
+            </tr>
+          <% end %>
+        <% end %>
+
+      </tbody>
+    </table>
+    <h4>未参加考试的考生</h4>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>姓名</th>
+          <th>职位</th>
+          <th>详情</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if params[:team_name].present? %>
+          <% @student_wk.each do |s| %>
+            <tr>
+              <td><%= s.F_name %></td>
+              <td>
+                <% if s.t_team_info.present? %>
+                  <%= s.t_team_info.F_name %>:
+                <% else %>
+                  <span style="color:red;">未录入班组信息:</span>
+                <% end %>
+                <% if s.F_work_uuid.present? %>
+                  <%= s.t_work_info.F_name %>
+                <% else %>
+                  <span style="color:red;">未录入职务信息</span>
+                <% end %>
+              </td>
+              <% if params[:search].present? %>
+              <td>无</td>
+              <% else %>
+              <td>无</td>
+              <% end %>
+            </tr>
+          <% end %>
+        <% else %>
+          <% @student_wk.each do |s| %>
+            <tr>
+              <td><%= s.F_name %></td>
+              <td>
+                <% if s.t_team_info.present? %>
+                  <%= s.t_team_info.F_name %>:
+                <% else %>
+                  <span style="color:red;">未录入班组信息:</span>
+                <% end %>
+                <% if s.F_work_uuid.present? %>
+                  <%= s.t_work_info.F_name %>
+                <% else %>
+                  <span style="color:red;">未录入职务信息</span>
+                <% end %>
+              </td>
+              <% if params[:search].present? %>
+              <td>无</td>
+              <% else %>
+              <td>无</td>
+              <% end %>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+
+
+  </div>
+
+
+
+  <div class="teams_uploader">
+    <table class="table">
+      <tbody>
+        <tr>
+          <div class="teams_uploader_picture col-md-4">
+            <%= simple_form_for @station do |f| %>
+              <td class="text-center"><%= f.label "上传站场图", class: "uploader-label"%></td>
+              <td><%= f.input :image, as: :file %></td>
+              <td><%= f.submit "点击上传", data: { disable_with: "上传中。。。"}, class: "uploader-submit" %></td>
+            <% end %>
+            <td>
+              <span style="color:#4B73B2"><i class="fa fa-download fa-1x" aria-hidden="true"></i>目前站场图:</span>
+              <% if @station.image.present? %>
+                <div class="teams_station_picture">
+                  <%= image_tag("http://10.64.2.108:8033"+@station.image.thumb.url)%>
+                  <div class="dropdown-content">
+                    <%= image_tag("http://10.64.2.108:8033"+@station.image.huge.url)%>
+                  </div>
+                </div>
+              <% end %>
+            </td>
+          </div>
+        </tr>
+        <tr>
+          <div class="teams-uploader-file col-md-4">
+            <%= simple_form_for @station do |f| %>
+              <td class="text-center"><%= f.label "上传岗位作业指导书", class: "uploader-label"%></td>
+              <td><%= f.input :attachment,as: :file, :label => "选择附件" %></td>
+              <td><%= f.submit "点击上传", data: { disable_with: "上传中。。。"}, class: "uploader-submit"%></td>
+            <% end %>
+            <td>
+              <span style="color:#4B73B2"><i class="fa fa-download fa-1x" aria-hidden="true"></i>下载附件：</span>
+              <% if @station.attachment.present? %>
+                <%= link_to("Download 附件1","http://10.64.2.108:8033"+@station.attachment_url)%>
+              <% end %>
+            </td>
+          </div>
+        </tr>
+
+        <tr>
+          <div class="teams-uploader-file col-md-4">
+            <%= simple_form_for @station do |f| %>
+              <td class="text-center"><%= f.label "本站实训平台软件压缩包", class: "uploader-label"%></td>
+              <td><%= f.input :attachment2,as: :file,:label => "选择附件"%></td>
+              <td><%= f.submit "点击上传", data: { disable_with: "上传中。。。"}, class: "uploader-submit"%></td>
+            <% end %>
+            <td>
+              <span style="color:#4B73B2"><i class="fa fa-download fa-1x" aria-hidden="true"></i>下载附件：</span>
+              <% if @station.attachment2.present? %>
+                <%= link_to("Download 附件2","http://10.64.2.108:8033"+@station.attachment2_url)%>
+              <% end %>
+            </td>
+          </div>
+        </tr>
+      </table>
+    </div>
+  </div>
