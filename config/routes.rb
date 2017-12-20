@@ -36,6 +36,11 @@ Rails.application.routes.draw do
         collection do
             get :station_student_info
             get :station_score_info
+
+        end
+        member do
+          get :status_edit
+          patch :status_update
         end
     end
 

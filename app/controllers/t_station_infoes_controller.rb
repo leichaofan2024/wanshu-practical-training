@@ -1,5 +1,6 @@
 class TStationInfoesController < ApplicationController
   require 'bigdecimal'
+  layout "notime_frame",only: [:status_edit]
     def index
         if current_user.permission == 1
           @duan = TDuanInfo.find_by(F_name: params[:duan_name])
@@ -11,6 +12,20 @@ class TStationInfoesController < ApplicationController
 
     def edit
         @station = TStationInfo.find(params[:id])
+    end
+
+    def status_edit
+      @station = TStationInfo.find(params[:id])
+    end
+
+    def status_update
+      @station = TStationInfo.find(params[:id])
+      @duan = @station.t_duan_info
+      if @station.update(t_station_info_params)
+          redirect_to team_student_info_t_team_infoes_path(duan_name: @duan.F_name, station_name: @station.F_name)
+      else
+          return :back
+      end
     end
 
     def update
@@ -177,6 +192,6 @@ class TStationInfoesController < ApplicationController
     private
 
     def t_station_info_params
-        params.require(:t_station_info).permit(:F_name, :F_duan_uuid, :F_level, :Level, :image, :attachment, :attachment2)
+        params.require(:t_station_info).permit(:F_name, :F_duan_uuid, :F_level, :Level, :image,:status, :attachment, :attachment2)
     end
 end

@@ -2,9 +2,9 @@
   <div class="clear">
     <% if params[:search].present? %>
     <a href="/">首页</a> > <%= link_to("各站段参考情况", duan_student_info_t_duan_infoes_path("utf8": params[:utf8], "search": params[:search], "commit": params[:commit])) %> >
-    <%= link_to(@duan.F_name, station_student_info_t_station_infoes_path("utf8": params[:utf8], "search": params[:search], "commit": params[:commit], 'duan_name': @duan.F_name)) %> > <%= @station.F_name%>
+    <%= link_to(@duan.F_name, station_student_info_t_station_infoes_path("utf8": params[:utf8], "search": params[:search], "commit": params[:commit], 'duan_name': @duan.F_name)) %> > <%= @station.F_name%>  (实训平台状态:<%= link_to(@station.status,status_edit_t_station_info_path(@station),class: "btn-sm btn-danger")%>)
     <% else %>
-    <a href="/">首页</a> > <a href="/t_duan_infoes/duan_student_info">各站段参考情况</a> > <a href="/t_station_infoes/station_student_info?duan_name=<%= @duan.F_name%>"><%= @duan.F_name %></a> > <%= @station.F_name%>
+    <a href="/">首页</a> > <a href="/t_duan_infoes/duan_student_info">各站段参考情况</a> > <a href="/t_station_infoes/station_student_info?duan_name=<%= @duan.F_name%>"><%= @duan.F_name %></a> > <%= @station.F_name%>  (实训平台状态:<%= link_to(@station.status,status_edit_t_station_info_path(@station),class: "btn-sm btn-danger")%>)
     <% end %>
   </div>
   <div class="row">
