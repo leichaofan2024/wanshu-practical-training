@@ -1,31 +1,14 @@
 
 <div class="pie_duan_frame">
   <div class="clear">
-    <% if params[:search].present? %>
-    <%= link_to("易错项点", duan_reason_info_t_duan_infoes_path("utf8": params[:utf8],"search": params[:search],"commit": params[:commit]))%> > 该考点犯错考生
-    <% else %>
     <a href="/">首页</a> > <a href="/t_duan_infoes/duan_reason_info ">易错考点</a>  > 该考点犯错考生
-    <% end %>
   </div>
-
-  <!-- 排序导航 -->
-  <div class="program-student-info-bar">
-    <ul class = "nav navbar-nav">
-      <li class = "first-li">  <a> 综合排序 </a> </li>
-      <li><%= link_to("按站段",duan_reason_student_info_t_duan_infoes_path(:order => "by_duan",:name => params[:name],"utf8": params[:utf8],"search": params[:search],"commit": params[:commit]))%></li>
-      <li><%= link_to("按车站",duan_reason_student_info_t_duan_infoes_path(:order => "by_station",:name => params[:name],"utf8": params[:utf8],"search": params[:search],"commit": params[:commit]))%></li>
-      <li><%= link_to("按班组",duan_reason_student_info_t_duan_infoes_path(:order => "by_team",:name => params[:name],"utf8": params[:utf8],"search": params[:search],"commit": params[:commit]))%></li>
-      <li><%= link_to("时间",duan_reason_student_info_t_duan_infoes_path(:order => "by_time",:name => params[:name],"utf8": params[:utf8],"search": params[:search],"commit": params[:commit]))%></li>
-      <li><%= link_to("分数",duan_reason_student_info_t_duan_infoes_path(:name => params[:name],"utf8": params[:utf8],"search": params[:search],"commit": params[:commit]))%></li>
-    </ul>
-  </div>
-
-  <!-- 学生信息 -->
   <table class="table table-border">
     <thead>
       <tr>
         <th>序号</th>
         <th>姓名</th>
+        <th>身份证号</th>
         <th>站段</th>
         <th>车站</th>
         <th>班组</th>
@@ -42,6 +25,9 @@
         <% if r.t_user_info.present? %>
           <td>
               <%= r.t_user_info.F_name %>
+          </td>
+          <td>
+              <%= r.t_user_info.F_id %>
           </td>
         <% else %>
           <td>信息丢失</td>

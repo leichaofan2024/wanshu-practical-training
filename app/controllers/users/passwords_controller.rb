@@ -1,5 +1,4 @@
 class Users::PasswordsController < Devise::PasswordsController
-  layout "signin_frame"
   # GET /resource/password/new
   # def new
   #   super

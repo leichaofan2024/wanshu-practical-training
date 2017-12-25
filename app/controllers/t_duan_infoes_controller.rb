@@ -35,7 +35,7 @@ class TDuanInfoesController < ApplicationController
                 i += 1
             end
             cw_wk = TUserInfo.where(F_type: 0).joins(:t_duan_info).where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => cw.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
-            cw_wk1 = cw_ck.keys
+            cw_wk1 = cw_wk.keys
             @duans_student_cw_wk = []
             ncw.each do |c|
                 @duans_student_cw_wk << if cw_wk1.include?(c)
@@ -94,7 +94,7 @@ class TDuanInfoesController < ApplicationController
             end
 
             cw_wk = TUserInfo.where(F_type: 0).joins(:t_duan_info).where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => cw.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
-            cw_wk1 = cw_ck.keys
+            cw_wk1 = cw_wk.keys
             @duans_student_cw_wk = []
             ncw.each do |c|
                 @duans_student_cw_wk << if cw_wk1.include?(c)

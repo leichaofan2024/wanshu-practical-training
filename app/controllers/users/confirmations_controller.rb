@@ -1,5 +1,4 @@
 class Users::ConfirmationsController < Devise::ConfirmationsController
-  layout "signin_frame"
   # GET /resource/confirmation/new
   # def new
   #   super

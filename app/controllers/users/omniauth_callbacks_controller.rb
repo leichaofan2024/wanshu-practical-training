@@ -1,5 +1,4 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
-  layout "signin_frame"
   # You should configure your model like this:
   # devise :omniauthable, omniauth_providers: [:twitter]
 

@@ -1,6 +1,5 @@
 class TStationInfoesController < ApplicationController
   require 'bigdecimal'
-  layout "notime_frame",only: [:status_edit]
     def index
         if current_user.permission == 1
           @duan = TDuanInfo.find_by(F_name: params[:duan_name])
@@ -12,20 +11,6 @@ class TStationInfoesController < ApplicationController
 
     def edit
         @station = TStationInfo.find(params[:id])
-    end
-
-    def status_edit
-      @station = TStationInfo.find(params[:id])
-    end
-
-    def status_update
-      @station = TStationInfo.find(params[:id])
-      @duan = @station.t_duan_info
-      if @station.update(t_station_info_params)
-          redirect_to team_student_info_t_team_infoes_path(duan_name: @duan.F_name, station_name: @station.F_name)
-      else
-          return :back
-      end
     end
 
     def update
@@ -166,7 +151,7 @@ class TStationInfoesController < ApplicationController
             station_60_scores = TStationInfo.where('t_station_info.F_duan_uuid = ?',  @duan.F_uuid).joins(t_user_infoes: :t_record_infoes).datetime.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80).group('t_station_info.F_name').size
             @station_60_scores = []
             @station_keys.each do |key|
-              @station_80_scores << if station_60_scores.keys.include?(key)
+              @station_60_scores << if station_60_scores.keys.include?(key)
                                         station_60_scores[key]
                                       else
                                         0
@@ -192,6 +177,6 @@ class TStationInfoesController < ApplicationController
     private
 
     def t_station_info_params
-        params.require(:t_station_info).permit(:F_name, :F_duan_uuid, :F_level, :Level, :image,:status, :attachment, :attachment2)
+        params.require(:t_station_info).permit(:F_name, :F_duan_uuid, :F_level, :Level, :image, :attachment, :attachment2)
     end
 end
