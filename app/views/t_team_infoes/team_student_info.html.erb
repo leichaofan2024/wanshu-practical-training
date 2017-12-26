@@ -131,8 +131,9 @@
         </tr>
       </thead>
       <tbody>
-        <% if params[:team_name].present? %>
-          <% @student_ck.each do |s| %>
+    
+          <% @student_ck.each do |c| %>
+          <% s = TUserInfo.find_by(:F_id => c.F_id)%>
             <tr>
               <td><%= s.F_name %></td>
               <td>
@@ -154,30 +155,7 @@
               <% end %>
             </tr>
           <% end %>
-        <% else %>
-          <% @student_ck.each do |s| %>
-            <tr>
-              <td><%= s.F_name %></td>
-              <td>
-                <% if s.t_team_info.present? %>
-                  <%= s.t_team_info.F_name %>:
-                <% else %>
-                  <span style="color:red;">未录入班组信息:</span>
-                <% end %>
-                <% if s.F_work_uuid.present? %>
-                  <%= s.t_work_info.F_name %>
-                <% else %>
-                  <span style="color:red;">未录入职务信息</span>
-                <% end %>
-              </td>
-              <% if params[:search].present? %>
-              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:user_name => s.F_name, :user_id => s.F_id, "utf8": params[:utf8],"search": params[:search],"commit": params[:commit]))%></td>
-              <% else %>
-              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:user_name => s.F_name, :user_id => s.F_id))%></td>
-              <% end %>
-            </tr>
-          <% end %>
-        <% end %>
+
 
       </tbody>
     </table>
@@ -192,8 +170,9 @@
         </tr>
       </thead>
       <tbody>
-        <% if params[:team_name].present? %>
-          <% @student_wk.each do |s| %>
+
+          <% @student_wk.each do |c| %>
+          <% s = TUserInfo.find_by(:F_id => c.F_id)%>
             <tr>
               <td><%= s.F_name %></td>
               <td>
@@ -215,30 +194,7 @@
               <% end %>
             </tr>
           <% end %>
-        <% else %>
-          <% @student_wk.each do |s| %>
-            <tr>
-              <td><%= s.F_name %></td>
-              <td>
-                <% if s.t_team_info.present? %>
-                  <%= s.t_team_info.F_name %>:
-                <% else %>
-                  <span style="color:red;">未录入班组信息:</span>
-                <% end %>
-                <% if s.F_work_uuid.present? %>
-                  <%= s.t_work_info.F_name %>
-                <% else %>
-                  <span style="color:red;">未录入职务信息</span>
-                <% end %>
-              </td>
-              <% if params[:search].present? %>
-              <td>无</td>
-              <% else %>
-              <td>无</td>
-              <% end %>
-            </tr>
-          <% end %>
-        <% end %>
+
       </tbody>
     </table>
 
