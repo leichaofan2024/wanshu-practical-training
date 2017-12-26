@@ -76,9 +76,9 @@ class TTeamInfoesController < ApplicationController
             @student_wk = team_student.select(:F_name, :F_id).distinct.where.not(F_id: @student_ck.pluck(:F_id))
             # @student_wk= TUserInfo.where(:F_id => student_wk.pluck(:F_id))
           else
-            @student_ck = TUserInfo.student_all.joins(:t_station_info, :t_record_infoes).where('t_station_info.F_uuid': @station.F_uuid).datetime.select(:F_name, :F_id,:F_work_uuid,:F_team_uuid).distinct
+            @student_ck = TUserInfo.student_all.joins(:t_station_info, :t_record_infoes).where('t_station_info.F_uuid': @station.F_uuid).datetime.select(:F_name, :F_id).distinct
             # @student_ck= TUserInfo.where(:F_id => student_ck.pluck(:F_id))
-            @student_wk = TUserInfo.student_all.joins(:t_station_info).where('t_station_info.F_uuid': @station.F_uuid).select(:F_name, :F_id,:F_work_uuid,:F_team_uuid).distinct.where.not(F_id: @student_ck.pluck(:F_id))
+            @student_wk = TUserInfo.student_all.joins(:t_station_info).where('t_station_info.F_uuid': @station.F_uuid).select(:F_name, :F_id).distinct.where.not(F_id: @student_ck.pluck(:F_id))
             # @student_wk= TUserInfo.where(:F_id => student_wk.pluck(:F_id))
           end
           team = @station.t_team_infoes
