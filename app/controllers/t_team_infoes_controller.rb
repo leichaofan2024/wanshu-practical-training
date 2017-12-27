@@ -16,7 +16,7 @@ class TTeamInfoesController < ApplicationController
           @search = TimeSearch.new(params[:search])
           if params[:team_name].present?
             @team = TTeamInfo.where(F_station_uuid: @station.F_uuid).find_by(F_name: params[:team_name])
-            student_id =TUserInfo.student_all.where(:F_team_uuid => @team.F_uuid).pluck(:F_id).uniq
+            student_id =@station.t_user_infoes.student_all.where(:F_team_uuid => @team.F_uuid).pluck(:F_id).uniq
             team_student = TUserInfo.all.where(:F_id => student_id)
             @student_ck = @search.scope_team_student2(team_student).select(:F_name, :F_id).distinct
             # @student_ck= TUserInfo.where(:F_id => student_ck.pluck(:F_id))
@@ -33,7 +33,7 @@ class TTeamInfoesController < ApplicationController
           @value_ck = []
           @value_wk = []
           team.each do |t|
-            student_id = t.t_user_infoes.student_all.pluck(:F_id).uniq
+            student_id = @station.t_user_infoes.student_all.where(:F_team_uuid => t.F_uuid).pluck(:F_id).uniq
             student = TUserInfo.student_all.where(:F_id => student_id)
             if student.present?
               student_ck = @search.scope_team_student(student).pluck(:F_id).uniq
@@ -69,7 +69,7 @@ class TTeamInfoesController < ApplicationController
         else
           if params[:team_name].present?
             @team = TTeamInfo.where(F_station_uuid: @station.F_uuid).find_by(F_name: params[:team_name])
-            student_id =TUserInfo.student_all.where(:F_team_uuid => @team.F_uuid).pluck(:F_id).uniq
+            student_id =@station.t_user_infoes.student_all.where(:F_team_uuid => @team.F_uuid).pluck(:F_id).uniq
             team_student = TUserInfo.all.where(:F_id => student_id)
             @student_ck = team_student.joins(:t_record_infoes).datetime.select(:F_name, :F_id).distinct
             # @student_ck= TUserInfo.where(:F_id => student_ck.pluck(:F_id))
@@ -86,7 +86,7 @@ class TTeamInfoesController < ApplicationController
           @value_ck = []
           @value_wk = []
           team.each do |t|
-            student_id = t.t_user_infoes.student_all.pluck(:F_id).uniq
+            student_id = @station.t_user_infoes.student_all.where(:F_team_uuid => t.F_uuid).pluck(:F_id).uniq
             student = TUserInfo.student_all.where(:F_id => student_id)
             if student.present?
               student_ck = student.joins(:t_record_infoes).datetime.pluck(:F_id).uniq
