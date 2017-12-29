@@ -32,7 +32,7 @@ class ApplicationController < ActionController::Base
             @search = TimeSearch.new(params[:search])
             m = @search.scope_duan.select('t_duan_info.F_uuid').distinct.count
         else
-            m = TDuanInfo.duan_orgnization.joins(t_user_infoes: :t_record_infoes).where('t_user_info.F_type = ?', 0).datetime.select('t_duan_info.F_uuid').distinct.count
+            m = TDuanInfo.duan_orgnization.joins(t_user_infoes: :t_record_infoes).student_all.datetime.select('t_duan_info.F_uuid').distinct.count
       end
     end
 
@@ -138,14 +138,14 @@ class ApplicationController < ActionController::Base
           @search = TimeSearch.new(params[:search])
           m = @search.scope_student.joins(:t_duan_info).where("t_duan_info.F_name= ? ", current_user.orgnize).select("t_user_info.F_name,t_user_info.F_id").distinct.count
         else
-          m = TUserInfo.where(F_type: 0).joins(:t_duan_info,:t_record_infoes).where("t_duan_info.F_name= ?", current_user.orgnize).datetime.select("t_user_info.F_name,t_user_info.F_id").distinct.count
+          m = TUserInfo.student_all.joins(:t_duan_info,:t_record_infoes).where("t_duan_info.F_name= ?", current_user.orgnize).datetime.select("t_user_info.F_name,t_user_info.F_id").distinct.count
         end
       elsif current_user.permission == 3
         if params[:search].present?
           @search = TimeSearch.new(params[:search])
           m = @search.scope_student.joins(:t_station_info).where("t_station_info.F_name= ? ", current_user.orgnize).select("t_user_info.F_name,t_user_info.F_id").distinct.count
         else
-          m = TUserInfo.where(F_type: 0).joins(:t_station_info,:t_record_infoes).where("t_station_info.F_name= ?", current_user.orgnize).select("t_user_info.F_name,t_user_info.F_id").distinct.count
+          m = TUserInfo.student_all.joins(:t_station_info,:t_record_infoes).where("t_station_info.F_name= ?", current_user.orgnize).select("t_user_info.F_name,t_user_info.F_id").distinct.count
         end
       end
     end
@@ -154,23 +154,23 @@ class ApplicationController < ActionController::Base
       if current_user.permission == 1
         if params[:search].present?
             @search = TimeSearch.new(params[:search])
-            m = TUserInfo.where(F_type: 0).select("t_user_info.F_name,t_user_info.F_id").distinct.count - @search.scope_student_k.select("t_user_info.F_name,t_user_info.F_id").distinct.count
+            m = TUserInfo.student_all.select("t_user_info.F_name,t_user_info.F_id").distinct.count - @search.scope_student_k.select("t_user_info.F_name,t_user_info.F_id").distinct.count
         else
-            m = TUserInfo.where(F_type: 0).select("t_user_info.F_name,t_user_info.F_id").distinct.count - TUserInfo.where(F_type: 0).joins(:t_record_infoes).datetime.select("t_user_info.F_name,t_user_info.F_id").distinct.count
+            m = TUserInfo.student_all.select("t_user_info.F_name,t_user_info.F_id").distinct.count - TUserInfo.student_all.joins(:t_record_infoes).datetime.select("t_user_info.F_name,t_user_info.F_id").distinct.count
         end
       elsif current_user.permission == 2
         if params[:search].present?
             @search = TimeSearch.new(params[:search])
             m = TUserInfo.student_all.joins(:t_duan_info).where("t_duan_info.F_name= ?", current_user.orgnize).select("t_user_info.F_name,t_user_info.F_id").distinct.count - @search.scope_student_k.joins(:t_duan_info).where("t_duan_info.F_name= ?", current_user.orgnize).select("t_user_info.F_name,t_user_info.F_id").distinct.count
         else
-            m = TUserInfo.student_all.joins(:t_duan_info).where("t_duan_info.F_name= ?", current_user.orgnize).select("t_user_info.F_name,t_user_info.F_id").distinct.count - TUserInfo.where(F_type: 0).joins(:t_duan_info,:t_record_infoes).datetime.where("t_duan_info.F_name= ?", current_user.orgnize).select("t_user_info.F_name,t_user_info.F_id").distinct.count
+            m = TUserInfo.student_all.joins(:t_duan_info).where("t_duan_info.F_name= ?", current_user.orgnize).select("t_user_info.F_name,t_user_info.F_id").distinct.count - TUserInfo.student_all.joins(:t_duan_info,:t_record_infoes).datetime.where("t_duan_info.F_name= ?", current_user.orgnize).select("t_user_info.F_name,t_user_info.F_id").distinct.count
         end
       elsif current_user.permission == 3
         if params[:search].present?
             @search = TimeSearch.new(params[:search])
             m = TUserInfo.student_all.joins(:t_station_info).where("t_station_info.F_name= ?", current_user.orgnize).select("t_user_info.F_name,t_user_info.F_id").distinct.count - @search.scope_student_k.joins(:t_station_info).where("t_station_info.F_name= ?", current_user.orgnize).select("t_user_info.F_name,t_user_info.F_id").distinct.count
         else
-            m = TUserInfo.student_all.joins(:t_station_info).where("t_station_info.F_name= ?", current_user.orgnize).select("t_user_info.F_name,t_user_info.F_id").distinct.count - TUserInfo.where(F_type: 0).joins(:t_station_info,:t_record_infoes).where("t_station_info.F_name= ?", current_user.orgnize).select("t_user_info.F_name,t_user_info.F_id").distinct.count
+            m = TUserInfo.student_all.joins(:t_station_info).where("t_station_info.F_name= ?", current_user.orgnize).select("t_user_info.F_name,t_user_info.F_id").distinct.count - TUserInfo.student_all.joins(:t_station_info,:t_record_infoes).where("t_station_info.F_name= ?", current_user.orgnize).select("t_user_info.F_name,t_user_info.F_id").distinct.count
         end
       end
       s = {}
@@ -185,21 +185,21 @@ class ApplicationController < ActionController::Base
             @search = TimeSearch.new(params[:search])
             m = @search.scope_student_k.select("t_user_info.F_name,t_user_info.F_id").distinct.count
         else
-            m = TUserInfo.where(F_type: 0).joins(:t_record_infoes).datetime.select("t_user_info.F_name,t_user_info.F_id").distinct.count
+            m = TUserInfo.student_all.joins(:t_record_infoes).datetime.select("t_user_info.F_name,t_user_info.F_id").distinct.count
         end
       elsif current_user.permission == 2
         if params[:search].present?
           @search = TimeSearch.new(params[:search])
           m = @search.scope_student_k.joins(:t_duan_info).where("t_duan_info.F_name= ?", current_user.orgnize).select("t_user_info.F_name,t_user_info.F_id").distinct.count
         else
-          m = TUserInfo.where(F_type: 0).joins(:t_duan_info,:t_record_infoes).datetime.where("t_duan_info.F_name= ?", current_user.orgnize).select("t_user_info.F_name,t_user_info.F_id").distinct.count
+          m = TUserInfo.student_all.joins(:t_duan_info,:t_record_infoes).datetime.where("t_duan_info.F_name= ?", current_user.orgnize).select("t_user_info.F_name,t_user_info.F_id").distinct.count
         end
       elsif current_user.permission == 3
         if params[:search].present?
           @search = TimeSearch.new(params[:search])
           m = @search.scope_student_k.joins(:t_station_info).where("t_station_info.F_name= ?", current_user.orgnize).select("t_user_info.F_name,t_user_info.F_id").distinct.count
         else
-          m = TUserInfo.where(F_type: 0).joins(:t_station_info,:t_record_infoes).where("t_station_info.F_name= ?", current_user.orgnize).select("t_user_info.F_name,t_user_info.F_id").distinct.count
+          m = TUserInfo.student_all.joins(:t_station_info,:t_record_infoes).where("t_station_info.F_name= ?", current_user.orgnize).select("t_user_info.F_name,t_user_info.F_id").distinct.count
         end
       end
         result = {}

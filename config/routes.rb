@@ -51,7 +51,11 @@ Rails.application.routes.draw do
         end
     end
 
-    resources :t_user_infoes
+    resources :t_user_infoes do
+      member do
+        patch :set_student_status
+      end 
+    end
 
   resources :t_record_infoes do
     collection do

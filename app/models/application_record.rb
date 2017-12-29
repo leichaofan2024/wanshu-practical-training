@@ -10,7 +10,7 @@ class ApplicationRecord < ActiveRecord::Base
   scope :station_orgnization, -> {where.not(:F_duan_uuid => [TDuanInfo.duan_zhijiao.first.F_uuid,TDuanInfo.duan_zhijiao.last.F_uuid])}
   scope :team_zhijiao, -> {joins(t_station_info: :t_duan_info).duan_zhijiao}
   scope :team_orgnization, -> {joins(t_station_info: :t_duan_info).duan_orgnization}
-  scope :student_all , -> {where("t_user_info.F_type": 0)}
+  scope :student_all , -> {where("t_user_info.F_type=? AND t_user_info.status =?",0,"在职")}
   scope :datetime, -> {where('t_record_info.F_time BETWEEN ? AND ?', Date.today.beginning_of_month, Date.today.end_of_month)}
   scope :datetime1, -> {where('t_detail_reason_info.F_time BETWEEN ? AND ?', Date.today.beginning_of_month, Date.today.end_of_month)}
 
