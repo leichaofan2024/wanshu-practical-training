@@ -136,8 +136,8 @@
           <% @student_ck.each do |c| %>
           <% s = TUserInfo.find_by(:F_id => c.F_id)%>
             <tr>
-              <td><%= s.F_name %></td>
-              <td>
+              <td style="width:20%;"><%= s.F_name %></td>
+              <td style="width:40%;">
                 <% if s.t_team_info.present? %>
                   <%= s.t_team_info.F_name %>:
                 <% else %>
@@ -149,12 +149,12 @@
                   <span style="color:red;">未录入职务信息</span>
                 <% end %>
               </td>
-              <td>
-                <div class="dropdown" style = "">
-                  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                    <%= s.status%>
+              <td style="width:20%;">
+                <div class="dropdown">
+                  <button type="button" class="btn-sm btn-default dropdown-toggle" data-toggle="dropdown" style= "width:60px;">
+                    <%= s.status%>  <i class="fa fa-sort fa-lg" aria-hidden="true"></i>
                   </button>
-                  <ul class="dropdown-menu">
+                  <ul class="dropdown-menu" style = "background:#ECF9F2;left:16px;">
                     <li><%= link_to("在职",set_student_status_t_user_info_path(s,:status => "在职"),method: :patch)%></li>
                     <li><%= link_to("调离",set_student_status_t_user_info_path(s,:status => "调离"),method: :patch)%></li>
                     <li><%= link_to("退休",set_student_status_t_user_info_path(s,:status => "退休"),method: :patch)%></li>
@@ -162,9 +162,9 @@
                 </div>
               </td>
               <% if params[:search].present? %>
-              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id, "utf8": params[:utf8], "search": params[:search], "commit": params[:commit]))%></td>
+              <td style="width:20%;"><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id, "utf8": params[:utf8], "search": params[:search], "commit": params[:commit]))%></td>
               <% else %>
-              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id))%></td>
+              <td style="width:20%;"><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id))%></td>
               <% end %>
             </tr>
           <% end %>
@@ -188,8 +188,8 @@
           <% @student_wk.each do |c| %>
           <% s = TUserInfo.find_by(:F_id => c.F_id)%>
             <tr>
-              <td><%= s.F_name %></td>
-              <td>
+              <td style="width:20%;"><%= s.F_name %></td>
+              <td style="width:40%;">
                 <% if s.t_team_info.present? %>
                   <%= s.t_team_info.F_name %>:
                 <% else %>
@@ -201,19 +201,19 @@
                   <span style="color:red;">未录入职务信息</span>
                 <% end %>
               </td>
-              <td>
-                <div class="dropdown" style = "">
-                  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                    <%= s.status%>
+              <td style="width:20%;">
+                <div class="dropdown">
+                  <button type="button" class="btn-sm btn-default dropdown-toggle" data-toggle="dropdown" style= "width:60px;">
+                    <%= s.status%>  <i class="fa fa-sort fa-lg" aria-hidden="true"></i>
                   </button>
-                  <ul class="dropdown-menu">
+                  <ul class="dropdown-menu" style = "background:#ECF9F2;left:16px;">
                     <li><%= link_to("在职",set_student_status_t_user_info_path(s,:status => "在职"),method: :patch)%></li>
                     <li><%= link_to("调离",set_student_status_t_user_info_path(s,:status => "调离"),method: :patch)%></li>
                     <li><%= link_to("退休",set_student_status_t_user_info_path(s,:status => "退休"),method: :patch)%></li>
                   </ul>
                 </div>
               </td>
-              <td>无</td>
+              <td style="width:20%;">无</td>
             </tr>
           <% end %>
 
@@ -236,8 +236,8 @@
           <% @student_other.each do |c| %>
           <% s = TUserInfo.find_by(:F_id => c.F_id)%>
             <tr>
-              <td><%= s.F_name %></td>
-              <td>
+              <td style="width:20%;"><%= s.F_name %></td>
+              <td style="width:40%;">
                 <% if s.t_team_info.present? %>
                   <%= s.t_team_info.F_name %>:
                 <% else %>
@@ -249,12 +249,12 @@
                   <span style="color:red;">未录入职务信息</span>
                 <% end %>
               </td>
-              <td>
-                <div class="dropdown" style = "">
-                  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                    <%= s.status%>
+              <td style="width:20%;">
+                <div class="dropdown">
+                  <button type="button" class="btn-sm btn-default dropdown-toggle" data-toggle="dropdown" style= "width:60px;">
+                    <%= s.status%>  <i class="fa fa-sort fa-lg" aria-hidden="true"></i>
                   </button>
-                  <ul class="dropdown-menu">
+                  <ul class="dropdown-menu" style = "background:#ECF9F2;left:16px;">
                     <li><%= link_to("在职",set_student_status_t_user_info_path(s,:status => "在职"),method: :patch)%></li>
                     <li><%= link_to("调离",set_student_status_t_user_info_path(s,:status => "调离"),method: :patch)%></li>
                     <li><%= link_to("退休",set_student_status_t_user_info_path(s,:status => "退休"),method: :patch)%></li>
@@ -262,15 +262,17 @@
                 </div>
               </td>
               <% if params[:search].present? %>
-              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id, "utf8": params[:utf8], "search": params[:search], "commit": params[:commit]))%></td>
+              <td style="width:20%;"><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id, "utf8": params[:utf8], "search": params[:search], "commit": params[:commit]))%></td>
               <% else %>
-              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id))%></td>
+              <td style="width:20%;"><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id))%></td>
               <% end %>
             </tr>
           <% end %>
 
       </tbody>
     </table>
+
+
   </div>
 
 
