@@ -129,6 +129,9 @@
           <th>职务</th>
           <th>状态</th>
           <th>详情</th>
+          <% if current_user.permission == 1%>
+          <th>操作</th>
+          <% end %>
         </tr>
       </thead>
       <tbody>
@@ -149,7 +152,7 @@
                   <span style="color:red;">未录入职务信息</span>
                 <% end %>
               </td>
-              <td style="width:20%;">
+              <td style="width:15%;">
                 <div class="dropdown">
                   <button type="button" class="btn-sm btn-default dropdown-toggle" data-toggle="dropdown" style= "width:70px;">
                     <%= s.status%>  <i class="fa fa-sort fa-lg" aria-hidden="true"></i>
@@ -162,9 +165,12 @@
                 </div>
               </td>
               <% if params[:search].present? %>
-              <td style="width:20%;"><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id, "utf8": params[:utf8], "search": params[:search], "commit": params[:commit]))%></td>
+              <td style="width:15%;"><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id, "utf8": params[:utf8], "search": params[:search], "commit": params[:commit]))%></td>
               <% else %>
-              <td style="width:20%;"><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id))%></td>
+              <td style="width:15%;"><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id))%></td>
+              <% end %>
+              <% if current_user.permission == 1%>
+              <td style="width:10%;"><%= link_to("",t_user_info_path(s,:station_name => params[:station_name]),method: :delete, data: {confirm: "此操作会删除此用户所有相关信息，您确定要删除吗？"},class: "fa fa-trash")%></td>
               <% end %>
             </tr>
           <% end %>
@@ -181,6 +187,9 @@
           <th>职位</th>
           <th>状态</th>
           <th>详情</th>
+          <% if current_user.permission == 1%>
+          <th>操作</th>
+          <% end %>
         </tr>
       </thead>
       <tbody>
@@ -201,7 +210,7 @@
                   <span style="color:red;">未录入职务信息</span>
                 <% end %>
               </td>
-              <td style="width:20%;">
+              <td style="width:15%;">
                 <div class="dropdown">
                   <button type="button" class="btn-sm btn-default dropdown-toggle" data-toggle="dropdown" style= "width:70px;">
                     <%= s.status%>  <i class="fa fa-sort fa-lg" aria-hidden="true"></i>
@@ -213,7 +222,10 @@
                   </ul>
                 </div>
               </td>
-              <td style="width:20%;">无</td>
+              <td style="width:15%;">无</td>
+              <% if current_user.permission == 1%>
+              <td style="width:10%;"><%= link_to("",t_user_info_path(s,:station_name => params[:station_name]),method: :delete, data: {confirm: "此操作会删除此用户所有相关信息，您确定要删除吗？"},class: "fa fa-trash")%></td>
+              <% end %>
             </tr>
           <% end %>
 
@@ -229,6 +241,9 @@
           <th>职位</th>
           <th>状态</th>
           <th>详情</th>
+          <% if current_user.permission == 1%>
+          <th>操作</th>
+          <% end %>
         </tr>
       </thead>
       <tbody>
@@ -249,7 +264,7 @@
                   <span style="color:red;">未录入职务信息</span>
                 <% end %>
               </td>
-              <td style="width:20%;">
+              <td style="width:15%;">
                 <div class="dropdown">
                   <button type="button" class="btn-sm btn-default dropdown-toggle" data-toggle="dropdown" style= "width:70px;">
                     <%= s.status%>  <i class="fa fa-sort fa-lg" aria-hidden="true"></i>
@@ -262,9 +277,12 @@
                 </div>
               </td>
               <% if params[:search].present? %>
-              <td style="width:20%;"><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id, "utf8": params[:utf8], "search": params[:search], "commit": params[:commit]))%></td>
+              <td style="width:15%;"><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id, "utf8": params[:utf8], "search": params[:search], "commit": params[:commit]))%></td>
               <% else %>
-              <td style="width:20%;"><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id))%></td>
+              <td style="width:15%;"><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id))%></td>
+              <% end %>
+              <% if current_user.permission == 1%>
+              <td style="width:10%;"><%= link_to("",t_user_info_path(s,:station_name => params[:station_name]),method: :delete, data: {confirm: "此操作会删除此用户所有相关信息，您确定要删除吗？"},class: "fa fa-trash")%></td>
               <% end %>
             </tr>
           <% end %>

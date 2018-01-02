@@ -11,4 +11,11 @@ class TUserInfoesController < ApplicationController
     @t_user_infoes.update_all(:status => params[:status])
     redirect_to :back
   end
+  def destroy
+    @station = TStationInfo.find_by(F_name: params[:station_name])
+    @students = @station.t_user_infoes.where(:F_id => TUserInfo.find_by(:F_uuid => params[:id]).F_id)
+    @students.destroy_all
+    redirect_to :back
+  end
+
 end
