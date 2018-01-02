@@ -1,5 +1,6 @@
 class WelcomeController < ApplicationController
   before_action :all_browsed?
+  layout "notime_frame",only: [:update_note]
   def ju_overview
     if current_user.permission == 2
       redirect_to duan_overview_path
@@ -250,5 +251,8 @@ class WelcomeController < ApplicationController
     end
   end
 
+  def update_note
+
+  end
 
 end
