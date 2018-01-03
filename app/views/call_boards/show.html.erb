@@ -8,7 +8,6 @@
 <hr>
 <div class="call-board-show">
   <h3><%= @call_board.name %></h3>
-  <p><%= @call_board.call_board_attachments%></p>
   <p><%= simple_format(@call_board.content) %></p>
   <% n = @call_board.call_board_attachments.count %>
 
