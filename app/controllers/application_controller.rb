@@ -50,9 +50,9 @@ class ApplicationController < ActionController::Base
 
     def station
       if current_user.permission == 1
-        m = TStationInfo.where.not('F_duan_uuid = ? || F_duan_uuid = ? ', duan_ju.first.F_uuid, duan_ju.last.F_uuid).count
+        m = TStationInfo.joins(:t_user_infoes).student_all.where.not('t_station_info.F_duan_uuid = ? || t_station_info.F_duan_uuid = ? ', duan_ju.first.F_uuid, duan_ju.last.F_uuid).distinct.count
       elsif current_user.permission == 2
-        m= TStationInfo.where(F_duan_uuid: TDuanInfo.find_by(:F_name => current_user.orgnize).F_uuid).count
+        m= TStationInfo.joins(:t_user_infoes).student_all.where(F_duan_uuid: TDuanInfo.find_by(:F_name => current_user.orgnize).F_uuid).distinct.count
       end
 
     end
@@ -81,11 +81,11 @@ class ApplicationController < ActionController::Base
 
     def team
       if current_user.permission == 1
-        m = TDuanInfo.where.not(F_name: %w(运输处 局职教基地)).joins(t_station_infoes: :t_team_infoes).count
+        m = TTeamInfo.joins({t_station_info: :t_duan_info},:t_user_infoes).where.not("t_duan_info.F_name = ? OR t_duan_info.F_name =?", "运输处", "局职教基地").where("t_user_info.F_type=? AND t_user_info.status =?",0,"在职").distinct.count
       elsif current_user.permission == 2
-        m = TTeamInfo.joins(t_station_info: :t_duan_info).where("t_duan_info.F_name= ?",current_user.orgnize).count
+        m = TTeamInfo.joins({t_station_info: :t_duan_info},:t_user_infoes).where("t_duan_info.F_name= ?",current_user.orgnize).student_all.distinct.count
       elsif current_user.permission ==3
-        m = TTeamInfo.joins(:t_station_info).where("t_station_info.F_name": current_user.orgnize).count
+        m = TTeamInfo.joins(t_station_info: :t_user_infoes).where("t_station_info.F_name": current_user.orgnize).student_all.distinct.count
       end
 
     end
