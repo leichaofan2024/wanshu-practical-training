@@ -32,14 +32,14 @@ class WelcomeController < ApplicationController
     if params[:search].present?
         @search = TimeSearch.new(params[:search])
           if current_user.permission == 1
-            station = TStationInfo.where.not("t_station_info.F_duan_uuid = ? OR t_station_info.F_duan_uuid=?",TDuanInfo.find_by(:F_name => "运输处").F_uuid, TDuanInfo.find_by(:F_name => "局职教基地").F_uuid)
+            station = TStationInfo.where.not(F_duan_uuid: TDuanInfo.where(:F_name => ["运输处","局职教基地"]).pluck(:F_uuid)).joins(:t_user_infoes).distinct
             station_ck = @search.scope_station_ck.student_all.distinct
             @wk_z = station.where.not(:F_uuid => station_ck.ids)
             @ck_z = station_ck
             @ck_stations = station_ck.group_by{|u| u.F_duan_uuid}
             @wk_stations = @wk_z.group_by{|u| u.F_duan_uuid}
           elsif current_user.permission ==2
-            station = TStationInfo.where(:F_duan_uuid => TDuanInfo.find_by(:F_name => current_user.orgnize).F_uuid )
+            station = TStationInfo.where(:F_duan_uuid => TDuanInfo.find_by(:F_name => current_user.orgnize).F_uuid ).joins(:t_user_infoes).distinct
             station_ck = @search.scope_station_ck.student_all.distinct
             @wk_z = station.where.not(:F_uuid => station_ck.ids)
             @ck_z = station_ck
@@ -48,14 +48,14 @@ class WelcomeController < ApplicationController
           end
     else
           if current_user.permission == 1
-            station = TStationInfo.where.not("t_station_info.F_duan_uuid = ? OR t_station_info.F_duan_uuid=?",TDuanInfo.find_by(:F_name => "运输处").F_uuid, TDuanInfo.find_by(:F_name => "局职教基地").F_uuid)
+            station = TStationInfo.where.not(F_duan_uuid: TDuanInfo.where(:F_name => ["运输处","局职教基地"]).pluck(:F_uuid)).joins(:t_user_infoes).distinct
             station_ck = station.joins(t_user_infoes: :t_record_infoes).datetime.student_all.distinct
             @wk_z = station.where.not(:F_uuid => station_ck.ids)
             @ck_z = station_ck
             @ck_stations = station_ck.group_by{|u| u.F_duan_uuid}
             @wk_stations = @wk_z.group_by{|u| u.F_duan_uuid}
           elsif current_user.permission ==2
-            station = TStationInfo.where(:F_duan_uuid => TDuanInfo.find_by(:F_name => current_user.orgnize).F_uuid )
+            station = TStationInfo.where(:F_duan_uuid => TDuanInfo.find_by(:F_name => current_user.orgnize).F_uuid ).joins(:t_user_infoes).distinct
             station_ck = station.joins(t_user_infoes: :t_record_infoes).datetime.student_all.distinct
             @wk_z = station.where.not(:F_uuid => station_ck.ids)
             @ck_z = station_ck
@@ -86,7 +86,7 @@ class WelcomeController < ApplicationController
             end
           elsif current_user.permission == 2
             @duans_ck = TDuanInfo.where("t_duan_info.F_name=?", current_user.orgnize)
-            @duans_wk = TDuanInfo.where("t_duan_info.F_name=?", current_user.orgnize)
+            @duans_wk = @duans_ck
 
             if params[:duan_name].present?
               team_duan = TTeamInfo.joins({t_station_info: :t_duan_info},:t_user_infoes).where("t_duan_info.F_name=?",params[:duan_name]).student_all.distinct
@@ -118,7 +118,7 @@ class WelcomeController < ApplicationController
           end
         elsif current_user.permission == 2
           @duans_ck = TDuanInfo.where("t_duan_info.F_name=?", current_user.orgnize)
-          @duans_wk = TDuanInfo.where("t_duan_info.F_name=?", current_user.orgnize)
+          @duans_wk = @duans_ck
 
           if params[:duan_name].present?
             team_duan = TTeamInfo.joins({t_station_info: :t_duan_info},:t_user_infoes).where("t_duan_info.F_name=?",params[:duan_name]).student_all.distinct
@@ -128,7 +128,7 @@ class WelcomeController < ApplicationController
           end
         elsif current_user.permission == 3
           team_station = TTeamInfo.joins(:t_station_info,:t_user_infoes).where("t_station_info.F_name": current_user.orgnize).student_all.distinct
-          @ck_teams = team_station.joins(t_user_infoes: :t_record_infoes).student_all.distinct
+          @ck_teams = team_station.joins(t_user_infoes: :t_record_infoes).datetime.student_all.distinct
           @wk_teams = team_station.where.not(:F_uuid => @ck_teams.ids)
         end
     end
@@ -165,9 +165,17 @@ class WelcomeController < ApplicationController
               @wk_students = students_duan_wk.joins(t_duan_info: :t_station_infoes).where("t_duan_info.F_name": params[:duan_name]).select("t_user_info.F_id,t_user_info.F_name,t_user_info.F_duan_uuid,t_user_info.F_station_uuid,t_user_info.F_team_uuid").distinct.group_by{|u| u.F_station_uuid}
             end
           elsif current_user.permission == 3
-            team_station = TTeamInfo.joins(:t_station_info,:t_user_infoes).where("t_station_info.F_name": current_user.orgnize).student_all.distinct
-            @ck_teams = @search.scope_student_duan_ck4(current_user.orgnize).student_all.distinct
-            @wk_teams = team_station.where.not(:F_uuid => @ck_teams.ids)
+
+            station = TStationInfo.find_by(:F_name => current_user.orgnize)
+            student_station = TUserInfo.student_all.where(F_station_uuid: station.F_uuid)
+            student_team = TUserInfo.student_all.joins(:t_team_info).where("t_team_info.F_station_uuid": station.F_uuid)
+            student_team_id =  student_team.pluck(:F_id).uniq
+            student_team_all = TUserInfo.student_all.where("t_user_info.F_id": student_team_id)
+
+            student_ck_team_id = @search.scope_student_duan_ck4(student_team_all)
+            student_wk_team_id = student_team.where.not(:F_id => student_ck_team_id).pluck(:F_id).uniq
+            @ck_students = student_team.where(:F_id => student_ck_team_id).group_by{|u| u.F_team_uuid}
+            @wk_students = student_team.where(:F_id => student_wk_team_id).group_by{|u| u.F_team_uuid}
           end
     else
         if current_user.permission == 1
@@ -192,9 +200,15 @@ class WelcomeController < ApplicationController
             @wk_students = students_duan_wk.joins(t_duan_info: :t_station_infoes).where("t_duan_info.F_name": params[:duan_name]).select("t_user_info.F_id,t_user_info.F_name,t_user_info.F_duan_uuid,t_user_info.F_station_uuid,t_user_info.F_team_uuid").distinct.group_by{|u| u.F_station_uuid}
           end
         elsif current_user.permission == 3
-          team_station = TTeamInfo.joins(:t_station_info,:t_user_infoes).where("t_station_info.F_name": current_user.orgnize).where("t_user_info.F_type": 0).distinct
-          @ck_teams = team_station.joins(t_user_infoes: :t_record_infoes).where("t_user_info.F_type": 0).distinct
-          @wk_teams = team_station.where.not(:F_uuid => @ck_teams.ids)
+          station = TStationInfo.find_by(:F_name => current_user.orgnize)
+          student_station = TUserInfo.student_all.where(F_station_uuid: station.F_uuid)
+          student_team = TUserInfo.student_all.joins(:t_team_info).where("t_team_info.F_station_uuid": station.F_uuid)
+          student_team_id =  student_team.pluck(:F_id).uniq
+          student_team_all = TUserInfo.student_all.where(F_id: student_team_id)
+          student_ck_team_id = student_team_all.joins(:t_record_infoes).datetime.distinct.pluck(:F_id).uniq
+          student_wk_team_id = student_team.where.not(:F_id => student_ck_team_id).pluck(:F_id).uniq
+          @ck_students = student_team.where(:F_id => student_ck_team_id).group_by{|u| u.F_team_uuid}
+          @wk_students = student_team.where(:F_id => student_wk_team_id).group_by{|u| u.F_team_uuid}
         end
     end
   end

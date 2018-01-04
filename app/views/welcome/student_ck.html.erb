@@ -15,36 +15,27 @@
   <div class = "welcome_frame">
     <h4 style="color:#c0392b;">未参考学生：</h4>
       <% if @wk_students.present? %>
-        <% @wk_students.group_by{|u| u.F_team_uuid}.each do |team_uuid,students|%>
+        <% @wk_students.each do |team_uuid,students|%>
           <p><%= TTeamInfo.find_by(:F_uuid => team_uuid).F_name%></p>
           <div class="station-card" >
-            <% students.each do |student| %>
+            <% students.pluck(:F_name).uniq.each do |student| %>
               <div class="station-card1">
-                <%= student.F_name%>
+                <%= student%>
               </div>
             <% end %>
           </div>
         <% end %>
       <% end %>
-      <% if @wk_students_noteam.present? %>
-        <p>没有班组信息</p>
-        <div class="station-card" >
-          <% @wk_students_noteam.each do |student| %>
-            <div class="station-card1">
-              <%= student.F_name%>
-            </div>
-          <% end %>
-        </div>
-      <% end %>
+
 
       <h4 style="color:#4444C1;">已参考学生：</h4>
         <% if @ck_students.present? %>
-          <% @ck_students.group_by{|u| u.F_team_uuid}.each do |team_uuid,students|%>
+          <% @ck_students.each do |team_uuid,students|%>
             <p><%= TTeamInfo.find_by(:F_uuid => team_uuid).F_name%></p>
             <div class="station-card" >
-              <% students.each do |student| %>
+              <% students.pluck(:F_name).uniq.each do |student| %>
                 <div class="station-card1">
-                  <%= student.F_name%>
+                  <%= student%>
                 </div>
               <% end %>
             </div>

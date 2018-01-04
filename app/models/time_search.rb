@@ -191,7 +191,7 @@ class TimeSearch
     end
 
     def scope_student_duan_ck4(params)
-      TTeamInfo.joins(:t_station_info,:t_user_infoes).where("t_station_info.F_name": params).student_all.distinct.joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
+      params.joins(:t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to).distinct.pluck(:F_id).uniq
     end
 
     def scope_program_ck(params)

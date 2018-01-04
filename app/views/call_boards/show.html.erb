@@ -7,8 +7,11 @@
 </div>
 <hr>
 <div class="call-board-show">
+  <p>
+    <%= link_to("<< 返回", call_boards_path)%>
+  </p>
   <h3><%= @call_board.name %></h3>
-  <p><%= simple_format(@call_board.content) %></p>
+  <p><%= @call_board.content.html_safe %></p>
   <% n = @call_board.call_board_attachments.count %>
 
   <% (0..(n-1)).each do |i| %>

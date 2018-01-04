@@ -1,4 +1,7 @@
 <div class="call-board-frame">
+  <p>
+    <%= link_to("<< 返回", call_boards_path)%>
+  </p>
   <h3>编辑消息：</h3>
   <%= simple_form_for @call_board do |f| %>
     <%= f.input :name %>
