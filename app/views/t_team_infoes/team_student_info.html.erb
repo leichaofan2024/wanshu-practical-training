@@ -299,10 +299,10 @@
     <table class="table">
       <tbody>
         <tr>
-          <div class="teams_uploader_picture col-md-4">
+          <div class="teams_uploader_picture">
             <%= simple_form_for @station do |f| %>
               <td class="text-center"><%= f.label "上传站场图", class: "uploader-label"%></td>
-              <td><%= f.input :image, as: :file %></td>
+              <td ><%= f.input :image, as: :file,label:"选择图片" %></td>
               <td><%= f.submit "点击上传", data: { disable_with: "上传中。。。"}, class: "uploader-submit" %></td>
             <% end %>
             <td>
@@ -319,7 +319,7 @@
           </div>
         </tr>
         <tr>
-          <div class="teams-uploader-file col-md-4">
+          <div class="teams-uploader-file">
             <%= simple_form_for @station do |f| %>
               <td class="text-center"><%= f.label "上传岗位作业指导书", class: "uploader-label"%></td>
               <td><%= f.input :attachment,as: :file, :label => "选择附件" %></td>
@@ -328,23 +328,23 @@
             <td>
               <span style="color:#4B73B2"><i class="fa fa-download fa-1x" aria-hidden="true"></i>下载附件：</span>
               <% if @station.attachment.present? %>
-                <%= link_to("Download 附件1","http://10.64.2.108:8033"+@station.attachment_url)%>
+                <%= link_to(@station.attachment.file.file.split("/").last,"http://10.64.2.108:8033"+@station.attachment_url)%>
               <% end %>
             </td>
           </div>
         </tr>
 
         <tr>
-          <div class="teams-uploader-file col-md-4">
+          <div class="teams-uploader-file">
             <%= simple_form_for @station do |f| %>
               <td class="text-center"><%= f.label "本站实训平台软件压缩包", class: "uploader-label"%></td>
-              <td><%= f.input :attachment2,as: :file,:label => "选择附件"%></td>
+              <td><span><%= f.input :attachment2,as: :file,:label => "选择附件"%></span></td>
               <td><%= f.submit "点击上传", data: { disable_with: "上传中。。。"}, class: "uploader-submit"%></td>
             <% end %>
             <td>
               <span style="color:#4B73B2"><i class="fa fa-download fa-1x" aria-hidden="true"></i>下载附件：</span>
               <% if @station.attachment2.present? %>
-                <%= link_to("Download 附件2","http://10.64.2.108:8033"+@station.attachment2_url)%>
+                <%= link_to(@station.attachment2.file.file.split("/").last,"http://10.64.2.108:8033"+@station.attachment2_url)%>
               <% end %>
             </td>
           </div>

@@ -96,7 +96,7 @@ class ApplicationController < ActionController::Base
             @search = TimeSearch.new(params[:search])
             m = @search.scope_team.distinct.count
         else
-            m = TTeamInfo.joins(t_station_info: :t_duan_info).where.not("t_duan_info.F_name = '运输处' OR t_duan_info.F_name = '局职教基地'").datetime.joins(:t_record_infoes).distinct.count
+            m = TTeamInfo.joins(t_station_info: :t_duan_info).where.not("t_duan_info.F_name = '运输处' OR t_duan_info.F_name = '局职教基地'").joins(:t_record_infoes).datetime.distinct.count
         end
       elsif current_user.permission == 2
         if params[:search].present?

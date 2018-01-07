@@ -16,11 +16,9 @@
 
   <!-- 关于未参考的车务段： -->
   <table class="table">
-    <thead>
-      <tr>
-        <th class="text-center">车务段</th>
-      </tr>
-    </thead>
+
+    <h5 class="text-center" style="width:100%;font-weight:500;">车务段</h5>
+
     <tbody>
       <% if @wk_cw.present? %>
         <tr>
@@ -52,11 +50,7 @@
 <!-- 关于未参考的直属站： -->
 
 <table class="table">
-  <thead>
-    <tr>
-      <th class="text-center">直属站</th>
-    </tr>
-  </thead>
+  <h5 class="text-center" style="width:100%;font-weight:500;">直属站</h5>
   <tbody>
     <% if @wk_zhi.present? %>
       <tr>
@@ -90,11 +84,7 @@
 
   <!-- 关于已参考的车务段： -->
   <table class="table">
-    <thead>
-      <tr>
-        <th class="text-center">车务段</th>
-      </tr>
-    </thead>
+    <h5 class="text-center" style="width:100%;font-weight:500;">车务段</h5>
     <tbody>
       <% if @ck_cw.present? %>
         <tr>
@@ -117,7 +107,9 @@
           </tr>
         <% end %>
       <% else %>
-        <tr><td><span>所有车务段均未参加考试！</span></td></tr>
+      <tr>
+        <td > <legend style= "color:red;">所有车务段均未参加考试！</legend> </td>
+      </tr>
       <% end %>
     </tbody>
   </table>
@@ -125,11 +117,7 @@
   <!-- 关于已参考的直属站： -->
 
   <table class="table">
-    <thead>
-      <tr>
-        <th class="text-center">直属站</th>
-      </tr>
-    </thead>
+    <h5 class="text-center" style="width:100%;font-weight:500;">直属站</h5>
     <tbody>
       <% if @ck_zhi.present? %>
         <tr>

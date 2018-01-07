@@ -26,6 +26,7 @@ class CallBoardsController < ApplicationController
       redirect_to call_boards_path
     else
       render :new
+      flash[:warning] = "标题不能为空！"
     end
   end
 

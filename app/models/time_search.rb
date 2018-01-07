@@ -24,7 +24,7 @@ class TimeSearch
     end
 
     def scope_team_duan(params)
-        TTeamInfo.joins(t_station_info: :t_duan_info).where.not('t_duan_info.F_name = ?', params).joins(t_user_infoes: :t_record_infoes).where("t_user_info.F_uuid": TUserInfo.student_all.ids).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
+        TTeamInfo.joins(t_station_info: :t_duan_info).where('t_duan_info.F_name = ?', params).joins(t_user_infoes: :t_record_infoes).student_all.where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
     end
 
     def scope_team_station(params)
