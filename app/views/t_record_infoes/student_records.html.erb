@@ -14,6 +14,10 @@
     <%=@students.first.F_name%>
   </div>
   <%= render "player"%>
+  <hr>
+  <div class="text-right">
+    <b>总练习时长: <%= sum_time_longth(@records)%></b>
+  </div>
 
 </div>
 <script src= "/assets/player/flowplayer-3.2.8.min.js"></script>

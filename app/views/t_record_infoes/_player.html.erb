@@ -6,6 +6,7 @@
       <th>身份证号</th>
       <th>考试地点</th>
       <th>考试时间</th>
+      <th>时长</th>
       <th>得分</th>
       <th>考试详情</th>
       <th>录像回放</th>
@@ -35,6 +36,7 @@
           <% end %>
       </td>
       <td><%= r.F_time %></td>
+      <td><%= time_longth(r) %></td>
       <td><%= r.F_score %></td>
       <td>
         <%= link_to("考试详情", record_details_t_record_detail_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name=> params[:team_name],:user_name => params[:user_name],:user_id => params[:user_id],:record_uuid=> r.F_uuid, "utf8": params[:utf8], "search": params[:search], "commit": params[:commit]) )%> ／
