@@ -177,6 +177,6 @@ class TStationInfoesController < ApplicationController
     private
 
     def t_station_info_params
-        params.require(:t_station_info).permit(:F_name, :F_duan_uuid, :F_level, :Level, :image, :attachment, :attachment2)
+        params.require(:t_station_info).permit(:F_name, :F_duan_uuid, :F_level, :Level, {image: []}, {attachment: []}, {attachment2: []})
     end
 end

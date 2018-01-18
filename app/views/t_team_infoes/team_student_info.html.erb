@@ -302,18 +302,21 @@
           <div class="teams_uploader_picture">
             <%= simple_form_for @station do |f| %>
               <td class="text-center"><%= f.label "上传站场图", class: "uploader-label"%></td>
-              <td ><%= f.input :image, as: :file,label:"选择图片" %></td>
+              <td><%= f.input_field :image,multiple: true ,as: :file ,label: "选择图片"%></td>
               <td><%= f.submit "点击上传", data: { disable_with: "上传中。。。"}, class: "uploader-submit" %></td>
             <% end %>
             <td>
               <span style="color:#4B73B2"><i class="fa fa-download fa-1x" aria-hidden="true"></i>目前站场图:</span>
               <% if @station.image.present? %>
-                <div class="teams_station_picture">
-                  <%= image_tag("http://10.64.2.108:8033"+@station.image.thumb.url)%>
-                  <div class="dropdown-content">
-                    <%= image_tag("http://10.64.2.108:8033"+@station.image.huge.url)%>
+                <% n = @station.image.count %>
+                <% (0..(n-1)).each do |i| %>
+                  <div class="teams_station_picture">
+                    <%= image_tag("http://10.64.2.108:8033"+@station.image[i].thumb.url)%>
+                    <div class="dropdown-content">
+                      <%= image_tag("http://10.64.2.108:8033"+@station.image[i].huge.url)%>
+                    </div>
                   </div>
-                </div>
+                <% end %>
               <% end %>
             </td>
           </div>
@@ -322,13 +325,16 @@
           <div class="teams-uploader-file">
             <%= simple_form_for @station do |f| %>
               <td class="text-center"><%= f.label "上传岗位作业指导书", class: "uploader-label"%></td>
-              <td><%= f.input :attachment,as: :file, :label => "选择附件" %></td>
+              <td><%= f.input_field :attachment,multiple: true ,as: :file ,label: "选择附件"%></td>
               <td><%= f.submit "点击上传", data: { disable_with: "上传中。。。"}, class: "uploader-submit"%></td>
             <% end %>
             <td>
               <span style="color:#4B73B2"><i class="fa fa-download fa-1x" aria-hidden="true"></i>下载附件：</span>
               <% if @station.attachment.present? %>
-                <%= link_to(@station.attachment.file.file.split("/").last,"http://10.64.2.108:8033"+@station.attachment_url)%>
+                <% n = @station.attachment.count %>
+                <% (0..(n-1)).each do |i| %>
+                  <%= link_to(@station.attachment[i].file.file.split("/").last,"http://10.64.2.108:8033"+@station.attachment_urls[i])%>
+                <% end %>
               <% end %>
             </td>
           </div>
@@ -338,13 +344,16 @@
           <div class="teams-uploader-file">
             <%= simple_form_for @station do |f| %>
               <td class="text-center"><%= f.label "本站实训平台软件压缩包", class: "uploader-label"%></td>
-              <td><span><%= f.input :attachment2,as: :file,:label => "选择附件"%></span></td>
+              <td><%= f.input_field :attachment2,multiple: true ,as: :file ,label: "选择附件"%></td>
               <td><%= f.submit "点击上传", data: { disable_with: "上传中。。。"}, class: "uploader-submit"%></td>
             <% end %>
             <td>
               <span style="color:#4B73B2"><i class="fa fa-download fa-1x" aria-hidden="true"></i>下载附件：</span>
               <% if @station.attachment2.present? %>
-                <%= link_to(@station.attachment2.file.file.split("/").last,"http://10.64.2.108:8033"+@station.attachment2_url)%>
+                <% n = @station.attachment2.count %>
+                <% (0..(n-1)).each do |i| %>
+                  <%= link_to(@station.attachment2[i].file.file.split("/").last,"http://10.64.2.108:8033"+@station.attachment2_urls[i])%>
+                <% end %>
               <% end %>
             </td>
           </div>
