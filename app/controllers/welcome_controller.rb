@@ -6,9 +6,7 @@ class WelcomeController < ApplicationController
     elsif current_user.permission == 3
       redirect_to station_overview_path
     end
-  end
-
-  def role
+    @duan = TDuanInfo.where.not('F_name= ? || F_name= ?', '局职教基地', '运输处').count
   end
 
   def duan_ck
@@ -134,68 +132,8 @@ class WelcomeController < ApplicationController
   end
 
   def student_ck
-    if params[:search].present?
-          @search = TimeSearch.new(params[:search])
-          if current_user.permission == 1
-            student = TUserInfo.student_all
-            students_duan_ck = @search.scope_student_duan_ck.distinct
-            students_duan_wk = student.where.not("t_user_info.F_uuid": students_duan_ck.ids)
-            @duans_ck = TDuanInfo.duan_orgnization.joins(:t_user_infoes).where("t_user_info.F_uuid": students_duan_ck.ids).distinct
-            @duans_wk = TDuanInfo.duan_orgnization.joins(:t_user_infoes).where("t_user_info.F_uuid": students_duan_wk.ids).distinct
-
-            if params[:duan_name].present?
-              students_duan_ck = @search.scope_student_duan_ck1(params[:duan_name])
-              students_duan_wk = student.where.not("t_user_info.F_uuid": students_duan_ck.ids)
-              @ck_students = students_duan_ck.select("t_user_info.F_id,t_user_info.F_name,t_user_info.F_duan_uuid,t_user_info.F_station_uuid,t_user_info.F_team_uuid").distinct.group_by{|u| u.F_station_uuid}
-              @wk_students = students_duan_wk.joins(t_duan_info: :t_station_infoes).where("t_duan_info.F_name": params[:duan_name]).select("t_user_info.F_id,t_user_info.F_name,t_user_info.F_duan_uuid,t_user_info.F_station_uuid,t_user_info.F_team_uuid").distinct.group_by{|u| u.F_station_uuid}
-            end
-          elsif current_user.permission == 2
-            student = TUserInfo.joins(:t_duan_info).where("t_duan_info.F_name": current_user.orgnize).student_all
-            students_duan_ck = @search.scope_student_duan_ck2(current_user.orgnize)
-            students_duan_wk = student.where.not("t_user_info.F_uuid": students_duan_ck.ids)
-            @duans_ck = TDuanInfo.where("t_duan_info.F_name= ?",current_user.orgnize )
-            @duans_wk = TDuanInfo.where("t_duan_info.F_name= ?",current_user.orgnize )
-
-            if params[:duan_name].present?
-              student = TUserInfo.joins(:t_duan_info).where("t_duan_info.F_name": current_user.orgnize).student_all
-              students_duan_ck = @search.scope_student_duan_ck3(current_user.orgnize,params[:duan_name])
-              students_duan_wk = student.where.not("t_user_info.F_uuid": students_duan_ck.ids)
-              @ck_students = students_duan_ck.select("t_user_info.F_id,t_user_info.F_name,t_user_info.F_duan_uuid,t_user_info.F_station_uuid,t_user_info.F_team_uuid").distinct.group_by{|u| u.F_station_uuid}
-              @wk_students = students_duan_wk.joins(t_duan_info: :t_station_infoes).where("t_duan_info.F_name": params[:duan_name]).select("t_user_info.F_id,t_user_info.F_name,t_user_info.F_duan_uuid,t_user_info.F_station_uuid,t_user_info.F_team_uuid").distinct.group_by{|u| u.F_station_uuid}
-            end
-          elsif current_user.permission == 3
-            team_station = TTeamInfo.joins(:t_station_info,:t_user_infoes).where("t_station_info.F_name": current_user.orgnize).where("t_user_info.F_type": 0).distinct
-            @ck_teams = @search.scope_student_duan_ck4(current_user.orgnize).where("t_user_info.F_type": 0).distinct
-            @wk_teams = team_station.where.not(:F_uuid => @ck_teams.ids)
-          end
-    else
-        if current_user.permission == 1
-          student = TUserInfo.student_all
-          students_duan_ck = student.joins(:t_record_infoes).datetime.distinct
-          students_duan_wk = student.where.not("t_user_info.F_uuid": students_duan_ck.ids)
-          @duans_ck = TDuanInfo.duan_orgnization.joins(:t_user_infoes).where("t_user_info.F_uuid": students_duan_ck.ids).distinct
-          @duans_wk = TDuanInfo.duan_orgnization.joins(:t_user_infoes).where("t_user_info.F_uuid": students_duan_wk.ids).distinct
-          if params[:duan_name].present?
-            @ck_students = students_duan_ck.joins(t_duan_info: :t_station_infoes).where("t_duan_info.F_name": params[:duan_name]).select("t_user_info.F_id,t_user_info.F_name,t_user_info.F_duan_uuid,t_user_info.F_station_uuid,t_user_info.F_team_uuid").distinct.group_by{|u| u.F_station_uuid}
-            @wk_students = students_duan_wk.joins(t_duan_info: :t_station_infoes).where("t_duan_info.F_name": params[:duan_name]).select("t_user_info.F_id,t_user_info.F_name,t_user_info.F_duan_uuid,t_user_info.F_station_uuid,t_user_info.F_team_uuid").distinct.group_by{|u| u.F_station_uuid}
-          end
-        elsif current_user.permission == 2
-          student = TUserInfo.joins(:t_duan_info).where("t_duan_info.F_name": current_user.orgnize).student_all
-          students_duan_ck = student.joins(:t_record_infoes).datetime
-          students_duan_wk = student.where.not("t_user_info.F_uuid": students_duan_ck.ids)
-          @duans_ck = TDuanInfo.where("t_duan_info.F_name= ?",current_user.orgnize )
-          @duans_wk = TDuanInfo.where("t_duan_info.F_name= ?",current_user.orgnize )
-
-          if params[:duan_name].present?
-            @ck_students = students_duan_ck.joins(t_duan_info: :t_station_infoes).where("t_duan_info.F_name": params[:duan_name]).select("t_user_info.F_id,t_user_info.F_name,t_user_info.F_duan_uuid,t_user_info.F_station_uuid,t_user_info.F_team_uuid").distinct.group_by{|u| u.F_station_uuid}
-            @wk_students = students_duan_wk.joins(t_duan_info: :t_station_infoes).where("t_duan_info.F_name": params[:duan_name]).select("t_user_info.F_id,t_user_info.F_name,t_user_info.F_duan_uuid,t_user_info.F_station_uuid,t_user_info.F_team_uuid").distinct.group_by{|u| u.F_station_uuid}
-          end
-        elsif current_user.permission == 3
-          team_station = TTeamInfo.joins(:t_station_info,:t_user_infoes).where("t_station_info.F_name": current_user.orgnize).where("t_user_info.F_type": 0).distinct
-          @ck_teams = team_station.joins(t_user_infoes: :t_record_infoes).where("t_user_info.F_type": 0).distinct
-          @wk_teams = team_station.where.not(:F_uuid => @ck_teams.ids)
-        end
-    end
+    @users = TUserInfo.joins(:t_station_info, :t_team_info).order("F_id DESC").page(params[:page])
+    
   end
 
   def program_ck
