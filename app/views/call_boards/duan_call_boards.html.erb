@@ -16,10 +16,10 @@
 
           <% i= i+1%>
           <tr>
-            <td width= "20%"><%= i %></td>
-            <td width= "40%"><%= link_to(c.name, call_board_path(c)) %></td>
-            <td width= "20%"><%= c.created_at.strftime("%Y/%m/%d %I:%M %p") %></td>
-            <td width= "20%"><%= c.user.orgnize%></td>
+            <td><%= i %></td>
+            <td><%= link_to(c.name, call_board_path(c)) %></td>
+            <td><%= c.created_at.strftime("%Y/%m/%d %I:%M %p") %></td>
+            <td><%= c.user.orgnize%></td>
           </tr>
       <% end %>
     </tbody>

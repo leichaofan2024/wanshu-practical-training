@@ -8,10 +8,10 @@ class TDuanInfoesController < ApplicationController
 
     def duan_student_info
         @duans = TDuanInfo.where.not(F_name: %w(运输处 局职教基地))
-        @duans_student_cw = TUserInfo.student_all.joins(:t_duan_info).where.not('t_duan_info.F_name' => %w(局职教基地 运输处)).where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
+        @duans_student_cw = TUserInfo.where(F_type: 0).joins(:t_duan_info).where.not('t_duan_info.F_name' => %w(局职教基地 运输处)).where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
         ncw = @duans_student_cw.keys
         vcw = @duans_student_cw.values
-        @duans_student_zs = TUserInfo.student_all.joins(:t_duan_info).where.not('t_duan_info.F_name =? or t_duan_info.F_name =? ', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
+        @duans_student_zs = TUserInfo.where(F_type: 0).joins(:t_duan_info).where.not('t_duan_info.F_name =? or t_duan_info.F_name =? ', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
         nzs = @duans_student_zs.keys
         vzs = @duans_student_zs.values
         if params[:search].present?
@@ -34,8 +34,8 @@ class TDuanInfoesController < ApplicationController
                 @duans_student_cw_ck_bl << (BigDecimal(v) / BigDecimal(vcw[i])).round(3) * 100
                 i += 1
             end
-            cw_wk = TUserInfo.student_all.joins(:t_duan_info).where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => cw.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
-            cw_wk1 = cw_wk.keys
+            cw_wk = TUserInfo.where(F_type: 0).joins(:t_duan_info).where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => cw.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
+            cw_wk1 = cw_ck.keys
             @duans_student_cw_wk = []
             ncw.each do |c|
                 @duans_student_cw_wk << if cw_wk1.include?(c)
@@ -61,7 +61,7 @@ class TDuanInfoesController < ApplicationController
                 @duans_student_zs_ck_bl << (BigDecimal(v) / BigDecimal(vzs[i])).round(3) * 100
                 i += 1
             end
-            zs_wk = TUserInfo.student_all.joins(:t_duan_info).where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => zs.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
+            zs_wk = TUserInfo.where(F_type: 0).joins(:t_duan_info).where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => zs.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
             zs_wk1 = zs_wk.keys
             @duans_student_zs_wk = []
             nzs.each do |c|
@@ -73,8 +73,8 @@ class TDuanInfoesController < ApplicationController
             end
 
         else
-            cw = TUserInfo.student_all.joins(:t_duan_info, :t_record_infoes).datetime.where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').distinct
-            zs = TUserInfo.student_all.joins(:t_duan_info, :t_record_infoes).datetime.where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').distinct
+            cw = TUserInfo.where(F_type: 0).joins(:t_duan_info, :t_record_infoes).datetime.where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').distinct
+            zs = TUserInfo.where(F_type: 0).joins(:t_duan_info, :t_record_infoes).datetime.where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').distinct
             cw_ck = cw.group('t_duan_info.F_name').count
             cw_ck1 = cw_ck.keys
             @duans_student_cw_ck = []
@@ -93,8 +93,8 @@ class TDuanInfoesController < ApplicationController
                 i += 1
             end
 
-            cw_wk = TUserInfo.student_all.joins(:t_duan_info).where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => cw.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
-            cw_wk1 = cw_wk.keys
+            cw_wk = TUserInfo.where(F_type: 0).joins(:t_duan_info).where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => cw.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
+            cw_wk1 = cw_ck.keys
             @duans_student_cw_wk = []
             ncw.each do |c|
                 @duans_student_cw_wk << if cw_wk1.include?(c)
@@ -121,7 +121,7 @@ class TDuanInfoesController < ApplicationController
                 i += 1
             end
 
-            zs_wk = TUserInfo.student_all.joins(:t_duan_info).where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => zs.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
+            zs_wk = TUserInfo.where(F_type: 0).joins(:t_duan_info).where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => zs.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
             zs_wk1 = zs_wk.keys
             @duans_student_zs_wk = []
             nzs.each do |c|

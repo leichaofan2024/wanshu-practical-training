@@ -12,7 +12,7 @@ class ImageUploader < CarrierWave::Uploader::Base
   # This is a sensible default for uploaders that are meant to be mounted:
 
   def store_dir
-     "uploads/image/#{model.F_name}"
+     "uploads/image/#{model.id}"
   end
   version :huge do
     process resize_to_fill: [1000,800]

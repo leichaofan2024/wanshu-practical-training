@@ -1,12 +1,19 @@
 <div class= "pie_duan_frame">
   <div class="clear">
+    <% if params[:search].present? %>
+    <% if current_user.permission == 1%>
+      <a href="/">首页</a> > <%= link_to("各站段参考情况", duan_student_info_t_duan_infoes_path("utf8": params[:utf8], "search": params[:search], "commit": params[:commit])) %> > <%= @duan.F_name%>
+    <% elsif current_user.permission == 2 %>
+      <a href="/">首页</a> >  <%= @duan.F_name%>
+    <% end %>
+    <% else %>
     <% if current_user.permission == 1%>
       <a href="/">首页</a> > <a href="/t_duan_infoes/duan_student_info">各站段参考情况</a> > <%= @duan.F_name%>
     <% elsif current_user.permission == 2 %>
       <a href="/">首页</a> >  <%= @duan.F_name%>
     <% end %>
+    <% end %>
   </div>
-
 <div class="">
   <div class="row">
     <div class="pull-right range-query">

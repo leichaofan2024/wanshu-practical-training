@@ -10,9 +10,9 @@ default: &default
   encoding: utf8
   pool: 5
   timeout: 5000
-  username: rali
-  password: 123456
-  host: 192.168.1.10
+  username: shiyuewanshu
+  password: lss090306
+  host: 127.0.0.1
 
 development:
   <<: *default

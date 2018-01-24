@@ -21,17 +21,17 @@
         <% if c.user.permission == 1%>
           <% i= i+1%>
           <tr>
-            <td width= "20%"><%= i %></td>
-            <td width= "40%"><%= link_to(c.name, call_board_path(c)) %>  <span style="color:red;margin-left:10px;"><%= if_browsed?(current_user,c)%></span></td>
-            <td width= "20%"><%= c.created_at.strftime("%Y/%m/%d %I:%M %p") %></td>
+            <td><%= i %></td>
+            <td><%= link_to(c.name, call_board_path(c)) %>  <span style="color:red;margin-left:10px;"><%= if_browsed?(current_user,c)%></span></td>
+            <td><%= c.created_at.strftime("%Y/%m/%d %I:%M %p") %></td>
             <% if current_user.permission ==1%>
-              <td width= "20%">
+              <td>
                 <%= link_to("编辑", edit_call_board_path(c),:class => "btn btn-sm btn-primary")%> |
                 <%= link_to("删除", call_board_path(c),method: :delete,data: {confirm: "确定删除吗？"}, :class=> "btn btn-sm btn-danger")%>
               </td>
             <% elsif c.user.permission ==2 %>
               <% if current_user.role == c.user.role  %>
-                <td width= "20%">
+                <td>
                   <%= link_to("编辑", edit_call_board_path(c),:class => "btn btn-sm btn-primary")%> |
                   <%= link_to("删除", call_board_path(c),method: :delete,data: {confirm: "确定删除吗？"}, :class=> "btn btn-sm btn-danger")%>
                 </td>
@@ -43,11 +43,11 @@
           <% if current_user.role == c.user.role or TDuanInfo.find_by(F_name: c.user.orgnize).t_station_infoes.pluck(:F_name).include?(current_user.orgnize) %>
             <% i= i+1%>
             <tr>
-              <td width= "20%"><%= i %></td>
-              <td width= "40%"><%= link_to(c.name, call_board_path(c)) %></td>
-              <td width= "20%"><%= c.created_at.strftime("%Y/%m/%d %I:%M %p") %></td>
+              <td><%= i %></td>
+              <td><%= link_to(c.name, call_board_path(c)) %></td>
+              <td><%= c.created_at %></td>
               <% if current_user.role == c.user.role  %>
-                <td width= "20%">
+                <td>
                   <%= link_to("编辑", edit_call_board_path(c),:class => "btn btn-sm btn-primary")%> |
                   <%= link_to("删除", call_board_path(c),method: :delete,data: {confirm: "确定删除吗？"}, :class=> "btn btn-sm btn-danger")%>
                 </td>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180118083255) do
+ActiveRecord::Schema.define(version: 20171218132817) do
 
   create_table "attachment", id: :bigint, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", comment: "系统附件表" do |t|
     t.string   "file_name",          limit: 50,                                       null: false, comment: "文件名称"
@@ -35,9 +35,9 @@ ActiveRecord::Schema.define(version: 20180118083255) do
 
   create_table "call_boards", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
-    t.text     "content",                limit: 16777215
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
+    t.string   "content",                limit: 5000
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
     t.json     "call_board_attachments"
     t.integer  "user_id"
   end
@@ -272,20 +272,19 @@ ActiveRecord::Schema.define(version: 20180118083255) do
   end
 
   create_table "t_record_info", primary_key: "F_uuid", id: :string, limit: 64, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string   "F_user_uuid",     limit: 64,                                      null: false
-    t.string   "F_duan_uuid",     limit: 64,                                      null: false
-    t.string   "F_station_uuid",  limit: 64,                                      null: false
-    t.string   "F_team_uuid",     limit: 64,                                      null: false
-    t.string   "F_work_uuid",     limit: 64,                                      null: false
-    t.string   "F_time",          limit: 64,                                      null: false
-    t.string   "F_teacher_uuid",  limit: 64,                                      null: false
-    t.integer  "F_synch",                    default: 0,                          null: false
-    t.string   "F_question_uuid", limit: 64
-    t.string   "F_record",                                                        null: false
-    t.integer  "F_double_screen",            default: 0,                          null: false
-    t.integer  "F_score",                    default: 0,                          null: false
-    t.integer  "F_synch_record",             default: 0,                          null: false, comment: "`"
-    t.datetime "created_at",                 default: -> { "CURRENT_TIMESTAMP" }
+    t.string  "F_user_uuid",     limit: 64,             null: false
+    t.string  "F_duan_uuid",     limit: 64,             null: false
+    t.string  "F_station_uuid",  limit: 64,             null: false
+    t.string  "F_team_uuid",     limit: 64,             null: false
+    t.string  "F_work_uuid",     limit: 64,             null: false
+    t.string  "F_time",          limit: 64,             null: false
+    t.string  "F_teacher_uuid",  limit: 64,             null: false
+    t.integer "F_synch",                    default: 0, null: false
+    t.string  "F_question_uuid", limit: 64
+    t.string  "F_record",                               null: false
+    t.integer "F_double_screen",            default: 0, null: false
+    t.integer "F_score",                    default: 0, null: false
+    t.integer "F_synch_record",             default: 0, null: false, comment: "`"
     t.index ["F_duan_uuid", "F_time"], name: "F_duan_uuid_2", using: :btree
     t.index ["F_duan_uuid"], name: "F_duan_uuid", using: :btree
     t.index ["F_duan_uuid"], name: "index_t_record_info_on_F_duan_uuid", using: :btree
@@ -309,10 +308,10 @@ ActiveRecord::Schema.define(version: 20180118083255) do
     t.string  "F_duan_uuid", limit: 64,                null: false
     t.integer "F_level",                default: 0,    null: false
     t.bigint  "LEVEL"
+    t.string  "image"
+    t.string  "attachment"
+    t.string  "attachment2"
     t.string  "status",                 default: "在线"
-    t.json    "image"
-    t.json    "attachment"
-    t.json    "attachment2"
     t.index ["F_duan_uuid"], name: "index_t_station_info_on_F_duan_uuid", using: :btree
   end
 
@@ -326,18 +325,17 @@ ActiveRecord::Schema.define(version: 20180118083255) do
   end
 
   create_table "t_user_info", primary_key: "F_uuid", id: :string, limit: 64, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string  "F_id",           limit: 64,                null: false
-    t.string  "F_name",         limit: 16,                null: false
-    t.string  "F_code",         limit: 32,                null: false
-    t.string  "F_password",     limit: 32,                null: false
-    t.integer "F_type",                    default: 0,    null: false
-    t.integer "F_state",                   default: 0,    null: false
-    t.string  "F_duan_uuid",    limit: 64,                null: false
-    t.string  "F_station_uuid", limit: 64,                null: false
-    t.string  "F_team_uuid",    limit: 64,                null: false
-    t.string  "F_work_uuid",    limit: 64,                null: false
-    t.integer "F_synch",                   default: 0,    null: false
-    t.string  "status",                    default: "在职"
+    t.string  "F_id",           limit: 64,             null: false
+    t.string  "F_name",         limit: 16,             null: false
+    t.string  "F_code",         limit: 32,             null: false
+    t.string  "F_password",     limit: 32,             null: false
+    t.integer "F_type",                    default: 0, null: false
+    t.integer "F_state",                   default: 0, null: false
+    t.string  "F_duan_uuid",    limit: 64,             null: false
+    t.string  "F_station_uuid", limit: 64,             null: false
+    t.string  "F_team_uuid",    limit: 64,             null: false
+    t.string  "F_work_uuid",    limit: 64,             null: false
+    t.integer "F_synch",                   default: 0, null: false
     t.index ["F_code"], name: "F_code", using: :btree
     t.index ["F_duan_uuid"], name: "index_1", using: :btree
     t.index ["F_name"], name: "F_name", using: :btree

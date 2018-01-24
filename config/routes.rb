@@ -18,7 +18,7 @@ Rails.application.routes.draw do
     get '/new_station', to: 'users#new_station'
     get '/new_duan_station', to: 'users#new_duan_station'
     get '/duan_call_boards', to: 'call_boards#duan_call_boards'
-    get '/update_note',to: 'welcome#update_note'
+
     resources :users
     resources :browses
     resources :t_duan_infoes do
@@ -51,11 +51,7 @@ Rails.application.routes.draw do
         end
     end
 
-    resources :t_user_infoes do
-      member do
-        patch :set_student_status
-      end
-    end
+    resources :t_user_infoes
 
   resources :t_record_infoes do
     collection do

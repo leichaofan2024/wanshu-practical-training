@@ -1,11 +1,8 @@
 <div class="call-board-frame">
-  <p>
-    <%= link_to("<< 返回", call_boards_path)%>
-  </p>
   <h3>发布新消息：</h3>
   <%= simple_form_for @call_board do |f| %>
-    <%= f.input :name,label: "标题"%>
-    <%= f.input :content, as: :ckeditor,label: "正文" %>
+    <%= f.input :name %>
+    <%= f.input :content, as: :ckeditor %>
     <%= f.input_field :call_board_attachments,multiple: true ,as: :file %>
     <%= f.submit "提交",:data => {disable_with: "提交中。。。"}%>
   <% end %>

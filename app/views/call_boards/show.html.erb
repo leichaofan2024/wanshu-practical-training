@@ -7,15 +7,12 @@
 </div>
 <hr>
 <div class="call-board-show">
-  <p>
-    <%= link_to("<< 返回", call_boards_path)%>
-  </p>
   <h3><%= @call_board.name %></h3>
-  <p><%= @call_board.content.html_safe %></p>
+  <p><%= simple_format(@call_board.content) %></p>
   <% n = @call_board.call_board_attachments.count %>
 
   <% (0..(n-1)).each do |i| %>
-    <p>下载附件:<%= link_to(@call_board.call_board_attachments[i].file.file.split("/").last,"http://10.64.2.108:8033"+"#{@call_board.call_board_attachments_urls[i]}")%></p>
+    <p>下载附件:<%= link_to("#{@call_board.call_board_attachments[i]}".split("/").last,"http://10.64.2.108:8033"+"#{@call_board.call_board_attachments_urls[i]}")%></p>
   <% end %>
 
 </div>

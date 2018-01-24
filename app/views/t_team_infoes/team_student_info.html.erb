@@ -127,20 +127,15 @@
         <tr>
           <th>姓名</th>
           <th>职务</th>
-          <th>状态</th>
           <th>详情</th>
-          <% if current_user.permission == 1%>
-          <th>操作</th>
-          <% end %>
         </tr>
       </thead>
       <tbody>
-
-          <% @student_ck.each do |c| %>
-          <% s = TUserInfo.find_by(:F_id => c.F_id)%>
+        <% if params[:team_name].present? %>
+          <% @student_ck.each do |s| %>
             <tr>
-              <td style="width:20%;"><%= s.F_name %></td>
-              <td style="width:40%;">
+              <td><%= s.F_name %></td>
+              <td>
                 <% if s.t_team_info.present? %>
                   <%= s.t_team_info.F_name %>:
                 <% else %>
@@ -152,29 +147,37 @@
                   <span style="color:red;">未录入职务信息</span>
                 <% end %>
               </td>
-              <td style="width:15%;">
-                <div class="dropdown">
-                  <button type="button" class="btn-sm btn-default dropdown-toggle" data-toggle="dropdown" style= "width:70px;">
-                    <%= s.status%>  <i class="fa fa-sort fa-lg" aria-hidden="true"></i>
-                  </button>
-                  <ul class="dropdown-menu" style = "background:#ECF9F2;left:16px;">
-                    <li><%= link_to("在职",set_student_status_t_user_info_path(s,:status => "在职"),method: :patch)%></li>
-                    <li><%= link_to("调离",set_student_status_t_user_info_path(s,:status => "调离"),method: :patch)%></li>
-                    <li><%= link_to("退休",set_student_status_t_user_info_path(s,:status => "退休"),method: :patch)%></li>
-                  </ul>
-                </div>
-              </td>
               <% if params[:search].present? %>
-              <td style="width:15%;"><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id, "utf8": params[:utf8], "search": params[:search], "commit": params[:commit]))%></td>
+              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id, "utf8": params[:utf8], "search": params[:search], "commit": params[:commit]))%></td>
               <% else %>
-              <td style="width:15%;"><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id))%></td>
-              <% end %>
-              <% if current_user.permission == 1%>
-              <td style="width:10%;"><%= link_to("",t_user_info_path(s,:station_name => params[:station_name]),method: :delete, data: {confirm: "此操作会删除此用户所有相关信息，您确定要删除吗？"},class: "fa fa-trash")%></td>
+              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id))%></td>
               <% end %>
             </tr>
           <% end %>
-
+        <% else %>
+          <% @student_ck.each do |s| %>
+            <tr>
+              <td><%= s.F_name %></td>
+              <td>
+                <% if s.t_team_info.present? %>
+                  <%= s.t_team_info.F_name %>:
+                <% else %>
+                  <span style="color:red;">未录入班组信息:</span>
+                <% end %>
+                <% if s.F_work_uuid.present? %>
+                  <%= s.t_work_info.F_name %>
+                <% else %>
+                  <span style="color:red;">未录入职务信息</span>
+                <% end %>
+              </td>
+              <% if params[:search].present? %>
+              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:user_name => s.F_name, :user_id => s.F_id, "utf8": params[:utf8],"search": params[:search],"commit": params[:commit]))%></td>
+              <% else %>
+              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:user_name => s.F_name, :user_id => s.F_id))%></td>
+              <% end %>
+            </tr>
+          <% end %>
+        <% end %>
 
       </tbody>
     </table>
@@ -185,20 +188,15 @@
         <tr>
           <th>姓名</th>
           <th>职位</th>
-          <th>状态</th>
           <th>详情</th>
-          <% if current_user.permission == 1%>
-          <th>操作</th>
-          <% end %>
         </tr>
       </thead>
       <tbody>
-
-          <% @student_wk.each do |c| %>
-          <% s = TUserInfo.find_by(:F_id => c.F_id)%>
+        <% if params[:team_name].present? %>
+          <% @student_wk.each do |s| %>
             <tr>
-              <td style="width:20%;"><%= s.F_name %></td>
-              <td style="width:40%;">
+              <td><%= s.F_name %></td>
+              <td>
                 <% if s.t_team_info.present? %>
                   <%= s.t_team_info.F_name %>:
                 <% else %>
@@ -209,84 +207,38 @@
                 <% else %>
                   <span style="color:red;">未录入职务信息</span>
                 <% end %>
-              </td>
-              <td style="width:15%;">
-                <div class="dropdown">
-                  <button type="button" class="btn-sm btn-default dropdown-toggle" data-toggle="dropdown" style= "width:70px;">
-                    <%= s.status%>  <i class="fa fa-sort fa-lg" aria-hidden="true"></i>
-                  </button>
-                  <ul class="dropdown-menu" style = "background:#ECF9F2;left:16px;">
-                    <li><%= link_to("在职",set_student_status_t_user_info_path(s,:status => "在职"),method: :patch)%></li>
-                    <li><%= link_to("调离",set_student_status_t_user_info_path(s,:status => "调离"),method: :patch)%></li>
-                    <li><%= link_to("退休",set_student_status_t_user_info_path(s,:status => "退休"),method: :patch)%></li>
-                  </ul>
-                </div>
-              </td>
-              <td style="width:15%;">无</td>
-              <% if current_user.permission == 1%>
-              <td style="width:10%;"><%= link_to("",t_user_info_path(s,:station_name => params[:station_name]),method: :delete, data: {confirm: "此操作会删除此用户所有相关信息，您确定要删除吗？"},class: "fa fa-trash")%></td>
-              <% end %>
-            </tr>
-          <% end %>
-
-      </tbody>
-    </table>
-
-    <h4>其他考生</h4>
-
-    <table class="table">
-      <thead>
-        <tr>
-          <th>姓名</th>
-          <th>职位</th>
-          <th>状态</th>
-          <th>详情</th>
-          <% if current_user.permission == 1%>
-          <th>操作</th>
-          <% end %>
-        </tr>
-      </thead>
-      <tbody>
-
-          <% @student_other.each do |c| %>
-          <% s = TUserInfo.find_by(:F_id => c.F_id)%>
-            <tr>
-              <td style="width:20%;"><%= s.F_name %></td>
-              <td style="width:40%;">
-                <% if s.t_team_info.present? %>
-                  <%= s.t_team_info.F_name %>:
-                <% else %>
-                  <span style="color:red;">未录入班组信息:</span>
-                <% end %>
-                <% if s.F_work_uuid.present? %>
-                  <%= s.t_work_info.F_name %>
-                <% else %>
-                  <span style="color:red;">未录入职务信息</span>
-                <% end %>
-              </td>
-              <td style="width:15%;">
-                <div class="dropdown">
-                  <button type="button" class="btn-sm btn-default dropdown-toggle" data-toggle="dropdown" style= "width:70px;">
-                    <%= s.status%>  <i class="fa fa-sort fa-lg" aria-hidden="true"></i>
-                  </button>
-                  <ul class="dropdown-menu" style = "background:#ECF9F2;left:22px;">
-                    <li><%= link_to("在职",set_student_status_t_user_info_path(s,:status => "在职"),method: :patch)%></li>
-                    <li><%= link_to("调离",set_student_status_t_user_info_path(s,:status => "调离"),method: :patch)%></li>
-                    <li><%= link_to("退休",set_student_status_t_user_info_path(s,:status => "退休"),method: :patch)%></li>
-                  </ul>
-                </div>
               </td>
               <% if params[:search].present? %>
-              <td style="width:15%;"><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id, "utf8": params[:utf8], "search": params[:search], "commit": params[:commit]))%></td>
+              <td>无</td>
               <% else %>
-              <td style="width:15%;"><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id))%></td>
-              <% end %>
-              <% if current_user.permission == 1%>
-              <td style="width:10%;"><%= link_to("",t_user_info_path(s,:station_name => params[:station_name]),method: :delete, data: {confirm: "此操作会删除此用户所有相关信息，您确定要删除吗？"},class: "fa fa-trash")%></td>
+              <td>无</td>
               <% end %>
             </tr>
           <% end %>
-
+        <% else %>
+          <% @student_wk.each do |s| %>
+            <tr>
+              <td><%= s.F_name %></td>
+              <td>
+                <% if s.t_team_info.present? %>
+                  <%= s.t_team_info.F_name %>:
+                <% else %>
+                  <span style="color:red;">未录入班组信息:</span>
+                <% end %>
+                <% if s.F_work_uuid.present? %>
+                  <%= s.t_work_info.F_name %>
+                <% else %>
+                  <span style="color:red;">未录入职务信息</span>
+                <% end %>
+              </td>
+              <% if params[:search].present? %>
+              <td>无</td>
+              <% else %>
+              <td>无</td>
+              <% end %>
+            </tr>
+          <% end %>
+        <% end %>
       </tbody>
     </table>
 
@@ -299,61 +251,52 @@
     <table class="table">
       <tbody>
         <tr>
-          <div class="teams_uploader_picture">
+          <div class="teams_uploader_picture col-md-4">
             <%= simple_form_for @station do |f| %>
               <td class="text-center"><%= f.label "上传站场图", class: "uploader-label"%></td>
-              <td><%= f.input_field :image,multiple: true ,as: :file ,label: "选择图片"%></td>
+              <td><%= f.input :image, as: :file %></td>
               <td><%= f.submit "点击上传", data: { disable_with: "上传中。。。"}, class: "uploader-submit" %></td>
             <% end %>
             <td>
               <span style="color:#4B73B2"><i class="fa fa-download fa-1x" aria-hidden="true"></i>目前站场图:</span>
               <% if @station.image.present? %>
-                <% n = @station.image.count %>
-                <% (0..(n-1)).each do |i| %>
-                  <div class="teams_station_picture">
-                    <%= image_tag("http://10.64.2.108:8033"+@station.image[i].thumb.url)%>
-                    <div class="dropdown-content">
-                      <%= image_tag("http://10.64.2.108:8033"+@station.image[i].huge.url)%>
-                    </div>
+                <div class="teams_station_picture">
+                  <%= image_tag("http://10.64.2.108:8033"+@station.image.thumb.url)%>
+                  <div class="dropdown-content">
+                    <%= image_tag("http://10.64.2.108:8033"+@station.image.huge.url)%>
                   </div>
-                <% end %>
+                </div>
               <% end %>
             </td>
           </div>
         </tr>
         <tr>
-          <div class="teams-uploader-file">
+          <div class="teams-uploader-file col-md-4">
             <%= simple_form_for @station do |f| %>
               <td class="text-center"><%= f.label "上传岗位作业指导书", class: "uploader-label"%></td>
-              <td><%= f.input_field :attachment,multiple: true ,as: :file ,label: "选择附件"%></td>
+              <td><%= f.input :attachment,as: :file, :label => "选择附件" %></td>
               <td><%= f.submit "点击上传", data: { disable_with: "上传中。。。"}, class: "uploader-submit"%></td>
             <% end %>
             <td>
               <span style="color:#4B73B2"><i class="fa fa-download fa-1x" aria-hidden="true"></i>下载附件：</span>
               <% if @station.attachment.present? %>
-                <% n = @station.attachment.count %>
-                <% (0..(n-1)).each do |i| %>
-                  <%= link_to(@station.attachment[i].file.file.split("/").last,"http://10.64.2.108:8033"+@station.attachment_urls[i])%>
-                <% end %>
+                <%= link_to("Download 附件1","http://10.64.2.108:8033"+@station.attachment_url)%>
               <% end %>
             </td>
           </div>
         </tr>
 
         <tr>
-          <div class="teams-uploader-file">
+          <div class="teams-uploader-file col-md-4">
             <%= simple_form_for @station do |f| %>
               <td class="text-center"><%= f.label "本站实训平台软件压缩包", class: "uploader-label"%></td>
-              <td><%= f.input_field :attachment2,multiple: true ,as: :file ,label: "选择附件"%></td>
+              <td><%= f.input :attachment2,as: :file,:label => "选择附件"%></td>
               <td><%= f.submit "点击上传", data: { disable_with: "上传中。。。"}, class: "uploader-submit"%></td>
             <% end %>
             <td>
               <span style="color:#4B73B2"><i class="fa fa-download fa-1x" aria-hidden="true"></i>下载附件：</span>
               <% if @station.attachment2.present? %>
-                <% n = @station.attachment2.count %>
-                <% (0..(n-1)).each do |i| %>
-                  <%= link_to(@station.attachment2[i].file.file.split("/").last,"http://10.64.2.108:8033"+@station.attachment2_urls[i])%>
-                <% end %>
+                <%= link_to("Download 附件2","http://10.64.2.108:8033"+@station.attachment2_url)%>
               <% end %>
             </td>
           </div>

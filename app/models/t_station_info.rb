@@ -1,7 +1,7 @@
 class TStationInfo < ApplicationRecord
-  mount_uploaders :image, ImageUploader
-  mount_uploaders :attachment, AttachmentUploader
-  mount_uploaders :attachment2, Attachment2Uploader
+  mount_uploader :image, ImageUploader
+  mount_uploader :attachment, AttachmentUploader
+  mount_uploader :attachment2, Attachment2Uploader
   self.table_name = "t_station_info"
 
 
