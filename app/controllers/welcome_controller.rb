@@ -132,8 +132,7 @@ class WelcomeController < ApplicationController
   end
 
   def student_ck
-    @users = TUserInfo.joins(:t_station_info, :t_team_info).order("F_id DESC").page(params[:page])
-    
+    @users = TUserInfo.joins(:t_station_info, :t_team_info).order("F_id DESC").page(params[:page]).per(20)
   end
 
   def program_ck

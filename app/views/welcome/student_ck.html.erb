@@ -17,6 +17,7 @@
           <td>姓名</td>
           <td>部门</td>
           <td>职务</td>
+          <td>最近一次考试时间</td>
           <td>考试状态</td>
         </tr>
       </thead>
@@ -34,8 +35,24 @@
                 <td>
                   <%= user.t_work_info.F_name %>
                 </td>
+                  <% if user.t_record_infoes.present? %>
+                  <td>
+                    <%= user.t_record_infoes.order("F_time DESC").pluck(:F_time).first %>
+                  </td>
+                  <td>
+                      <p style=" background-color: #d9534f"> <%= "已考" %> </p>
+                  </td>
+                  <% else %>
+                  <td></td>
+                  <td>
+                      <p style=" background-color: #56b83d"> <%= "未考" %> </p>
+                  </td>
+                  <% end %>
               </tr>
           <% end %>
       </tbody>
   </table>
-  <%= paginate @users %>
+
+  <div class="pull-right">
+      <%= paginate @users %>
+  </div>
