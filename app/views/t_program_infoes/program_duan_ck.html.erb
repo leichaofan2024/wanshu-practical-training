@@ -1,0 +1,149 @@
+<div class="row">
+  <div class="pull-right range-query">
+    <div class="searchtime">时间：</div>
+    <div class="searchtime">
+      <%= form_tag program_duan_ck_t_program_info_path(@t_program_info), method: :get do %>
+        <%= text_field_tag 'search[date_from]'%>
+        <%= text_field_tag 'search[date_to]' %>
+        <%= hidden_field_tag :name, params[:name]%>
+        <%= submit_tag "搜索", id:"time_id",class: "btn search-button"%>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="welcome_frame">
+<h4 style="color:#c0392b;">未参考站段：(<%= @wk_cw.size + @wk_zhi.size%>)</h4>
+
+<!-- 关于未参考的车务段： -->
+<table class="table">
+
+  <h5 class="text-center" style="width:100%;font-weight:500;">车务段</h5>
+
+  <tbody>
+    <% if @wk_cw.present? %>
+      <tr>
+        <% @wk_cw.first(5).each do |cw| %>
+        <td><%=cw%></td>
+        <% end %>
+      </tr>
+
+      <% if @wk_cw[5,5].present? %>
+        <tr>
+          <% @wk_cw[5,5].each do |cw| %>
+          <td><%=cw%></td>
+          <% end %>
+        </tr>
+      <% end %>
+      <% if @wk_cw[10,5].present? %>
+        <tr>
+          <% @wk_cw[10,5].each do |cw| %>
+          <td><%=cw%></td>
+          <% end %>
+        </tr>
+      <% end %>
+    <% else %>
+      <tr><td><span>所有车务段均已参加了考试！</span></td></tr>
+    <% end %>
+  </tbody>
+</table>
+
+<!-- 关于未参考的直属站： -->
+
+<table class="table">
+<h5 class="text-center" style="width:100%;font-weight:500;">直属站</h5>
+<tbody>
+  <% if @wk_zhi.present? %>
+    <tr>
+      <% @wk_zhi.first(5).each do |zhi| %>
+      <td><%=zhi%></td>
+      <% end %>
+    </tr>
+    <% if @wk_zhi[5,5].present? %>
+      <tr>
+        <% @wk_zhi[5,5].each do |zhi| %>
+        <td><%= zhi%></td>
+        <% end %>
+      </tr>
+    <% end %>
+    <% if @wk_zhi[10,5].present? %>
+      <tr>
+        <% @wk_zhi[10,5].each do |zhi| %>
+        <td><%= zhi%></td>
+        <% end %>
+      </tr>
+    <% end %>
+  <% else %>
+    <tr>
+      <td > <legend>所有直属站均已参加了考试！</legend> </td>
+    </tr>
+  <% end %>
+</tbody>
+</table>
+
+<h4 style="color:#4444C1;">已参考站段：(<%= @ck_cw.size+ @wk_zhi.size%>)</h4>
+
+<!-- 关于已参考的车务段： -->
+<table class="table">
+  <h5 class="text-center" style="width:100%;font-weight:500;">车务段</h5>
+  <tbody>
+    <% if @ck_cw.present? %>
+      <tr>
+        <% @ck_cw.first(5).each do |cw| %>
+        <td><%=cw%></td>
+        <% end %>
+      </tr>
+      <% if @ck_cw[5,5].present? %>
+        <tr>
+          <% @ck_cw[5,5].each do |cw| %>
+          <td><%=cw%></td>
+          <% end %>
+        </tr>
+      <% end %>
+      <% if @ck_cw[10,5].present? %>
+        <tr>
+          <% @ck_cw[10,5].each do |cw| %>
+          <td><%=cw%></td>
+          <% end %>
+        </tr>
+      <% end %>
+    <% else %>
+    <tr>
+      <td > <legend style= "color:red;">所有车务段均未参加考试！</legend> </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<!-- 关于已参考的直属站： -->
+
+<table class="table">
+  <h5 class="text-center" style="width:100%;font-weight:500;">直属站</h5>
+  <tbody>
+    <% if @ck_zhi.present? %>
+      <tr>
+        <% @ck_zhi.first(5).each do |zhi| %>
+        <td><%=zhi%></td>
+        <% end %>
+      </tr>
+      <% if @ck_zhi[5,5].present? %>
+        <tr>
+          <% @ck_zhi[5,5].each do |zhi| %>
+          <td><%= zhi%></td>
+          <% end %>
+        </tr>
+      <% end %>
+      <% if @ck_zhi[10,5].present? %>
+        <tr>
+          <% @ck_zhi[10,5].each do |zhi| %>
+            <td><%= zhi%></td>
+          <% end %>
+        </tr>
+      <% end %>
+    <% else %>
+      <tr>
+        <td > <legend style= "color:red;">所有直属站均未参加考试！</legend> </td>
+      </tr>
+    <% end %>
+  </tbody>
+</div>

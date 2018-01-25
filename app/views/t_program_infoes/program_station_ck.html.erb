@@ -1,0 +1,53 @@
+<div class="row">
+  <div class="pull-right range-query">
+    <div class="searchtime">时间：</div>
+    <div class="searchtime">
+      <%= form_tag program_station_ck_t_program_info_path(@t_program_info), method: :get do %>
+        <%= text_field_tag 'search[date_from]'%>
+        <%= text_field_tag 'search[date_to]' %>
+        <%= hidden_field_tag :name, params[:name]%>
+        <%= submit_tag "搜索", id:"time_id",class: "btn search-button"%>
+      <% end %>
+    </div>
+  </div>
+</div>
+<div class = "welcome_frame">
+<!-- 关于未参考的车务段： -->
+<h4 style="color:#c0392b;">未参考车站：(<%= @wk_z.size %>)</h4>
+
+
+<% if @wk_stations.present? %>
+  <% @wk_stations.each do |duan,stations|%>
+    <p ><%= TDuanInfo.find_by(:F_uuid => duan).F_name %>(<%= stations.size%>)</p>
+    <div class="station-card" >
+      <% stations.each do |station| %>
+        <div class="station-card1">
+          <%= station.F_name%>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% else %>
+  <span>所有车站均已参加了考试！</span>
+<% end %>
+
+
+<!-- 关于已参考的车站： -->
+<h4 style="color:#4444C1;">已参考车站：(<%= @ck_z.size %>)</h4>
+
+
+<% if @ck_stations.present? %>
+  <% @ck_stations.each do |duan,stations|%>
+    <p ><%= TDuanInfo.find_by(:F_uuid => duan).F_name %>(<%= stations.size%>)</p>
+    <div class="station-card" >
+      <% stations.each do |station| %>
+        <div class="station-card1">
+          <%= station.F_name%>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% else %>
+  <span>所有车站均已参加了考试！</span>
+<% end %>
+</div>

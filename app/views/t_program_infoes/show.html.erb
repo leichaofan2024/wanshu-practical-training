@@ -16,7 +16,7 @@
 <!-- // 四张卡片： -->
 <div class="root-card-frame">
   <div class="root-card">
-    <%= link_to duan_ck_path(:"uf8" => params[:uf8],:"search" => params[:search],:"commit" => params[:commit]), {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
+    <%= link_to program_duan_ck_t_program_info_path(:id=> params[:id],:name => params[:name],:"uf8" => params[:uf8],:"search" => params[:search],:"commit" => params[:commit]), {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
       <div class="root-card-block">
         <i class="fa fa-train fa-4x" aria-hidden="true"></i><br>
         <div class="root-card-content">
@@ -26,7 +26,7 @@
       </div>
     <% end %>
 
-    <%= link_to station_ck_path(:"uf8" => params[:uf8],:"search" => params[:search],:"commit" => params[:commit]), {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
+    <%= link_to program_station_ck_t_program_info_path(:id=> params[:id],:name => params[:name],:"uf8" => params[:uf8],:"search" => params[:search],:"commit" => params[:commit]), {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
       <div class="root-card-block">
         <i class="fa fa-building fa-4x" aria-hidden="true"></i><br>
         <div class="root-card-content">
@@ -36,7 +36,7 @@
       </div>
     <% end %>
 
-    <%= link_to team_ck_path(:"uf8" => params[:uf8],:"search" => params[:search],:"commit" => params[:commit]), {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
+    <%= link_to program_team_ck_t_program_info_path(:id=> params[:id],:name => params[:name],:"uf8" => params[:uf8],:"search" => params[:search],:"commit" => params[:commit]), {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
       <div class="root-card-block">
         <i class="fa fa-users fa-4x" aria-hidden="true"></i><br>
         <div class="root-card-content">
@@ -46,7 +46,7 @@
       </div>
     <% end %>
 
-    <%= link_to student_ck_path(:"uf8" => params[:uf8],:"search" => params[:search],:"commit" => params[:commit]), {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
+    <%= link_to program_student_ck_t_program_info_path(:id=> params[:id],:name => params[:name],:"uf8" => params[:uf8],:"search" => params[:search],:"commit" => params[:commit]), {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
       <div class="root-card-block">
         <i class="fa fa-user fa-4x" aria-hidden="true"></i><br>
         <div class="root-card-content">

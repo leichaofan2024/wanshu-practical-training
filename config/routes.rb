@@ -21,7 +21,18 @@ Rails.application.routes.draw do
     get '/update_note',to: 'welcome#update_note'
     resources :users
     resources :browses
-    resources :t_program_infoes
+    resources :t_program_infoes do
+      member do
+        get :program_duan_ck
+        get :program_station_ck
+        get :program_team_ck
+        get :program_student_ck
+        get :program_duan_student_info
+        get :program_duan_score_info
+        get :program_reason_info
+      end
+    end
+
     resources :t_duan_infoes do
         collection do
             get :duan_student_info # 参考学生饼图
