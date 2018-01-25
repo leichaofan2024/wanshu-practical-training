@@ -393,41 +393,45 @@ class ApplicationController < ActionController::Base
         if params[:search].present?
             # m = TReasonInfo.joins(:t_detail_reason_infoes).group(:F_name).size.sort { |a, b| b[1] <=> a[1] }
             @search = TimeSearch.new(params[:search])
-            m = @search.scope_reason_hot.group(:F_name).size.sort_by { |_key, value| value }.reverse.first(4).to_h
+            m = @search.scope_reason_hot.group(:F_name).size.sort_by { |_key, value| value }.reverse.first(8).to_h
         else
-            m = TReasonInfo.joins(:t_detail_reason_infoes).datetime1.group(:F_name).size.sort_by { |_key, value| value }.reverse.first(4).to_h
+            m = TReasonInfo.joins(:t_detail_reason_infoes).datetime1.group(:F_name).size.sort_by { |_key, value| value }.reverse.first(8).to_h
         end
       elsif current_user.permission == 2
         record = TRecordDetailInfo.joins(t_record_info: :t_duan_info).where("t_duan_info.F_name=?", current_user.orgnize)
         if params[:search].present?
           # m = TReasonInfo.joins(:t_detail_reason_infoes).group(:F_name).size.sort { |a, b| b[1] <=> a[1] }
           @search = TimeSearch.new(params[:search])
-          m = @search.scope_reason_hot1(current_user.orgnize).group("t_reason_info.F_name").count.sort_by { |_key, value| value }.reverse.first(4).to_h
+          m = @search.scope_reason_hot1(current_user.orgnize).group("t_reason_info.F_name").count.sort_by { |_key, value| value }.reverse.first(8).to_h
         else
-          m = TReasonInfo.joins(:t_record_detail_infoes).where("t_record_detail_info.F_uuid": record.ids).datetime1.group("t_reason_info.F_name").count.sort_by { |_key, value| value }.reverse.first(4).to_h
+          m = TReasonInfo.joins(:t_record_detail_infoes).where("t_record_detail_info.F_uuid": record.ids).datetime1.group("t_reason_info.F_name").count.sort_by { |_key, value| value }.reverse.first(8).to_h
         end
       elsif current_user.permission == 3
         record = TRecordDetailInfo.joins(t_record_info: :t_station_info).where("t_station_info.F_name=?", current_user.orgnize)
         if params[:search].present?
           # m = TReasonInfo.joins(:t_detail_reason_infoes).group(:F_name).size.sort { |a, b| b[1] <=> a[1] }
           @search = TimeSearch.new(params[:search])
-          m = @search.scope_reason_hot2(current_user.orgnize).group("t_reason_info.F_name").count.sort_by { |_key, value| value }.reverse.first(4).to_h
+          m = @search.scope_reason_hot2(current_user.orgnize).group("t_reason_info.F_name").count.sort_by { |_key, value| value }.reverse.first(8).to_h
         else
-          m = TReasonInfo.joins(:t_record_detail_infoes).where("t_record_detail_info.F_uuid": record.ids).group("t_reason_info.F_name").count.sort_by { |_key, value| value }.reverse.first(4).to_h
+          m = TReasonInfo.joins(:t_record_detail_infoes).where("t_record_detail_info.F_uuid": record.ids).group("t_reason_info.F_name").count.sort_by { |_key, value| value }.reverse.first(8).to_h
         end
       end
-        a,b,c,d = m.keys
-        gon.a = a
-        gon.b = b
-        gon.c = c
-        gon.d = d
-        @fl = { name: a, value: m[a] }
-        gon.fl = @fl
-        @dc = { name: b, value: m[b] }
-        gon.dc = @dc
-        @wt = { name: c, value: m[c] }
-        gon.wt = @wt
-        @wz = { name: d, value: m[d] }
-        gon.wz = @wz
+        gon.reason_key8 = m.keys.first(8)
+        @a = { name: m.keys[0], value: m.values[0] }
+        gon.a = @a
+        @b = { name: m.keys[1], value: m.values[1]}
+        gon.b = @b
+        @c = { name: m.keys[2], value: m.values[2] }
+        gon.c = @c
+        @d = { name: m.keys[3], value: m.values[3] }
+        gon.d = @d
+        @e = { name: m.keys[4], value: m.values[4] }
+        gon.e = @e
+        @f = { name: m.keys[5], value: m.values[5]}
+        gon.f = @f
+        @g = { name: m.keys[6], value: m.values[6] }
+        gon.g = @g
+        @h = { name: m.keys[7], value: m.values[7] }
+        gon.h = @h
     end
 end
