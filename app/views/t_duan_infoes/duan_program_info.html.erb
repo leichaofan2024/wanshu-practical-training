@@ -29,7 +29,7 @@
       <% i = i+1 %>
       <tr>
         <td><%= i %></td>
-        <td><%= d.first %></td>
+        <td><%= link_to(d.first,t_program_info_path(:id => TProgramInfo.find_by(:F_name => d.first).F_id,:name => d.first,:"uf8" => params[:uf8],:"search" => params[:search],:"commit" => params[:commit])) %></td>
         <td><%= d.second %></td>
         <td><%= link_to("查看详情", duan_program_student_info_t_duan_infoes_path(:name => d.first,"utf8": params[:utf8],"search": params[:search],"commit": params[:commit]) )%></td>
       </tr>

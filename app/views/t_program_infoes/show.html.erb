@@ -1,0 +1,287 @@
+<!-- //搜索框： -->
+<div class="row">
+  <div class="pull-right range-query">
+    <div class="searchtime">时间：</div>
+    <div class="searchtime">
+      <%= form_tag t_program_info_path(:id => params[:id]), method: :get do %>
+        <%= text_field_tag 'search[date_from]'%>
+        <%= text_field_tag 'search[date_to]' %>
+        <%= hidden_field_tag :name, params[:name]%>
+        <%= submit_tag "搜索", id:"time_id",class: "btn search-button"%>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<!-- // 四张卡片： -->
+<div class="root-card-frame">
+  <div class="root-card">
+    <%= link_to duan_ck_path(:"uf8" => params[:uf8],:"search" => params[:search],:"commit" => params[:commit]), {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
+      <div class="root-card-block">
+        <i class="fa fa-train fa-4x" aria-hidden="true"></i><br>
+        <div class="root-card-content">
+          <strong>站段总数：<%= @duan_sum %> </strong><br>
+          <strong>实考站段：<%= @duan_ck_count %></strong>
+        </div>
+      </div>
+    <% end %>
+
+    <%= link_to station_ck_path(:"uf8" => params[:uf8],:"search" => params[:search],:"commit" => params[:commit]), {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
+      <div class="root-card-block">
+        <i class="fa fa-building fa-4x" aria-hidden="true"></i><br>
+        <div class="root-card-content">
+          <strong>车站总数：<%= @station_sum %> </strong><br>
+          <strong>实考车站：<%= @station_ck_count %></strong>
+        </div>
+      </div>
+    <% end %>
+
+    <%= link_to team_ck_path(:"uf8" => params[:uf8],:"search" => params[:search],:"commit" => params[:commit]), {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
+      <div class="root-card-block">
+        <i class="fa fa-users fa-4x" aria-hidden="true"></i><br>
+        <div class="root-card-content">
+          <strong>班组总数：<%= @team_sum %> </strong><br>
+          <strong>实考班组：<%= @team_ck_count %></strong>
+        </div>
+      </div>
+    <% end %>
+
+    <%= link_to student_ck_path(:"uf8" => params[:uf8],:"search" => params[:search],:"commit" => params[:commit]), {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
+      <div class="root-card-block">
+        <i class="fa fa-user fa-4x" aria-hidden="true"></i><br>
+        <div class="root-card-content">
+          <strong>实训人数：<%= @student_sum %> </strong><br>
+          <strong>实考人数：<%= @student_ck_count %></strong>
+        </div>
+      </div>
+    <% end %>
+
+  </div>
+</div>
+
+
+ <!-- 五个饼图： -->
+<div class="root-data-frame">
+  <div class="root-data-block">
+    <script src="/assets/echarts.min.js"></script>
+
+    <!--  饼图一：  -->
+    <div class="root-data-people">
+      <div id="main" style="width: 490px;height:330px;"></div>
+       <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            title : {
+                text: '考试人数',
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: ['未考人数','实考人数']
+            },
+
+            series : [
+                {
+                    type: 'pie',
+                    radius : '65%',
+                    center: ['50%', '60%'],
+                    data: [gon.shikao, gon.weikao],
+
+                    label: {
+                      normal: {
+                        position: 'inner',
+                        formatter: '{d}%',
+                         textStyle: {
+                            color: '#ffffff',
+                            fontSize: 14
+                          }
+                        }
+                      },
+
+                    itemStyle: {
+                        emphasis: {
+                          shadowBlur: 10,
+                          shadowOffsetX: 0,
+                          shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+        <% if params[:search].present? %>
+              function GetUrlPara(){
+                   var url = document.location.toString();
+                   var arrUrl = url.split("?");
+                   var para = arrUrl[1];
+                   return para;
+                   };
+        myChart.on('click', function (params) {
+          window.location.assign('/t_duan_infoes/duan_student_info?'+ GetUrlPara());
+        });
+        <% else %>
+        myChart.on('click', function (params) {
+          window.location.assign('/t_duan_infoes/duan_student_info');
+        });
+        <% end %>
+      </script>
+
+    </div>
+
+    <!--  饼图二：  -->
+    <div class="root-data-score">
+      <div id="chengjitongji" style="width: 490px;height:335px;"></div>
+        <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('chengjitongji'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            title : {
+                text: '成绩统计',
+
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: ['90分以上','80分-90分','60分-80分','60分以下']
+            },
+
+            series : [
+                {
+                    type: 'pie',
+                    radius : '65%',
+                    center: ['50%', '60%'],
+                    data: [gon.nine, gon.eight, gon.six, gon.below],
+                  itemStyle: {
+                        emphasis: {
+                          shadowBlur: 10,
+                          shadowOffsetX: 0,
+                          shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+        <% if params[:search].present? %>
+        function GetUrlPara() {
+            var url = document.location.toString();
+            var arrUrl = url.split("?");
+            var para = arrUrl[1];
+            return para;
+        };
+        myChart.on('click', function(params) {
+          window.location.assign('/t_duan_infoes/duan_score_info?'+ GetUrlPara());
+        });
+        <% else %>
+        myChart.on('click', function (params) {
+          window.location.assign('/t_duan_infoes/duan_score_info');
+        });
+        <% end %>
+        </script>
+
+    </div>
+
+
+
+    <!--  饼图三：  -->
+
+    <div class="root-data-wrong">
+      <div id="yicuokaodian" style="width: 490px;height:330px;"></div>
+        <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('yicuokaodian'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            title : {
+                text: '易错项点',
+
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: gon.reason_keys
+            },
+            series : [
+                {
+                    type: 'pie',
+                    radius : '65%',
+                    center: ['50%', '60%'],
+                    data: [gon.a, gon.b, gon.c, gon.d,gon.e,gon.f,gon.g,gon.h],
+
+                    label: {
+                      normal: {
+                        position: 'inner',
+                        formatter: '{c}',
+                          textStyle: {
+                            color: '#ffffff',
+                            fontSize: 14
+                          }
+                        }
+                      },
+
+                    itemStyle: {
+                        emphasis: {
+                          shadowBlur: 10,
+                          shadowOffsetX: 0,
+                          shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+        <% if params[:search].present? %>
+        myChart.on('click', function(params){
+          function GetUrlPara(){
+            var url = document.location.toString();
+            var arrUrl = url.split("?");
+            var para = arrUrl[1];
+            return para;
+          };
+          window.location.assign('/t_duan_infoes/duan_reason_info?'+ '&' + GetUrlPara())
+        });
+        <% else %>
+        myChart.on('click', function (params) {
+          window.location.assign('/t_duan_infoes/duan_reason_info');
+        });
+        <% end %>
+        </script>
+
+    </div>
+
+
+
+
+
+  </div>
+</div>
