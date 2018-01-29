@@ -1,6 +1,7 @@
 class TProgramInfoesController < ApplicationController
 
   def show
+    gon.program_id = params[:id]
     if params[:F_name].present?
       @t_program_info = TProgramInfo.program(params[:name])
       @t_record_infoes = TRecordInfo.program_record(params[:name])
@@ -115,7 +116,7 @@ class TProgramInfoesController < ApplicationController
         @ck_z = station_ck
         @ck_stations = station_ck.group_by{|u| u.F_duan_uuid}
         @wk_stations = @wk_z.group_by{|u| u.F_duan_uuid}
-end
+    end
   end
 
   def program_team_ck
@@ -187,5 +188,325 @@ end
     end
   end
 
+
+  def program_duan_student_info
+    @t_program_info = TProgramInfo.find(params[:id])
+    @duans = TDuanInfo.duan_orgnization
+    @duans_student_cw = TUserInfo.student_all.joins(:t_duan_info).duan_orgnization.where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
+    ncw = @duans_student_cw.keys
+    vcw = @duans_student_cw.values
+    @duans_student_zs = TUserInfo.student_all.joins(:t_duan_info).duan_orgnization.where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
+    nzs = @duans_student_zs.keys
+    vzs = @duans_student_zs.values
+    if params[:search].present?
+        @search = TimeSearch.new(params[:search])
+        cw = @search.scope_program_duan_student(params[:name]).where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').distinct
+        zs = @search.scope_program_duan_student(params[:name]).where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').distinct
+        cw_ck = cw.group('t_duan_info.F_name').count
+        cw_ck1 = cw_ck.keys
+        @duans_student_cw_ck = []
+        ncw.each do |c|
+            @duans_student_cw_ck << if cw_ck1.include?(c)
+                                      cw_ck[c]
+                                    else
+                                      0
+                                    end
+        end
+        @duans_student_cw_ck_bl = []
+        i = 0
+        @duans_student_cw_ck.each do |v|
+            @duans_student_cw_ck_bl << (BigDecimal(v) / BigDecimal(vcw[i])).round(3) * 100
+            i += 1
+        end
+        cw_wk = TUserInfo.student_all.joins(:t_duan_info).duan_orgnization.where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => cw.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
+        cw_wk1 = cw_wk.keys
+        @duans_student_cw_wk = []
+        ncw.each do |c|
+            @duans_student_cw_wk << if cw_wk1.include?(c)
+                                        cw_wk[c]
+                                    else
+                                        0
+                                    end
+        end
+
+        zs_ck = zs.group('t_duan_info.F_name').count
+        zs_ck1 = zs_ck.keys
+        @duans_student_zs_ck = []
+        nzs.each do |c|
+            @duans_student_zs_ck << if zs_ck1.include?(c)
+                                        zs_ck[c]
+                                    else
+                                        0
+                                    end
+        end
+        @duans_student_zs_ck_bl = []
+        i = 0
+        @duans_student_zs_ck.each do |v|
+            @duans_student_zs_ck_bl << (BigDecimal(v) / BigDecimal(vzs[i])).round(3) * 100
+            i += 1
+        end
+        zs_wk = TUserInfo.student_all.joins(:t_duan_info).duan_orgnization.where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => zs.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
+        zs_wk1 = zs_wk.keys
+        @duans_student_zs_wk = []
+        nzs.each do |c|
+            @duans_student_zs_wk << if zs_wk1.include?(c)
+                                        zs_wk[c]
+                                    else
+                                        0
+                                    end
+        end
+
+    else
+        cw = TUserInfo.student_all.joins(:t_duan_info, :t_record_infoes).program_record(params[:name]).datetime.duan_orgnization.where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').distinct
+        zs = TUserInfo.student_all.joins(:t_duan_info, :t_record_infoes).program_record(params[:name]).datetime.duan_orgnization.where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').distinct
+        cw_ck = cw.group('t_duan_info.F_name').count
+        cw_ck1 = cw_ck.keys
+        @duans_student_cw_ck = []
+        ncw.each do |c|
+            @duans_student_cw_ck << if cw_ck1.include?(c)
+                                        cw_ck[c]
+                                    else
+                                        0
+                                    end
+        end
+
+        @duans_student_cw_ck_bl = []
+        i = 0
+        @duans_student_cw_ck.each do |v|
+            @duans_student_cw_ck_bl << (BigDecimal(v) / BigDecimal(vcw[i])).round(3) * 100
+            i += 1
+        end
+
+        cw_wk = TUserInfo.student_all.joins(:t_duan_info).duan_orgnization.where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => cw.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
+        cw_wk1 = cw_wk.keys
+        @duans_student_cw_wk = []
+        ncw.each do |c|
+            @duans_student_cw_wk << if cw_wk1.include?(c)
+                                        cw_wk[c]
+                                    else
+                                        0
+                                    end
+        end
+
+        zs_ck = zs.group('t_duan_info.F_name').count
+        zs_ck1 = zs_ck.keys
+        @duans_student_zs_ck = []
+        nzs.each do |c|
+            @duans_student_zs_ck << if zs_ck1.include?(c)
+                                        zs_ck[c]
+                                    else
+                                        0
+                                    end
+        end
+        @duans_student_zs_ck_bl = []
+        i = 0
+        @duans_student_zs_ck.each do |v|
+            @duans_student_zs_ck_bl << (BigDecimal(v) / BigDecimal(vzs[i])).round(3) * 100
+            i += 1
+        end
+
+        zs_wk = TUserInfo.student_all.joins(:t_duan_info).duan_orgnization.where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => zs.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
+        zs_wk1 = zs_wk.keys
+        @duans_student_zs_wk = []
+        nzs.each do |c|
+            @duans_student_zs_wk << if zs_wk1.include?(c)
+                                        zs_wk[c]
+                                    else
+                                        0
+                                    end
+        end
+
+    end
+    gon.cwkey = ncw
+    gon.cwwkvalue = @duans_student_cw_wk
+    gon.cwckvalue = @duans_student_cw_ck
+    gon.cwblvalue = @duans_student_cw_ck_bl
+    gon.zsckblvalue = @duans_student_zs_ck_bl
+    gon.zskey = nzs
+    gon.zswkvalue = @duans_student_zs_wk
+    gon.zsckvalue = @duans_student_zs_ck
+    url = request.original_url
+    arrurl = url.split('?')
+    @para = arrurl[1]
+  end
+
+  def program_duan_score_info
+    @duantype1 = TDuanInfo.where('t_duan_info.F_type= ?', 1).joins(t_user_infoes: :t_record_infoes).program_record(params[:name]).student_all
+    @duantype2 = TDuanInfo.where('t_duan_info.F_type= ?', 2).joins(t_user_infoes: :t_record_infoes).program_record(params[:name]).student_all
+    @duan = @duantype1.group('t_duan_info.F_name').distinct.count
+    @duan_keys = @duan.keys
+    @duan_keys2 = @duantype2.group('t_duan_info.F_name').distinct.count.keys
+
+    if params[:search].present?
+        @search = TimeSearch.new(params[:search])
+        duan_90_cwscores = @search.scope_program_duan_score1(params[:name]).where('t_record_info.F_score > ?', 90).group('t_duan_info.F_name').size
+        @duan_90_cwscores = []
+        @duan_keys.each do |key|
+          @duan_90_cwscores << if duan_90_cwscores.keys.include?(key)
+                                duan_90_cwscores[key]
+                              else
+                                0
+                              end
+        end
+        duan_80_cwscores = @search.scope_program_duan_score1(params[:name]).where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90).group('t_duan_info.F_name').size
+        @duan_80_cwscores = []
+        @duan_keys.each do |key|
+          @duan_80_cwscores << if duan_80_cwscores.keys.include?(key)
+                                duan_80_cwscores[key]
+                              else
+                                0
+                              end
+        end
+        duan_60_cwscores = @search.scope_program_duan_score1(params[:name]).where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80).group('t_duan_info.F_name').size
+        @duan_60_cwscores = []
+        @duan_keys.each do |key|
+          @duan_60_cwscores << if duan_60_cwscores.keys.include?(key)
+                                duan_60_cwscores[key]
+                              else
+                                0
+                              end
+        end
+        duan_60_cwbellow_scores = @search.scope_program_duan_score1(params[:name]).where('t_record_info.F_score < ?', 60).group('t_duan_info.F_name').size
+        @duan_60_cwbellow_scores = []
+        @duan_keys.each do |key|
+          @duan_60_cwbellow_scores << if duan_60_cwbellow_scores.keys.include?(key)
+                                      duan_60_cwbellow_scores
+                                    else
+                                      0
+                                    end
+        end
+        #下面这段是直属站的柱状图信息
+        duan_90_zsscores = @search.scope_program_duan_score2(params[:name]).where('t_record_info.F_score > ?', 90).group('t_duan_info.F_name').size
+        @duan_90_zsscores = []
+        @duan_keys2.each do |key|
+          @duan_90_zsscores << if duan_90_zsscores.keys.include?(key)
+                                duan_90_zsscores[key]
+                              else
+                                0
+                              end
+        end
+        duan_80_zsscores = @search.scope_program_duan_score2(params[:name]).where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90).group('t_duan_info.F_name').size
+        @duan_80_zsscores = []
+        @duan_keys2.each do |key|
+          @duan_80_zsscores << if duan_80_zsscores.keys.include?(key)
+                                duan_80_zsscores[key]
+                              else
+                                0
+                              end
+        end
+        duan_60_zsscores = @search.scope_program_duan_score2(params[:name]).where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80).group('t_duan_info.F_name').size
+        @duan_60_zsscores = []
+        @duan_keys2.each do |key|
+          @duan_60_zsscores << if duan_60_zsscores.keys.include?(key)
+                                duan_60_zsscores[key]
+                              else
+                                0
+                              end
+        end
+        duan_60_zsbellow_scores = @search.scope_program_duan_score2(params[:name]).where('t_record_info.F_score < ?', 60).group('t_duan_info.F_name').size
+        @duan_60_zsbellow_scores = []
+        @duan_keys2.each do |key|
+          @duan_60_zsbellow_scores << if duan_60_zsbellow_scores.keys.include?(key)
+                                      duan_60_zsbellow_scores[key]
+                                    else
+                                      0
+                                    end
+        end
+    else
+        duan_90_cwscores = @duantype1.where('t_record_info.F_score > ?', 90).datetime.group('t_duan_info.F_name').size
+        @duan_90_cwscores = []
+        @duan_keys.each do |key|
+          @duan_90_cwscores << if duan_90_cwscores.keys.include?(key)
+                                duan_90_cwscores[key]
+                              else
+                                0
+                              end
+        end
+        duan_80_cwscores = @duantype1.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90).datetime.group('t_duan_info.F_name').size
+        @duan_80_cwscores = []
+        @duan_keys.each do |key|
+          @duan_80_cwscores << if duan_80_cwscores.keys.include?(key)
+                                duan_80_cwscores[key]
+                              else
+                                0
+                              end
+        end
+        duan_60_cwscores = @duantype1.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80).datetime.group('t_duan_info.F_name').size
+        @duan_60_cwscores = []
+        @duan_keys.each do |key|
+          @duan_60_cwscores << if duan_60_cwscores.keys.include?(key)
+                                duan_60_cwscores[key]
+                              else
+                                0
+                              end
+        end
+        duan_60_cwbellow_scores = @duantype1.where('t_record_info.F_score < ?', 60).datetime.group('t_duan_info.F_name').size
+        @duan_60_cwbellow_scores = []
+        @duan_keys.each do |key|
+          @duan_60_cwbellow_scores << if duan_60_cwbellow_scores.keys.include?(key)
+                                      duan_60_cwbellow_scores[key]
+                                    else
+                                      0
+                                    end
+        end
+        #下面这段是直属站的柱状图信息
+        duan_90_zsscores = @duantype2.where('t_record_info.F_score > ?', 90).datetime.group('t_duan_info.F_name').size
+        @duan_90_zsscores = []
+        @duan_keys2.each do |key|
+          @duan_90_zsscores << if duan_90_zsscores.keys.include?(key)
+                                duan_90_zsscores[key]
+                              else
+                                0
+                              end
+        end
+        duan_80_zsscores = @duantype2.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90).datetime.group('t_duan_info.F_name').size
+        @duan_80_zsscores = []
+        @duan_keys2.each do |key|
+          @duan_80_zsscores << if duan_80_zsscores.keys.include?(key)
+                                duan_80_zsscores[key]
+                              else
+                                0
+                              end
+        end
+        duan_60_zsscores = @duantype2.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80).datetime.group('t_duan_info.F_name').size
+        @duan_60_zsscores = []
+        @duan_keys2.each do |key|
+          @duan_60_zsscores << if duan_60_zsscores.keys.include?(key)
+                                duan_60_zsscores[key]
+                              else
+                                0
+                              end
+        end
+        duan_60_zsbellow_scores = @duantype2.where('t_record_info.F_score < ?', 60).datetime.group('t_duan_info.F_name').size
+        @duan_60_zsbellow_scores = []
+        @duan_keys2.each do |key|
+          @duan_60_zsbellow_scores << if duan_60_zsbellow_scores.keys.include?(key)
+                                      duan_60_zsbellow_scores[key]
+                                    else
+                                      0
+                                    end
+        end
+  end
+    gon.duan_key = @duan_keys
+    gon.ninefen = @duan_90_cwscores
+    gon.ef = @duan_80_cwscores
+    gon.sf = @duan_60_cwscores
+    gon.sb = @duan_60_cwbellow_scores
+    #下列数据为直属站的柱状图
+    gon.zsduan_key = @duan_keys2
+    gon.zsnf = @duan_90_zsscores
+    gon.zsef = @duan_80_zsscores
+    gon.zssf = @duan_60_zsscores
+    gon.zssb = @duan_60_zsbellow_scores
+  end
+
+  def program_reason_info
+    if params[:search].present?
+      @search = TimeSearch.new(params[:search])
+      @duan_reasons = @search.scope_program_duan_reason(params[:name]).count.sort { |a, b| b[1] <=> a[1] }
+    else
+      @duan_reasons = TDetailReasonInfo.program_detail_reason(params[:name]).joins(:t_reason_info).datetime1.group('t_reason_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
+    end
+  end
 
 end

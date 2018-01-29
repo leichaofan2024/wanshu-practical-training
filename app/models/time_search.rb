@@ -103,7 +103,11 @@ class TimeSearch
 
 
     def scope_duan_student
-      TUserInfo.student_all.joins(:t_duan_info, :t_record_infoes).where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
+      TUserInfo.student_all.joins(:t_duan_info, :t_record_infoes).duan_orgnization.where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
+    end
+
+    def scope_program_duan_student(params)
+      TUserInfo.student_all.joins(:t_duan_info, :t_record_infoes).duan_orgnization.program_record(params).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
     end
 
     def scope_student_info(params)
@@ -126,6 +130,10 @@ class TimeSearch
       TDetailReasonInfo.joins(:t_reason_info).where('F_time BETWEEN ? AND ?', @date_from, @date_to).group('t_reason_info.F_name').distinct
     end
 
+    def scope_program_duan_reason(params)
+      TDetailReasonInfo.program_detail_reason(params).joins(:t_reason_info).where('F_time BETWEEN ? AND ?', @date_from, @date_to).group('t_reason_info.F_name').distinct
+    end
+
     def scope_duan_reason1(params)
       TDetailReasonInfo.joins(:t_reason_info,t_record_detail_info: {t_record_info: :t_duan_info}).where('t_duan_info.F_name = ?',params).where('t_detail_reason_info.F_time BETWEEN ? AND ?', @date_from, @date_to).group('t_reason_info.F_name').distinct
     end
@@ -135,11 +143,19 @@ class TimeSearch
     end
 
     def scope_duan_score1
-        TDuanInfo.where('t_duan_info.F_type= ?', 1).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
+      TDuanInfo.where('t_duan_info.F_type= ?', 1).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
+    end
+
+    def scope_program_duan_score1(params)
+      TDuanInfo.where('t_duan_info.F_type= ?', 1).joins(t_user_infoes: :t_record_infoes).program_record(params).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
     end
 
     def scope_duan_score2
-        TDuanInfo.where('t_duan_info.F_type= ?', 2).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
+      TDuanInfo.where('t_duan_info.F_type= ?', 2).joins(t_user_infoes: :t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
+    end
+
+    def scope_program_duan_score2(params)
+      TDuanInfo.where('t_duan_info.F_type= ?', 2).joins(t_user_infoes: :t_record_infoes).program_record(params).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
     end
 
     def scope_station_score(params)
@@ -232,7 +248,7 @@ class TimeSearch
 
     def scope_program_student_duan_ck1(params,params1)
       TUserInfo.student_all.joins(:t_record_infoes).program_record(params1).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to).distinct.joins(t_duan_info: :t_station_infoes).where("t_duan_info.F_name": params)
-    end 
+    end
 
     def scope_student_duan_ck2(params)
       TUserInfo.student_all.joins(:t_duan_info).where("t_duan_info.F_name": params).joins(:t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)

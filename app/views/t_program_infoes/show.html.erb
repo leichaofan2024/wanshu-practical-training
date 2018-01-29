@@ -120,7 +120,7 @@
 
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
-        <% if params[:search].present? %>
+
               function GetUrlPara(){
                    var url = document.location.toString();
                    var arrUrl = url.split("?");
@@ -128,13 +128,9 @@
                    return para;
                    };
         myChart.on('click', function (params) {
-          window.location.assign('/t_duan_infoes/duan_student_info?'+ GetUrlPara());
+          window.location.assign('/t_program_infoes/'+gon.program_id+'/program_duan_student_info?'+ GetUrlPara());
         });
-        <% else %>
-        myChart.on('click', function (params) {
-          window.location.assign('/t_duan_infoes/duan_student_info');
-        });
-        <% end %>
+
       </script>
 
     </div>
@@ -183,7 +179,6 @@
 
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
-        <% if params[:search].present? %>
         function GetUrlPara() {
             var url = document.location.toString();
             var arrUrl = url.split("?");
@@ -191,13 +186,8 @@
             return para;
         };
         myChart.on('click', function(params) {
-          window.location.assign('/t_duan_infoes/duan_score_info?'+ GetUrlPara());
+          window.location.assign('/t_program_infoes/'+gon.program_id+'/program_duan_score_info?'+ GetUrlPara());
         });
-        <% else %>
-        myChart.on('click', function (params) {
-          window.location.assign('/t_duan_infoes/duan_score_info');
-        });
-        <% end %>
         </script>
 
     </div>
@@ -260,7 +250,6 @@
 
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
-        <% if params[:search].present? %>
         myChart.on('click', function(params){
           function GetUrlPara(){
             var url = document.location.toString();
@@ -268,13 +257,8 @@
             var para = arrUrl[1];
             return para;
           };
-          window.location.assign('/t_duan_infoes/duan_reason_info?'+ '&' + GetUrlPara())
+          window.location.assign('/t_program_infoes/'+gon.program_id+'/program_reason_info?' + GetUrlPara())
         });
-        <% else %>
-        myChart.on('click', function (params) {
-          window.location.assign('/t_duan_infoes/duan_reason_info');
-        });
-        <% end %>
         </script>
 
     </div>

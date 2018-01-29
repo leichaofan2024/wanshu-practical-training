@@ -1,0 +1,45 @@
+<div class="pie_duan_frame">
+  <div class="clear">
+    <a href="/t_program_infoes/<%= params[:id]%>?<%= request.original_url.split("?")[1] %>">专项考核首页</a> > 各站段专项考核易错项点数据
+  </div>
+  <div class="row">
+    <div class="pull-right range-query">
+      <div class="searchtime">时间：</div>
+      <div class="searchtime">
+        <%= form_tag duan_reason_info_t_duan_infoes_path, method: :get do %>
+          <%= text_field_tag 'search[date_from]'%>
+          <%= text_field_tag 'search[date_to]' %>
+          <%= hidden_field_tag :name, params[:name]%>
+          <%= submit_tag "搜索", id:"time_id",class: "btn search-button"%>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <table class="table table-border">
+    <thead>
+      <tr>
+        <th>序号</th>
+        <th>扣分项名称</th>
+        <th>扣分频次</th>
+        <th>查看详情</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% i = 0 %>
+      <% @duan_reasons.each do |r| %>
+      <% i = i+1 %>
+      <tr>
+        <td><%= i %></td>
+        <td><%= r.first %></td>
+        <td><%= r.second %></td>
+        <% if params[:search].present? %>
+        <td><%= link_to("查看详情", "#")%></td>
+        <% else %>
+        <td>
+          <%= link_to("查看详情", "#")%></td>
+        <% end %>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

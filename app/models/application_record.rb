@@ -13,6 +13,7 @@ class ApplicationRecord < ActiveRecord::Base
   scope :student_all , -> {where("t_user_info.F_type=? AND t_user_info.status =?",0,"在职")}
   scope :program, -> (name) { find_by("t_program_info.F_name": name)}
   scope :program_record, -> (name) {where("t_record_info.F_uuid": TRecordDetailInfo.where("t_record_detail_info.F_program_id": TProgramInfo.program(name).F_id).pluck(:F_record_uuid))}
+  scope :program_detail_reason, -> (name) {where("t_detail_reason_info.F_record_detail_uuid": TRecordDetailInfo.where("t_record_detail_info.F_program_id": TProgramInfo.program(name).F_id).pluck(:F_uuid))}
   scope :datetime, -> {where('t_record_info.F_time BETWEEN ? AND ?', Date.today.beginning_of_month, Date.today.end_of_month)}
   scope :datetime1, -> {where('t_detail_reason_info.F_time BETWEEN ? AND ?', Date.today.beginning_of_month, Date.today.end_of_month)}
 
