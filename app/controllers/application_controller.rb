@@ -374,7 +374,7 @@ class ApplicationController < ActionController::Base
             @search = TimeSearch.new(params[:search])
             m = @search.scope_program_type_station.where("t_record_info.F_station_uuid=?", TStationInfo.find_by(:F_name => current_user.orgnize).F_uuid).group(:F_name).count
         else
-            m = TProgramTypeInfo.joins(t_program_infoes: :t_record_infoes).where("t_record_info.F_station_uuid=?", TStationInfo.find_by(:F_name => current_user.orgnize).F_uuid).group("t_program_type_info.F_name").count
+            m = TProgramTypeInfo.joins(t_program_infoes: :t_record_infoes).where("t_record_info.F_station_uuid=?", TStationInfo.find_by(:F_name => current_user.orgnize).F_uuid).datetime.group("t_program_type_info.F_name").count
         end
       end
 
@@ -413,7 +413,7 @@ class ApplicationController < ActionController::Base
           @search = TimeSearch.new(params[:search])
           m = @search.scope_reason_hot2(current_user.orgnize).group("t_reason_info.F_name").count.sort_by { |_key, value| value }.reverse.first(8).to_h
         else
-          m = TReasonInfo.joins(:t_record_detail_infoes).where("t_record_detail_info.F_uuid": record.ids).group("t_reason_info.F_name").count.sort_by { |_key, value| value }.reverse.first(8).to_h
+          m = TReasonInfo.joins(:t_record_detail_infoes).where("t_record_detail_info.F_uuid": record.ids).datetime1.group("t_reason_info.F_name").count.sort_by { |_key, value| value }.reverse.first(8).to_h
         end
       end
         gon.reason_key8 = m.keys.first(8)

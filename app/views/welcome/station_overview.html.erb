@@ -281,7 +281,7 @@
 
 
     <div class="root-data-wrong">
-      <div id="yicuokaodian" style="width: 490px;height:335px;"></div>
+      <div id="yicuokaodian" style="width: 490px;height:330px;"></div>
         <script type="text/javascript">
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('yicuokaodian'));
@@ -290,7 +290,7 @@
         var option = {
             title : {
                 text: '易错项点',
-                subtext: '时间段内',
+
                 x:'center'
             },
             tooltip : {
@@ -300,8 +300,7 @@
             legend: {
                 orient: 'vertical',
                 left: 'left',
-                data: ["车机联控用语不标准", "未核对阶段计划", "未通知有关人员", "未检查设备备品",
-                    ]
+                data: gon.reason_key8
             },
             series : [
                 {
@@ -309,18 +308,19 @@
                     type: 'pie',
                     radius : '65%',
                     center: ['50%', '60%'],
-                    data: [gon.fl, gon.dc, gon.wt, gon.wz],
+                    data: [gon.a, gon.b, gon.c, gon.d,gon.e,gon.f,gon.g,gon.h],
 
                     label: {
                       normal: {
                         position: 'inner',
-                        formatter: '{d}%',
+                        formatter: '{c}',
                          textStyle: {
                             color: '#ffffff',
                             fontSize: 14
                           }
                         }
                       },
+
                     itemStyle: {
                         emphasis: {
                           shadowBlur: 10,
