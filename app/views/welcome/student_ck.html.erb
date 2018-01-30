@@ -1,14 +1,27 @@
-<%= form_tag student_ck_path, :method => :get do %>
-  <p><%= text_field_tag :registration_id, params[:registration_id], :placeholder => "站段搜索", :class => "form-control" %></p>
-     <p class="text-right">
-       <%= submit_tag "送出筛选", :class => "btn btn-primary" %>
-      </p>
-<% end %>
+<!-- 这段是关于搜索功能，但是外观形态还未完成 -->
+<form>
+  <div class="form-group">
+    <%= form_tag student_ck_path, :method => :get do %>
+      站段名称: <%= text_field_tag :registration_id, params[:registration_id], :placeholder => "站段搜索" %>
+    <%= submit_tag "送出筛选", :class => "btn btn-primary" %>
+     <% end %>
+   </div>
+</form>
   <div class="dropdown clearfix pull-right">
-    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuDivider" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuDivider" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
       考试状态
       <span class="caret"></span>
     </button>
+    <!-- <% if params[:search].present? %>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuDivider">
+      <li>
+        <%= link_to("未考", student_ck_path(:order => "student_wk")) %>
+      </li>
+      <li>
+        <%= link_to("已考", student_ck_path(:order => "student_ck"))%>
+      </li>
+    </ul>
+    <% else %> -->
     <ul class="dropdown-menu" aria-labelledby="dropdownMenuDivider">
       <li>
         <%= link_to("未考", student_ck_path(:order => "by_student_wk")) %>
@@ -17,9 +30,10 @@
         <%= link_to("已考", student_ck_path(:order => "by_student_ck"))%>
       </li>
     </ul>
+    <!-- <% end %> -->
   </div>
 
-  <table class="table table-boldered">
+  <table class="table table-hover">
       <thead>
         <tr>
           <td>姓名</td>
@@ -64,3 +78,6 @@
   <div class="pull-right">
       <%= paginate @users %>
   </div>
+  <script>
+    $("#event_category_id").select2( { theme: "bootstrap"} );
+  </script>

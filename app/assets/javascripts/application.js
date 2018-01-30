@@ -19,6 +19,7 @@
 //= require material-kit
 //= require material.min
 //= require nouislider.min
+//= require select2
 
 //= require_tree .
 
@@ -37,7 +38,7 @@ jQuery(function() {
   });
 
 
-  
+
 
 
 
