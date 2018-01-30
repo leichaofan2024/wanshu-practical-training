@@ -11,6 +11,14 @@
   <body>
     <%= render "common/navbar" %>
     <%= render "common/flashes"%>
+    <!--这个是显示时间框的模版-->
+    <div class="time-panel">
+      <div class="time-panel-body">
+        <h4 style="display:inline-block">专项考核</h4>
+        <p style="display:inline-block">（<%=params[:name]%>） </p>
+      </div>
+    </div>
+    <br>
     <%= yield %>
   </body>
 </html>

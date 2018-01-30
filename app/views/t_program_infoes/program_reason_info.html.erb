@@ -6,9 +6,9 @@
     <div class="pull-right range-query">
       <div class="searchtime">时间：</div>
       <div class="searchtime">
-        <%= form_tag duan_reason_info_t_duan_infoes_path, method: :get do %>
-          <%= text_field_tag 'search[date_from]'%>
-          <%= text_field_tag 'search[date_to]' %>
+        <%= form_tag program_reason_info_t_program_info_path(@t_program_info), method: :get do %>
+          <%= text_field_tag 'search[date_from]',nil,:placeholder => time_begin(params[:search])%>
+          <%= text_field_tag 'search[date_to]',nil,:placeholder => time_end(params[:search]) %>
           <%= hidden_field_tag :name, params[:name]%>
           <%= submit_tag "搜索", id:"time_id",class: "btn search-button"%>
         <% end %>
@@ -32,12 +32,7 @@
         <td><%= i %></td>
         <td><%= r.first %></td>
         <td><%= r.second %></td>
-        <% if params[:search].present? %>
-        <td><%= link_to("查看详情", "#")%></td>
-        <% else %>
-        <td>
-          <%= link_to("查看详情", "#")%></td>
-        <% end %>
+        <td><%= link_to("查看详情", program_reason_student_info_t_program_info_path(:reason_name=> r.first)+"&"+request.original_url.split("?")[1])%></td>
       </tr>
       <% end %>
     </tbody>

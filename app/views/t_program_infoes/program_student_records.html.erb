@@ -1,0 +1,26 @@
+<div class="pie_duan_frame">
+
+  <div class="clear">
+    <% if params[:search].present?%>
+      <%= link_to("专项考核首页", t_program_info_path(:id=>params[:id],"utf8": params[:utf8],"search": params[:search],name: params[:name],"commit": params[:commit]))%> > <%= link_to("各站段专项考核参考情况",program_duan_student_info_t_program_info_path(:id=>params[:id],"utf8": params[:utf8],"search": params[:search],name: params[:name],"commit": params[:commit])) %> >
+      <%= link_to(@duan.F_name,program_station_student_info_t_program_info_path(:id=>params[:id],:duan_name => params[:duan_name],"utf8": params[:utf8],"search": params[:search],name: params[:name],"commit": params[:commit])) %> >
+      <%= link_to(@station.F_name,program_team_student_info_t_program_info_path(:id=>params[:id],:duan_name => params[:duan_name],:station_name => params[:station_name],"utf8": params[:utf8],"search": params[:search],name: params[:name],"commit": params[:commit])) %> >
+    <% else %>
+      <%= link_to("专项考核首页", t_program_info_path(:id=>params[:id],name: params[:name]))%> > <%= link_to("各站段专项考核参考情况", program_duan_student_info_t_program_info_path(:id=>params[:id],name: params[:name]))%>  >
+      <%= link_to(@duan.F_name,program_station_student_info_t_program_info_path(:id=>params[:id],:duan_name => params[:duan_name],name: params[:name])) %>
+      <%= link_to(@station.F_name,program_team_student_info_t_program_info_path(:id=>params[:id],:duan_name => params[:duan_name],:station_name => params[:station_name],name: params[:name])) %> >
+    <% end %>
+    <% if @team.present? %>
+      <%=@team.F_name %>:
+    <% end %>
+    <%=@students.first.F_name%>
+    
+  </div>
+  <%= render "player"%>
+  <hr>
+  <div class="text-right">
+    <b>总练习时长: <%= sum_time_longth(@records)%></b>
+  </div>
+
+</div>
+<script src= "/assets/player/flowplayer-3.2.8.min.js"></script>

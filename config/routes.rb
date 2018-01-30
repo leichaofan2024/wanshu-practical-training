@@ -27,9 +27,21 @@ Rails.application.routes.draw do
         get :program_station_ck
         get :program_team_ck
         get :program_student_ck
+        
         get :program_duan_student_info
+        get :program_station_student_info
+        get :program_team_student_info
+        get :program_student_records
+        get :program_record_details
+
         get :program_duan_score_info
+        get :program_station_score_info
+        get :program_team_score_info
+        get :program_score_records
+        get :program_record_score_details
+
         get :program_reason_info
+        get :program_reason_student_info
       end
     end
 

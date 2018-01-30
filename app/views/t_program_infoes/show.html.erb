@@ -4,8 +4,8 @@
     <div class="searchtime">时间：</div>
     <div class="searchtime">
       <%= form_tag t_program_info_path(:id => params[:id]), method: :get do %>
-        <%= text_field_tag 'search[date_from]'%>
-        <%= text_field_tag 'search[date_to]' %>
+        <%= text_field_tag 'search[date_from]',nil,:placeholder => time_begin(params[:search])%>
+        <%= text_field_tag 'search[date_to]',nil,:placeholder => time_end(params[:search]) %>
         <%= hidden_field_tag :name, params[:name]%>
         <%= submit_tag "搜索", id:"time_id",class: "btn search-button"%>
       <% end %>
@@ -196,7 +196,7 @@
 
     <!--  饼图三：  -->
 
-    <div class="root-data-wrong">
+    <div class="root-data-question">
       <div id="yicuokaodian" style="width: 490px;height:330px;"></div>
         <script type="text/javascript">
         // 基于准备好的dom，初始化echarts实例

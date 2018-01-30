@@ -1,5 +1,5 @@
 class TProgramInfoesController < ApplicationController
-
+  layout "program_frame"
   def show
     gon.program_id = params[:id]
     if params[:F_name].present?
@@ -317,6 +317,7 @@ class TProgramInfoesController < ApplicationController
         end
 
     end
+    gon.program_id = params[:id]
     gon.cwkey = ncw
     gon.cwwkvalue = @duans_student_cw_wk
     gon.cwckvalue = @duans_student_cw_ck
@@ -330,7 +331,74 @@ class TProgramInfoesController < ApplicationController
     @para = arrurl[1]
   end
 
+  def program_station_student_info
+    @t_program_info = TProgramInfo.find(params[:id])
+    @duan = TDuanInfo.find_by(F_name: params[:duan_name])
+    @station_student = TUserInfo.student_all.joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct.group('t_station_info.F_name').count
+    n = @station_student.keys
+    v = @station_student.values
+    if params[:search].present?
+        @search = TimeSearch.new(params[:search])
+        m = @search.scope_program_student_info(params[:duan_name],params[:name]).select('t_user_info.F_id,t_station_info.F_name').distinct
+        c = m.group('t_station_info.F_name').count
+        c1 = c.keys
+        @station_student_ck = []
+        n.each do |n|
+            @station_student_ck << if c1.include?(n)
+                                       c[n]
+                                   else
+                                       0
+                                   end
+        end
+        w = TUserInfo.student_all.joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct.where.not('t_user_info.F_id' => m.pluck('t_user_info.F_id')).group('t_station_info.F_name').count
+        w1 = w.keys
+        @station_student_wk = []
+        n.each do |n|
+            @station_student_wk << if w1.include?(n)
+                                       w[n]
+                                   else
+                                       0
+                                   end
+        end
+    else
+        m = TUserInfo.student_all.joins(:t_station_info, :t_record_infoes).datetime.program_record(params[:name]).where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct
+        c = m.group('t_station_info.F_name').count
+        c1 = c.keys
+        @station_student_ck = []
+        n.each do |n|
+            @station_student_ck << if c1.include?(n)
+                                       c[n]
+                                   else
+                                       0
+                                   end
+        end
+        w = TUserInfo.student_all.joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct.where.not('t_user_info.F_id' => m.pluck('t_user_info.F_id')).group('t_station_info.F_name').count
+        w1 = w.keys
+        @station_student_wk = []
+        n.each do |n|
+            @station_student_wk << if w1.include?(n)
+                                       w[n]
+                                   else
+                                       0
+                                   end
+        end
+
+    end
+        @station_student_ckbl = []
+        i = 0
+        @station_student_ck.each do |k|
+          @station_student_ckbl << (BigDecimal(k) / BigDecimal(v[i])).round(3) * 100
+          i += 1
+        end
+    gon.program_id = params[:id]
+    gon.key = n
+    gon.wkvalue = @station_student_wk
+    gon.ckvalue = @station_student_ck
+    gon.ckblvalue = @station_student_ckbl
+  end
+
   def program_duan_score_info
+    @t_program_info = TProgramInfo.find(params[:id])
     @duantype1 = TDuanInfo.where('t_duan_info.F_type= ?', 1).joins(t_user_infoes: :t_record_infoes).program_record(params[:name]).student_all
     @duantype2 = TDuanInfo.where('t_duan_info.F_type= ?', 2).joins(t_user_infoes: :t_record_infoes).program_record(params[:name]).student_all
     @duan = @duantype1.group('t_duan_info.F_name').distinct.count
@@ -487,6 +555,7 @@ class TProgramInfoesController < ApplicationController
                                     end
         end
   end
+    gon.program_id = params[:id]
     gon.duan_key = @duan_keys
     gon.ninefen = @duan_90_cwscores
     gon.ef = @duan_80_cwscores
@@ -501,6 +570,7 @@ class TProgramInfoesController < ApplicationController
   end
 
   def program_reason_info
+    @t_program_info = TProgramInfo.find(params[:id])
     if params[:search].present?
       @search = TimeSearch.new(params[:search])
       @duan_reasons = @search.scope_program_duan_reason(params[:name]).count.sort { |a, b| b[1] <=> a[1] }
@@ -508,5 +578,243 @@ class TProgramInfoesController < ApplicationController
       @duan_reasons = TDetailReasonInfo.program_detail_reason(params[:name]).joins(:t_reason_info).datetime1.group('t_reason_info.F_name').size.sort { |a, b| b[1] <=> a[1] }
     end
   end
+
+  def program_reason_student_info
+    @t_program_info = TProgramInfo.find(params[:id])
+    if params[:search].present?
+      @search = TimeSearch.new(params[:search])
+      records = @search.scope_program_duan_reason_student(params[:reason_name],params[:name])
+      @records = case params[:order]
+                  when "by_duan"
+                    @records = records.order("F_duan_uuid DESC")
+                  when "by_station"
+                    @records = records.order("F_station_uuid DESC")
+                  when "by_team"
+                    @records = records.order("F_team_uuid DESC")
+                  when "by_time"
+                    @records = records.order("F_time DESC")
+                  else
+                    @records = records.order("F_score DESC")
+                  end
+    else
+      records = TRecordInfo.datetime.includes(:t_user_info, :t_duan_info, :t_station_info, :t_team_info).joins(t_record_detail_infoes: { t_detail_reason_infoes: :t_reason_info }).program_detail_reason(params[:name]).where('t_reason_info.F_name = ?', params[:reason_name])
+      @records = case params[:order]
+                  when "by_duan"
+                    @records = records.order("F_duan_uuid DESC")
+                  when "by_station"
+                    @records = records.order("F_station_uuid DESC")
+                  when "by_team"
+                    @records = records.order("F_team_uuid DESC")
+                  when "by_time"
+                    @records = records.order("F_time DESC")
+                  else
+                    @records = records.order("F_score DESC")
+                  end
+
+    end
+  end
+
+  def program_station_score_info
+    @t_program_info = TProgramInfo.find(params[:id])
+    @duan = TDuanInfo.find_by(F_name: params[:duan_name])
+    @station = TStationInfo.where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).joins(t_user_infoes: :t_record_infoes).program_record(params[:name]).group('t_station_info.F_name').size
+    @station_keys = @station.keys
+    if params[:search].present?
+        @search = TimeSearch.new(params[:search])
+        station_90_scores = @search.scope_program_station_score(params[:duan_name],params[:name]).where('t_record_info.F_score >= ?', 90).group('t_station_info.F_name').size
+        @station_90_scores = []
+        @station_keys.each do |key|
+          @station_90_scores << if station_90_scores.keys.include?(key)
+                                    station_90_scores[key]
+                                  else
+                                    0
+                                  end
+        end
+        station_80_scores = @search.scope_program_station_score(params[:duan_name],params[:name]).where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90).group('t_station_info.F_name').size
+        @station_80_scores = []
+        @station_keys.each do |key|
+          @station_80_scores << if station_80_scores.keys.include?(key)
+                                    station_80_scores[key]
+                                  else
+                                    0
+                                  end
+        end
+        station_60_scores = @search.scope_program_station_score(params[:duan_name],params[:name]).where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80).group('t_station_info.F_name').size
+        @station_60_scores = []
+        @station_keys.each do |key|
+          @station_80_scores << if station_60_scores.keys.include?(key)
+                                    station_60_scores[key]
+                                  else
+                                    0
+                                  end
+        end
+        station_60_bellow_scores = @search.scope_program_station_score(params[:duan_name],params[:name]).where('t_record_info.F_score < ?', 60).group('t_station_info.F_name').size
+        @station_60_bellow_scores = []
+        @station_keys.each do |key|
+          @station_60_bellow_scores << if station_60_bellow_scores.keys.include?(key)
+                                    station_60_bellow_scores[key]
+                                  else
+                                    0
+                                  end
+        end
+    else
+        station_90_scores = TStationInfo.where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).joins(t_user_infoes: :t_record_infoes).program_record(params[:name]).datetime.where('t_record_info.F_score >= ?', 90).group('t_station_info.F_name').size
+        @station_90_scores = []
+        @station_keys.each do |key|
+          @station_90_scores << if station_90_scores.keys.include?(key)
+                                    station_90_scores[key]
+                                  else
+                                    0
+                                  end
+        end
+        station_80_scores = TStationInfo.where('t_station_info.F_duan_uuid = ?',  @duan.F_uuid).joins(t_user_infoes: :t_record_infoes).program_record(params[:name]).datetime.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 80, 90).group('t_station_info.F_name').size
+        @station_80_scores = []
+        @station_keys.each do |key|
+          @station_80_scores << if station_80_scores.keys.include?(key)
+                                    station_80_scores[key]
+                                  else
+                                    0
+                                  end
+        end
+        station_60_scores = TStationInfo.where('t_station_info.F_duan_uuid = ?',  @duan.F_uuid).joins(t_user_infoes: :t_record_infoes).program_record(params[:name]).datetime.where('t_record_info.F_score >= ? and t_record_info.F_score < ?', 60, 80).group('t_station_info.F_name').size
+        @station_60_scores = []
+        @station_keys.each do |key|
+          @station_60_scores << if station_60_scores.keys.include?(key)
+                                    station_60_scores[key]
+                                  else
+                                    0
+                                  end
+        end
+        station_60_bellow_scores = TStationInfo.where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).joins(t_user_infoes: :t_record_infoes).program_record(params[:name]).datetime.where('t_record_info.F_score < ?', 60).group('t_station_info.F_name').size
+        @station_60_bellow_scores = []
+        @station_keys.each do |key|
+          @station_60_bellow_scores << if station_60_bellow_scores.keys.include?(key)
+                                    station_60_bellow_scores[key]
+                                  else
+                                    0
+                                  end
+        end
+  end
+    gon.program_id = params[:id]
+    gon.station_key = @station_keys
+    gon.ninefen = @station_90_scores
+    gon.ef = @station_80_scores
+    gon.sf = @station_60_scores
+    gon.sb = @station_60_bellow_scores
+  end
+
+  def program_team_student_info
+    @t_program_info = TProgramInfo.find(params[:id])
+    @duan = TDuanInfo.find_by(F_name: params[:duan_name])
+    @station = TStationInfo.find_by(F_name: params[:station_name])
+    @team_student = TUserInfo.student_all.joins(:t_team_info).where('t_team_info.F_station_uuid = ?', @station.F_uuid).select('t_user_info.F_name,t_user_info.F_id,t_team_info.F_name').distinct.group('t_team_info.F_name').count
+    n= @team_student.keys
+    @student_other = @station.t_user_infoes.where(:F_type => 0).where.not(:status => "在职").select(:F_id).distinct
+
+    if params[:search].present?
+      @search = TimeSearch.new(params[:search])
+      if params[:team_name].present?
+        @team = TTeamInfo.where(F_station_uuid: @station.F_uuid).find_by(F_name: params[:team_name])
+        student_id =@station.t_user_infoes.student_all.where(:F_team_uuid => @team.F_uuid).pluck(:F_id).uniq
+        team_student = TUserInfo.all.where(:F_id => student_id)
+        @student_ck = @search.scope_program_team_student2(team_student,params[:name]).select(:F_name, :F_id).distinct
+        @student_wk = team_student.select(:F_name, :F_id).distinct.where.not(F_id: @student_ck.pluck(:F_id))
+      else
+        @student_ck = @search.scope_program_team_student3(@station,params[:name]).select(:F_name, :F_id).distinct
+        @student_wk = TUserInfo.student_all.joins(:t_station_info).where('t_station_info.F_uuid': @station.F_uuid).select(:F_name, :F_id).distinct.where.not(F_id: @student_ck.pluck(:F_id))
+      end
+      team = @station.t_team_infoes
+      @key = []
+      @value_ck = []
+      @value_wk = []
+      team.each do |t|
+        student_id = @station.t_user_infoes.student_all.where(:F_team_uuid => t.F_uuid).pluck(:F_id).uniq
+        student = TUserInfo.student_all.where(:F_id => student_id)
+        if student.present?
+          student_ck = @search.scope_program_team_student(student,params[:name]).pluck(:F_id).uniq
+          student_wk = student.where.not(:F_id => student_ck).pluck(:F_id).uniq
+          @key << t.F_name
+          @value_ck << student_ck.size
+          @value_wk << student_wk.size
+        end
+      end
+    else
+      if params[:team_name].present?
+        @team = TTeamInfo.where(F_station_uuid: @station.F_uuid).find_by(F_name: params[:team_name])
+        student_id =@station.t_user_infoes.student_all.where(:F_team_uuid => @team.F_uuid).pluck(:F_id).uniq
+        team_student = TUserInfo.all.where(:F_id => student_id)
+        @student_ck = team_student.joins(:t_record_infoes).program_record(params[:name]).datetime.select(:F_name, :F_id).distinct
+        @student_wk = team_student.select(:F_name, :F_id).distinct.where.not(F_id: @student_ck.pluck(:F_id))
+      else
+        @student_ck = TUserInfo.student_all.joins(:t_station_info, :t_record_infoes).where('t_station_info.F_uuid': @station.F_uuid).program_record(params[:name]).datetime.select(:F_name, :F_id).distinct
+        @student_wk = TUserInfo.student_all.joins(:t_station_info).where('t_station_info.F_uuid': @station.F_uuid).select(:F_name, :F_id).distinct.where.not(F_id: @student_ck.pluck(:F_id))
+      end
+      team = @station.t_team_infoes
+      @key = []
+      @value_ck = []
+      @value_wk = []
+      team.each do |t|
+        student_id = @station.t_user_infoes.student_all.where(:F_team_uuid => t.F_uuid).pluck(:F_id).uniq
+        student = TUserInfo.student_all.where(:F_id => student_id)
+        if student.present?
+          student_ck = student.joins(:t_record_infoes).program_record(params[:name]).datetime.pluck(:F_id).uniq
+          student_wk = student.where.not(:F_id => student_ck).pluck(:F_id).uniq
+          @key << t.F_name
+          @value_ck << student_ck.size
+          @value_wk << student_wk.size
+        end
+      end
+    end
+    gon.program_id = params[:id]
+    gon.key = @key
+    gon.wkvalue = @value_wk
+    gon.ckvalue = @value_ck
+
+    url = request.original_url
+    arrurl = url.split('?')
+    @para = arrurl[1]
+  end
+
+  def program_team_score_info
+
+  end
+
+  def program_student_records
+    @duan = TDuanInfo.find_by(F_name: params[:duan_name])
+    @station = TStationInfo.find_by(F_name: params[:station_name])
+    if params[:team_name].present?
+        @team = TTeamInfo.where(F_station_uuid: @station.F_uuid).find_by(F_name: params[:team_name])
+    end
+    @students = TUserInfo.where(F_name: params[:user_name], F_id: params[:user_id])
+    if params[:search].present?
+        @search = TimeSearch.new(params[:search])
+        @records = @search.scope_program_student_score(params[:user_id],params[:name])
+    else
+        @records = TRecordInfo.program_record(params[:name]).where(F_user_uuid: @students.ids).datetime
+    end
+  end
+
+  def program_score_records
+
+  end
+
+  def program_record_details
+    @duan = TDuanInfo.find_by(F_name: params[:duan_name])
+    @station = TStationInfo.find_by(F_name: params[:station_name])
+    if params[:team_name].present?
+      @team = TTeamInfo.where(F_station_uuid: @station.F_uuid).find_by(F_name: params[:team_name])
+    end
+
+    @students = TUserInfo.where(F_id: params[:user_id], F_name: params[:user_name])
+    @record = TRecordInfo.find_by(F_uuid: params[:record_uuid])
+
+    @t_record_detail_infoes = @record.t_record_detail_infoes
+    @teacher = TUserInfo.find_by(F_uuid: @record.F_teacher_uuid)
+  end
+
+  def program_record_score_details
+
+  end
+
 
 end

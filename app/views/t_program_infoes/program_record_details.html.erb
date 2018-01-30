@@ -1,0 +1,67 @@
+<div class="pie_duan_frame">
+
+  <div class="clear">
+    <% if params[:search].present?%>
+      <%= link_to("专项考核首页", t_program_info_path(:id=>params[:id],"utf8": params[:utf8],"search": params[:search],name: params[:name],"commit": params[:commit]))%> > <%= link_to("各站段专项考核参考情况",program_duan_student_info_t_program_info_path(:id=>params[:id],"utf8": params[:utf8],"search": params[:search],name: params[:name],"commit": params[:commit])) %> >
+      <%= link_to(@duan.F_name,program_station_student_info_t_program_info_path(:id=>params[:id],:duan_name => params[:duan_name],"utf8": params[:utf8],"search": params[:search],name: params[:name],"commit": params[:commit])) %> >
+      <%= link_to(@station.F_name,program_team_student_info_t_program_info_path(:id=>params[:id],:duan_name => params[:duan_name],:station_name => params[:station_name],"utf8": params[:utf8],"search": params[:search],name: params[:name],"commit": params[:commit])) %> >
+      <% if @team.present? %>
+        <%=@team.F_name %>:
+      <% end %>
+      <%=@students.first.F_name%>
+    <% else %>
+      <%= link_to("专项考核首页", t_program_info_path(:id=>params[:id],name: params[:name]))%> > <%= link_to("各站段专项考核参考情况", program_duan_student_info_t_program_info_path(:id=>params[:id],name: params[:name]))%>  >
+      <%= link_to(@duan.F_name,program_station_student_info_t_program_info_path(:id=>params[:id],:duan_name => params[:duan_name],name: params[:name])) %>
+      <%= link_to(@station.F_name,program_team_student_info_t_program_info_path(:id=>params[:id],:duan_name => params[:duan_name],:station_name => params[:station_name],name: params[:name])) %> >
+      <a href="/t_program_infoes/<%= params[:id]%>/progran_student_records?duan_name=<%=@duan.F_name%>&station_name=<%=@station.F_name%>&team_name=
+        <% if @team.present? %>
+          <%=@team.F_name%>
+        <% end %>
+        &user_id=<%=@students.first.F_id %>&user_name=<%=@students.first.F_name%>">
+        <% if @team.present? %>
+          <%=@team.F_name %>:
+        <% end %>
+        <%=@students.first.F_name%>
+      </a>
+    <% end %>
+  </div>
+
+  <table class="table table-border">
+    <thead>
+      <tr>
+        <th>序号</th>
+        <th>老师</th>
+        <th>考核项点</th>
+        <th>扣分项点</th>
+        <th>得分</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% i = 0 %>
+      <% @t_record_detail_infoes.each do |r| %>
+      <% i = i+1 %>
+      <tr>
+        <td><%= i %></td>
+        <td>
+          <% if @teacher.present? %>
+            <%= @teacher.F_name %>
+          <% else %>
+            <%= "无教师信息"%>
+          <% end %>
+        </td>
+        <td>
+            <%= r.t_program_info.F_name %>
+        </td>
+
+        <td>
+            <% r.t_detail_reason_infoes.each do |reason| %>
+              <%= reason.t_reason_info.F_name %> 扣分：<%= reason.F_score %><br>
+            <% end %>
+        </td>
+        <td><%= r.F_score %></td>
+
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

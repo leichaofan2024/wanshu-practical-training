@@ -16,10 +16,10 @@ class TRecordInfoesController < ApplicationController
         if params[:team_name].present?
             @team = TTeamInfo.where(F_station_uuid: @station.F_uuid).find_by(F_name: params[:team_name])
         end
-        @students = TUserInfo.where(F_name: params[:user_name], F_id: params[:user_id])
+        @students = TUserInfo.where(F_id: params[:user_id])
         if params[:search].present?
             @search = TimeSearch.new(params[:search])
-            @records = @search.scope_student_score(params[:user_id], params[:user_name])
+            @records = @search.scope_student_score(params[:user_id])
         else
             @records = TRecordInfo.where(F_user_uuid: @students.ids).datetime
       end

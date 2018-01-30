@@ -4,8 +4,8 @@
       <div class="searchtime">时间：</div>
       <div class="searchtime">
         <%= form_tag program_ck_path, method: :get do %>
-          <%= text_field_tag 'search[date_from]'%>
-          <%= text_field_tag 'search[date_to]' %>
+          <%= text_field_tag 'search[date_from]',nil,:placeholder => time_begin(params[:search])%>
+          <%= text_field_tag 'search[date_to]',nil,:placeholder => time_end(params[:search]) %>
           <%= submit_tag "搜索", id:"time_id",class: "btn search-button"%>
         <% end %>
       </div>
