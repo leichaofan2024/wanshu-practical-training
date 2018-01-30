@@ -33,7 +33,7 @@
           <% if params[:search].present? %>
             <%= link_to(d.first,t_program_info_path(:id => TProgramInfo.find_by(:F_name => d.first).F_id,:name => d.first,:"uf8" => params[:uf8],:"search" => params[:search],:"commit" => params[:commit])) %>
           <% else %>
-            <%= link_to(d.first,t_program_info_path(:id => TProgramInfo.find_by(:F_name => d.first).F_id,:name => d.first)%>
+            <%= link_to(d.first,t_program_info_path(:id => TProgramInfo.find_by(:F_name => d.first).F_id,:name => d.first))%>
           <% end %>
         </td>
         <td><%= d.second %></td>

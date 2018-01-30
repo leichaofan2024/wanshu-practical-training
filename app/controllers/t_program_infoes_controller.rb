@@ -2,7 +2,7 @@ class TProgramInfoesController < ApplicationController
   layout "program_frame"
   def show
     gon.program_id = params[:id]
-    if params[:F_name].present?
+    if params[:name].present?
       @t_program_info = TProgramInfo.program(params[:name])
       @t_record_infoes = TRecordInfo.program_record(params[:name])
     end
