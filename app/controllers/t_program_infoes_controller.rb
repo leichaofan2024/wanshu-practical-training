@@ -27,7 +27,7 @@ class TProgramInfoesController < ApplicationController
     else
         @duan_ck_count = TDuanInfo.duan_orgnization.joins(t_user_infoes: :t_record_infoes).student_all.program_record(params[:name]).datetime.select('t_duan_info.F_uuid').distinct.count
         @station_ck_count = TStationInfo.joins(t_user_infoes: :t_record_infoes).program_record(params[:name]).datetime.distinct.count
-        @team_ck_count = TTeamInfo.team_orgnization.joins(t_user_infoes: :t_record_infoes).student_all.program_record(params).datetime.distinct.count
+        @team_ck_count = TTeamInfo.team_orgnization.joins(t_user_infoes: :t_record_infoes).student_all.program_record(params[:name]).datetime.distinct.count
         @student_ck_count = TUserInfo.student_all.joins(:t_record_infoes).program_record(params[:name]).datetime.distinct.count
         @score_90 = TRecordInfo.program_record(params[:name]).datetime.where('F_score >= ?', 90).count
         @score_80 = TRecordInfo.program_record(params[:name]).datetime.where('F_score >= ? AND F_score < ?', 80, 90).count
@@ -177,7 +177,7 @@ class TProgramInfoesController < ApplicationController
             end
     else
           student = TUserInfo.student_all
-          students_duan_ck = student.joins(:t_record_infoes).program_record(params).datetime.distinct
+          students_duan_ck = student.joins(:t_record_infoes).program_record(params[:name]).datetime.distinct
           students_duan_wk = student.where.not("t_user_info.F_uuid": students_duan_ck.ids)
           @duans_ck = TDuanInfo.duan_orgnization.joins(:t_user_infoes).where("t_user_info.F_uuid": students_duan_ck.ids).distinct
           @duans_wk = TDuanInfo.duan_orgnization.joins(:t_user_infoes).where("t_user_info.F_uuid": students_duan_wk.ids).distinct
