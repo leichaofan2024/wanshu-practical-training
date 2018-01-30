@@ -10,7 +10,7 @@ class TProgramInfoesController < ApplicationController
     @duan_sum = TDuanInfo.where.not('F_name= ? || F_name= ?', '局职教基地', '运输处').count
     @station_sum = TStationInfo.station_orgnization.joins(:t_user_infoes).student_all.distinct.count
     @team_sum = TTeamInfo.team_orgnization.joins(:t_user_infoes).student_all.distinct.count
-    @student_sum = TUserInfo.student_all.distinct.count
+    @student_sum = TUserInfo.student_all.select("t_user_info.F_id").distinct.count
 
      # 五张卡片及饼图数据：
     if params[:search].present?
@@ -18,7 +18,7 @@ class TProgramInfoesController < ApplicationController
         @duan_ck_count = @search.scope_program_duan_ck(params[:name]).select('t_duan_info.F_uuid').distinct.count
         @station_ck_count = @search.scope_program_station_ck(params[:name]).distinct.count
         @team_ck_count = @search.scope_program_team_ck(params[:name]).distinct.count
-        @student_ck_count = @search.scope_program_student_ck(params[:name]).distinct.count
+        @student_ck_count = @search.scope_program_student_ck(params[:name]).select("t_user_info.F_id").distinct.count
         @score_90 = @search.scope_program_score(params[:name]).where('F_score >= ?', 90).count
         @score_80 = @search.scope_program_score(params[:name]).where('F_score >= ? AND F_score < ?', 80, 90).count
         @score_60 = @search.scope_program_score(params[:name]).where('F_score >= ? AND F_score < ?', 60,80).count
@@ -28,7 +28,7 @@ class TProgramInfoesController < ApplicationController
         @duan_ck_count = TDuanInfo.duan_orgnization.joins(t_user_infoes: :t_record_infoes).student_all.program_record(params[:name]).datetime.select('t_duan_info.F_uuid').distinct.count
         @station_ck_count = TStationInfo.joins(t_user_infoes: :t_record_infoes).program_record(params[:name]).datetime.distinct.count
         @team_ck_count = TTeamInfo.team_orgnization.joins(t_user_infoes: :t_record_infoes).student_all.program_record(params[:name]).datetime.distinct.count
-        @student_ck_count = TUserInfo.student_all.joins(:t_record_infoes).program_record(params[:name]).datetime.distinct.count
+        @student_ck_count = TUserInfo.student_all.joins(:t_record_infoes).program_record(params[:name]).datetime.select("t_user_info.F_id").distinct.count
         @score_90 = TRecordInfo.program_record(params[:name]).datetime.where('F_score >= ?', 90).count
         @score_80 = TRecordInfo.program_record(params[:name]).datetime.where('F_score >= ? AND F_score < ?', 80, 90).count
         @score_60 = TRecordInfo.program_record(params[:name]).datetime.where('F_score >= ? AND F_score < ?', 60, 80).count

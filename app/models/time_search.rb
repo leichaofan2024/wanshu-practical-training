@@ -32,7 +32,7 @@ class TimeSearch
     end
 
     def scope_team
-      TTeamInfo.team_orgnization.joins(t_user_infoes: :t_record_infoes).where("t_user_info.F_uuid": TUserInfo.student_all.ids).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
+      TTeamInfo.team_orgnization.joins(t_user_infoes: :t_record_infoes).student_all.where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
     end
 
     def scope_program_team_ck(params)
@@ -44,7 +44,7 @@ class TimeSearch
     end
 
     def scope_team_station(params)
-      TTeamInfo.joins(:t_station_info,{t_user_infoes: :t_record_infoes}).where("t_station_info.F_name": params,"t_user_info.F_uuid": TUserInfo.student_all.ids).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
+      TTeamInfo.joins(:t_station_info,t_user_infoes: :t_record_infoes).where("t_station_info.F_name": params).student_all.where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
     end
 
     def scope_student_k
@@ -76,11 +76,11 @@ class TimeSearch
     end
 
     def scope_program_type_duan
-        TProgramTypeInfo.joins(t_program_infoes: { t_record_infoes: :t_duan_info }).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
+        TProgramTypeInfo.joins(t_program_infoes: :t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
     end
 
     def scope_program_type_station
-        TProgramTypeInfo.joins(t_program_infoes: { t_record_infoes: :t_station_info }).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
+        TProgramTypeInfo.joins(t_program_infoes: :t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
     end
 
     def scope_reason_hot
