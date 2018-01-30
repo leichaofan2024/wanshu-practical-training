@@ -132,7 +132,20 @@ class WelcomeController < ApplicationController
   end
 
   def student_ck
-    @users = TUserInfo.joins(:t_station_info, :t_team_info).order("F_id DESC").page(params[:page]).per(20)
+    @student_ck = TUserInfo.joins(:t_record_infoes, :t_team_info).order("F_id DESC").page(params[:page]).per(20)
+    @student_wk = TUserInfo.joins(:t_team_info, :t_station_info).where.not("t_user_info.F_uuid": @student_ck.ids).order("F_id DESC").page(params[:page]).per(20)
+    @users = case params[:order]
+    when 'by_student_wk'
+      @student_wk
+    when 'by_student_ck'
+      @student_ck
+    else
+      TUserInfo.joins(:t_station_info, :t_team_info).order("F_id DESC").page(params[:page]).per(20)
+    end
+
+    if params[:registration_id].present?
+      @users = @users.where('t_station_info.F_name' => params[:registration_id])
+    end 
   end
 
   def program_ck
