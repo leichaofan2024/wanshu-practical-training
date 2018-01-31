@@ -24,11 +24,7 @@ class TimeSearch
     end
 
     def scope_station
-      TStationInfo.joins(t_user_infoes: :t_record_infoes).student_all.where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
-    end
-
-    def scope_program_station_ck(params)
-      TStationInfo.joins(t_user_infoes: :t_record_infoes).student_all.program_record(params).where("t_record_info.F_time BETWEEN ? AND ?", @date_from, @date_to)
+      TStationInfo.station_orgnization.joins(t_user_infoes: :t_record_infoes).student_all.where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
     end
 
     def scope_team
@@ -271,7 +267,7 @@ class TimeSearch
     end
 
     def scope_student_duan_ck1(params)
-      TUserInfo.student_all.joins(:t_record_infoes).distinct.joins(t_duan_info: :t_station_infoes).where("t_duan_info.F_name": params).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
+      TUserInfo.student_all.joins(:t_record_infoes,:t_duan_info).where("t_duan_info.F_name": params).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
     end
 
     def scope_program_student_duan_ck1(params,params1)
@@ -279,11 +275,11 @@ class TimeSearch
     end
 
     def scope_student_duan_ck2(params)
-      TUserInfo.student_all.joins(:t_duan_info).where("t_duan_info.F_name": params).joins(:t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
+      TUserInfo.student_all.joins(:t_duan_info,:t_record_infoes).where("t_duan_info.F_name": params).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
     end
 
-    def scope_student_duan_ck3(user,params)
-      TUserInfo.student_all.joins(:t_duan_info).where("t_duan_info.F_name": user).joins(t_duan_info: :t_station_infoes).where("t_duan_info.F_name": params).joins(:t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
+    def scope_student_duan_ck3(params)
+      TUserInfo.student_all.joins(:t_duan_info,:t_record_infoes).where("t_duan_info.F_name": params).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
     end
 
     def scope_student_duan_ck4(params)

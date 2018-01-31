@@ -26,7 +26,7 @@ class TProgramInfoesController < ApplicationController
         @reason_hot_all = @search.scope_program_reason_hot(params[:name]).group(:F_name).size.sort_by { |_key, value| value }.reverse.first(8).to_h
     else
         @duan_ck_count = TDuanInfo.duan_orgnization.joins(t_user_infoes: :t_record_infoes).student_all.program_record(params[:name]).datetime.select('t_duan_info.F_uuid').distinct.count
-        @station_ck_count = TStationInfo.joins(t_user_infoes: :t_record_infoes).program_record(params[:name]).datetime.distinct.count
+        @station_ck_count = TStationInfo.station_orgnization.joins(t_user_infoes: :t_record_infoes).program_record(params[:name]).datetime.distinct.count
         @team_ck_count = TTeamInfo.team_orgnization.joins(t_user_infoes: :t_record_infoes).student_all.program_record(params[:name]).datetime.distinct.count
         @student_ck_count = TUserInfo.student_all.joins(:t_record_infoes).program_record(params[:name]).datetime.select("t_user_info.F_id").distinct.count
         @score_90 = TRecordInfo.program_record(params[:name]).datetime.where('F_score >= ?', 90).count
