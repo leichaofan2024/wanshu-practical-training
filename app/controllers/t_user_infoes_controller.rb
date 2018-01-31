@@ -7,7 +7,8 @@ class TUserInfoesController < ApplicationController
   end
   def set_student_status
     t_user_info = TUserInfo.find(params[:id])
-    @t_user_infoes = TUserInfo.where(:F_id => t_user_info.F_id)
+    t_station_info = TStationInfo.find_by(:F_name => params[:station_name])
+    @t_user_infoes = t_station_info.t_user_infoes.where(:F_id => t_user_info.F_id)
     @t_user_infoes.update_all(:status => params[:status])
     redirect_to :back
   end
