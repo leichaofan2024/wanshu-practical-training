@@ -215,8 +215,6 @@ ActiveRecord::Schema.define(version: 20180118083255) do
     t.string  "F_time",               limit: 64, null: false
     t.integer "F_reason_id",                     null: false
     t.integer "F_score",                         null: false
-    t.index ["F_reason_id"], name: "index_t_detail_reason_info_on_F_reason_id", using: :btree
-    t.index ["F_record_detail_uuid"], name: "index_t_detail_reason_info_on_F_record_detail_uuid", using: :btree
   end
 
   create_table "t_duan_info", primary_key: "F_uuid", id: :string, limit: 64, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -229,7 +227,6 @@ ActiveRecord::Schema.define(version: 20180118083255) do
   create_table "t_program_info", primary_key: "F_id", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string  "F_name",    limit: 256,             null: false
     t.integer "F_type_id",             default: 0, null: false
-    t.index ["F_type_id"], name: "index_t_program_info_on_F_type_id", using: :btree
   end
 
   create_table "t_program_info_ignore", primary_key: "F_id", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -267,8 +264,6 @@ ActiveRecord::Schema.define(version: 20180118083255) do
     t.string  "F_mark",        limit: 2048,             null: false
     t.integer "F_synch",                    default: 0, null: false
     t.integer "F_max",                      default: 0, null: false
-    t.index ["F_program_id"], name: "index_t_record_detail_info_on_F_program_id", using: :btree
-    t.index ["F_record_uuid"], name: "index_t_record_detail_info_on_F_record_uuid", using: :btree
   end
 
   create_table "t_record_info", primary_key: "F_uuid", id: :string, limit: 64, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -296,7 +291,6 @@ ActiveRecord::Schema.define(version: 20180118083255) do
     t.index ["F_team_uuid", "F_time"], name: "F_team_uuid_2", using: :btree
     t.index ["F_team_uuid"], name: "F_team_uuid", using: :btree
     t.index ["F_team_uuid"], name: "index_t_record_info_on_F_team_uuid", using: :btree
-    t.index ["F_time"], name: "index_t_record_info_on_F_time", using: :btree
     t.index ["F_user_uuid", "F_duan_uuid", "F_station_uuid", "F_team_uuid"], name: "F_user_uuid_3", using: :btree
     t.index ["F_user_uuid", "F_time"], name: "F_user_uuid_2", using: :btree
     t.index ["F_user_uuid"], name: "F_user_uuid", using: :btree
