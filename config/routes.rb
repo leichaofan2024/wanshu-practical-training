@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     get '/duan_call_boards', to: 'call_boards#duan_call_boards'
 
     resources :users
+    resources :employees 
     resources :browses
     resources :t_duan_infoes do
         collection do

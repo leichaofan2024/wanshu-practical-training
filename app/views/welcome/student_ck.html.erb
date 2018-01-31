@@ -47,7 +47,7 @@
           <% @users.each do |user| %>
               <tr>
                 <td>
-                  <%= link_to(user.F_name, '#')%>
+                  <%= link_to(user.F_name, employees_path(:user_name => user.F_name, :F_id => user.F_id ))%>
                 </td>
                 <td>
                   <%= user.t_duan_info.F_name %> /
