@@ -3,8 +3,8 @@ class TimeSearch
 
     def initialize(params)
         params ||= {}
-        @date_from = parsed_date(params[:date_from]).beginning_of_day
-        @date_to = parsed_date(params[:date_to]).end_of_day
+        @date_from = parsed_date(params[:date_from]).beginning_of_day+8.hours
+        @date_to = parsed_date(params[:date_to]).end_of_day+8.hours
     end
 
     def scope_student
