@@ -14,6 +14,7 @@
     <!--这个是显示时间框的模版-->
     <div class="time-panel">
       <div class="time-panel-body">
+        当前时间：
         <% if params[:search].present? %>
         <%= params[:search].values.first + " 到 " + params[:search].values.last %>
         <% else %>

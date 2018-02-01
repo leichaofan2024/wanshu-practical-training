@@ -1,10 +1,13 @@
+<div class="pull-right">
+  <h2>个人简历</h2>
+  姓名: <%= @employees.F_name %>
+  <%= @employees.t_duan_info.F_name %> ／
+  <%= @employees.t_station_info.F_name %> ／
+  <%= @employees.t_team_info.F_name %>
+</div>
 
-<%= @employees.F_name %>
-<%= @employees.t_duan_info.F_name %> ／
-<%= @employees.t_station_info.F_name %> ／
-<%= @employees.t_team_info.F_name %>
 
-<table class="table table-border">
+<table class="table table-border" style="width:80%">
   <thead>
     <tr>
       <th>序号</th>
@@ -45,6 +48,7 @@
     <% end %>
   </tbody>
 </table>
+
 <script src="/assets/echarts.min.js"></script>
   <div id="main" style="width: 1000px;height:500px;margin: 40px auto 0;"></div>
    <script type="text/javascript">
@@ -72,7 +76,7 @@
     xAxis:  {
         type: 'category',
         boundaryGap: false,
-        data: gon.employe_score_key
+        data: gon.employe_time
     },
     yAxis: {
         type: 'value',
@@ -96,11 +100,132 @@
                     {type: 'average', name: '平均值'}
                 ]
             }
-        }
+        },
+        
+//这个是个人关于考试详情的分析，其中包括易错项点，常考项点，未考项点
+
       ]
     };
-
 
             // 使用刚指定的配置项和数据显示图表。
       myChart.setOption(option);
 </script>
+
+<div class="root-data-question">
+  <div id="kaohexiangdian" style="width: 490px;height:330px;"></div>
+    <script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('kaohexiangdian'));
+
+    // 指定图表的配置项和数据
+    var option = {
+        title : {
+            text: '考核项点',
+
+            x:'center'
+        },
+        tooltip : {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'left',
+            data: ["应急处置", "正常接发车办理科目", "非正常发车办理科目", "非正常接车办理科目"]
+        },
+        series : [
+            {
+                name: '访问来源',
+                type: 'pie',
+                radius : '65%',
+                center: ['50%', '60%'],
+                data: [gon.yj, gon.zc, gon.fzcfche, gon.fzcjche],
+
+                label: {
+                  normal: {
+                    position: 'inner',
+                    formatter: '{d}%',
+                     textStyle: {
+                        color: '#ffffff',
+                        fontSize: 14
+                      }
+                    }
+                  },
+
+
+                itemStyle: {
+                    emphasis: {
+                      shadowBlur: 10,
+                      shadowOffsetX: 0,
+                      shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+    </script>
+</div>
+
+<div class="root-data-wrong">
+  <div id="yicuokaodian" style="width: 490px;height:330px;"></div>
+    <script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('yicuokaodian'));
+
+    // 指定图表的配置项和数据
+    var option = {
+        title : {
+            text: '易错项点',
+
+            x:'center'
+        },
+        tooltip : {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'left',
+            data: [gon.a, gon.b, gon.c, gon.d,
+                ]
+        },
+        series : [
+            {
+                name: '访问来源',
+                type: 'pie',
+                radius : '65%',
+                center: ['50%', '60%'],
+                data: [gon.fl, gon.dc, gon.wt, gon.wz],
+
+                label: {
+                  normal: {
+                    position: 'inner',
+                    formatter: '{c}',
+                     textStyle: {
+                        color: '#ffffff',
+                        fontSize: 14
+                      }
+                    }
+                  },
+
+                itemStyle: {
+                    emphasis: {
+                      shadowBlur: 10,
+                      shadowOffsetX: 0,
+                      shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+    </script>
+</div>
+</div>
