@@ -25,19 +25,21 @@
     <div class="col-md-11 col-md-pull-1">
       <div class="pull-right">
         <%= form_tag student_ck_path, :method => :get do %>
-          站段名称: <%= text_field_tag :registration_id, params[:registration_id], :placeholder => "站段搜索" %>
-        <%= submit_tag "送出筛选", :class => "btn btn-primary dropdown-toggle" %>
+          站段名称: <%= text_field_tag :registration_id, params[:registration_id], :placeholder => "站段搜索",:class => "input-search" %>
+        <%= submit_tag "搜索", :class => "btn btn-primary" %>
          <% end %>
       </div>
      </div>
   </div>
   <div class="row">
     <div class="col-md-2">
-      <ul class="nav nav-pills nav-stacked" style="font-size: 25px;">学生成绩查询</ul>
+      <blockquote>
+      <ul class="nav nav-pills nav-stacked" style="font-size: 25px;">考生个人信息</ul>
+      </blockquote>
     </div>
     <div class="col-md-10">
-      <table _ngcontent-1 class="table table-hover table-bordered" style="background-color: #f2f2f2" >
-          <thead _ngcontent-1>
+      <table _ngcontent-1 class="table table-hover table-bordered " style="background-color: #f2f2f2" >
+          <thead _ngcontent-1 class="bg-grey">
             <tr>
               <td _ngcontent-1>姓名</td>
               <td _ngcontent-1>部门</td>

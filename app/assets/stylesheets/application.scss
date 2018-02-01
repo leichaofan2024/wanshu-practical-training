@@ -410,7 +410,7 @@ table {
 .table[_ngcontent-1] {
     overflow: hidden;
     width: 100%;
-    font-size: 12px;
+    font-size: 15px;
     font-weight: 400;
     text-align: center;
 }
@@ -423,4 +423,7 @@ table {
     font-weight: 400;
     text-align: center;
     vertical-align: middle;
+}
+.input-search {
+  height: 35px;
 }
