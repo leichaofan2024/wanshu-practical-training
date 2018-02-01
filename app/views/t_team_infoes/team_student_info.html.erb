@@ -2,9 +2,9 @@
   <div class="clear">
     <% if params[:search].present? %>
     <a href="/">首页</a> > <%= link_to("各站段参考情况", duan_student_info_t_duan_infoes_path("utf8": params[:utf8], "search": params[:search], "commit": params[:commit])) %> >
-    <%= link_to(@duan.F_name, station_student_info_t_station_infoes_path("utf8": params[:utf8], "search": params[:search], "commit": params[:commit], 'duan_name': @duan.F_name)) %> > <%= @station.F_name%>  (实训平台状态:<%= link_to(@station.status,status_edit_t_station_info_path(@station),class: "btn-sm btn-danger")%>)
+    <%= link_to(@duan.F_name, station_student_info_t_station_infoes_path("utf8": params[:utf8], "search": params[:search], "commit": params[:commit], 'duan_name': @duan.F_name)) %> > <%= @station.F_name%>  (实训平台状态:<%= link_to(@station.status,edit_t_station_info_path(@station),class: "btn-sm btn-danger")%>)
     <% else %>
-    <a href="/">首页</a> > <a href="/t_duan_infoes/duan_student_info">各站段参考情况</a> > <a href="/t_station_infoes/station_student_info?duan_name=<%= @duan.F_name%>"><%= @duan.F_name %></a> > <%= @station.F_name%>  (实训平台状态:<%= link_to(@station.status,status_edit_t_station_info_path(@station),class: "btn-sm btn-danger")%>)
+    <a href="/">首页</a> > <a href="/t_duan_infoes/duan_student_info">各站段参考情况</a> > <a href="/t_station_infoes/station_student_info?duan_name=<%= @duan.F_name%>"><%= @duan.F_name %></a> > <%= @station.F_name%>  (实训平台状态:<%= link_to(@station.status,edit_t_station_info_path(@station),class: "btn-sm btn-danger")%>)
     <% end %>
   </div>
   <div class="row">
@@ -265,16 +265,20 @@
                 <% end %>
               </td>
               <td style="width:15%;">
-                <div class="dropdown">
-                  <button type="button" class="btn-sm btn-default dropdown-toggle" data-toggle="dropdown" style= "width:70px;">
-                    <%= s.status%>  <i class="fa fa-sort fa-lg" aria-hidden="true"></i>
-                  </button>
-                  <ul class="dropdown-menu" style = "background:#ECF9F2;left:22px;">
-                    <li><%= link_to("在职",set_student_status_t_user_info_path(s,:station_name=> params[:station_name],:status => "在职"),method: :patch)%></li>
-                    <li><%= link_to("调离",set_student_status_t_user_info_path(s,:station_name=> params[:station_name],:status => "调离"),method: :patch)%></li>
-                    <li><%= link_to("退休",set_student_status_t_user_info_path(s,:station_name=> params[:station_name],:status => "退休"),method: :patch)%></li>
-                  </ul>
-                </div>
+                <% if current_user.permission == 1 or current_user.permission == 2 %>
+                  <div class="dropdown">
+                    <button type="button" class="btn-sm btn-default dropdown-toggle" data-toggle="dropdown" style= "width:70px;">
+                      <%= s.status%>  <i class="fa fa-sort fa-lg" aria-hidden="true"></i>
+                    </button>
+                    <ul class="dropdown-menu" style = "background:#ECF9F2;left:22px;">
+                      <li><%= link_to("在职",set_student_status_t_user_info_path(s,:station_name=> params[:station_name],:status => "在职"),method: :patch)%></li>
+                      <li><%= link_to("调离",set_student_status_t_user_info_path(s,:station_name=> params[:station_name],:status => "调离"),method: :patch)%></li>
+                      <li><%= link_to("退休",set_student_status_t_user_info_path(s,:station_name=> params[:station_name],:status => "退休"),method: :patch)%></li>
+                    </ul>
+                  </div>
+                <% else %>
+                  <legend style= "font-size: 17px;"><%= s.status %></legend>
+                <% end %>
               </td>
               <% if params[:search].present? %>
               <td style="width:15%;"><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id, "utf8": params[:utf8], "search": params[:search], "commit": params[:commit]))%></td>

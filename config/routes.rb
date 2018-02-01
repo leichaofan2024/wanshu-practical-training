@@ -27,7 +27,7 @@ Rails.application.routes.draw do
         get :program_station_ck
         get :program_team_ck
         get :program_student_ck
-        
+
         get :program_duan_student_info
         get :program_station_student_info
         get :program_team_student_info
@@ -62,10 +62,7 @@ Rails.application.routes.draw do
             get :station_score_info
 
         end
-        member do
-          get :status_edit
-          patch :status_update
-        end
+
     end
 
     resources :t_team_infoes do
