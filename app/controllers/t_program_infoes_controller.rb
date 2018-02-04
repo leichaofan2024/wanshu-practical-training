@@ -23,7 +23,11 @@ class TProgramInfoesController < ApplicationController
         @score_80 = @search.scope_program_score(params[:name]).where('F_score >= ? AND F_score < ?', 80, 90).count
         @score_60 = @search.scope_program_score(params[:name]).where('F_score >= ? AND F_score < ?', 60,80).count
         @score_60_below = @search.scope_program_score(params[:name]).where('F_score < ?', 60).count
-        @reason_hot_all = @search.scope_program_reason_hot(params[:name]).group(:F_name).size.sort_by { |_key, value| value }.reverse.first(8).to_h
+        n = @search.scope_program_reason_hot(params[:name]).group(:F_name).size.sort_by { |_key, value| value }.reverse
+
+        @reason_hot_all = n.first(8).to_h
+        @reason_other_value = n.to_h.values.sum - @reason_hot_all.values.sum
+
     else
         @duan_ck_count = TDuanInfo.duan_orgnization.joins(t_user_infoes: :t_record_infoes).student_all.program_record(params[:name]).datetime.select('t_duan_info.F_uuid').distinct.count
         @station_ck_count = TStationInfo.station_orgnization.joins(t_user_infoes: :t_record_infoes).program_record(params[:name]).datetime.distinct.count
@@ -33,7 +37,10 @@ class TProgramInfoesController < ApplicationController
         @score_80 = TRecordInfo.program_record(params[:name]).datetime.where('F_score >= ? AND F_score < ?', 80, 90).count
         @score_60 = TRecordInfo.program_record(params[:name]).datetime.where('F_score >= ? AND F_score < ?', 60, 80).count
         @score_60_below = TRecordInfo.program_record(params[:name]).datetime.where('F_score < ?', 60).count
-        @reason_hot_all = TReasonInfo.joins(t_detail_reason_infoes: :t_record_detail_info).where("t_record_detail_info.F_program_id": TProgramInfo.find_by(:F_name => params[:name]).F_id).datetime1.group(:F_name).size.sort_by { |_key, value| value }.reverse.first(8).to_h
+        n = TReasonInfo.joins(t_detail_reason_infoes: :t_record_detail_info).where("t_record_detail_info.F_program_id": TProgramInfo.find_by(:F_name => params[:name]).F_id).datetime1.group(:F_name).size.sort_by { |_key, value| value }.reverse
+
+        @reason_hot_all = n.first(8).to_h
+        @reason_other_value = n.to_h.values.sum - @reason_hot_all.values.sum
     end
 
     # 饼图一：
@@ -62,7 +69,7 @@ class TProgramInfoesController < ApplicationController
     # 饼图三：
 
 
-    gon.reason_keys = @reason_hot_all.keys.first(8)
+    gon.reason_keys = @reason_hot_all.keys+ ["其他"]
     @a = { name: @reason_hot_all.keys[0], value: @reason_hot_all.values[0] }
     gon.a = @a
     @b = { name: @reason_hot_all.keys[1], value: @reason_hot_all.values[1]}
@@ -79,6 +86,8 @@ class TProgramInfoesController < ApplicationController
     gon.g = @g
     @h = { name: @reason_hot_all.keys[7], value: @reason_hot_all.values[7] }
     gon.h = @h
+    @i = { name: "其他", value: @reason_other_value }
+    gon.i = @i
 
   end
 

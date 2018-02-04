@@ -393,30 +393,42 @@ class ApplicationController < ActionController::Base
         if params[:search].present?
             # m = TReasonInfo.joins(:t_detail_reason_infoes).group(:F_name).size.sort { |a, b| b[1] <=> a[1] }
             @search = TimeSearch.new(params[:search])
-            m = @search.scope_reason_hot.group(:F_name).size.sort_by { |_key, value| value }.reverse.first(8).to_h
+            n = @search.scope_reason_hot.group(:F_name).size.sort_by { |_key, value| value }.reverse
+            m = n.first(8).to_h
+            other_value= n.to_h.values.sum - n.first(8).to_h.values.sum
         else
-            m = TReasonInfo.joins(:t_detail_reason_infoes).datetime1.group(:F_name).size.sort_by { |_key, value| value }.reverse.first(8).to_h
+            n = TReasonInfo.joins(:t_detail_reason_infoes).datetime1.group(:F_name).size.sort_by { |_key, value| value }.reverse
+            m = n.first(8).to_h
+            other_value= n.to_h.values.sum - n.first(8).to_h.values.sum
         end
       elsif current_user.permission == 2
         record = TRecordDetailInfo.joins(t_record_info: :t_duan_info).where("t_duan_info.F_name=?", current_user.orgnize)
         if params[:search].present?
           # m = TReasonInfo.joins(:t_detail_reason_infoes).group(:F_name).size.sort { |a, b| b[1] <=> a[1] }
           @search = TimeSearch.new(params[:search])
-          m = @search.scope_reason_hot1(current_user.orgnize).group("t_reason_info.F_name").count.sort_by { |_key, value| value }.reverse.first(8).to_h
+          n = @search.scope_reason_hot1(current_user.orgnize).group("t_reason_info.F_name").count.sort_by { |_key, value| value }.reverse
+          m = n.first(8).to_h
+          other_value = n.to_h.values.sum - n.first(8).to_h.values.sum
         else
-          m = TReasonInfo.joins(:t_record_detail_infoes).where("t_record_detail_info.F_uuid": record.ids).datetime1.group("t_reason_info.F_name").count.sort_by { |_key, value| value }.reverse.first(8).to_h
+          n = TReasonInfo.joins(:t_record_detail_infoes).where("t_record_detail_info.F_uuid": record.ids).datetime1.group("t_reason_info.F_name").count.sort_by { |_key, value| value }.reverse
+          m = n.first(8).to_h
+          other_value = n.to_h.values.sum - n.first(8).to_h.values.sum
         end
       elsif current_user.permission == 3
         record = TRecordDetailInfo.joins(t_record_info: :t_station_info).where("t_station_info.F_name=?", current_user.orgnize)
         if params[:search].present?
           # m = TReasonInfo.joins(:t_detail_reason_infoes).group(:F_name).size.sort { |a, b| b[1] <=> a[1] }
           @search = TimeSearch.new(params[:search])
-          m = @search.scope_reason_hot2(current_user.orgnize).group("t_reason_info.F_name").count.sort_by { |_key, value| value }.reverse.first(8).to_h
+          n = @search.scope_reason_hot2(current_user.orgnize).group("t_reason_info.F_name").count.sort_by { |_key, value| value }.reverse
+          m = n.first(8).to_h
+          other_value = n.to_h.values.sum - n.first(8).to_h.values.sum
         else
-          m = TReasonInfo.joins(:t_record_detail_infoes).where("t_record_detail_info.F_uuid": record.ids).datetime1.group("t_reason_info.F_name").count.sort_by { |_key, value| value }.reverse.first(8).to_h
+          n = TReasonInfo.joins(:t_record_detail_infoes).where("t_record_detail_info.F_uuid": record.ids).datetime1.group("t_reason_info.F_name").count.sort_by { |_key, value| value }.reverse
+          m = n.first(8).to_h
+          other_value = n.to_h.values.sum - n.first(8).to_h.values.sum
         end
       end
-        gon.reason_key8 = m.keys.first(8)
+        gon.reason_key8 = m.keys+["其他"]
         @a = { name: m.keys[0], value: m.values[0] }
         gon.a = @a
         @b = { name: m.keys[1], value: m.values[1]}
@@ -433,5 +445,7 @@ class ApplicationController < ActionController::Base
         gon.g = @g
         @h = { name: m.keys[7], value: m.values[7] }
         gon.h = @h
+        @i = { name: "其他", value: other_value }
+        gon.i = @i
     end
 end
