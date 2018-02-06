@@ -14,17 +14,17 @@
 
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuDivider">
           <li>
-            <%= link_to("未考", student_ck_path(:order => "by_student_wk")) %>
+            <%= link_to("未考", employees_path(:order => "by_student_wk")) %>
           </li>
           <li>
-            <%= link_to("已考", student_ck_path(:order => "by_student_ck"))%>
+            <%= link_to("已考", employees_path(:order => "by_student_ck"))%>
           </li>
         </ul>
       </div>
     </div>
     <div class="col-md-11 col-md-pull-1">
       <div class="pull-right">
-        <%= form_tag student_ck_path, :method => :get do %>
+        <%= form_tag employees_path, :method => :get do %>
           站段名称: <%= text_field_tag :registration_id, params[:registration_id], :placeholder => "站段搜索",:class => "input-search" %>
         <%= submit_tag "搜索", :class => "btn btn-primary" %>
          <% end %>
@@ -54,7 +54,7 @@
               <% @users.each do |user| %>
                   <tr _ngcontent-1>
                     <td _ngcontent-1>
-                      <%= link_to(user.F_name, employees_path(:user_name => user.F_name, :F_id => user.F_id ))%>
+                      <%= link_to(user.F_name, employe_record_employees_path(:user_name => user.F_name, :F_id => user.F_id ))%>
                     </td>
                     <td _ngcontent-1>
                       <%= user.t_duan_info.F_name %> /

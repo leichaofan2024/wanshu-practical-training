@@ -1,0 +1,238 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">个人简历</h3>
+  </div>
+  <div class="panel-body">
+    姓名：<%= @employees.F_name %>
+    <%= @employees.t_duan_info.F_name %> ／
+    <%= @employees.t_station_info.F_name %> ／
+    <%= @employees.t_team_info.F_name %>
+  </div>
+</div>
+<div class="container-fluid">
+<div class="row">
+  <div class="col-md-9">
+  <div class="jumbotron">
+    <script src="/assets/echarts.min.js"></script>
+      <div id="main" style="width: 1000px;height:520px;margin: 40px auto 0;"></div>
+       <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+        var option = {
+        title: {
+            text: '<%= @employees.F_name %>个人成绩分析'
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data:['考试分数']
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                magicType: {type: ['line', 'bar']},
+                saveAsImage: {}
+            }
+        },
+        xAxis:  {
+            type: 'category',
+            boundaryGap: false,
+            data: gon.employe_time
+        },
+        yAxis: {
+            type: 'value',
+            axisLabel: {
+                formatter: '{value} '
+            }
+        },
+        series: [
+            {
+                name:'考试分数',
+                type:'line',
+                data: gon.employe_score,
+                markPoint: {
+                    data: [
+                        {type: 'max', name: '最大值'},
+                        {type: 'min', name: '最小值'}
+                    ]
+                },
+                markLine: {
+                    data: [
+                        {type: 'average', name: '平均值'}
+                    ]
+                }
+            },
+
+    //这个是个人关于考试详情的分析，其中包括易错项点，常考项点，未考项点
+
+          ]
+        };
+
+                // 使用刚指定的配置项和数据显示图表。
+          myChart.setOption(option);
+    </script>
+  </div>
+</div>
+
+
+  <div class="col-md-3" style="background: #ffff">
+  <div class="root-data-question">
+    <div id="kaohexiangdian" style="width: 490px;height:330px;"></div>
+      <script type="text/javascript">
+      // 基于准备好的dom，初始化echarts实例
+      var myChart = echarts.init(document.getElementById('kaohexiangdian'));
+
+      // 指定图表的配置项和数据
+      var option = {
+          title : {
+              text: '考核项点',
+
+              x:'center'
+          },
+          tooltip : {
+              trigger: 'item',
+              formatter: "{a} <br/>{b} : {c} ({d}%)"
+          },
+          legend: {
+              orient: 'vertical',
+              left: 'left',
+              data: ["应急处置", "正常接发车办理科目", "非正常发车办理科目", "非正常接车办理科目"]
+          },
+          series : [
+              {
+                  name: '访问来源',
+                  type: 'pie',
+                  radius : '65%',
+                  center: ['50%', '60%'],
+                  data: [gon.yj, gon.zc, gon.fzcfche, gon.fzcjche],
+
+                  label: {
+                    normal: {
+                      position: 'inner',
+                      formatter: '{d}%',
+                       textStyle: {
+                          color: '#ffffff',
+                          fontSize: 14
+                        }
+                      }
+                    },
+
+
+                  itemStyle: {
+                      emphasis: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                      }
+                  }
+              }
+          ]
+      };
+
+
+      // 使用刚指定的配置项和数据显示图表。
+      myChart.setOption(option);
+      </script>
+  </div>
+</div>
+
+      <div class="col-md-3" style="background: #ffff">
+        <div class="root-data-question">
+        <div id="yicuokaodian" style="width: 490px;height:330px;"></div>
+          <script type="text/javascript">
+          // 基于准备好的dom，初始化echarts实例
+          var myChart = echarts.init(document.getElementById('yicuokaodian'));
+
+          // 指定图表的配置项和数据
+          var option = {
+              title : {
+                  text: '易错项点',
+
+                  x:'center'
+              },
+              tooltip : {
+                  trigger: 'item',
+                  formatter: "{a} <br/>{b} : {c} ({d}%)"
+              },
+              legend: {
+                  orient: 'vertical',
+                  left: 'left',
+                  data: [gon.a, gon.b, gon.c, gon.d,
+                      ]
+              },
+              series : [
+                  {
+                      name: '访问来源',
+                      type: 'pie',
+                      radius : '65%',
+                      center: ['50%', '60%'],
+                      data: [gon.fl, gon.dc, gon.wt, gon.wz],
+
+                      label: {
+                        normal: {
+                          position: 'inner',
+                          formatter: '{c}',
+                           textStyle: {
+                              color: '#ffffff',
+                              fontSize: 14
+                            }
+                          }
+                        },
+
+                      itemStyle: {
+                          emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                          }
+                      }
+                  }
+              ]
+          };
+
+
+          // 使用刚指定的配置项和数据显示图表。
+          myChart.setOption(option);
+          </script>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-9">
+        <div class="panel panel-default">
+          <div class="panel-heading">历史成绩</div>
+        <table class="table table-border">
+          <thead>
+            <tr>
+              <th>考试地点（段）</th>
+              <th>考试地点（站）</th>
+              <th>考试地点（班）</th>
+              <th>考试时间</th>
+              <th>得分</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @employe_record.each do |r| %>
+            <tr>
+              <td>
+                  <%= r.t_duan_info.F_name %>
+              </td>
+              <td>
+                  <%= r.t_station_info.F_name %>
+              </td>
+              <td>
+                  <%= r.t_team_info.F_name %>
+              </td>
+              <td><%= r.F_time %></td>
+              <td><%= r.F_score %></td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
