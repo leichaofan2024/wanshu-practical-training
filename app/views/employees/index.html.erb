@@ -1,0 +1,97 @@
+<!-- 这段是关于搜索功能，但是外观形态还未完成 -->
+
+
+
+
+<div class="container-student-ck">
+  <div class="row">
+    <div class="col-md-1 col-md-push-11">
+      <div class="dropdown clearfix pull-right">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuDivider" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+          考试状态
+          <span class="caret"></span>
+        </button>
+
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuDivider">
+          <li>
+            <%= link_to("未考", student_ck_path(:order => "by_student_wk")) %>
+          </li>
+          <li>
+            <%= link_to("已考", student_ck_path(:order => "by_student_ck"))%>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-11 col-md-pull-1">
+      <div class="pull-right">
+        <%= form_tag student_ck_path, :method => :get do %>
+          站段名称: <%= text_field_tag :registration_id, params[:registration_id], :placeholder => "站段搜索",:class => "input-search" %>
+        <%= submit_tag "搜索", :class => "btn btn-primary" %>
+         <% end %>
+      </div>
+     </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+      <blockquote>
+      <ul class="nav nav-pills nav-stacked" style="font-size: 25px;">
+          <%= link_to("考生个人信息", student_ck_path)%>
+      </ul>
+      </blockquote>
+    </div>
+    <div class="col-md-10">
+      <table _ngcontent-1 class="table table-hover table-bordered " style="background-color: #f2f2f2" >
+          <thead _ngcontent-1 class="bg-grey">
+            <tr>
+              <td _ngcontent-1>姓名</td>
+              <td _ngcontent-1>部门</td>
+              <td _ngcontent-1>职务</td>
+              <td _ngcontent-1>最近一次考试时间</td>
+              <td _ngcontent-1>考试状态</td>
+            </tr>
+          </thead>
+          <tbody _ngcontent-1>
+              <% @users.each do |user| %>
+                  <tr _ngcontent-1>
+                    <td _ngcontent-1>
+                      <%= link_to(user.F_name, employees_path(:user_name => user.F_name, :F_id => user.F_id ))%>
+                    </td>
+                    <td _ngcontent-1>
+                      <%= user.t_duan_info.F_name %> /
+                      <%= user.t_station_info.F_name %> /
+                      <% if user.t_team_info.present? %>
+                      <%= user.t_team_info.F_name %>
+                      <% else %>
+                      <p>班组缺失</p>
+                      <% end %>
+                    </td>
+                    <td _ngcontent-1>
+                      <%= user.t_work_info.F_name %>
+                    </td>
+                      <% if user.t_record_infoes.present? %>
+                      <td _ngcontent-1>
+                        <%= user.t_record_infoes.order("F_time DESC").pluck(:F_time).first %>
+                      </td>
+                      <td _ngcontent-1>
+                          <p style=" background-color: #d9534f"> <%= "已考" %> </p>
+                      </td>
+                      <% else %>
+                      <td _ngcontent-1></td>
+                      <td _ngcontent-1>
+                          <p style=" background-color: #56b83d"> <%= "未考" %> </p>
+                      </td>
+                      <% end %>
+                  </tr>
+              <% end %>
+          </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+  <div class="pull-right">
+      <%= paginate @users %>
+  </div>
+  <!-- <script>
+    $("#event_category_id").select2( { theme: "bootstrap"} );
+  </script> -->

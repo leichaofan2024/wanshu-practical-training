@@ -60,6 +60,8 @@
 						<li><%= link_to("网站更新记录",update_note_path)%></li>
             <li class="divider"></li>
             <li><%= link_to("登出", destroy_user_session_path, method: :delete) %></li>
+						<li class="divider"></li>
+						<li><%= link_to("个人信息分析",employees_path)%></li>
           </ul>
         </li>
         <% end %>
