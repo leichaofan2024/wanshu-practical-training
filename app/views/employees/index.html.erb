@@ -47,7 +47,6 @@
               <td _ngcontent-1>部门</td>
               <td _ngcontent-1>考试最低分</td>
               <td _ngcontent-1>考试平均分</td>
-              <td _ngcontent-1>本月考试状态</td>
               <td _ngcontent-1>总考试频次</td>
             </tr>
           </thead>
@@ -62,14 +61,14 @@
                       <%= u.t_duan_info.F_name %> /
                       <%= u.t_station_info.F_name %>
                     </td>
-                    <td><%= u.t_record_infoes.pluck(:F_score).sort_by{ |score| score }.first %></td>
-                      <% if u.t_record_infoes.present? %>
+                    <% record = TRecordInfo.where(:F_user_uuid => TUserInfo.where(F_id: u.F_id).pluck(:F_uuid)) %>
+                    <% if record.present? %>
+                    <td><%= record.pluck(:F_score).sort_by{ |score| score }.first %></td>
                       <td _ngcontent-1>
-                        <%= u.t_record_infoes.pluck(:F_score).inject(0.0) { |s, f| s + f } / u.t_record_infoes.pluck(:F_score).size %>
+                        <%= record.pluck(:F_score).inject(0.0) { |s, f| s + f } / record.count %>
                       </td>
-                      <td></td>
                       <td>
-                          <p> <%= u.t_record_infoes.pluck(:F_score).size %> </p>
+                          <p> <%= record.count %> </p>
                       </td>
                       <% else %>
                       <td></td>

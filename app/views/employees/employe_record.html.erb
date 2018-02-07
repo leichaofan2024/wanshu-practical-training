@@ -5,8 +5,7 @@
   <div class="panel-body">
     姓名：<%= @employees.F_name %>
     <%= @employees.t_duan_info.F_name %> ／
-    <%= @employees.t_station_info.F_name %> ／
-    <%= @employees.t_team_info.F_name %>
+    <%= @employees.t_station_info.F_name %>
   </div>
 </div>
 <div class="container-fluid">
@@ -209,7 +208,6 @@
             <tr>
               <th>考试地点（段）</th>
               <th>考试地点（站）</th>
-              <th>考试地点（班）</th>
               <th>考试时间</th>
               <th>得分</th>
             </tr>
@@ -222,9 +220,6 @@
               </td>
               <td>
                   <%= r.t_station_info.F_name %>
-              </td>
-              <td>
-                  <%= r.t_team_info.F_name %>
               </td>
               <td><%= r.F_time %></td>
               <td><%= r.F_score %></td>
