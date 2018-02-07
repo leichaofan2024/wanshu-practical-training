@@ -35,7 +35,7 @@
     <div class="col-md-2">
       <blockquote>
       <ul class="nav nav-pills nav-stacked" style="font-size: 25px;">
-          <%= link_to("考生个人信息", student_ck_path)%>
+          <%= link_to("考生个人信息", employees_path)%>
       </ul>
       </blockquote>
     </div>
@@ -45,44 +45,41 @@
             <tr>
               <td _ngcontent-1>姓名</td>
               <td _ngcontent-1>部门</td>
-              <td _ngcontent-1>职务</td>
-              <td _ngcontent-1>最近一次考试时间</td>
-              <td _ngcontent-1>考试状态</td>
+              <td _ngcontent-1>考试最低分</td>
+              <td _ngcontent-1>考试平均分</td>
+              <td _ngcontent-1>本月考试状态</td>
+              <td _ngcontent-1>总考试频次</td>
             </tr>
           </thead>
           <tbody _ngcontent-1>
               <% @users.each do |user| %>
+              <% u = TUserInfo.find_by(:F_id => user.F_id) %>
                   <tr _ngcontent-1>
                     <td _ngcontent-1>
                       <%= link_to(user.F_name, employe_record_employees_path(:user_name => user.F_name, :F_id => user.F_id ))%>
                     </td>
                     <td _ngcontent-1>
-                      <%= user.t_duan_info.F_name %> /
-                      <%= user.t_station_info.F_name %> /
-                      <% if user.t_team_info.present? %>
-                      <%= user.t_team_info.F_name %>
-                      <% else %>
-                      <p>班组缺失</p>
-                      <% end %>
+                      <%= u.t_duan_info.F_name %> /
+                      <%= u.t_station_info.F_name %>
                     </td>
-                    <td _ngcontent-1>
-                      <%= user.t_work_info.F_name %>
-                    </td>
-                      <% if user.t_record_infoes.present? %>
+                    <td><%= u.t_record_infoes.pluck(:F_score).sort_by{ |score| score }.first %></td>
+                      <% if u.t_record_infoes.present? %>
                       <td _ngcontent-1>
-                        <%= user.t_record_infoes.order("F_time DESC").pluck(:F_time).first %>
+                        <%= u.t_record_infoes.pluck(:F_score).inject(0.0) { |s, f| s + f } / u.t_record_infoes.pluck(:F_score).size %>
                       </td>
-                      <td _ngcontent-1>
-                          <p style=" background-color: #d9534f"> <%= "已考" %> </p>
+                      <td></td>
+                      <td>
+                          <p> <%= u.t_record_infoes.pluck(:F_score).size %> </p>
                       </td>
                       <% else %>
-                      <td _ngcontent-1></td>
-                      <td _ngcontent-1>
-                          <p style=" background-color: #56b83d"> <%= "未考" %> </p>
+                      <td></td>
+                      <td></td>
+                      <td>
+                          <p> <%= 0 %> </p>
                       </td>
                       <% end %>
                   </tr>
-              <% end %>
+                  <% end %>
           </tbody>
       </table>
     </div>

@@ -5,16 +5,17 @@ class EmployeesController < ApplicationController
   # ****这个暂时还没有加上时间的搜索功能
 
   def index
-    @student_ck = TUserInfo.joins(:t_record_infoes, :t_team_info).order("F_id DESC").page(params[:page]).per(20)
-    @student_wk = TUserInfo.joins(:t_team_info, :t_station_info).where.not("t_user_info.F_uuid": @student_ck.ids).order("F_id DESC").page(params[:page]).per(20)
     @users = case params[:order]
     when 'by_student_wk'
       @student_wk
     when 'by_student_ck'
       @student_ck
     else
-      TUserInfo.student_all.order("F_id DESC").page(params[:page]).per(20)
+      TUserInfo.student_all.select("t_user_info.F_id, t_user_info.F_name").distinct.order("F_id DESC").page(params[:page]).per(20)
     end
+
+    # @student_ck = student.where("t_user_info.F_id": @student_F_id).select('t_user_info.F_id','t_duan_info.F_uuid','t').order("F_id DESC").page(params[:page]).per(20)
+    # @student_wk = student.where.not("t_user_info.F_id": @student_F_id).order("F_id DESC").page(params[:page]).per(20)
 
     # @q = TUserInfo.joins(:t_station_info, :t_team_info).ransack(params[:q])
     # @users = @q.result.order("F_id DESC").page(params[:page]).per(20)
