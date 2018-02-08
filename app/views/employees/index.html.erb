@@ -48,6 +48,7 @@
               <td _ngcontent-1>考试最低分</td>
               <td _ngcontent-1>考试平均分</td>
               <td _ngcontent-1>总考试频次</td>
+              <td _ngcontent-1>本月考试状态</td>
             </tr>
           </thead>
           <tbody _ngcontent-1>
@@ -70,11 +71,16 @@
                       <td>
                           <p> <%= record.count %> </p>
                       </td>
-                      <% else %>
+                        <% if record.datetime.present? %>
+                          <td><%= "已考"%></td>
+                        <% else %>
+                          <td><%= "缺考"%></td>
+                        <% end %>
+                    <% else %>
                       <td></td>
                       <td></td>
                       <td>
-                          <p> <%= 0 %> </p>
+                        <p> <%= 0 %> </p>
                       </td>
                       <% end %>
                   </tr>
