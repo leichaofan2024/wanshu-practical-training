@@ -21,6 +21,11 @@ Rails.application.routes.draw do
     get '/update_note',to: 'welcome#update_note'
     resources :users
     resources :browses
+    resources :employees do
+      collection do
+        get :employe_record
+      end
+    end
     resources :t_program_infoes do
       member do
         get :program_duan_ck
