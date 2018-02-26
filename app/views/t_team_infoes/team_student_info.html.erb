@@ -155,7 +155,7 @@
               <td style="width:15%;">
                 <div class="dropdown">
                   <button type="button" class="btn-sm btn-default dropdown-toggle" data-toggle="dropdown" style= "width:70px;">
-                    <%= s.status%>  <i class="fa fa-sort fa-lg" aria-hidden="true"></i>
+                    在职  <i class="fa fa-sort fa-lg" aria-hidden="true"></i>
                   </button>
                   <ul class="dropdown-menu" style = "background:#ECF9F2;left:16px;">
                     <li><%= link_to("在职",set_student_status_t_user_info_path(s,:station_name=> params[:station_name],:status => "在职"),method: :patch)%></li>
@@ -213,7 +213,7 @@
               <td style="width:15%;">
                 <div class="dropdown">
                   <button type="button" class="btn-sm btn-default dropdown-toggle" data-toggle="dropdown" style= "width:70px;">
-                    <%= s.status%>  <i class="fa fa-sort fa-lg" aria-hidden="true"></i>
+                    在职  <i class="fa fa-sort fa-lg" aria-hidden="true"></i>
                   </button>
                   <ul class="dropdown-menu" style = "background:#ECF9F2;left:16px;">
                     <li><%= link_to("在职",set_student_status_t_user_info_path(s,:station_name=> params[:station_name],:status => "在职"),method: :patch)%></li>
@@ -249,7 +249,7 @@
       <tbody>
 
           <% @student_other.each do |c| %>
-          <% s = TUserInfo.find_by(:F_id => c.F_id)%>
+          <% s = TUserInfo.where.not("t_user_info.F_type=? OR t_user_info.status =?",1,"在职").find_by(:F_id => c.F_id)%>
             <tr>
               <td style="width:20%;"><%= s.F_name %></td>
               <td style="width:40%;">
