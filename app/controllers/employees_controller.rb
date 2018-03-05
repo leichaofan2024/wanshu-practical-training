@@ -68,4 +68,10 @@ class EmployeesController < ApplicationController
      gon.wz = @wz
 
   end
+
+  def duan_record
+      @station = TStationInfo.joins(:t_user_infoes).student_all.pluck("t_station_info.F_uuid").uniq
+      @duan = TDuanInfo.duan_orgnization.joins(:t_station_infoes).where("t_station_info.F_uuid": @station).group("t_duan_info.F_name").count
+
+  end
 end

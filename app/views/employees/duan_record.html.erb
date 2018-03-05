@@ -1,0 +1,39 @@
+<div class="">
+  <table class="table-bordered">
+    <thead>
+      <tr>
+        <th>序号</th>
+        <th>单位</th>
+        <th>上线平台数</th>
+        <th>应考人数（人数）</th>
+        <th>实考人数（人数）</th>
+        <th>参考率 </th>
+        <th>调离人数</th>
+        <th>退休人数</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% a = 0%>
+        <% @duan.each do |name, value| %>
+        <% a = a + 1 %>
+        <tr>
+          <td><%= a %> </td>
+          <td><%= name %> </td>
+          <td><%= value %></td>
+          <td><%= employe_user(name) %></td>
+          <td><%= employe_record(name) %></td>
+
+          <td><%= (employe_record(name).to_f / employe_user(name).to_f * 100).round(2) %>%</td>
+
+          <td><%= employe_transfer(name, "调离") %></td>
+          <td><%= employe_transfer(name, "退休")%></td>
+        </tr>
+        <% end %>
+    </tbody>
+  </table>
+  <table>
+    <tr>
+      <th>合计</th>
+    </tr>
+  </table>
+</div>

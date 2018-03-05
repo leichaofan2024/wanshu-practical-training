@@ -24,6 +24,7 @@ Rails.application.routes.draw do
     resources :employees do
       collection do
         get :employe_record
+        get :duan_record
       end
     end
     resources :t_program_infoes do
