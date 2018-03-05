@@ -4,12 +4,12 @@
       <tr>
         <th>序号</th>
         <th>单位</th>
-        <th>数据上传车站车间数</th>
-        <th>建立班组数</th>
-        <th>月份应演练（人数）</th>
-        <th>月份实际演练（人数）</th>
-        <th>演练率 </th>
-        <th>备注</th>
+        <th>上线平台数</th>
+        <th>应考人数（人数）</th>
+        <th>实考人数（人数）</th>
+        <th>参考率 </th>
+        <th>调离人数</th>
+        <th>退休人数</th>
       </tr>
     </thead>
     <tbody>
@@ -20,12 +20,22 @@
           <td><%= a %> </td>
           <td><%= name %> </td>
           <td><%= value %></td>
-          <td><%=   %></td>
-          <td><%=  %></td>
-          <td><%=  %></td>
-          <td><%= %></td>
+          <td><%= employe_user(name).values.first %></td>
+          <td><%= employe_record(name).values.first || 0 %></td>
+          <% if employe_record(name).values.present? %>
+            <td><%= (employe_record(name).values.first.to_f / employe_user(name).values.first.to_f * 100).round(2) %>%</td>
+          <% else %>
+          <td><%= 0 %> % </td>
+          <% end %>
+          <td><%= employe_transfer(name, "调离").values.first || 0 %></td>
+          <td><%= employe_transfer(name, "退休").values.first || 0 %></td>
         </tr>
         <% end %>
     </tbody>
+  </table>
+  <table>
+    <tr>
+      <th>合计</th>
+    </tr>
   </table>
 </div>
