@@ -70,10 +70,8 @@ class EmployeesController < ApplicationController
   end
 
   def duan_record
-    @duan = TDuanInfo.duan_orgnization.where(F_type: 2)
-    @duan.each do |d|
-      @student = TUserInfo.where("t_user_info.F_duan_uuid": d.F_uuid).joins(:t_record_infoes).datetime.count
-      @count = @student / (d.t_user_infoes.count.nonzero? || 1).round(2)
-    end
+      @station = TStationInfo.joins(:t_user_infoes).student_all.pluck("t_station_info.F_uuid").uniq
+      @duan = TDuanInfo.duan_orgnization.where(F_type: 2).joins(:t_station_infoes).where("t_station_info.F_uuid": @station).group("t_duan_info.F_name").count
+      
   end
 end

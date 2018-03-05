@@ -14,16 +14,15 @@
     </thead>
     <tbody>
       <% a = 0%>
-        <% @duan.each do |d| %>
+        <% @duan.each do |name, value| %>
         <% a = a + 1 %>
         <tr>
           <td><%= a %> </td>
-          <td><%= d.F_name %> </td>
-          <td><%= d.t_station_infoes.count %></td>
+          <td><%= name %> </td>
+          <td><%= value %></td>
+          <td><%=   %></td>
           <td><%=  %></td>
-          <td><%= d.t_user_infoes.count %></td>
-          <td><%= @student %></td>
-          <td><%= @count %> % </td>
+          <td><%=  %></td>
           <td><%= %></td>
         </tr>
         <% end %>
