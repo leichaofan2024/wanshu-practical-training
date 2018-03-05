@@ -87,7 +87,9 @@ Rails.application.routes.draw do
     collection do
       get :student_records
       get :score_records
+      patch :time_length
     end
+
   end
   resources :t_record_detail_infoes do
 

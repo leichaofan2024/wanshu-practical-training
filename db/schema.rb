@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180205090023) do
+ActiveRecord::Schema.define(version: 20180305080925) do
 
   create_table "attachment", id: :bigint, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", comment: "系统附件表" do |t|
     t.string   "file_name",          limit: 50,                                       null: false, comment: "文件名称"
@@ -281,7 +281,7 @@ ActiveRecord::Schema.define(version: 20180205090023) do
     t.integer  "F_score",                    default: 0,                          null: false
     t.integer  "F_synch_record",             default: 0,                          null: false, comment: "`"
     t.datetime "created_at",                 default: -> { "CURRENT_TIMESTAMP" }
-    t.time     "time_length"
+    t.integer  "time_length"
     t.index ["F_duan_uuid", "F_time"], name: "F_duan_uuid_2", using: :btree
     t.index ["F_duan_uuid"], name: "F_duan_uuid", using: :btree
     t.index ["F_duan_uuid"], name: "index_t_record_info_on_F_duan_uuid", using: :btree

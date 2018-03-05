@@ -52,4 +52,21 @@ class TRecordInfoesController < ApplicationController
       end
 
     end
+
+    def time_length
+      TRecordInfo.all.each do |a|
+        m = a.F_time
+        n = a.F_record
+        b = n.split("_")[1]
+        c = n.split("_")[2]
+        d = c.split(".")[0]
+        e = d.split("")
+        f = e[0]+e[1]+":"+e[2]+e[3]+":"+e[4]+e[5]
+        x = b + " "+f
+        y = m.to_time - x.to_time
+        a.update(:time_length => y)
+      end
+    end
+
+
 end
