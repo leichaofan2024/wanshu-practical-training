@@ -1,0 +1,32 @@
+<div class="">
+  <table class="table-bordered">
+    <thead>
+      <tr>
+        <th>序号</th>
+        <th>单位</th>
+        <th>数据上传车站车间数</th>
+        <th>建立班组数</th>
+        <th>月份应演练（人数）</th>
+        <th>月份实际演练（人数）</th>
+        <th>演练率 </th>
+        <th>备注</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% a = 0%>
+        <% @duan.each do |d| %>
+        <% a = a + 1 %>
+        <tr>
+          <td><%= a %> </td>
+          <td><%= d.F_name %> </td>
+          <td><%= d.t_station_infoes.count %></td>
+          <td><%=  %></td>
+          <td><%= d.t_user_infoes.count %></td>
+          <td><%= @student %></td>
+          <td><%= @count %> % </td>
+          <td><%= %></td>
+        </tr>
+        <% end %>
+    </tbody>
+  </table>
+</div>

@@ -68,4 +68,12 @@ class EmployeesController < ApplicationController
      gon.wz = @wz
 
   end
+
+  def duan_record
+    @duan = TDuanInfo.duan_orgnization.where(F_type: 2)
+    @duan.each do |d|
+      @student = TUserInfo.where("t_user_info.F_duan_uuid": d.F_uuid).joins(:t_record_infoes).datetime.count
+      @count = @student / (d.t_user_infoes.count.nonzero? || 1).round(2)
+    end
+  end
 end
