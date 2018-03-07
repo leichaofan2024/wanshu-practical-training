@@ -60,7 +60,7 @@
     </div>
   </div>
 
-
+<!-- 第一个饼图-->
 
 <div class="root-data-frame">
   <div class="root-data-block">
@@ -80,7 +80,7 @@
             },
             tooltip : {
                 trigger: 'item',
-                formatter: "{a} <br/>{b} : {c} ({d}%)"
+                formatter: "{a}{b} : {c} ({d}%)"
             },
             legend: {
                 orient: 'vertical',
@@ -141,7 +141,85 @@
       <% student_ck_count %>
     </div>
 
+
     <!-- 第二个饼图 -->
+
+    <div class="root-data-dabiao">
+      <div id="dabiao" style="width: 490px;height:330px;"></div>
+       <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('dabiao'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            title : {
+                text: '达标统计',
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} {b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: ['未达标人数','达标人数']
+            },
+
+            series : [
+                {
+                    name: '',
+                    type: 'pie',
+                    radius : '65%',
+                    center: ['50%', '60%'],
+                    data: [gon.dabiao, gon.weidabiao],
+
+                    label: {
+                      normal: {
+                        position: 'inner',
+                        formatter: '{d}%',
+                         textStyle: {
+                            color: '#ffffff',
+                            fontSize: 14
+                          }
+                        }
+                      },
+
+                    itemStyle: {
+                        emphasis: {
+                          shadowBlur: 10,
+                          shadowOffsetX: 0,
+                          shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+        <% if params[:search].present? %>
+              function GetUrlPara(){
+                   var url = document.location.toString();
+                   var arrUrl = url.split("?");
+                   var para = arrUrl[1];
+                   return para;
+                   };
+        myChart.on('click', function (params) {
+          window.location.assign('/t_station_infoes/station_dabiao_info?'+'duan_name=<%= current_user.orgnize%>'+'&'+ GetUrlPara());
+        });
+        <% else %>
+        myChart.on('click', function (params) {
+          window.location.assign('/t_station_infoes/staion_dabiao_info?'+'duan_name=<%= current_user.orgnize%>');
+        });
+        <% end %>
+    </script>
+      <% student_dabiao_count%>
+    </div>
+
+
+    <!-- 第三个饼图 -->
 
     <div class="root-data-score">
       <div id="chengjitongji" style="width: 490px;height:335px;"></div>
@@ -158,7 +236,7 @@
             },
             tooltip : {
                 trigger: 'item',
-                formatter: "{a} <br/>{b} : {c} ({d}%)"
+                formatter: "{a}{b} : {c} ({d}%)"
             },
             legend: {
                 orient: 'vertical',
@@ -211,7 +289,7 @@
     </div>
 
 
-     <!-- 第三个饼图 -->
+     <!-- 第四个饼图 -->
 
 
     <div class="root-data-question">
@@ -229,7 +307,7 @@
             },
             tooltip : {
                 trigger: 'item',
-                formatter: "{a} <br/>{b} : {c} ({d}%)"
+                formatter: "{a}{b} : {c} ({d}%)"
             },
             legend: {
                 orient: 'vertical',
@@ -288,7 +366,7 @@
     </div>
 
 
-    <!-- 第四个饼图 -->
+    <!-- 第五个饼图 -->
 
 
     <div class="root-data-wrong">
@@ -306,7 +384,7 @@
             },
             tooltip : {
                 trigger: 'item',
-                formatter: "{a} <br/>{b} : {c} ({d}%)"
+                formatter: "{a}{b} : {c} ({d}%)"
             },
             legend: {
                 orient: 'vertical',
@@ -315,7 +393,7 @@
             },
             series : [
                 {
-                    
+
                     type: 'pie',
                     radius : '65%',
                     center: ['50%', '60%'],

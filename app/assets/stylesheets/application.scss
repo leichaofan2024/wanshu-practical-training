@@ -214,12 +214,22 @@ table {
       border-bottom: 1px solid rgba(143,145,157,0.17);
       background-color: rgba(243,243,243,1);
     }
-    .root-data-score{
+    .root-data-dabiao{
       height:335px;
       width:490px;
       border-radius:5px;
       border-bottom: 1px solid rgba(143,145,157,0.17);
       float:right;
+      background-color: rgba(243,243,243,1);
+    }
+
+    .root-data-score{
+      height:335px;
+      width:490px;
+      border-radius:5px;
+      margin-top:30px;
+      border-bottom: 1px solid rgba(143,145,157,0.17);
+      float:left;
       background-color: rgba(243,243,243,1);
 
     }
@@ -228,7 +238,8 @@ table {
       width:490px;
       border-radius:5px;
       margin-top:30px;
-      float:left;
+      border-bottom: 1px solid rgba(143,145,157,0.17);
+      float:right;
       background-color: rgba(243,243,243,1);
 
     }
@@ -237,7 +248,8 @@ table {
       width:490px;
       border-radius:5px;
       margin-top:30px;
-      float:right;
+      border-bottom: 1px solid rgba(143,145,157,0.17);
+      float:left;
       background-color: rgba(243,243,243,1);
 
     }

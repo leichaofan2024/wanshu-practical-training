@@ -132,6 +132,120 @@ class TTeamInfoesController < ApplicationController
         @para = arrurl[1]
     end
 
+    def team_dabiao_info
+      @duan = TDuanInfo.find_by(F_name: params[:duan_name])
+      @station = TStationInfo.find_by(F_name: params[:station_name])
+      @team_student = TUserInfo.student_all.joins(:t_team_info).where('t_team_info.F_station_uuid = ?', @station.F_uuid).select('t_user_info.F_name,t_user_info.F_id,t_team_info.F_name').distinct.group('t_team_info.F_name').count
+      n= @team_student.keys
+      @student_other = @station.t_user_infoes.where(:F_type => 0).where.not(:status => "在职").select(:F_id).distinct
+
+      if params[:search].present?
+        @search = TimeSearch.new(params[:search])
+        if params[:team_name].present?
+          @team = TTeamInfo.where(F_station_uuid: @station.F_uuid).find_by(F_name: params[:team_name])
+          student_id =@station.t_user_infoes.student_all.where(:F_team_uuid => @team.F_uuid).pluck(:F_id).uniq
+          team_student = TUserInfo.all.where(:F_id => student_id)
+          student_dabiao = @search.scope_team_student2(team_student).group("t_user_info.F_id").sum("t_record_info.time_length")
+          student_dabiao_f_id = []
+          student_dabiao.each do |key,value|
+            if value >= 3600
+              student_dabiao_f_id << key
+            end
+          end
+
+          @student_ck = TUserInfo.where(:F_id => student_dabiao_f_id).select(:F_name, :F_id).distinct
+          @student_wk = team_student.select(:F_name, :F_id).distinct.where.not(F_id: @student_ck.pluck(:F_id))
+        else
+          student_dabiao = @search.scope_team_student3(@station).group("t_user_info.F_id").sum("t_record_info.time_length")
+          student_dabiao_f_id = []
+          student_dabiao.each do |key,value|
+            if value >= 3600
+              student_dabiao_f_id << key
+            end
+          end
+          @student_ck = TUserInfo.where(:F_id => student_dabiao_f_id).select(:F_name, :F_id).distinct
+          @student_wk = TUserInfo.student_all.joins(:t_station_info).where('t_station_info.F_uuid': @station.F_uuid).select(:F_name, :F_id).distinct.where.not(F_id: @student_ck.pluck(:F_id))
+        end
+        team = @station.t_team_infoes
+        @key = []
+        @value_ck = []
+        @value_wk = []
+        team.each do |t|
+          student_id = @station.t_user_infoes.student_all.where(:F_team_uuid => t.F_uuid).pluck(:F_id).uniq
+          student = TUserInfo.student_all.where(:F_id => student_id)
+          if student.present?
+            student_dabiao = @search.scope_team_student(student).group("t_user_info.F_id").sum("t_record_info.time_length")
+            student_dabiao_f_id = []
+            student_dabiao.each do |key, value|
+              if value >= 3600
+                student_dabiao_f_id << key
+              end
+            end
+
+            student_ck = student_dabiao_f_id
+            student_wk = student.where.not(:F_id => student_ck).pluck(:F_id).uniq
+            @key << t.F_name
+            @value_ck << student_ck.size
+            @value_wk << student_wk.size
+          end
+        end
+      else
+        if params[:team_name].present?
+          @team = TTeamInfo.where(F_station_uuid: @station.F_uuid).find_by(F_name: params[:team_name])
+          student_id =@station.t_user_infoes.student_all.where(:F_team_uuid => @team.F_uuid).pluck(:F_id).uniq
+          team_student = TUserInfo.all.where(:F_id => student_id)
+          student_dabiao = team_student.joins(:t_record_infoes).datetime.group("t_user_info.F_id").sum("t_record_info.time_length")
+          student_dabiao_f_id = []
+          student_dabiao.each do |key, value|
+            if value >= 3600
+              student_dabiao_f_id << key
+            end
+          end
+          @student_ck = TUserInfo.where(:F_id => student_dabiao_f_id).select(:F_name, :F_id).distinct
+          @student_wk = team_student.select(:F_name, :F_id).distinct.where.not(F_id: @student_ck.pluck(:F_id))
+        else
+          student_dabiao = TUserInfo.student_all.joins(:t_station_info, :t_record_infoes).where('t_station_info.F_uuid': @station.F_uuid).datetime.group("t_user_info.F_id").sum("t_record_info.time_length")
+          student_dabiao_f_id = []
+          student_dabiao.each do |key, value|
+            if value >= 3600
+              student_dabiao_f_id << key
+            end
+          end
+          @student_ck = TUserInfo.where(:F_id => student_dabiao_f_id).select(:F_name, :F_id).distinct
+          @student_wk = TUserInfo.student_all.joins(:t_station_info).where('t_station_info.F_uuid': @station.F_uuid).select(:F_name, :F_id).distinct.where.not(F_id: @student_ck.pluck(:F_id))
+        end
+        team = @station.t_team_infoes
+        @key = []
+        @value_ck = []
+        @value_wk = []
+        team.each do |t|
+          student_id = @station.t_user_infoes.student_all.where(:F_team_uuid => t.F_uuid).pluck(:F_id).uniq
+          student = TUserInfo.student_all.where(:F_id => student_id)
+          if student.present?
+            student_dabiao = student.joins(:t_record_infoes).datetime.group("t_user_info.F_id").sum("t_record_info.time_length")
+            student_dabiao_f_id = []
+            student_dabiao.each do |key, value|
+              if value >= 3600
+                student_dabiao_f_id << key
+              end
+            end
+            student_ck = student_dabiao_f_id
+            student_wk = student.where.not(:F_id => student_ck).pluck(:F_id).uniq
+            @key << t.F_name
+            @value_ck << student_ck.size
+            @value_wk << student_wk.size
+          end
+        end
+      end
+      gon.key = @key
+      gon.wkvalue = @value_wk
+      gon.ckvalue = @value_ck
+
+      url = request.original_url
+      arrurl = url.split('?')
+      @para = arrurl[1]
+    end
+
     def team_score_info
         @duan = TDuanInfo.find_by(F_name: params[:duan_name])
         @station = TStationInfo.find_by(F_name: params[:station_name])

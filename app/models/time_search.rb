@@ -47,6 +47,18 @@ class TimeSearch
         TUserInfo.student_all.joins(:t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
     end
 
+    def scope_student_dabiao1
+      TUserInfo.student_all.joins(:t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to).group("t_user_info.F_id").sum("t_record_info.time_length")
+    end
+
+    def scope_student_dabiao2(params)
+      TUserInfo.student_all.joins(:t_record_infoes,:t_duan_info).where("t_duan_info.F_name": params.orgnize).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to).group("t_user_info.F_id").sum("t_record_info.time_length")
+    end
+
+    def scope_student_dabiao3
+      TUserInfo.student_all.joins(:t_record_infoes,:t_station_info).where("t_station_info.F_name": current_user.orgnize).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to).group("t_user_info.F_id").sum("t_record_info.time_length")
+    end
+
     def scope_program
         TProgramInfo.joins(:t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to).distinct.count
     end
@@ -102,12 +114,24 @@ class TimeSearch
       TUserInfo.student_all.joins(:t_duan_info, :t_record_infoes).duan_orgnization.where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
     end
 
+    def scope_duan_cw_dabiao
+      TUserInfo.student_all.joins(:t_duan_info, :t_record_infoes).duan_orgnization.where('t_duan_info.F_type= ?', 1).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to).group("t_user_info.F_id").sum("t_record_info.time_length")
+    end
+
+    def scope_duan_zs_dabiao
+      TUserInfo.student_all.joins(:t_duan_info, :t_record_infoes).duan_orgnization.where('t_duan_info.F_type= ?', 2).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to).group("t_user_info.F_id").sum("t_record_info.time_length")
+    end
+
     def scope_program_duan_student(params)
       TUserInfo.student_all.joins(:t_duan_info, :t_record_infoes).duan_orgnization.program_record(params).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
     end
 
     def scope_student_info(params)
       TUserInfo.student_all.joins(:t_station_info, :t_record_infoes).where('t_station_info.F_duan_uuid = ?', TDuanInfo.find_by(F_name: params).F_uuid).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
+    end
+
+    def scope_dabiao_info(params)
+      TUserInfo.student_all.joins(:t_station_info, :t_record_infoes).where('t_station_info.F_duan_uuid = ?', TDuanInfo.find_by(F_name: params).F_uuid).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to).group("t_user_info.F_id").sum("t_record_info.time_length")
     end
 
     def scope_program_student_info(params,params1)
@@ -125,6 +149,8 @@ class TimeSearch
     def scope_team_student2(params)
       params.joins(:t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
     end
+
+
 
     def scope_program_team_student2(params,params1)
       params.joins(:t_record_infoes).program_record(params1).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)

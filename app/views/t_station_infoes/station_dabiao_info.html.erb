@@ -1,0 +1,218 @@
+<div class= "pie_duan_frame">
+  <div class="clear">
+    <% if current_user.permission == 1%>
+      <a href="/">首页</a> > <a href="/t_duan_infoes/duan_dabiao_info">各站段达标情况</a> > <%= @duan.F_name%>
+    <% elsif current_user.permission == 2 %>
+      <a href="/">首页</a> >  <%= @duan.F_name%>
+    <% end %>
+  </div>
+
+<div class="">
+  <div class="row">
+    <div class="pull-right range-query">
+      <div class="searchtime">时间：</div>
+      <div class="searchtime">
+        <%= form_tag station_dabiao_info_t_station_infoes_path, method: :get do %>
+          <%= text_field_tag 'search[date_from]',nil,:placeholder => time_begin(params[:search])%>
+          <%= text_field_tag 'search[date_to]',nil,:placeholder => time_end(params[:search]) %>
+          <%= hidden_field_tag :duan_name, params[:duan_name]%>
+          <%= submit_tag "搜索", id:"time_id",class: "btn search-button"%>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <script src="/assets/echarts.min.js"></script>
+    <div id="main" style="width: 1000px;height:500px;margin: 40px auto 0;"></div>
+     <script type="text/javascript">
+      // 基于准备好的dom，初始化echarts实例
+      var myChart = echarts.init(document.getElementById('main'));
+
+      // 指定图表的配置项和数据
+      var option = {
+            title: {
+                text: '<%= @duan.F_name%>达标人数分析'
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: { // 坐标轴指示器，坐标轴触发有效
+                    type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+                }
+            },
+            legend: {
+                data: ['未达标人数', '达标人数'],
+                align: 'right',
+                right: 10
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                y2:120,
+                containLabel: true
+            },
+            xAxis: [{
+                type: 'category',
+                splitLine: {
+                  show: false
+              },
+              axisTick: {
+                  show: false
+              },
+              splitArea: {
+                  show: false
+              },
+              axisLabel: {
+                  interval: 0,
+                  rotate: 45,
+                  show: true,
+                  splitNumber: 15,
+                  textStyle: {
+                      fontFamily: "微软雅黑",
+                      fontSize: 14
+                  }
+                },
+                data: gon.key
+            }],
+            yAxis: [{
+                type: 'value',
+                name: '人数',
+                axisLabel: {
+                    formatter: '{value}'
+                }
+            }],
+            series: [{
+                name: '达标人数',
+                type: 'bar',
+                stack: '未达标人数',
+                barMaxWidth: 60,
+                barGap: "5%",
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'insideRight'
+                    }
+                },
+                data: gon.ckvalue
+            }, {
+                name: '未达标人数',
+                type: 'bar',
+                stack: '未达标人数',
+                barMaxWidth: 60,
+                barGap: "5%",
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'insideRight'
+                    }
+                },
+                data: gon.wkvalue
+            }]
+        };
+
+
+              // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+      <% if params[:search].present? %>
+            function GetUrlPara(){
+                      var url = document.location.toString();
+                      var arrUrl = url.split("?");
+                      var para = arrUrl[1];
+                      return para;
+                      };
+      myChart.on('click', function (params) {
+        window.location.assign('/t_team_infoes/team_dabiao_info?station_name=' + params.name + '&' + GetUrlPara());
+      });
+      <% else %>
+        myChart.on('click', function (params) {
+          window.location.assign('/t_team_infoes/team_dabiao_info?duan_name=<%= params[:duan_name] %>&station_name=' + params.name);
+        });
+      <% end %>
+  </script>
+
+    <div id="main1" style="width: 1000px;height:500px;margin: 40px auto 0;"></div>
+     <script type="text/javascript">
+      // 基于准备好的dom，初始化echarts实例
+      var myChart = echarts.init(document.getElementById('main1'));
+
+      // 指定图表的配置项和数据
+      var option = {
+            title: {
+                text: '<%= @duan.F_name%>达标比例分析'
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: { // 坐标轴指示器，坐标轴触发有效
+                    type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                y2:120,
+                containLabel: true
+            },
+            xAxis: [{
+                type: 'category',
+                splitLine: {
+                  show: false
+              },
+              axisTick: {
+                  show: false
+              },
+              splitArea: {
+                  show: false
+              },
+              axisLabel: {
+                  interval: 0,
+                  rotate: 45,
+                  show: true,
+                  splitNumber: 15,
+                  textStyle: {
+                      fontFamily: "微软雅黑",
+                      fontSize: 14
+                  }
+                },
+                data: gon.key
+            }],
+            yAxis: [{
+                type: 'value',
+                name: '百分比',
+                axisLabel: {
+                    formatter: '{value}%'
+                }
+            }],
+            series: [{
+                name: '参考人数占比',
+                type: 'bar',
+                barMaxWidth: 60,
+                barGap: "5%",
+                label: {
+                    normal: {
+                        show: true,
+                        formatter: '{c}%'
+                    }
+                },
+                data: gon.ckblvalue
+            }]
+        };
+
+
+              // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+      <% if params[:search].present? %>
+            function GetUrlPara(){
+                      var url = document.location.toString();
+                      var arrUrl = url.split("?");
+                      var para = arrUrl[1];
+                      return para;
+                      };
+      myChart.on('click', function (params) {
+        window.location.assign('/t_team_infoes/team_student_info?station_name=' + params.name + '&' + GetUrlPara());
+      });
+      <% else %>
+        myChart.on('click', function (params) {
+          window.location.assign('/t_team_infoes/team_student_info?duan_name=<%= params[:duan_name] %>&station_name=' + params.name);
+        });
+      <% end %>
+  </script>
+</div>
+</div>

@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
     protect_from_forgery with: :exception
     before_action :authenticate_user!
     helper_method [:duan, :duan_z, :duan_cw, :duan_ju, :duan_ck_count, :station, :station_ck_count, :team, :team_ju, :team_ck_count, :student_wk_count, :students, :student_ck_count, :student_ck_counts, :teacher, :program_ck_count,
-                   :score_90, :score_80, :score_60, :score_60_below, :program_type_percent, :reason_hot_all]
+                   :score_90, :score_80, :score_60, :score_60_below, :program_type_percent, :reason_hot_all,:student_dabiao_count]
 
     def all_browsed?
       call_board_ids = current_user.browses.pluck(:call_board_id)
@@ -206,6 +206,86 @@ class ApplicationController < ActionController::Base
         result['实考人数'] = m
         @shikao = { name: '实考人数', value: result['实考人数'] }
         gon.shikao = @shikao
+    end
+
+
+    def student_dabiao_count
+      if current_user.permission == 1
+        sum = TUserInfo.student_all.select(:F_id).distinct.count
+        if params[:search].present?
+          @search = TimeSearch.new(params[:search])
+          n = @search.scope_student_dabiao1
+          user_f_id= Array.new
+          n.each do |key,value|
+            if value>= 3600
+              user_f_id << key
+            end
+          end
+          x = user_f_id.size
+        else
+          n = TUserInfo.student_all.joins(:t_record_infoes).datetime.group("t_user_info.F_id").sum("t_record_info.time_length")
+          user_f_id= Array.new
+          n.each do |key,value|
+            if value>= 3600
+              user_f_id << key
+            end
+          end
+          x = user_f_id.size
+        end
+        y = sum - x
+      elsif current_user.permission == 2
+        sum = TUserInfo.where(:F_duan_uuid => TDuanInfo.find_by(:F_name => current_user.orgnize).F_uuid).select(:F_id).distinct.count
+        if params[:search].present?
+          @search = TimeSearch.new(params[:search])
+          n = @search.scope_student_dabiao2(current_user)
+          user_f_id= Array.new
+          n.each do |key,value|
+            if value>= 3600
+              user_f_id << key
+            end
+          end
+          x = user_f_id.size
+        else
+          n = TUserInfo.student_all.joins(:t_duan_info,:t_record_infoes).datetime.where("t_duan_info.F_name= ?", current_user.orgnize).group("t_user_info.F_id").sum("t_record_info.time_length")
+          user_f_id= Array.new
+          n.each do |key,value|
+            if value>= 3600
+              user_f_id << key
+            end
+          end
+          x = user_f_id.size
+        end
+        y = sum - x
+      elsif current_user.permission == 3
+        sum = TUserInfo.where(:F_station_uuid => TStationInfo.find_by(:F_name => current_user.orgnize).F_uuid).select(:F_id).distinct.count
+        if params[:search].present?
+          @search = TimeSearch.new(params[:search])
+          n = @search.scope_student_dabiao3
+          user_f_id= Array.new
+          n.each do |key,value|
+            if value>= 3600
+              user_f_id << key
+            end
+          end
+          x = user_f_id.size
+        else
+          n = TUserInfo.student_all.joins(:t_station_info,:t_record_infoes).datetime.where("t_station_info.F_name= ?", current_user.orgnize).group("t_user_info.F_id").sum("t_record_info.time_length")
+          user_f_id= Array.new
+          n.each do |key,value|
+            if value>= 3600
+              user_f_id << key
+            end
+          end
+          x = user_f_id.size
+        end
+        y = sum - x
+      end
+        result_dabiao = {}
+        result_weidabiao = {}
+        result_dabiao['达标人数'] = x
+        result_weidabiao['未达标人数'] = y
+        gon.dabiao = { name: '达标人数', value: result_dabiao['达标人数'] }
+        gon.weidabiao = { name: '未达标人数', value: result_weidabiao['未达标人数'] }
     end
 
     def teacher

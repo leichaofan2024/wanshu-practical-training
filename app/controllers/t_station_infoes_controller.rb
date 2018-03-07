@@ -87,6 +87,85 @@ class TStationInfoesController < ApplicationController
         gon.ckblvalue = @station_student_ckbl
     end
 
+    def station_dabiao_info
+      @duan = TDuanInfo.find_by(F_name: params[:duan_name])
+      @station_student = TUserInfo.student_all.joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct.group('t_station_info.F_name').count
+      n = @station_student.keys
+      v = @station_student.values
+      if params[:search].present?
+          @search = TimeSearch.new(params[:search])
+          student_dabiao = @search.scope_dabiao_info(params[:duan_name])
+          student_dabiao_f_id = Array.new
+          student_dabiao.each do |key,value|
+            if value >= 3600
+              student_dabiao_f_id << key
+            end
+          end
+          m = TUserInfo.where(F_id: student_dabiao_f_id).joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct
+          c = m.group('t_station_info.F_name').count
+          c1 = c.keys
+          @station_student_ck = []
+          n.each do |n|
+              @station_student_ck << if c1.include?(n)
+                                         c[n]
+                                     else
+                                         0
+                                     end
+          end
+          w = TUserInfo.student_all.joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct.where.not('t_user_info.F_id' => m.pluck('t_user_info.F_id')).group('t_station_info.F_name').count
+          w1 = w.keys
+          @station_student_wk = []
+          n.each do |n|
+              @station_student_wk << if w1.include?(n)
+                                         w[n]
+                                     else
+                                         0
+                                     end
+          end
+      else
+        student_dabiao = TUserInfo.student_all.joins(:t_station_info, :t_record_infoes).datetime.where('t_station_info.F_duan_uuid = ?', TDuanInfo.find_by(F_name: params[:duan_name])).group("t_user_info.F_id").sum("t_record_info.time_length")
+        student_dabiao_f_id = []
+        student_dabiao.each do |key,value|
+          if value >= 3600
+            student_dabiao_f_id << key
+          end
+        end
+        m = TUserInfo.where(F_id: student_dabiao_f_id).joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct
+          c = m.group('t_station_info.F_name').count
+          c1 = c.keys
+          @station_student_ck = []
+          n.each do |n|
+              @station_student_ck << if c1.include?(n)
+                                         c[n]
+                                     else
+                                         0
+                                     end
+          end
+          w = TUserInfo.student_all.joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct.where.not('t_user_info.F_id' => m.pluck('t_user_info.F_id')).group('t_station_info.F_name').count
+          w1 = w.keys
+          @station_student_wk = []
+          n.each do |n|
+              @station_student_wk << if w1.include?(n)
+                                         w[n]
+                                     else
+                                         0
+                                     end
+          end
+
+      end
+          @station_student_ckbl = []
+          i = 0
+          @station_student_ck.each do |k|
+            @station_student_ckbl << (BigDecimal(k) / BigDecimal(v[i])).round(3) * 100
+            i += 1
+          end
+      gon.key = n
+      gon.wkvalue = @station_student_wk
+      gon.ckvalue = @station_student_ck
+      gon.ckblvalue = @station_student_ckbl
+    end
+
+
     def station_score_info
         @duan = TDuanInfo.find_by(F_name: params[:duan_name])
         @station = TStationInfo.where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).joins(t_user_infoes: :t_record_infoes).group('t_station_info.F_name').size

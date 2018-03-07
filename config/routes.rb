@@ -40,6 +40,12 @@ Rails.application.routes.draw do
         get :program_student_records
         get :program_record_details
 
+        get :program_duan_dabiao_info
+        get :program_station_dabiao_info
+        get :program_team_dabiao_info
+        get :program_dabiao_records
+        get :program_dabiao_details
+
         get :program_duan_score_info
         get :program_station_score_info
         get :program_team_score_info
@@ -54,6 +60,7 @@ Rails.application.routes.draw do
     resources :t_duan_infoes do
         collection do
             get :duan_student_info # 参考学生饼图
+            get :duan_dabiao_info  # 达标考生
             get :duan_score_info               # 得分概览饼图
             get :duan_program_info             # 热点考点饼图
             get :duan_program_student_info     # 做过这道题的学生
@@ -65,6 +72,7 @@ Rails.application.routes.draw do
     resources :t_station_infoes do
         collection do
             get :station_student_info
+            get :station_dabiao_info
             get :station_score_info
 
         end
@@ -74,6 +82,7 @@ Rails.application.routes.draw do
     resources :t_team_infoes do
         collection do
             get :team_student_info
+            get :team_dabiao_info
             get :team_score_info
         end
     end
@@ -87,6 +96,7 @@ Rails.application.routes.draw do
   resources :t_record_infoes do
     collection do
       get :student_records
+      get :dabiao_records
       get :score_records
       patch :time_length
     end
@@ -96,6 +106,7 @@ Rails.application.routes.draw do
 
     collection do
       get :record_details
+      get :dabiao_details
       get :record_score_details
     end
   end

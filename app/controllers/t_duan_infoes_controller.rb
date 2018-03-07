@@ -6,6 +6,9 @@ class TDuanInfoesController < ApplicationController
         @duans_zj = TDuanInfo.duan_zhijiao
     end
 
+
+    # 考生参考率=====================
+
     def duan_student_info
         @duans = TDuanInfo.where.not(F_name: %w(运输处 局职教基地))
         @duans_student_cw = TUserInfo.student_all.joins(:t_duan_info).where.not('t_duan_info.F_name' => %w(局职教基地 运输处)).where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
@@ -145,6 +148,178 @@ class TDuanInfoesController < ApplicationController
         arrurl = url.split('?')
         @para = arrurl[1]
     end
+
+    # 考生达标率===================
+
+    def duan_dabiao_info
+      @duans = TDuanInfo.where.not(F_name: %w(运输处 局职教基地))
+      @duans_student_cw = TUserInfo.student_all.joins(:t_duan_info).duan_orgnization.where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
+      ncw = @duans_student_cw.keys
+      vcw = @duans_student_cw.values
+      @duans_student_zs = TUserInfo.student_all.joins(:t_duan_info).duan_orgnization.where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
+      nzs = @duans_student_zs.keys
+      vzs = @duans_student_zs.values
+      if params[:search].present?
+          @search = TimeSearch.new(params[:search])
+          cw_dabiao = @search.scope_duan_cw_dabiao
+          cw_dabiao_f_id = []
+          cw_dabiao.each do |key,value|
+            if value >= 3600
+              cw_dabiao_f_id << key
+            end
+          end
+          cw = TUserInfo.where(F_id: cw_dabiao_f_id).joins(:t_duan_info).select('t_duan_info.F_name, t_user_info.F_id').distinct
+          zs_dabiao = @search.scope_duan_zs_dabiao
+          zs_dabiao_f_id = []
+          zs_dabiao.each do |key,value|
+            if value >= 3600
+              zs_dabiao_f_id << key
+            end
+          end
+          zs = TUserInfo.where(F_id: zs_dabiao_f_id).joins(:t_duan_info).select('t_duan_info.F_name, t_user_info.F_id').distinct
+          cw_ck = cw.group('t_duan_info.F_name').count
+          cw_ck1 = cw_ck.keys
+          @duans_student_cw_ck = []
+          ncw.each do |c|
+              @duans_student_cw_ck << if cw_ck1.include?(c)
+                                          cw_ck[c]
+                                      else
+                                          0
+                                      end
+          end
+          @duans_student_cw_ck_bl = []
+          i = 0
+          @duans_student_cw_ck.each do |v|
+              @duans_student_cw_ck_bl << (BigDecimal(v) / BigDecimal(vcw[i])).round(3) * 100
+              i += 1
+          end
+          cw_wk = TUserInfo.student_all.joins(:t_duan_info).duan_orgnization.where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => cw.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
+          cw_wk1 = cw_wk.keys
+          @duans_student_cw_wk = []
+          ncw.each do |c|
+              @duans_student_cw_wk << if cw_wk1.include?(c)
+                                          cw_wk[c]
+                                      else
+                                          0
+                                      end
+          end
+
+          zs_ck = zs.group('t_duan_info.F_name').count
+          zs_ck1 = zs_ck.keys
+          @duans_student_zs_ck = []
+          nzs.each do |c|
+              @duans_student_zs_ck << if zs_ck1.include?(c)
+                                          zs_ck[c]
+                                      else
+                                          0
+                                      end
+          end
+          @duans_student_zs_ck_bl = []
+          i = 0
+          @duans_student_zs_ck.each do |v|
+              @duans_student_zs_ck_bl << (BigDecimal(v) / BigDecimal(vzs[i])).round(3) * 100
+              i += 1
+          end
+          zs_wk = TUserInfo.student_all.joins(:t_duan_info).duan_orgnization.where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => zs.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
+          zs_wk1 = zs_wk.keys
+          @duans_student_zs_wk = []
+          nzs.each do |c|
+              @duans_student_zs_wk << if zs_wk1.include?(c)
+                                          zs_wk[c]
+                                      else
+                                          0
+                                      end
+          end
+
+      else
+        cw_dabiao = TUserInfo.student_all.joins(:t_duan_info, :t_record_infoes).datetime.duan_orgnization.where('t_duan_info.F_type= ?', 1).group("t_user_info.F_id").sum("t_record_info.time_length")
+        cw_dabiao_f_id = []
+        cw_dabiao.each do |key,value|
+          if value >= 3600
+            cw_dabiao_f_id << key
+          end
+        end
+        cw = TUserInfo.where(F_id: cw_dabiao_f_id).joins(:t_duan_info).select('t_duan_info.F_name, t_user_info.F_id').distinct
+
+        zs_dabiao = TUserInfo.student_all.joins(:t_duan_info, :t_record_infoes).datetime.duan_orgnization.where('t_duan_info.F_type= ?', 2).group("t_user_info.F_id").sum("t_record_info.time_length")
+        zs_dabiao_f_id = []
+        zs_dabiao.each do |key,value|
+          if value >= 3600
+            zs_dabiao_f_id << key
+          end
+        end
+        zs = TUserInfo.where(F_id: zs_dabiao_f_id).joins(:t_duan_info).select('t_duan_info.F_name, t_user_info.F_id').distinct
+          cw_ck = cw.group('t_duan_info.F_name').count
+          cw_ck1 = cw_ck.keys
+          @duans_student_cw_ck = []
+          ncw.each do |c|
+              @duans_student_cw_ck << if cw_ck1.include?(c)
+                                          cw_ck[c]
+                                      else
+                                          0
+                                      end
+          end
+
+          @duans_student_cw_ck_bl = []
+          i = 0
+          @duans_student_cw_ck.each do |v|
+              @duans_student_cw_ck_bl << (BigDecimal(v) / BigDecimal(vcw[i])).round(3) * 100
+              i += 1
+          end
+
+          cw_wk = TUserInfo.student_all.joins(:t_duan_info).duan_orgnization.where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => cw.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
+          cw_wk1 = cw_wk.keys
+          @duans_student_cw_wk = []
+          ncw.each do |c|
+              @duans_student_cw_wk << if cw_wk1.include?(c)
+                                          cw_wk[c]
+                                      else
+                                          0
+                                      end
+          end
+
+          zs_ck = zs.group('t_duan_info.F_name').count
+          zs_ck1 = zs_ck.keys
+          @duans_student_zs_ck = []
+          nzs.each do |c|
+              @duans_student_zs_ck << if zs_ck1.include?(c)
+                                          zs_ck[c]
+                                      else
+                                          0
+                                      end
+          end
+          @duans_student_zs_ck_bl = []
+          i = 0
+          @duans_student_zs_ck.each do |v|
+              @duans_student_zs_ck_bl << (BigDecimal(v) / BigDecimal(vzs[i])).round(3) * 100
+              i += 1
+          end
+
+          zs_wk = TUserInfo.student_all.joins(:t_duan_info).duan_orgnization.where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => zs.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
+          zs_wk1 = zs_wk.keys
+          @duans_student_zs_wk = []
+          nzs.each do |c|
+              @duans_student_zs_wk << if zs_wk1.include?(c)
+                                          zs_wk[c]
+                                      else
+                                          0
+                                      end
+          end
+
+      end
+      gon.cwkey = ncw
+      gon.cwwkvalue = @duans_student_cw_wk
+      gon.cwckvalue = @duans_student_cw_ck
+      gon.cwblvalue = @duans_student_cw_ck_bl
+      gon.zsckblvalue = @duans_student_zs_ck_bl
+      gon.zskey = nzs
+      gon.zswkvalue = @duans_student_zs_wk
+      gon.zsckvalue = @duans_student_zs_ck
+      url = request.original_url
+      arrurl = url.split('?')
+      @para = arrurl[1]
+    end
+
 
     def duan_score_info
         @duantype1 = TDuanInfo.where('t_duan_info.F_type= ?', 1).joins(t_user_infoes: :t_record_infoes)
