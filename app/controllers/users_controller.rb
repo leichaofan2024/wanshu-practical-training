@@ -63,7 +63,7 @@ layout "notime_frame"
   end
 
   def duan_users
-    @users = User.where(:orgnize =>TDuanInfo.find_by(:F_name => current_user.orgnize).t_station_infoes.pluck(:F_name))
+    @users = User.where(:permission => 3).where(:orgnize =>TDuanInfo.find_by(:F_name => current_user.orgnize).t_station_infoes.pluck(:F_name))
   end
 
   def ju_users

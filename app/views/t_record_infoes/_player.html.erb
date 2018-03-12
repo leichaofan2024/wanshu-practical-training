@@ -10,7 +10,7 @@
       <th>得分</th>
       <th>考试详情</th>
       <th>录像回放</th>
-      <% if current_user.permission == 1 %>
+      <% if current_user.role == "运输处" %>
       <th>操作</th>
       <% end %>
     </tr>
@@ -39,7 +39,7 @@
       <td><%= time_longth(r) %></td>
       <td><%= r.F_score %></td>
       <td>
-        <%= link_to("考试详情", record_details_t_record_detail_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name=> params[:team_name],:user_name => params[:user_name],:user_id => params[:user_id],:record_uuid=> r.F_uuid, "utf8": params[:utf8], "search": params[:search], "commit": params[:commit]) )%> 
+        <%= link_to("考试详情", record_details_t_record_detail_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name=> params[:team_name],:user_name => params[:user_name],:user_id => params[:user_id],:record_uuid=> r.F_uuid, "utf8": params[:utf8], "search": params[:search], "commit": params[:commit]) )%>
       </td>
       <td>
         <a id="player<%= i%>"  href="http://10.64.2.108:1000/<%= r.F_record%>">播放录像</a>
@@ -98,7 +98,7 @@
         </script>
       </td>
 
-      <% if current_user.permission == 1 %>
+      <% if current_user.role == "运输处" %>
         <td>
           <%= link_to("", t_record_info_path(r,:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name=> params[:team_name],:user_name => params[:user_name],:user_id => params[:user_id]),method: :delete,:data => {confirm: "你确定要删除吗？"},class: "fa fa-trash" )%>
         </td>

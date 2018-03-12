@@ -38,7 +38,6 @@ User.create(:role => "通州车务段", orgnize: "通州车务段", permission: 
 User.create(:role => "邯郸车务段", orgnize: "邯郸车务段", permission: 2,password:"123456",password_confirmation:"123456")
 
 
-
 TDuanInfo.duan_orgnization.each do |d|
   d.t_station_infoes.each do |s|
     if s.F_name != "邯郸西场" and s.F_name!="八里庄"

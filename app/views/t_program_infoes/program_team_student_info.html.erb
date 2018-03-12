@@ -126,7 +126,7 @@
           <th>职务</th>
           <th>状态</th>
           <th>详情</th>
-          <% if current_user.permission == 1%>
+          <% if current_user.role == "运输处"%>
           <th>操作</th>
           <% end %>
         </tr>
@@ -150,23 +150,27 @@
                 <% end %>
               </td>
               <td style="width:15%;">
-                <div class="dropdown">
-                  <button type="button" class="btn-sm btn-default dropdown-toggle" data-toggle="dropdown" style= "width:70px;">
-                    在职  <i class="fa fa-sort fa-lg" aria-hidden="true"></i>
-                  </button>
-                  <ul class="dropdown-menu" style = "background:#ECF9F2;left:16px;">
-                    <li><%= link_to("在职",set_student_status_t_user_info_path(s,:status => "在职"),method: :patch)%></li>
-                    <li><%= link_to("调离",set_student_status_t_user_info_path(s,:status => "调离"),method: :patch)%></li>
-                    <li><%= link_to("退休",set_student_status_t_user_info_path(s,:status => "退休"),method: :patch)%></li>
-                  </ul>
-                </div>
+                <% if current_user.role == "运输处" or current_user.permission == 2 %>
+                  <div class="dropdown">
+                    <button type="button" class="btn-sm btn-default dropdown-toggle" data-toggle="dropdown" style= "width:70px;">
+                      在职  <i class="fa fa-sort fa-lg" aria-hidden="true"></i>
+                    </button>
+                    <ul class="dropdown-menu" style = "background:#ECF9F2;left:22px;">
+                      <li><%= link_to("在职",set_student_status_t_user_info_path(s,:station_name=> params[:station_name],:status => "在职"),method: :patch)%></li>
+                      <li><%= link_to("调离",set_student_status_t_user_info_path(s,:station_name=> params[:station_name],:status => "调离"),method: :patch)%></li>
+                      <li><%= link_to("退休",set_student_status_t_user_info_path(s,:station_name=> params[:station_name],:status => "退休"),method: :patch)%></li>
+                    </ul>
+                  </div>
+                <% else %>
+                  <legend style= "font-size: 17px;">在职</legend>
+                <% end %>
               </td>
               <% if params[:search].present? %>
               <td style="width:15%;"><%= link_to("查看详情", program_student_records_t_program_info_path(:id=> params[:id],:name=> params[:name],:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id, "utf8": params[:utf8], "search": params[:search], "commit": params[:commit]))%></td>
               <% else %>
               <td style="width:15%;"><%= link_to("查看详情", student_records_t_record_infoes_path(:id=> params[:id],:name=> params[:name],:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id))%></td>
               <% end %>
-              <% if current_user.permission == 1%>
+              <% if current_user.role == "运输处"%>
               <td style="width:10%;"><%= link_to("",t_user_info_path(s,:station_name => params[:station_name]),method: :delete, data: {confirm: "此操作会删除此用户所有相关信息，您确定要删除吗？"},class: "fa fa-trash")%></td>
               <% end %>
             </tr>
@@ -184,7 +188,7 @@
           <th>职位</th>
           <th>状态</th>
           <th>详情</th>
-          <% if current_user.permission == 1%>
+          <% if current_user.role == "运输处"%>
           <th>操作</th>
           <% end %>
         </tr>
@@ -208,19 +212,23 @@
                 <% end %>
               </td>
               <td style="width:15%;">
-                <div class="dropdown">
-                  <button type="button" class="btn-sm btn-default dropdown-toggle" data-toggle="dropdown" style= "width:70px;">
-                    在职  <i class="fa fa-sort fa-lg" aria-hidden="true"></i>
-                  </button>
-                  <ul class="dropdown-menu" style = "background:#ECF9F2;left:16px;">
-                    <li><%= link_to("在职",set_student_status_t_user_info_path(s,:status => "在职"),method: :patch)%></li>
-                    <li><%= link_to("调离",set_student_status_t_user_info_path(s,:status => "调离"),method: :patch)%></li>
-                    <li><%= link_to("退休",set_student_status_t_user_info_path(s,:status => "退休"),method: :patch)%></li>
-                  </ul>
-                </div>
+                <% if current_user.role == "运输处" or current_user.permission == 2 %>
+                  <div class="dropdown">
+                    <button type="button" class="btn-sm btn-default dropdown-toggle" data-toggle="dropdown" style= "width:70px;">
+                      在职  <i class="fa fa-sort fa-lg" aria-hidden="true"></i>
+                    </button>
+                    <ul class="dropdown-menu" style = "background:#ECF9F2;left:22px;">
+                      <li><%= link_to("在职",set_student_status_t_user_info_path(s,:station_name=> params[:station_name],:status => "在职"),method: :patch)%></li>
+                      <li><%= link_to("调离",set_student_status_t_user_info_path(s,:station_name=> params[:station_name],:status => "调离"),method: :patch)%></li>
+                      <li><%= link_to("退休",set_student_status_t_user_info_path(s,:station_name=> params[:station_name],:status => "退休"),method: :patch)%></li>
+                    </ul>
+                  </div>
+                <% else %>
+                  <legend style= "font-size: 17px;">在职</legend>
+                <% end %>
               </td>
               <td style="width:15%;">无</td>
-              <% if current_user.permission == 1%>
+              <% if current_user.role == "运输处"%>
               <td style="width:10%;"><%= link_to("",t_user_info_path(s,:station_name => params[:station_name]),method: :delete, data: {confirm: "此操作会删除此用户所有相关信息，您确定要删除吗？"},class: "fa fa-trash")%></td>
               <% end %>
             </tr>
@@ -238,7 +246,7 @@
           <th>职位</th>
           <th>状态</th>
           <th>详情</th>
-          <% if current_user.permission == 1%>
+          <% if current_user.role == "运输处"%>
           <th>操作</th>
           <% end %>
         </tr>
@@ -262,23 +270,27 @@
                 <% end %>
               </td>
               <td style="width:15%;">
-                <div class="dropdown">
-                  <button type="button" class="btn-sm btn-default dropdown-toggle" data-toggle="dropdown" style= "width:70px;">
-                    <%= s.status%>  <i class="fa fa-sort fa-lg" aria-hidden="true"></i>
-                  </button>
-                  <ul class="dropdown-menu" style = "background:#ECF9F2;left:22px;">
-                    <li><%= link_to("在职",set_student_status_t_user_info_path(s,:status => "在职"),method: :patch)%></li>
-                    <li><%= link_to("调离",set_student_status_t_user_info_path(s,:status => "调离"),method: :patch)%></li>
-                    <li><%= link_to("退休",set_student_status_t_user_info_path(s,:status => "退休"),method: :patch)%></li>
-                  </ul>
-                </div>
+                <% if current_user.role == "运输处" or current_user.permission == 2 %>
+                  <div class="dropdown">
+                    <button type="button" class="btn-sm btn-default dropdown-toggle" data-toggle="dropdown" style= "width:70px;">
+                      <%= s.status %>  <i class="fa fa-sort fa-lg" aria-hidden="true"></i>
+                    </button>
+                    <ul class="dropdown-menu" style = "background:#ECF9F2;left:22px;">
+                      <li><%= link_to("在职",set_student_status_t_user_info_path(s,:station_name=> params[:station_name],:status => "在职"),method: :patch)%></li>
+                      <li><%= link_to("调离",set_student_status_t_user_info_path(s,:station_name=> params[:station_name],:status => "调离"),method: :patch)%></li>
+                      <li><%= link_to("退休",set_student_status_t_user_info_path(s,:station_name=> params[:station_name],:status => "退休"),method: :patch)%></li>
+                    </ul>
+                  </div>
+                <% else %>
+                  <legend style= "font-size: 17px;"><%= s.status %></legend>
+                <% end %>
               </td>
               <% if params[:search].present? %>
               <td style="width:15%;"><%= link_to("查看详情", student_records_t_record_infoes_path(:id=> params[:id],:name=> params[:name],:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id, "utf8": params[:utf8], "search": params[:search], "commit": params[:commit]))%></td>
               <% else %>
               <td style="width:15%;"><%= link_to("查看详情", student_records_t_record_infoes_path(:id=> params[:id],:name=> params[:name],:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id))%></td>
               <% end %>
-              <% if current_user.permission == 1%>
+              <% if current_user.role == "运输处"%>
               <td style="width:10%;"><%= link_to("",t_user_info_path(s,:station_name => params[:station_name]),method: :delete, data: {confirm: "此操作会删除此用户所有相关信息，您确定要删除吗？"},class: "fa fa-trash")%></td>
               <% end %>
             </tr>

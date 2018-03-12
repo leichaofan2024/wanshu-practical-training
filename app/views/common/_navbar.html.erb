@@ -15,7 +15,7 @@
     		<ul class="nav navbar-nav">
 
 
-					<% if current_user && current_user.permission == 1 %>
+					<% if current_user && current_user.role == "运输处" %>
 				  	<li class="active"><a href="/ju_users">角色管理</a></li>
 					<% elsif current_user && current_user.permission == 2 %>
 						<li class="active"><a href="/duan_users">角色管理</a></li>
@@ -42,6 +42,7 @@
 		          </ul>
 	          </li>
 					<% end %>
+					<li><%= link_to("个人信息分析",employees_path)%></li>
 
     		</ul>
 
@@ -58,8 +59,7 @@
           </a>
           <ul class="dropdown-menu">
 						<li><%= link_to("网站更新记录",update_note_path)%></li>
-						<li class="divider"></li>
-						<li><%= link_to("个人信息分析",employees_path)%></li>
+
 						<!-- <li class="divider"></li>
 						<li><%= link_to("时长赋值",time_length_t_record_infoes_path,method: :patch,data: {comfirm: "确定更新吗？"})%></li> -->
             <li class="divider"></li>
