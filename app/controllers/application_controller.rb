@@ -234,7 +234,7 @@ class ApplicationController < ActionController::Base
         end
         y = sum - x
       elsif current_user.permission == 2
-        sum = TUserInfo.where(:F_duan_uuid => TDuanInfo.find_by(:F_name => current_user.orgnize).F_uuid).select(:F_id).distinct.count
+        sum = TUserInfo.student_all.where(:F_duan_uuid => TDuanInfo.find_by(:F_name => current_user.orgnize).F_uuid).select(:F_id).distinct.count
         if params[:search].present?
           @search = TimeSearch.new(params[:search])
           n = @search.scope_student_dabiao2(current_user)
@@ -257,10 +257,10 @@ class ApplicationController < ActionController::Base
         end
         y = sum - x
       elsif current_user.permission == 3
-        sum = TUserInfo.where(:F_station_uuid => TStationInfo.find_by(:F_name => current_user.orgnize).F_uuid).select(:F_id).distinct.count
+        sum = TUserInfo.student_all.where(:F_station_uuid => TStationInfo.find_by(:F_name => current_user.orgnize).F_uuid).select(:F_id).distinct.count
         if params[:search].present?
           @search = TimeSearch.new(params[:search])
-          n = @search.scope_student_dabiao3
+          n = @search.scope_student_dabiao3(current_user)
           user_f_id= Array.new
           n.each do |key,value|
             if value>= 3600
