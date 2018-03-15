@@ -10,13 +10,13 @@ default: &default
   encoding: utf8
   pool: 5
   timeout: 5000
-  username: rali
+  username: root
   password: 123456
-  host: 192.168.1.23
+  host: 127.0.0.1
 
 development:
   <<: *default
-  database: wanshu20180131
+  database: sxpt20180315
   reconnect: false
   port: 3306
 # Warning: The database defined as "test" will be erased and
@@ -24,12 +24,12 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: wanshu20180131
+  database: sxpt20180315
   reconnect: false
   port: 3306
 
 production:
   <<: *default
-  database: wanshu20180131
+  database: sxpt20180315
   reconnect: false
   port: 3306

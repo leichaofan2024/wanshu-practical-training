@@ -56,7 +56,7 @@ class TimeSearch
     end
 
     def scope_student_dabiao3(params)
-      TUserInfo.student_all.joins(:t_record_infoes,:t_station_info).where("t_station_info.F_name": current_user.orgnize).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to).group("t_user_info.F_id").sum("t_record_info.time_length")
+      TUserInfo.student_all.joins(:t_record_infoes,:t_station_info).where("t_station_info.F_name": params.orgnize).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to).group("t_user_info.F_id").sum("t_record_info.time_length")
     end
 
     def scope_program
