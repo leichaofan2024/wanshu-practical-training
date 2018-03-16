@@ -8,7 +8,7 @@ class TimeSearch
     end
 
     def scope_student
-      TUserInfo.student_all.joins(:t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
+      TUserInfo.student_all.where.not(F_duan_uuid: ["74708afh145a11e6ad9d001ec9b3cd0c", "74708bnv145a11e6ad9d001ec9b3cd0c"]).joins(:t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
     end
 
     def scope_program_student_ck(params)
@@ -44,11 +44,11 @@ class TimeSearch
     end
 
     def scope_student_k
-        TUserInfo.student_all.joins(:t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
+        TUserInfo.student_all.where.not(F_duan_uuid: ["74708afh145a11e6ad9d001ec9b3cd0c", "74708bnv145a11e6ad9d001ec9b3cd0c"]).joins(:t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
     end
 
     def scope_student_dabiao1
-      TUserInfo.student_all.joins(:t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to).group("t_user_info.F_id").sum("t_record_info.time_length")
+      TUserInfo.student_all.where.not(F_duan_uuid: ["74708afh145a11e6ad9d001ec9b3cd0c", "74708bnv145a11e6ad9d001ec9b3cd0c"]).joins(:t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to).group("t_user_info.F_id").sum("t_record_info.time_length")
     end
 
     def scope_student_dabiao2(params)

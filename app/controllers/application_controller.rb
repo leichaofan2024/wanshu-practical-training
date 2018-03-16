@@ -117,7 +117,7 @@ class ApplicationController < ActionController::Base
 
     def students
       if current_user.permission == 1
-        m = TUserInfo.student_all.select(:F_id).distinct.count
+        m = TUserInfo.student_all.where.not(F_duan_uuid: ["74708afh145a11e6ad9d001ec9b3cd0c", "74708bnv145a11e6ad9d001ec9b3cd0c"]).select(:F_id).distinct.count
       elsif current_user.permission == 2
         m = TUserInfo.student_all.joins(:t_duan_info).where("t_duan_info.F_name= ?",current_user.orgnize).select("t_user_info.F_id").distinct.count
       elsif current_user.permission == 3
@@ -131,7 +131,7 @@ class ApplicationController < ActionController::Base
           @search = TimeSearch.new(params[:search])
           m = @search.scope_student.select("t_user_info.F_id").distinct.count
         else
-          m = TUserInfo.student_all.joins(:t_record_infoes).datetime.select("t_user_info.F_id").distinct.count
+          m = TUserInfo.student_all.where.not(F_duan_uuid: ["74708afh145a11e6ad9d001ec9b3cd0c", "74708bnv145a11e6ad9d001ec9b3cd0c"]).joins(:t_record_infoes).datetime.select("t_user_info.F_id").distinct.count
         end
       elsif current_user.permission == 2
         if params[:search].present?
@@ -154,9 +154,9 @@ class ApplicationController < ActionController::Base
       if current_user.permission == 1
         if params[:search].present?
             @search = TimeSearch.new(params[:search])
-            m = TUserInfo.student_all.select("t_user_info.F_id").distinct.count - @search.scope_student_k.select("t_user_info.F_id").distinct.count
+            m = TUserInfo.student_all.where.not(F_duan_uuid: ["74708afh145a11e6ad9d001ec9b3cd0c", "74708bnv145a11e6ad9d001ec9b3cd0c"]).select("t_user_info.F_id").distinct.count - @search.scope_student_k.select("t_user_info.F_id").distinct.count
         else
-            m = TUserInfo.student_all.select("t_user_info.F_id").distinct.count - TUserInfo.student_all.joins(:t_record_infoes).datetime.select("t_user_info.F_id").distinct.count
+            m = TUserInfo.student_all.where.not(F_duan_uuid: ["74708afh145a11e6ad9d001ec9b3cd0c", "74708bnv145a11e6ad9d001ec9b3cd0c"]).select("t_user_info.F_id").distinct.count - TUserInfo.student_all.where.not(F_duan_uuid: ["74708afh145a11e6ad9d001ec9b3cd0c", "74708bnv145a11e6ad9d001ec9b3cd0c"]).joins(:t_record_infoes).datetime.select("t_user_info.F_id").distinct.count
         end
       elsif current_user.permission == 2
         if params[:search].present?
@@ -185,7 +185,7 @@ class ApplicationController < ActionController::Base
             @search = TimeSearch.new(params[:search])
             m = @search.scope_student_k.select("t_user_info.F_id").distinct.count
         else
-            m = TUserInfo.student_all.joins(:t_record_infoes).datetime.select("t_user_info.F_id").distinct.count
+            m = TUserInfo.student_all.where.not(F_duan_uuid: ["74708afh145a11e6ad9d001ec9b3cd0c", "74708bnv145a11e6ad9d001ec9b3cd0c"]).joins(:t_record_infoes).datetime.select("t_user_info.F_id").distinct.count
         end
       elsif current_user.permission == 2
         if params[:search].present?
@@ -211,7 +211,7 @@ class ApplicationController < ActionController::Base
 
     def student_dabiao_count
       if current_user.permission == 1
-        sum = TUserInfo.student_all.select(:F_id).distinct.count
+        sum = TUserInfo.student_all.where.not(F_duan_uuid: ["74708afh145a11e6ad9d001ec9b3cd0c", "74708bnv145a11e6ad9d001ec9b3cd0c"]).select(:F_id).distinct.count
         if params[:search].present?
           @search = TimeSearch.new(params[:search])
           n = @search.scope_student_dabiao1
@@ -223,7 +223,7 @@ class ApplicationController < ActionController::Base
           end
           x = user_f_id.size
         else
-          n = TUserInfo.student_all.joins(:t_record_infoes).datetime.group("t_user_info.F_id").sum("t_record_info.time_length")
+          n = TUserInfo.student_all.where.not(F_duan_uuid: ["74708afh145a11e6ad9d001ec9b3cd0c", "74708bnv145a11e6ad9d001ec9b3cd0c"]).joins(:t_record_infoes).datetime.group("t_user_info.F_id").sum("t_record_info.time_length")
           user_f_id= Array.new
           n.each do |key,value|
             if value>= 3600
