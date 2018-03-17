@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     get '/new_duan_station', to: 'users#new_duan_station'
     get '/duan_call_boards', to: 'call_boards#duan_call_boards'
     get '/update_note',to: 'welcome#update_note'
+    get "/baogao", to: "welcome#baogao"
     resources :users
     resources :browses
     resources :employees do

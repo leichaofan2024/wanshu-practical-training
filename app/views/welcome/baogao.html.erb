@@ -1,0 +1,56 @@
+<div class="pie_duan_frame">
+
+  <div class="row">
+    <div class="pull-right range-query">
+      <div class="searchtime">时间：</div>
+      <div class="searchtime">
+        <%= form_tag baogao_path, method: :get do %>
+          <!-- <%= select_tag "count", "<option>一月</option><option>二月</option><option>三月</option><option>四月</option>
+          <option>五月</option><option>六月</option><option>七月</option><option>八月</option>
+          <option>九月</option><option>十月</option><option>十一月</option><option>十二月</option>".html_safe %>
+         -->
+          <%= text_field_tag 'search[date_from]',nil,:placeholder => time_begin(params[:search])%>
+          <%= text_field_tag 'search[date_to]',nil,:placeholder => time_end(params[:search]) %>
+          <%= submit_tag "搜索", id:"time_id",class: "btn search-button"%>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>排序</th>
+          <th>站段</th>
+          <th>上线平台数</th>
+          <th>演练车站数</th>
+          <th>应考人数</th>
+          <th>实考人数</th>
+          <th>参考率</th>
+          <th>时长达标率</th>
+          <th>调离人数</th>
+          <th>退休人数</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% n = 1%>
+        <% @station_online.keys.each do |duan_name| %>
+        <tr>
+          <td><%= n %></td>
+          <td><%= duan_name %></td>
+          <td><%= @station_online[duan_name] %></td>
+          <td><%= @station_cankao[duan_name] %></td>
+          <td><%= @student_yingkao[duan_name] %></td>
+          <td><%= @student_cankao[duan_name] %></td>
+          <td><%= (@student_cankao[duan_name].to_f/@student_yingkao[duan_name].to_i*100).round(2) %></td>
+          <td><%= (@student_dabiao[duan_name].to_f/@student_yingkao[duan_name].to_i*100).round(2) %></td>
+          <td><%= @student_diaoli[duan_name] %></td>
+          <td><%= @student_tuixiu[duan_name] %></td>
+        </tr>
+        <% n = n+1 %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

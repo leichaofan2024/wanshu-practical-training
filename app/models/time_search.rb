@@ -2,7 +2,14 @@ class TimeSearch
     attr_reader :date_from, :date_to
 
     def initialize(params)
-        params ||= {}
+        if params[:date_from].blank? && params[:date_to].present?
+          params[:date_from] = params[:date_to].to_time.beginning_of_month.to_s
+        elsif params[:date_from].blank? && params[:date_to].blank?
+          params[:date_from] = Time.now.beginning_of_month.to_s
+          params[:date_to] = Time.now.end_of_month.to_s
+        elsif params[:date_from].present? && params[:date_to].blank?
+          params[:date_to] = params[:date_from].to_time.end_of_month.to_s
+        end
         @date_from = parsed_date(params[:date_from]).beginning_of_day+8.hours
         @date_to = parsed_date(params[:date_to]).end_of_day+8.hours
     end
@@ -348,6 +355,17 @@ class TimeSearch
       TUserInfo.student_all.joins(:t_station_info, :t_record_infoes).where('t_station_info.F_uuid = ? ', params.F_uuid).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
     end
 
+    def scope_station_cankao
+      TStationInfo.joins(:t_duan_info,{t_user_infoes: :t_record_infoes}).duan_orgnization.student_all.where("t_record_info.F_time BETWEEN ? AND ?", @date_from, @date_to).select("t_duan_info.F_name,t_station_info.F_uuid").distinct.group("t_duan_info.F_name").count
+    end
+
+    def scope_student_cankao
+      TUserInfo.student_all.joins(:t_duan_info,:t_record_infoes).duan_orgnization.where("t_record_info.F_time BETWEEN ? AND ?", @date_from, @date_to).select("t_duan_info.F_name, t_user_info.F_id").distinct.group("t_duan_info.F_name").count
+    end
+
+    def scope_bg_student_dabiao
+      TUserInfo.student_all.joins(:t_duan_info,:t_record_infoes).duan_orgnization.where("t_record_info.F_time BETWEEN ? AND ?", @date_from, @date_to).group("t_user_info.F_id").sum("t_record_info.time_length")
+    end
     private
 
     def parsed_date(date_string)

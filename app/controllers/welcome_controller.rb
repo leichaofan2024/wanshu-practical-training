@@ -271,6 +271,38 @@ class WelcomeController < ApplicationController
     end
   end
 
+  def baogao
+    @station_online = TStationInfo.joins(:t_duan_info,:t_user_infoes).duan_orgnization.student_all.select("t_duan_info.F_name,t_station_info.F_uuid").distinct.group("t_duan_info.F_name").count
+    @student_yingkao = TUserInfo.student_all.joins(:t_duan_info).duan_orgnization.select("t_duan_info.F_name, t_user_info.F_id").distinct.group("t_duan_info.F_name").count
+    if params[:search].present?
+      @search = TimeSearch.new(params[:search])
+      @station_cankao = @search.scope_station_cankao
+      @student_cankao = @search.scope_student_cankao
+      student_dabiao = @search.scope_bg_student_dabiao
+      dabiao_keys = []
+      student_dabiao.each do |key,value|
+        if value >= 3600
+          dabiao_keys << key
+        end
+      end
+      @student_dabiao = TUserInfo.where(:F_id => dabiao_keys).joins(:t_duan_info).duan_orgnization.select("t_duan_info.F_name,t_user_info.F_id").distinct.group("t_duan_info.F_name").count
+
+    else
+      @station_cankao = TStationInfo.joins(:t_duan_info,{t_user_infoes: :t_record_infoes}).duan_orgnization.student_all.datetime.select("t_duan_info.F_name,t_station_info.F_uuid").distinct.group("t_duan_info.F_name").count
+      @student_cankao = TUserInfo.student_all.joins(:t_duan_info,:t_record_infoes).duan_orgnization.datetime.select("t_duan_info.F_name, t_user_info.F_id").distinct.group("t_duan_info.F_name").count
+      student_dabiao  = TUserInfo.student_all.joins(:t_duan_info,:t_record_infoes).duan_orgnization.datetime.group("t_user_info.F_id").sum("t_record_info.time_length")
+      dabiao_keys = []
+      student_dabiao.each do |key,value|
+        if value >= 3600
+          dabiao_keys << key
+        end
+      end
+      @student_dabiao = TUserInfo.where(:F_id => dabiao_keys).joins(:t_duan_info).duan_orgnization.select("t_duan_info.F_name,t_user_info.F_id").distinct.group("t_duan_info.F_name").count
+    end
+    @student_tuixiu = TUserInfo.where("t_user_info.status=? AND t_user_info.F_type = ?","退休",0).joins(:t_duan_info).duan_orgnization.select("t_duan_info.F_name,t_user_info.F_id").distinct.group("t_duan_info.F_name").count
+    @student_diaoli = TUserInfo.where("t_user_info.status=? AND t_user_info.F_type = ?","调离",0).joins(:t_duan_info).duan_orgnization.select("t_duan_info.F_name,t_user_info.F_id").distinct.group("t_duan_info.F_name").count
+  end
+
   def update_note
 
   end
