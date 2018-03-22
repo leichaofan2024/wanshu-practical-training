@@ -28,4 +28,25 @@ module ApplicationHelper
     end
   end
 
+  def render_student_status(student,time_interval,station_name)
+    if student.status == "退休"
+      return student.status
+    elsif student.status == "调离"
+      "点击修复"
+    else
+      a = TVacationInfo.student_transfer(time_interval[:date_from],time_interval[:date_to])
+      b = TVacationInfo.student_long_vacation(time_interval[:date_from],time_interval[:date_to])
+      c = TVacationInfo.student_short_vacation(time_interval[:date_from],time_interval[:date_to])
+      if a.include?(student.F_uuid)
+        return "调离"
+      elsif b.include?(student.F_id)
+        return "长假"
+      elsif c.include?(student.F_id)
+        return "短假"
+      else
+        return "在职"
+      end
+    end
+  end
+
 end

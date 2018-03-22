@@ -25,11 +25,13 @@ class TStationInfoesController < ApplicationController
 
     def station_student_info
         @duan = TDuanInfo.find_by(F_name: params[:duan_name])
-        @station_student = TUserInfo.student_all.joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct.group('t_station_info.F_name').count
-        n = @station_student.keys
-        v = @station_student.values
+
         if params[:search].present?
             @search = TimeSearch.new(params[:search])
+            @station_student = TUserInfo.student_all(@search.date_from, @search.date_to).joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct.group('t_station_info.F_name').count
+            n = @station_student.keys
+            v = @station_student.values
+
             m = @search.scope_student_info(params[:duan_name]).select('t_user_info.F_id,t_station_info.F_name').distinct
             c = m.group('t_station_info.F_name').count
             c1 = c.keys
@@ -41,7 +43,7 @@ class TStationInfoesController < ApplicationController
                                            0
                                        end
             end
-            w = TUserInfo.student_all.joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct.where.not('t_user_info.F_id' => m.pluck('t_user_info.F_id')).group('t_station_info.F_name').count
+            w = TUserInfo.student_all(@search.date_from, @search.date_to).joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct.where.not('t_user_info.F_id' => m.pluck('t_user_info.F_id')).group('t_station_info.F_name').count
             w1 = w.keys
             @station_student_wk = []
             n.each do |n|
@@ -52,7 +54,12 @@ class TStationInfoesController < ApplicationController
                                        end
             end
         else
-            m = TUserInfo.student_all.joins(:t_station_info, :t_record_infoes).datetime.where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct
+
+          @station_student = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct.group('t_station_info.F_name').count
+          n = @station_student.keys
+          v = @station_student.values
+
+            m = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_station_info, :t_record_infoes).datetime.where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct
             c = m.group('t_station_info.F_name').count
             c1 = c.keys
             @station_student_ck = []
@@ -63,7 +70,7 @@ class TStationInfoesController < ApplicationController
                                            0
                                        end
             end
-            w = TUserInfo.student_all.joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct.where.not('t_user_info.F_id' => m.pluck('t_user_info.F_id')).group('t_station_info.F_name').count
+            w = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct.where.not('t_user_info.F_id' => m.pluck('t_user_info.F_id')).group('t_station_info.F_name').count
             w1 = w.keys
             @station_student_wk = []
             n.each do |n|
@@ -89,11 +96,13 @@ class TStationInfoesController < ApplicationController
 
     def station_dabiao_info
       @duan = TDuanInfo.find_by(F_name: params[:duan_name])
-      @station_student = TUserInfo.student_all.joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct.group('t_station_info.F_name').count
-      n = @station_student.keys
-      v = @station_student.values
+
       if params[:search].present?
           @search = TimeSearch.new(params[:search])
+          @station_student = TUserInfo.student_all(@search.date_from, @search.date_to).joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct.group('t_station_info.F_name').count
+          n = @station_student.keys
+          v = @station_student.values
+
           student_dabiao = @search.scope_dabiao_info(params[:duan_name])
           student_dabiao_f_id = Array.new
           student_dabiao.each do |key,value|
@@ -112,7 +121,7 @@ class TStationInfoesController < ApplicationController
                                          0
                                      end
           end
-          w = TUserInfo.student_all.joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct.where.not('t_user_info.F_id' => m.pluck('t_user_info.F_id')).group('t_station_info.F_name').count
+          w = TUserInfo.student_all(@search.date_from, @search.date_to).joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct.where.not('t_user_info.F_id' => m.pluck('t_user_info.F_id')).group('t_station_info.F_name').count
           w1 = w.keys
           @station_student_wk = []
           n.each do |n|
@@ -123,7 +132,11 @@ class TStationInfoesController < ApplicationController
                                      end
           end
       else
-        student_dabiao = TUserInfo.student_all.joins(:t_station_info, :t_record_infoes).datetime.where('t_station_info.F_duan_uuid = ?', TDuanInfo.find_by(F_name: params[:duan_name])).group("t_user_info.F_id").sum("t_record_info.time_length")
+        @station_student = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct.group('t_station_info.F_name').count
+        n = @station_student.keys
+        v = @station_student.values
+
+        student_dabiao = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_station_info, :t_record_infoes).datetime.where('t_station_info.F_duan_uuid = ?', TDuanInfo.find_by(F_name: params[:duan_name])).group("t_user_info.F_id").sum("t_record_info.time_length")
         student_dabiao_f_id = []
         student_dabiao.each do |key,value|
           if value >= 3600
@@ -141,7 +154,7 @@ class TStationInfoesController < ApplicationController
                                          0
                                      end
           end
-          w = TUserInfo.student_all.joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct.where.not('t_user_info.F_id' => m.pluck('t_user_info.F_id')).group('t_station_info.F_name').count
+          w = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct.where.not('t_user_info.F_id' => m.pluck('t_user_info.F_id')).group('t_station_info.F_name').count
           w1 = w.keys
           @station_student_wk = []
           n.each do |n|

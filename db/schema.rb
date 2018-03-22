@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180315123408) do
+ActiveRecord::Schema.define(version: 20180321044535) do
 
   create_table "attachment", id: :bigint, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", comment: "系统附件表" do |t|
     t.string   "file_name",          limit: 50,                                       null: false, comment: "文件名称"
@@ -371,6 +371,16 @@ ActiveRecord::Schema.define(version: 20180315123408) do
     t.string  "F_team_uuid",    limit: 64,             null: false
     t.string  "F_work_uuid",    limit: 64,             null: false
     t.integer "F_synch",                   default: 0, null: false
+  end
+
+  create_table "t_vacation_infos", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "F_id"
+    t.datetime "begin_time"
+    t.datetime "end_time"
+    t.string   "F_type"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.string   "station_name"
   end
 
   create_table "t_work_info", primary_key: "F_uuid", id: :string, limit: 64, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

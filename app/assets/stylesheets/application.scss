@@ -30,8 +30,8 @@ body {
 
 table {
   tr {
-    th{ text-align: center;}
-    td{ text-align: center;}
+    th{ text-align: left;}
+    td{ text-align: left;}
   }
 
   legend {
@@ -442,4 +442,20 @@ table {
 }
 .employe_font_2{
   color: 	#DC143C
+}
+
+
+// 车站页面状态标记样式：
+
+.student_status_style_one{
+  line-height:20px;
+  font-size: 10px;
+  font-weight:bold;
+  margin-left:5px;
+}
+
+.student_status_style_two{
+  line-height:20px;
+  font-size: 10px;
+  margin-left:5px;
 }

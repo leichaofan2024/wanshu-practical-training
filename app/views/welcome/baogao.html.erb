@@ -36,8 +36,14 @@
       <tbody>
         <% n = 1%>
         <% @station_online.keys.each do |duan_name| %>
+
         <tr>
-          <td><%= n %></td>
+
+          <td>
+            <%= link_to duan_overview_path do %>
+            <%= n %>
+            <% end %>
+          </td>
           <td><%= duan_name %></td>
           <td><%= @station_online[duan_name] %></td>
           <td><%= @station_cankao[duan_name] %></td>
@@ -47,8 +53,10 @@
           <td><%= (@student_dabiao[duan_name].to_f/@student_yingkao[duan_name].to_i*100).round(2) %></td>
           <td><%= @student_diaoli[duan_name] %></td>
           <td><%= @student_tuixiu[duan_name] %></td>
+
         </tr>
         <% n = n+1 %>
+
         <% end %>
       </tbody>
     </table>

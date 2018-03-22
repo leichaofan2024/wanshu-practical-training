@@ -10,15 +10,17 @@ class TDuanInfoesController < ApplicationController
     # 考生参考率=====================
 
     def duan_student_info
-        @duans = TDuanInfo.where.not(F_name: %w(运输处 局职教基地))
-        @duans_student_cw = TUserInfo.student_all.joins(:t_duan_info).where.not('t_duan_info.F_name' => %w(局职教基地 运输处)).where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
-        ncw = @duans_student_cw.keys
-        vcw = @duans_student_cw.values
-        @duans_student_zs = TUserInfo.student_all.joins(:t_duan_info).where.not('t_duan_info.F_name =? or t_duan_info.F_name =? ', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
-        nzs = @duans_student_zs.keys
-        vzs = @duans_student_zs.values
+        @duans = TDuanInfo.duan_orgnization
+
         if params[:search].present?
             @search = TimeSearch.new(params[:search])
+            @duans_student_cw = TUserInfo.student_all(@search.date_from, @search.date_to).joins(:t_duan_info).duan_orgnization.where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
+            ncw = @duans_student_cw.keys
+            vcw = @duans_student_cw.values
+            @duans_student_zs = TUserInfo.student_all(@search.date_from, @search.date_to).joins(:t_duan_info).duan_orgnization.where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
+            nzs = @duans_student_zs.keys
+            vzs = @duans_student_zs.values
+
             cw = @search.scope_duan_student.where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').distinct
             zs = @search.scope_duan_student.where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').distinct
             cw_ck = cw.group('t_duan_info.F_name').count
@@ -37,7 +39,7 @@ class TDuanInfoesController < ApplicationController
                 @duans_student_cw_ck_bl << (BigDecimal(v) / BigDecimal(vcw[i])).round(3) * 100
                 i += 1
             end
-            cw_wk = TUserInfo.student_all.joins(:t_duan_info).where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => cw.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
+            cw_wk = TUserInfo.student_all(@search.date_from, @search.date_to).joins(:t_duan_info).duan_orgnization.where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => cw.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
             cw_wk1 = cw_wk.keys
             @duans_student_cw_wk = []
             ncw.each do |c|
@@ -64,7 +66,7 @@ class TDuanInfoesController < ApplicationController
                 @duans_student_zs_ck_bl << (BigDecimal(v) / BigDecimal(vzs[i])).round(3) * 100
                 i += 1
             end
-            zs_wk = TUserInfo.student_all.joins(:t_duan_info).where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => zs.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
+            zs_wk = TUserInfo.student_all(@search.date_from, @search.date_to).joins(:t_duan_info).duan_orgnization.where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => zs.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
             zs_wk1 = zs_wk.keys
             @duans_student_zs_wk = []
             nzs.each do |c|
@@ -76,8 +78,15 @@ class TDuanInfoesController < ApplicationController
             end
 
         else
-            cw = TUserInfo.student_all.joins(:t_duan_info, :t_record_infoes).datetime.where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').distinct
-            zs = TUserInfo.student_all.joins(:t_duan_info, :t_record_infoes).datetime.where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').distinct
+          @duans_student_cw = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info).duan_orgnization.where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
+          ncw = @duans_student_cw.keys
+          vcw = @duans_student_cw.values
+          @duans_student_zs = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info).duan_orgnization.where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
+          nzs = @duans_student_zs.keys
+          vzs = @duans_student_zs.values
+
+            cw = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info, :t_record_infoes).datetime.duan_orgnization.where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').distinct
+            zs = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info, :t_record_infoes).datetime.duan_orgnization.where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').distinct
             cw_ck = cw.group('t_duan_info.F_name').count
             cw_ck1 = cw_ck.keys
             @duans_student_cw_ck = []
@@ -96,7 +105,7 @@ class TDuanInfoesController < ApplicationController
                 i += 1
             end
 
-            cw_wk = TUserInfo.student_all.joins(:t_duan_info).where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => cw.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
+            cw_wk = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info).duan_orgnization.where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => cw.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
             cw_wk1 = cw_wk.keys
             @duans_student_cw_wk = []
             ncw.each do |c|
@@ -124,7 +133,7 @@ class TDuanInfoesController < ApplicationController
                 i += 1
             end
 
-            zs_wk = TUserInfo.student_all.joins(:t_duan_info).where.not('t_duan_info.F_name =? or t_duan_info.F_name =?', '局职教基地', '运输处').where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => zs.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
+            zs_wk = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info).duan_orgnization.where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => zs.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
             zs_wk1 = zs_wk.keys
             @duans_student_zs_wk = []
             nzs.each do |c|
@@ -152,15 +161,17 @@ class TDuanInfoesController < ApplicationController
     # 考生达标率===================
 
     def duan_dabiao_info
-      @duans = TDuanInfo.where.not(F_name: %w(运输处 局职教基地))
-      @duans_student_cw = TUserInfo.student_all.joins(:t_duan_info).duan_orgnization.where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
-      ncw = @duans_student_cw.keys
-      vcw = @duans_student_cw.values
-      @duans_student_zs = TUserInfo.student_all.joins(:t_duan_info).duan_orgnization.where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
-      nzs = @duans_student_zs.keys
-      vzs = @duans_student_zs.values
+      @duans = TDuanInfo.duan_orgnization
+
       if params[:search].present?
           @search = TimeSearch.new(params[:search])
+          @duans_student_cw = TUserInfo.student_all(@search.date_from, @search.date_to).joins(:t_duan_info).duan_orgnization.where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
+          ncw = @duans_student_cw.keys
+          vcw = @duans_student_cw.values
+          @duans_student_zs = TUserInfo.student_all(@search.date_from, @search.date_to).joins(:t_duan_info).duan_orgnization.where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
+          nzs = @duans_student_zs.keys
+          vzs = @duans_student_zs.values
+
           cw_dabiao = @search.scope_duan_cw_dabiao
           cw_dabiao_f_id = []
           cw_dabiao.each do |key,value|
@@ -193,7 +204,7 @@ class TDuanInfoesController < ApplicationController
               @duans_student_cw_ck_bl << (BigDecimal(v) / BigDecimal(vcw[i])).round(3) * 100
               i += 1
           end
-          cw_wk = TUserInfo.student_all.joins(:t_duan_info).duan_orgnization.where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => cw.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
+          cw_wk = TUserInfo.student_all(@search.date_from, @search.date_to).joins(:t_duan_info).duan_orgnization.where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => cw.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
           cw_wk1 = cw_wk.keys
           @duans_student_cw_wk = []
           ncw.each do |c|
@@ -220,7 +231,7 @@ class TDuanInfoesController < ApplicationController
               @duans_student_zs_ck_bl << (BigDecimal(v) / BigDecimal(vzs[i])).round(3) * 100
               i += 1
           end
-          zs_wk = TUserInfo.student_all.joins(:t_duan_info).duan_orgnization.where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => zs.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
+          zs_wk = TUserInfo.student_all(@search.date_from, @search.date_to).joins(:t_duan_info).duan_orgnization.where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => zs.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
           zs_wk1 = zs_wk.keys
           @duans_student_zs_wk = []
           nzs.each do |c|
@@ -232,7 +243,14 @@ class TDuanInfoesController < ApplicationController
           end
 
       else
-        cw_dabiao = TUserInfo.student_all.joins(:t_duan_info, :t_record_infoes).datetime.duan_orgnization.where('t_duan_info.F_type= ?', 1).group("t_user_info.F_id").sum("t_record_info.time_length")
+        @duans_student_cw = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info).duan_orgnization.where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
+        ncw = @duans_student_cw.keys
+        vcw = @duans_student_cw.values
+        @duans_student_zs = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info).duan_orgnization.where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
+        nzs = @duans_student_zs.keys
+        vzs = @duans_student_zs.values
+
+        cw_dabiao = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info, :t_record_infoes).datetime.duan_orgnization.where('t_duan_info.F_type= ?', 1).group("t_user_info.F_id").sum("t_record_info.time_length")
         cw_dabiao_f_id = []
         cw_dabiao.each do |key,value|
           if value >= 3600
@@ -241,7 +259,7 @@ class TDuanInfoesController < ApplicationController
         end
         cw = TUserInfo.where(F_id: cw_dabiao_f_id).joins(:t_duan_info).select('t_duan_info.F_name, t_user_info.F_id').distinct
 
-        zs_dabiao = TUserInfo.student_all.joins(:t_duan_info, :t_record_infoes).datetime.duan_orgnization.where('t_duan_info.F_type= ?', 2).group("t_user_info.F_id").sum("t_record_info.time_length")
+        zs_dabiao = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info, :t_record_infoes).datetime.duan_orgnization.where('t_duan_info.F_type= ?', 2).group("t_user_info.F_id").sum("t_record_info.time_length")
         zs_dabiao_f_id = []
         zs_dabiao.each do |key,value|
           if value >= 3600
@@ -267,7 +285,7 @@ class TDuanInfoesController < ApplicationController
               i += 1
           end
 
-          cw_wk = TUserInfo.student_all.joins(:t_duan_info).duan_orgnization.where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => cw.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
+          cw_wk = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info).duan_orgnization.where('t_duan_info.F_type= ?', 1).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => cw.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
           cw_wk1 = cw_wk.keys
           @duans_student_cw_wk = []
           ncw.each do |c|
@@ -295,7 +313,7 @@ class TDuanInfoesController < ApplicationController
               i += 1
           end
 
-          zs_wk = TUserInfo.student_all.joins(:t_duan_info).duan_orgnization.where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => zs.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
+          zs_wk = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info).duan_orgnization.where('t_duan_info.F_type= ?', 2).select('t_duan_info.F_name, t_user_info.F_id').where.not('t_user_info.F_id' => zs.pluck('t_user_info.F_id')).distinct.group('t_duan_info.F_name').count
           zs_wk1 = zs_wk.keys
           @duans_student_zs_wk = []
           nzs.each do |c|

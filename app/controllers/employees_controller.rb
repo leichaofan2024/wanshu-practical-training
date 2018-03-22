@@ -5,7 +5,7 @@ class EmployeesController < ApplicationController
   # ****这个暂时还没有加上时间的搜索功能
 
   def index
-    student = TUserInfo.student_all
+    student = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month)
     @student_F_id = student.joins(:t_record_infoes).datetime.pluck("t_user_info.F_id").uniq
     @student_ck = student.where("t_user_info.F_id": @student_F_id).select("t_user_info.F_id, t_user_info.F_name").distinct.order("F_id DESC").page(params[:page]).per(20)
     @student_wk = student.where.not("t_user_info.F_id": @student_F_id).select("t_user_info.F_id, t_user_info.F_name").distinct.order("F_id DESC").page(params[:page]).per(20)
@@ -16,7 +16,7 @@ class EmployeesController < ApplicationController
     when 'by_student_ck'
       @student_ck
     else
-      TUserInfo.student_all.select("t_user_info.F_id, t_user_info.F_name").distinct.order("F_id DESC").page(params[:page]).per(20)
+      TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).select("t_user_info.F_id, t_user_info.F_name").distinct.order("F_id DESC").page(params[:page]).per(20)
     end
 
 
@@ -70,7 +70,7 @@ class EmployeesController < ApplicationController
   end
 
   def duan_record
-      @station = TStationInfo.joins(:t_user_infoes).student_all.pluck("t_station_info.F_uuid").uniq
+      @station = TStationInfo.joins(:t_user_infoes).student_all(Time.now.beginning_of_month, Time.now.end_of_month).pluck("t_station_info.F_uuid").uniq
       @duan = TDuanInfo.duan_orgnization.joins(:t_station_infoes).where("t_station_info.F_uuid": @station).group("t_duan_info.F_name").count
 
   end

@@ -91,6 +91,8 @@ Rails.application.routes.draw do
     resources :t_user_infoes do
       member do
         patch :set_student_status
+        post :set_vacation_status
+        
       end
     end
 
