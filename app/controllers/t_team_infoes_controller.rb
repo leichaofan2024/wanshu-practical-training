@@ -148,6 +148,7 @@ class TTeamInfoesController < ApplicationController
         @search = TimeSearch.new(params[:search])
         @team_student = TUserInfo.student_all(@search.date_from, @search.date_to).joins(:t_team_info).where('t_team_info.F_station_uuid = ?', @station.F_uuid).select('t_user_info.F_name,t_user_info.F_id,t_team_info.F_name').distinct.group('t_team_info.F_name').count
         n= @team_student.keys
+        @time_interval = {:date_from => @search.date_from  ,:date_to => @search.date_to }
         @student_other = @station.t_user_infoes.where.not(F_id: @station.t_user_infoes.student_all(@search.date_from, @search.date_to).pluck("t_user_info.F_id")).where("t_user_info.F_type": 0).select("t_user_info.F_id").distinct
 
         if params[:team_name].present?
@@ -202,6 +203,7 @@ class TTeamInfoesController < ApplicationController
 
         @team_student = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_team_info).where('t_team_info.F_station_uuid = ?', @station.F_uuid).select('t_user_info.F_name,t_user_info.F_id,t_team_info.F_name').distinct.group('t_team_info.F_name').count
         n= @team_student.keys
+        @time_interval = {:date_from => Time.now.beginning_of_month, :date_to => Time.now.end_of_month}
         @student_other = @station.t_user_infoes.where.not(F_id: @station.t_user_infoes.student_all(Time.now.beginning_of_month, Time.now.end_of_month).pluck("t_user_info.F_id")).where("t_user_info.F_type": 0).select("t_user_info.F_id").distinct
 
 

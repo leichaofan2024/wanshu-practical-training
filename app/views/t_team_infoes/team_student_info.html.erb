@@ -129,7 +129,7 @@
           <th>职务</th>
           <th>状态</th>
           <th>详情</th>
-          <% if current_user.role == "运输处"%>
+          <% if current_user.orgnize == "运输处"%>
           <th>操作</th>
           <% end %>
         </tr>
@@ -203,7 +203,7 @@
               <% else %>
               <td style="width:15%;"><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id))%></td>
               <% end %>
-              <% if current_user.role == "运输处"%>
+              <% if current_user.orgnize == "运输处"%>
               <td style="width:10%;"><%= link_to("",t_user_info_path(s,:station_name => params[:station_name]),method: :delete, data: {confirm: "此操作会删除此用户所有相关信息，您确定要删除吗？"},class: "fa fa-trash")%></td>
               <% end %>
             </tr>
@@ -221,7 +221,7 @@
           <th>职位</th>
           <th>状态</th>
           <th>详情</th>
-          <% if current_user.role == "运输处"%>
+          <% if current_user.orgnize == "运输处"%>
           <th>操作</th>
           <% end %>
         </tr>
@@ -291,7 +291,7 @@
                 <% end %>
               </td>
               <td style="width:15%;">无</td>
-              <% if current_user.role == "运输处"%>
+              <% if current_user.orgnize == "运输处"%>
               <td style="width:10%;"><%= link_to("",t_user_info_path(s,:station_name => params[:station_name]),method: :delete, data: {confirm: "此操作会删除此用户所有相关信息，您确定要删除吗？"},class: "fa fa-trash")%></td>
               <% end %>
             </tr>
@@ -309,7 +309,7 @@
           <th>职位</th>
           <th>状态</th>
           <th>详情</th>
-          <% if current_user.role == "运输处"%>
+          <% if current_user.orgnize == "运输处"%>
           <th>操作</th>
           <% end %>
         </tr>
@@ -403,7 +403,7 @@
               <% else %>
               <td style="width:15%;"><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id))%></td>
               <% end %>
-              <% if current_user.role == "运输处"%>
+              <% if current_user.orgnize == "运输处"%>
               <td style="width:10%;"><%= link_to("",t_user_info_path(s,:station_name => params[:station_name]),method: :delete, data: {confirm: "此操作会删除此用户所有相关信息，您确定要删除吗？"},class: "fa fa-trash")%></td>
               <% end %>
             </tr>

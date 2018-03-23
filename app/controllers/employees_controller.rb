@@ -7,8 +7,8 @@ class EmployeesController < ApplicationController
   def index
     student = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month)
     @student_F_id = student.joins(:t_record_infoes).datetime.pluck("t_user_info.F_id").uniq
-    @student_ck = student.where("t_user_info.F_id": @student_F_id).select("t_user_info.F_id, t_user_info.F_name").distinct.order("F_id DESC").page(params[:page]).per(20)
-    @student_wk = student.where.not("t_user_info.F_id": @student_F_id).select("t_user_info.F_id, t_user_info.F_name").distinct.order("F_id DESC").page(params[:page]).per(20)
+    @student_ck = student.where("t_user_info.F_id": @student_F_id).select("t_user_info.F_id, t_user_info.F_name").distinct.order("F_id DESC")
+    @student_wk = student.where.not("t_user_info.F_id": @student_F_id).select("t_user_info.F_id, t_user_info.F_name").distinct.order("F_id DESC")
 
     @users = case params[:order]
     when 'by_student_wk'
@@ -16,7 +16,7 @@ class EmployeesController < ApplicationController
     when 'by_student_ck'
       @student_ck
     else
-      TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).select("t_user_info.F_id, t_user_info.F_name").distinct.order("F_id DESC").page(params[:page]).per(20)
+      TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).select("t_user_info.F_id, t_user_info.F_name").distinct.order("F_id DESC")
     end
 
 
