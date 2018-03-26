@@ -17,9 +17,9 @@ class TUserInfoesController < ApplicationController
 
     case params[:F_type]
     when "点击修复"
-      @t_vacation_infoes = TVacationInfo.where(:F_id => params[:F_id],:F_type => "调离")
+      @t_vacation_infoes = TVacationInfo.where(:F_id => params[:F_id],:F_type => "调离",:station_name => params[:station_name])
       if @t_vacation_infoes.blank? || @t_vacation_infoes.last.end_time.present?
-        TVacationInfo.create(:F_id => params[:F_id],:begin_time => Time.now,:F_type => "调离")
+        TVacationInfo.create(:F_id => params[:F_id],:begin_time => Time.now,:F_type => "调离",:station_name => params[:station_name])
       else
         @t_vacation_infoes.last.update(:end_time => Time.now)
       end
