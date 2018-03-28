@@ -110,7 +110,7 @@ class TStationInfoesController < ApplicationController
               student_dabiao_f_id << key
             end
           end
-          m = TUserInfo.where(F_id: student_dabiao_f_id).joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct
+          m = TUserInfo.student_all(@search.date_from, @search.date_to).where(F_id: student_dabiao_f_id).joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct
           c = m.group('t_station_info.F_name').count
           c1 = c.keys
           @station_student_ck = []
@@ -143,7 +143,7 @@ class TStationInfoesController < ApplicationController
             student_dabiao_f_id << key
           end
         end
-        m = TUserInfo.where(F_id: student_dabiao_f_id).joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct
+        m = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).where(F_id: student_dabiao_f_id).joins(:t_station_info).where('t_station_info.F_duan_uuid = ?', @duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct
           c = m.group('t_station_info.F_name').count
           c1 = c.keys
           @station_student_ck = []
