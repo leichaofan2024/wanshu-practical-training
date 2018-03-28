@@ -272,6 +272,14 @@ class WelcomeController < ApplicationController
   end
 
   def baogao
+    @kuaizhao = TBaogaoInfo.pluck(:created_at).uniq
+    if params[:kuaizhao_duibi].present?
+      @kuaizhao_duibi = TBaogaoInfo.where(:created_at => params[:kuaizhao_duibi].to_time)
+    end
+    
+    if params[:kuaizhao_time].present?
+      @kuaizhao_xiangqing = TBaogaoInfo.where(:created_at => params[:kuaizhao_time].to_time )
+    end
 
     if params[:search].present?
       @search = TimeSearch.new(params[:search])
@@ -311,6 +319,7 @@ class WelcomeController < ApplicationController
       @student_dabiao = TUserInfo.where(:F_id => dabiao_keys).joins(:t_duan_info).duan_orgnization.select("t_duan_info.F_name,t_user_info.F_id").distinct.group("t_duan_info.F_name").count
     end
     @student_tuixiu = TUserInfo.where("t_user_info.status=? AND t_user_info.F_type = ?","退休",0).joins(:t_duan_info).duan_orgnization.select("t_duan_info.F_name,t_user_info.F_id").distinct.group("t_duan_info.F_name").count
+
   end
 
   def update_note

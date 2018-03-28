@@ -1,0 +1,2 @@
+class TBaogaoInfo < ApplicationRecord
+end

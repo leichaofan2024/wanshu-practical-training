@@ -1,20 +1,36 @@
 <div class="pie_duan_frame">
-
   <div class="row">
-    <div class="pull-right range-query">
-      <div class="searchtime">时间：</div>
-      <div class="searchtime">
-        <%= form_tag baogao_path, method: :get do %>
-          <!-- <%= select_tag "count", "<option>一月</option><option>二月</option><option>三月</option><option>四月</option>
-          <option>五月</option><option>六月</option><option>七月</option><option>八月</option>
-          <option>九月</option><option>十月</option><option>十一月</option><option>十二月</option>".html_safe %>
-         -->
-          <%= text_field_tag 'search[date_from]',nil,:placeholder => time_begin(params[:search])%>
-          <%= text_field_tag 'search[date_to]',nil,:placeholder => time_end(params[:search]) %>
-          <%= submit_tag "搜索", id:"time_id",class: "btn search-button"%>
-        <% end %>
-      </div>
-    </div>
+      <% if params[:kuaizhao_time].present? %>
+        <div class = "kuaizhao_duibi_time">当前快照时间：<%= params[:kuaizhao_time].to_time.strftime("%Y/%m/%d %I:%M %p") %></div>
+        <div class="pull-right range-query">
+          <div class="searchtime">时间：</div>
+          <div class="searchtime">
+              <%= form_tag baogao_path, method: :get do %>
+                <%= text_field_tag 'search[date_from]',nil%>
+                <%= text_field_tag 'search[date_to]',nil %>
+                <%= submit_tag "搜索", id:"time_id",class: "btn search-button"%>
+              <% end %>
+            </div>
+        </div>
+      <% else %>
+        <div class="pull-right range-query">
+          <div class="searchtime">时间：</div>
+          <div class="searchtime">
+            <%= form_tag baogao_path, method: :get do %>
+              <!-- <%= select_tag "count", "<option>一月</option><option>二月</option><option>三月</option><option>四月</option>
+              <option>五月</option><option>六月</option><option>七月</option><option>八月</option>
+              <option>九月</option><option>十月</option><option>十一月</option><option>十二月</option>".html_safe %>
+             -->
+              <%= text_field_tag 'search[date_from]',nil,:placeholder => time_begin(params[:search])%>
+              <%= text_field_tag 'search[date_to]',nil,:placeholder => time_end(params[:search]) %>
+              <%= submit_tag "搜索", id:"time_id",class: "btn search-button"%>
+            <% end %>
+
+          </div>
+        </div>
+      <% end %>
+
+
   </div>
 
   <div class="table-responsive">
@@ -23,9 +39,24 @@
         <tr>
           <th>排序</th>
           <th>站段</th>
+          <th>交大车站车间数</th>
           <th>上线平台数</th>
           <th>演练车站数</th>
+          <th>平台上线率</th>
           <th>应考人数</th>
+          <th>
+            同比上月应考人数
+            <div class="dropdown" style= "display:inline-block;">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu" style = "background:#ECF9F2;">
+                <% @kuaizhao.each do |time| %>
+                  <li><%= link_to(time.to_time.strftime("%Y/%m/%d %I:%M %p") ,"/baogao?"+"#{request.original_url.split("?")[1]}"+"&"+"kuaizhao_duibi=#{time}")%></li>
+                <% end %>
+              </ul>
+            </div>
+          </th>
           <th>实考人数</th>
           <th>参考率</th>
           <th>时长达标率</th>
@@ -35,30 +66,153 @@
       </thead>
       <tbody>
         <% n = 1%>
-        <% @station_online.keys.each do |duan_name| %>
+        <% if params[:kuaizhao_time].blank? %>
 
-        <tr>
+          <% @station_online.keys.each do |duan_name| %>
 
-          <td>
-            <%= link_to duan_overview_path do %>
-            <%= n %>
-            <% end %>
-          </td>
-          <td><%= duan_name %></td>
-          <td><%= @station_online[duan_name] %></td>
-          <td><%= @station_cankao[duan_name] %></td>
-          <td><%= @student_yingkao[duan_name] %></td>
-          <td><%= @student_cankao[duan_name] %></td>
-          <td><%= (@student_cankao[duan_name].to_f/@student_yingkao[duan_name].to_i*100).round(2) %></td>
-          <td><%= (@student_dabiao[duan_name].to_f/@student_yingkao[duan_name].to_i*100).round(2) %></td>
-          <td><%= @student_diaoli[duan_name] %></td>
-          <td><%= @student_tuixiu[duan_name] %></td>
+            <tr>
 
-        </tr>
-        <% n = n+1 %>
+              <td>
+                <%= n %>
+              </td>
+              <td><%= duan_name %></td>
+
+              <td>
+                <% c = TChejianCount.find_by(:duan_name => duan_name)%>
+                <% if current_user.orgnize == "运输处"%>
+                  <% if c.present? %>
+                    <%= link_to(c.station_count, edit_t_chejian_count_path(c,:duan_name => duan_name))%>
+                  <% else %>
+                    <%= link_to("", new_t_chejian_count_path(c,:duan_name => duan_name),class: "fa fa-edit")%>
+                  <% end %>
+                <% else %>
+                  <% if c.present? %>
+                    <%= c.station_count%>
+                  <% else %>
+                    <i class="fa fa-edit"></i>
+                  <% end %>
+                <% end %>
+              </td>
+              <td><%= @station_online[duan_name] %></td>
+              <td><%= @station_cankao[duan_name] %></td>
+              <td>
+                <% c = TChejianCount.find_by(:duan_name => duan_name)%>
+                <% if c.present? %>
+                  <%= (@station_online[duan_name].to_f/c.station_count*100).round(2)%>
+                <% else %>
+                  信息缺失
+                <% end %>
+              </td>
+              <td><%= @student_yingkao[duan_name] %></td>
+              <td>
+
+                <% if params[:kuaizhao_duibi].present? %>
+                  <% chazhi = @student_yingkao[duan_name] - @kuaizhao_duibi.find_by(:duan_name => duan_name).student_yingkao %>
+                    <%= chazhi %>
+                <% else %>
+                  未选择
+
+                <% end %>
+
+              </td>
+              <td><%= @student_cankao[duan_name] %></td>
+              <td><%= (@student_cankao[duan_name].to_f/@student_yingkao[duan_name].to_i*100).round(2) %></td>
+              <td><%= (@student_dabiao[duan_name].to_f/@student_yingkao[duan_name].to_i*100).round(2) %></td>
+              <td><%= @student_diaoli[duan_name] %></td>
+              <td><%= @student_tuixiu[duan_name] %></td>
+
+            </tr>
+            <% n = n+1 %>
+          <% end %>
+
+        <% else %>
+
+          <% @kuaizhao_xiangqing.each do |kuaizhao|%>
+            <tr>
+              <td><%= n %></td>
+              <td><%= kuaizhao.duan_name %></td>
+              <td>
+
+                <% c = TChejianCount.find_by(:duan_name => kuaizhao.duan_name)%>
+                <% if current_user.orgnize == "运输处"%>
+                  <% if c.present? %>
+                    <%= link_to(c.station_count, edit_t_chejian_count_path(c,:duan_name => kuaizhao.duan_name))%>
+                  <% else %>
+                    <%= link_to("", new_t_chejian_count_path(c,:duan_name => kuaizhao.duan_name),class: "fa fa-edit")%>
+                  <% end %>
+                <% else %>
+                  <% if c.present? %>
+                    <%= c.station_count%>
+                  <% else %>
+                    <i class="fa fa-edit"></i>
+                  <% end %>
+                <% end %>
+              </td>
+              <td><%= kuaizhao.online_station %></td>
+              <td><%= kuaizhao.cankao_station %></td>
+              <td>
+                <% c = TChejianCount.find_by(:duan_name => kuaizhao.duan_name)%>
+                <% if c.present? %>
+                  <%= (kuaizhao.online_station.to_f/c.station_count*100).round(2)%>
+                <% else %>
+                  信息缺失
+                <% end %>
+              </td>
+              <td><%= kuaizhao.student_yingkao %></td>
+              <td>
+
+                <% if params[:kuaizhao_duibi].present? %>
+                  <%= kuaizhao.student_yingkao - @kuaizhao_duibi.find_by(:duan_name => kuaizhao.duan_name).student_yingkao %>
+                <% else %>
+                  未选择
+                <% end %>
+
+              </td>
+              <td><%= kuaizhao.student_shikao %></td>
+              <td><%= (kuaizhao.student_shikao.to_f/kuaizhao.student_yingkao.to_i*100).round(2)%></td>
+              <td><%= kuaizhao.student_dabiao_percent %></td>
+              <td><%= kuaizhao.student_diaoli %></td>
+              <td><%= kuaizhao.student_tuixiu %></td>
+            </tr>
+            <% n = n+1 %>
+          <% end %>
+
 
         <% end %>
       </tbody>
     </table>
+
   </div>
+
+
+  <div class="baogao-kuaizhao">
+    <% if current_user.orgnize == "运输处" && params[:kuaizhao_time].blank? %>
+      <div class="baogao-kuaizhao-shengchen">
+        <% if params[:search].present? %>
+          <%= link_to("生成快照", create_kuaizhao_path("utf8": params[:utf8], "search": params[:search], "commit": params[:commit]),method: :post,class:'btn btn-success') %>
+        <% else %>
+          <%= link_to("生成快照", create_kuaizhao_path,method: :post,class:'btn btn-success')%>
+        <% end %>
+      </div>
+    <% end %>
+
+    <div class="dropdown pull-right baogao-kuaizhao-lishi">
+        <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" >
+          历史快照  <i class="fa fa-sort fa-lg" aria-hidden="true"></i>
+        </button>
+        <ul class="dropdown-menu" style = "background:#ECF9F2;">
+          <% @kuaizhao.each do |time| %>
+            <li><%= link_to(time.to_time.strftime("%Y/%m/%d %I:%M %p") ,baogao_path(:kuaizhao_time => time ))%></li>
+          <% end %>
+        </ul>
+    </div>
+  </div>
+
+
+  <div class="">
+
+
+  </div>
+
+
 </div>

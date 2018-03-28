@@ -20,6 +20,8 @@ Rails.application.routes.draw do
     get '/duan_call_boards', to: 'call_boards#duan_call_boards'
     get '/update_note',to: 'welcome#update_note'
     get "/baogao", to: "welcome#baogao"
+    post "/create_kuaizhao", to: "t_baogao_infos#create_kuaizhao"
+    resources :t_chejian_counts
     resources :users
     resources :browses
     resources :employees do
@@ -92,7 +94,7 @@ Rails.application.routes.draw do
       member do
         patch :set_student_status
         post :set_vacation_status
-        
+
       end
     end
 

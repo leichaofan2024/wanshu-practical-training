@@ -1,0 +1,5 @@
+<%= simple_form_for @t_chejian_count do |f| %>
+  <%= f.select :duan_name, [@duan_name] %>
+  <%= f.input :station_count %>
+  <%= f.submit "提交", :data => {:disable_with => "提交中..."} %>
+<% end %>

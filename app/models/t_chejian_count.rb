@@ -1,0 +1,2 @@
+class TChejianCount < ApplicationRecord
+end
