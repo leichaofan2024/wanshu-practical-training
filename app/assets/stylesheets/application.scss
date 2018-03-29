@@ -477,13 +477,17 @@ table {
 
   }
 }
-
+.baogao-program{
+  .baogao-program-create{
+    display: inline-block;
+  }
+}
 .baogao-form{
   table{
-    thead{
+
       th{
-        font-size: 14px;
+        font-size: 13px;
       }
-    }
+
   }
 }

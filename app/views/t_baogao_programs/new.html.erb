@@ -1,0 +1,14 @@
+<div class="call-board-frame">
+  <%= simple_form_for @t_baogao_program do |f| %>
+    <%= f.select :name,["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"] %>
+    <%= f.input :program_one,label: "专项一", collection: TProgramInfo.pluck(:F_name) %>
+    <%= f.input :program_two, label: "专项二", collection: TProgramInfo.pluck(:F_name) %>
+    <%= f.input :program_three,label: "专项三", collection: TProgramInfo.pluck(:F_name) %>
+    <%= f.input :program_four, label: "专项四", collection: TProgramInfo.pluck(:F_name) %>
+    <%= f.input :program_five, label: "专项五", collection: TProgramInfo.pluck(:F_name) %>
+    <%= f.input :program_six, label: "专项六", collection: TProgramInfo.pluck(:F_name) %>
+    <%= f.input :program_seven, label: "专项七", collection: TProgramInfo.pluck(:F_name) %>
+    <%= f.input :program_eight, label: "专项八", collection: TProgramInfo.pluck(:F_name) %>
+    <%= f.submit "提交", :data => {:disable_with => "提交中..."} %>
+  <% end %>
+</div>

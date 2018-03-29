@@ -1,0 +1,2 @@
+class TBaogaoProgram < ApplicationRecord
+end

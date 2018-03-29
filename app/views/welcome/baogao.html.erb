@@ -2,7 +2,7 @@
 
   <div class="row">
       <% if params[:kuaizhao_time].present? %>
-        <div class = "kuaizhao_duibi_time">当前快照时间：<%= params[:kuaizhao_time].to_time.strftime("%Y/%m/%d %I:%M %p") %></div>
+        <!-- <div class = "kuaizhao_duibi_time">当前快照时间：<%= params[:kuaizhao_time].to_time.strftime("%Y/%m/%d %I:%M %p") %></div> -->
         <div class="pull-right range-query">
           <div class="searchtime">时间：</div>
           <div class="searchtime">
@@ -35,15 +35,24 @@
   </div>
 
   <div class="table-responsive baogao-form">
+    <h3>附表1:
+      <% if params[:search].present? %>
+        <%= (@search.date_from.to_time - 8.hours).to_date %> ~ <%= (@search.date_to.to_time - 8.hours).to_date%>
+      <% elsif params[:kuaizhao_time].present? %>
+      快照时间: <%= params[:kuaizhao_time].to_time.strftime("%Y/%m/%d %I:%M %p")%>
+      <% else %>
+        <%= Time.now.beginning_of_month.to_time.strftime("%Y/%m/%d") %> ~ <%= Time.now.end_of_month.to_time.strftime("%Y/%m/%d")%>
+      <% end %>
+       实训平台上传数据情况</h3><br>
     <table class="table">
       <thead>
         <tr>
           <th>排序</th>
           <th>站段</th>
-          <th>交大车站车间数</th>
+          <th>交大车间数</th>
           <th>上线平台数</th>
           <th>
-            同比上月上线平台数
+            同比增长数
             <div class="dropdown" style= "display:inline-block;">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <b class="caret"></b>
@@ -56,10 +65,10 @@
             </div>
           </th>
           <th>演练车站数</th>
-          <th>平台上线率</th>
+          <th>平台上线率(%)</th>
           <th>应考人数</th>
           <th>
-            同比上月应考人数
+            同比应考增长人数
             <div class="dropdown" style= "display:inline-block;">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <b class="caret"></b>
@@ -72,169 +81,303 @@
             </div>
           </th>
           <th>实考人数</th>
-          <th>参考率</th>
-          <th>时长达标率</th>
+          <th>参考率(%)</th>
+          <th>时长达标率(%)</th>
           <th>调离人数</th>
           <th>退休人数</th>
         </tr>
       </thead>
       <tbody>
         <% n = 1%>
+        <% baogao_zongji1 = [] %>
+        <% baogao_zongji2 = [] %>
+        <% baogao_zongji3 = [] %>
+        <% baogao_zongji4 = [] %>
+        <% baogao_zongji5 = [] %>
+        <% baogao_zongji6 = [] %>
+        <% baogao_zongji7 = [] %>
+        <% baogao_zongji8 = [] %>
+        <% baogao_zongji9 = [] %>
+        <% baogao_zongji10 = [] %>
+        <% baogao_zongji11 = [] %>
+        <% baogao_zongji12 = [] %>
         <% if params[:kuaizhao_time].blank? %>
 
           <% @station_online.keys.each do |duan_name| %>
 
             <tr>
 
-              <td>
+              <th>
                 <%= n %>
-              </td>
+              </th>
               <td><%= duan_name %></td>
 
               <td>
-                <% c = TChejianCount.find_by(:duan_name => duan_name)%>
+                <% c1 = TChejianCount.find_by(:duan_name => duan_name)%>
                 <% if current_user.orgnize == "运输处"%>
-                  <% if c.present? %>
-                    <%= link_to(c.station_count, edit_t_chejian_count_path(c,:duan_name => duan_name))%>
+                  <% if c1.present? %>
+                  <% baogao_zongji1 << c1.station_count %>
+                    <%= link_to(c1.station_count, edit_t_chejian_count_path(c1,:duan_name => duan_name))%>
                   <% else %>
-                    <%= link_to("", new_t_chejian_count_path(c,:duan_name => duan_name),class: "fa fa-edit")%>
+                    <%= link_to("", new_t_chejian_count_path(c1,:duan_name => duan_name),class: "fa fa-edit")%>
                   <% end %>
                 <% else %>
-                  <% if c.present? %>
-                    <%= c.station_count%>
+                  <% if c1.present? %>
+                  <% baogao_zongji1 << c1.station_count %>
+                    <%= c1.station_count%>
                   <% else %>
                     <i class="fa fa-edit"></i>
                   <% end %>
                 <% end %>
               </td>
-              <td><%= @station_online[duan_name] %></td>
+              <td>
+                <% c2 = @station_online[duan_name] %>
+                <% baogao_zongji2 << c2 %>
+                <%= c2 %>
+              </td>
 
               <td>
                 <% if params[:kuaizhao_duibi].present? %>
-                  <% chazhi = @station_online[duan_name] - @kuaizhao_duibi.find_by(:duan_name => duan_name).online_station %>
-                    <% if chazhi > 0 %>
-                      <%= chazhi %>    <i class="fa fa-long-arrow-up" aria-hidden="true"></i>
-                    <% elsif chazhi < 0%>
-                      <%= chazhi.abs %>    <i class="fa fa-long-arrow-down" aria-hidden="true"></i>
+                  <% c3 = @station_online[duan_name] - @kuaizhao_duibi.find_by(:duan_name => duan_name).online_station %>
+                    <% if c3 > 0 %>
+                      <%= c3 %>    <i class="fa fa-long-arrow-up" aria-hidden="true"></i>
+                    <% elsif c3 < 0%>
+                      <%= c3.abs %>    <i class="fa fa-long-arrow-down" aria-hidden="true"></i>
                     <% else %>
                       0
                     <% end %>
+                    <% baogao_zongji3 << c3 %>
                 <% else %>
                   未选择
                 <% end %>
               </td>
 
-              <td><%= @station_cankao[duan_name] %></td>
               <td>
-                <% c = TChejianCount.find_by(:duan_name => duan_name)%>
-                <% if c.present? %>
-
-                  <%= (@station_online[duan_name].to_f/c.station_count*100).round(2)%>
+                <% c4 = @station_cankao[duan_name] %>
+                <% baogao_zongji4 << c4 %>
+                <%= c4 %>
+              </td>
+              <td>
+                <% cc = TChejianCount.find_by(:duan_name => duan_name)%>
+                <% if cc.present? %>
+                  <% c5 = (@station_online[duan_name].to_f/cc.station_count*100).round(2) %>
+                  <%= c5 %>
+                  <% baogao_zongji5 << c5 %>
                 <% else %>
                   信息缺失
                 <% end %>
               </td>
-              <td><%= @student_yingkao[duan_name] %></td>
+              <td>
+                <% c6 = @student_yingkao[duan_name] %>
+                <% baogao_zongji6 << c6 %>
+                <%= c6 %>
+              </td>
               <td>
 
                 <% if params[:kuaizhao_duibi].present? %>
-                  <% chazhi = @student_yingkao[duan_name] - @kuaizhao_duibi.find_by(:duan_name => duan_name).student_yingkao %>
-                    <% if chazhi > 0 %>
-                      <%= chazhi %>    <i class="fa fa-long-arrow-up" aria-hidden="true"></i>
-                    <% elsif chazhi < 0%>
-                      <%= chazhi.abs %>    <i class="fa fa-long-arrow-down" aria-hidden="true"></i>
+                  <% c7 = @student_yingkao[duan_name] - @kuaizhao_duibi.find_by(:duan_name => duan_name).student_yingkao %>
+                    <% if c7 > 0 %>
+                      <%= c7 %>    <i class="fa fa-long-arrow-up" aria-hidden="true"></i>
+                    <% elsif c7 < 0%>
+                      <%= c7.abs %>    <i class="fa fa-long-arrow-down" aria-hidden="true"></i>
                     <% else %>
                       0
                     <% end %>
+                    <% baogao_zongji7 << c7 %>
                 <% else %>
                   未选择
 
                 <% end %>
 
               </td>
-              <td><%= @student_cankao[duan_name] %></td>
-              <td><%= (@student_cankao[duan_name].to_f/@student_yingkao[duan_name].to_i*100).round(2) %></td>
-              <td><%= (@student_dabiao[duan_name].to_f/@student_yingkao[duan_name].to_i*100).round(2) %></td>
-              <td><%= @student_diaoli[duan_name] %></td>
-              <td><%= @student_tuixiu[duan_name] %></td>
+              <td>
+                <% c8 = @student_cankao[duan_name] %>
+                <%= c8 %>
+                <% baogao_zongji8 << c8 %>
+              </td>
+              <td>
+                <% c9 = (@student_cankao[duan_name].to_f/@student_yingkao[duan_name].to_i*100).round(2) %>
+                <%= c9 %>
+                <% baogao_zongji9 << c9 %>
+              </td>
+              <td>
+                <% c10 = (@student_dabiao[duan_name].to_f/@student_yingkao[duan_name].to_i*100).round(2) %>
+                <%= c10 %>
+                <% baogao_zongji10 << c10 %>
+              </td>
+              <td>
+                <% c11 = @student_diaoli[duan_name] %>
+                <%= c11 %>
+                <% if c11 == nil %>
+                <% baogao_zongji11 << 0 %>
+                <% else %>
+                <% baogao_zongji11 << c11 %>
+                <% end %>
+              </td>
+              <td>
+                <% c12 = @student_tuixiu[duan_name] %>
+                <%= c12 %>
+                <% if c12 == nil %>
+                <% baogao_zongji12 << 0 %>
+                <% else %>
+                <% baogao_zongji12 << c12 %>
+                <% end %>
+              </td>
 
             </tr>
             <% n = n+1 %>
           <% end %>
+          <tr>
+            <th colspan="2">总计</th>
+            <th><%= baogao_zongji1.sum %></th>
+            <th><%= baogao_zongji2.sum %></th>
+            <th><%= baogao_zongji3.sum %></th>
+            <th><%= baogao_zongji4.sum %></th>
+            <th><%= (baogao_zongji5.sum/baogao_zongji5.size).round(2) %></th>
+            <th><%= baogao_zongji6.sum %></th>
+            <th><%= baogao_zongji7.sum %></th>
+            <th><%= baogao_zongji8.sum %></th>
+            <th><%= (baogao_zongji9.sum/baogao_zongji9.size).round(2) %></th>
+            <th><%= (baogao_zongji10.sum/baogao_zongji10.size).round(2) %></th>
+            <th><%= baogao_zongji11.sum %></th>
+            <th><%= baogao_zongji12.sum %></th>
+
+          </tr>
 
         <% else %>
 
           <% @kuaizhao_xiangqing.each do |kuaizhao|%>
             <tr>
-              <td><%= n %></td>
+              <th><%= n %></th>
               <td><%= kuaizhao.duan_name %></td>
               <td>
 
-                <% c = TChejianCount.find_by(:duan_name => kuaizhao.duan_name)%>
+                <% c1 = TChejianCount.find_by(:duan_name => kuaizhao.duan_name)%>
                 <% if current_user.orgnize == "运输处"%>
-                  <% if c.present? %>
-                    <%= link_to(c.station_count, edit_t_chejian_count_path(c,:duan_name => kuaizhao.duan_name))%>
+                  <% if c1.present? %>
+                    <%= link_to(c1.station_count, edit_t_chejian_count_path(c1,:duan_name => kuaizhao.duan_name))%>
+                    <% baogao_zongji1 << c1.station_count %>
                   <% else %>
-                    <%= link_to("", new_t_chejian_count_path(c,:duan_name => kuaizhao.duan_name),class: "fa fa-edit")%>
+                    <%= link_to("", new_t_chejian_count_path(c1,:duan_name => kuaizhao.duan_name),class: "fa fa-edit")%>
                   <% end %>
                 <% else %>
-                  <% if c.present? %>
-                    <%= c.station_count%>
+                  <% if c1.present? %>
+                    <%= c1.station_count%>
+                    <% baogao_zongji1 << c1.station_count %>
                   <% else %>
                     <i class="fa fa-edit"></i>
                   <% end %>
                 <% end %>
               </td>
-              <td><%= kuaizhao.online_station %></td>
+              <td>
+                <% c2 = kuaizhao.online_station %>
+                <%= c2 %>
+                <% baogao_zongji2 << c2 %>
+              </td>
               <td>
                 <% if params[:kuaizhao_duibi].present? %>
-                  <% chazhi = kuaizhao.online_station - @kuaizhao_duibi.find_by(:duan_name => duan_name).online_station %>
-                    <% if chazhi > 0 %>
-                      <%= chazhi %>    <i class="fa fa-long-arrow-up" aria-hidden="true"></i>
-                    <% elsif chazhi < 0%>
-                      <%= chazhi.abs %>    <i class="fa fa-long-arrow-down" aria-hidden="true"></i>
+                  <% c3 = kuaizhao.online_station - @kuaizhao_duibi.find_by(:duan_name => kuaizhao.duan_name).online_station %>
+                    <% if c3 > 0 %>
+                      <%= c3 %>    <i class="fa fa-long-arrow-up" aria-hidden="true"></i>
+                    <% elsif c3 < 0%>
+                      <%= c3.abs %>    <i class="fa fa-long-arrow-down" aria-hidden="true"></i>
                     <% else %>
                       0
                     <% end %>
+                    <% baogao_zongji3 << c3 %>
                 <% else %>
                   未选择
                 <% end %>
               </td>
-              <td><%= kuaizhao.cankao_station %></td>
+              <td>
+                <% c4 = kuaizhao.cankao_station %>
+                <%= c4 %>
+                <% baogao_zongji4 << c4 %>
+              </td>
               <td>
                 <% c = TChejianCount.find_by(:duan_name => kuaizhao.duan_name)%>
                 <% if c.present? %>
-                  <%= (kuaizhao.online_station.to_f/c.station_count*100).round(2)%>
+                  <% c5 = (kuaizhao.online_station.to_f/c.station_count*100).round(2) %>
+                  <%= c5 %>
+                  <% baogao_zongji5 << c5 %>
                 <% else %>
                   信息缺失
                 <% end %>
               </td>
-              <td><%= kuaizhao.student_yingkao %></td>
+              <td>
+                <% c6 = kuaizhao.student_yingkao %>
+                <%= c6 %>
+                <% baogao_zongji6 << c6 %>
+              </td>
               <td>
 
                 <% if params[:kuaizhao_duibi].present? %>
-                  <% chazhi= kuaizhao.student_yingkao - @kuaizhao_duibi.find_by(:duan_name => kuaizhao.duan_name).student_yingkao %>
-                    <% if chazhi > 0 %>
-                      <%= chazhi %>    <i class="fa fa-long-arrow-up" aria-hidden="true"></i>
-                    <% elsif chazhi < 0%>
-                      <%= chazhi.abs %>    <i class="fa fa-long-arrow-down" aria-hidden="true"></i>
+                  <% c7= kuaizhao.student_yingkao - @kuaizhao_duibi.find_by(:duan_name => kuaizhao.duan_name).student_yingkao %>
+                    <% if c7 > 0 %>
+                      <%= c7 %>    <i class="fa fa-long-arrow-up" aria-hidden="true"></i>
+                    <% elsif c7 < 0%>
+                      <%= c7.abs %>    <i class="fa fa-long-arrow-down" aria-hidden="true"></i>
                     <% else %>
                       0
                     <% end %>
+                    <% baogao_zongji7 << c7 %>
                 <% else %>
                   未选择
                 <% end %>
 
               </td>
-              <td><%= kuaizhao.student_shikao %></td>
-              <td><%= (kuaizhao.student_shikao.to_f/kuaizhao.student_yingkao.to_i*100).round(2)%></td>
-              <td><%= kuaizhao.student_dabiao_percent %></td>
-              <td><%= kuaizhao.student_diaoli %></td>
-              <td><%= kuaizhao.student_tuixiu %></td>
+              <td>
+                <% c8 = kuaizhao.student_shikao %>
+                <%= c8 %>
+                <% baogao_zongji8 << c8 %>
+              </td>
+              <td>
+                <% c9 = (kuaizhao.student_shikao.to_f/kuaizhao.student_yingkao.to_i*100).round(2) %>
+                <%= c9 %>
+                <% baogao_zongji9 << c9 %>
+              </td>
+              <td>
+                <% c10 = kuaizhao.student_dabiao_percent %>
+                <%= c10 %>
+                <% baogao_zongji10 << c10 %>
+              </td>
+              <td>
+                <% c11 = kuaizhao.student_diaoli %>
+                <%= c11 %>
+                <% if c11 == nil %>
+                <% baogao_zongji11 << 0 %>
+                <% else %>
+                <% baogao_zongji11 << c11 %>
+                <% end %>
+              </td>
+              <td>
+                <% c12 = kuaizhao.student_tuixiu %>
+                <%= c12 %>
+                <% if c12 == nil %>
+                <% baogao_zongji12 << 0 %>
+                <% else %>
+                <% baogao_zongji12 << c12 %>
+                <% end %>
+              </td>
             </tr>
             <% n = n+1 %>
           <% end %>
+          <tr>
+            <th colspan = "2">总计</th>
+            <th><%= baogao_zongji1.sum %></th>
+            <th><%= baogao_zongji2.sum %></th>
+            <th><%= baogao_zongji3.sum %></th>
+            <th><%= baogao_zongji4.sum %></th>
+            <th><%= (baogao_zongji5.sum/baogao_zongji5.size).round(2) %></th>
+            <th><%= baogao_zongji6.sum %></th>
+            <th><%= baogao_zongji7.sum %></th>
+            <th><%= baogao_zongji8.sum %></th>
+            <th><%= (baogao_zongji9.sum/baogao_zongji9.size).round(2) %></th>
+            <th><%= (baogao_zongji10.sum/baogao_zongji10.size).round(2) %></th>
+            <th><%= baogao_zongji11.sum %></th>
+            <th><%= baogao_zongji12.sum %></th>
 
+          </tr>
 
         <% end %>
       </tbody>
@@ -267,8 +410,239 @@
   </div>
 
 
-  <div class="">
+  <div class="table-responsive baogao-form">
+    <h3>附表2:
+      <% if params[:name].present? %>
+      <%= params[:name]%>
+      <% end %>
+      车务系统实训管理分析平台专项演练考核人员情况</h3>
+    <% if params[:name].present?%>
 
+    <% if @t_baogao_program.program_one.present? %>
+      <p>一、<%= @t_baogao_program.program_one %></p>
+    <% end %>
+    <% if @t_baogao_program.program_two.present? %>
+      <p>二、<%= @t_baogao_program.program_two %></p>
+    <% end %>
+    <% if @t_baogao_program.program_three.present? %>
+      <p>三、<%= @t_baogao_program.program_three %></p>
+    <% end %>
+    <% if @t_baogao_program.program_four.present? %>
+      <p>四、<%= @t_baogao_program.program_four %></p>
+    <% end %>
+    <% if @t_baogao_program.program_five.present? %>
+      <p>五、<%= @t_baogao_program.program_five %></p>
+    <% end %>
+    <% if @t_baogao_program.program_six.present? %>
+      <p>六、<%= @t_baogao_program.program_six %></p>
+    <% end %>
+    <% if @t_baogao_program.program_seven.present? %>
+      <p>七、<%= @t_baogao_program.program_seven %></p>
+    <% end %>
+    <% if @t_baogao_program.program_eight.present? %>
+      <p>八、<%= @t_baogao_program.program_eight %></p>
+    <% end %>
+    <table class= "table">
+
+      <thead>
+       <tr>
+         <th>排序</th>
+         <th>站段</th>
+         <th>应考人数</th>
+         <% if @t_baogao_program.program_one.present? %>
+           <th>一 <br>实考人数</th>
+         <% end %>
+         <% if @t_baogao_program.program_two.present? %>
+           <th>二 <br>实考人数</th>
+         <% end %>
+         <% if @t_baogao_program.program_three.present? %>
+           <th>三 <br>实考人数</th>
+         <% end %>
+         <% if @t_baogao_program.program_four.present? %>
+           <th>四 <br>实考人数</th>
+         <% end %>
+         <% if @t_baogao_program.program_five.present? %>
+           <th>五 <br>实考人数</th>
+         <% end %>
+         <% if @t_baogao_program.program_six.present? %>
+           <th>六 <br>实考人数</th>
+         <% end %>
+         <% if @t_baogao_program.program_seven.present? %>
+           <th>七 <br>实考人数</th>
+         <% end %>
+         <% if @t_baogao_program.program_eight.present? %>
+           <th>八 <br>实考人数</th>
+         <% end %>
+         <% if @t_baogao_program.program_one.present? %>
+           <th>总参考率</th>
+         <% end %>
+       </tr>
+     </thead>
+       <tbody>
+         <% n = 1%>
+         <% program_yingkao = [] %>
+         <% program_shikao1 = [] %>
+         <% program_shikao2 = [] %>
+         <% program_shikao3 = [] %>
+         <% program_shikao4 = [] %>
+         <% program_shikao5 = [] %>
+         <% program_shikao6 = [] %>
+         <% program_shikao7 = [] %>
+         <% program_shikao8 = [] %>
+         <% program_shikao_percent = [] %>
+         <% @station_online.keys.each do |duan_name| %>
+           <% m = 0 %>
+           <% sum = []%>
+           <tr>
+             <th><%= n %></th>
+             <td><%= duan_name %></td>
+             <td>
+               <% if params[:kuaizhao_time].present? %>
+                 <% y = @kuaizhao_xiangqing.find_by(:duan_name => duan_name).student_yingkao %>
+                 <%= y %>
+               <% else %>
+                 <% y = @student_yingkao[duan_name]%>
+                 <%= y %>
+               <% end %>
+               <% program_yingkao << y%>
+             </td>
+             <% if @t_baogao_program.program_one.present? %>
+               <td>
+                 <% m = m + 1 %>
+                 <% x1 = @program_one_ck_hash[duan_name] %>
+                 <% sum << x1 %>
+                 <% program_shikao1 << x1 %>
+                 <%= x1%>
+               </td>
+             <% end %>
+             <% if @t_baogao_program.program_two.present? %>
+               <td>
+                 <% m = m + 1 %>
+                 <% x2 = @program_two_ck_hash[duan_name] %>
+                 <% sum << x2 %>
+                 <% program_shikao2 << x2 %>
+                 <%= x2 %>
+               </td>
+             <% end %>
+             <% if @t_baogao_program.program_three.present? %>
+               <td>
+                 <% m = m + 1 %>
+                 <% x3 = @program_three_ck_hash[duan_name] %>
+                 <% sum << x3 %>
+                 <% program_shikao3 << x3 %>
+                 <%= x3 %>
+               </td>
+             <% end %>
+             <% if @t_baogao_program.program_four.present? %>
+               <td>
+                 <% m = m + 1 %>
+                 <% x4 = @program_four_ck_hash[duan_name] %>
+                 <% sum << x4 %>
+                 <% program_shikao4 << x4 %>
+                 <%= x4 %>
+               </td>
+             <% end %>
+             <% if @t_baogao_program.program_five.present? %>
+               <td>
+                 <% m = m + 1 %>
+                 <% x5 = @program_five_ck_hash[duan_name] %>
+                 <% sum << x5 %>
+                 <% program_shikao5 << x5 %>
+                 <%= x5 %>
+               </td>
+             <% end %>
+             <% if @t_baogao_program.program_six.present? %>
+               <td>
+                 <% m = m + 1 %>
+                 <% x6 = @program_six_ck_hash[duan_name] %>
+                 <% sum << x6 %>
+                 <% program_shikao6 << x6 %>
+                 <%= x6 %>
+               </td>
+             <% end %>
+             <% if @t_baogao_program.program_seven.present? %>
+               <td>
+                 <% m = m + 1 %>
+                 <% x7 = @program_seven_ck_hash[duan_name] %>
+                 <% sum << x7 %>
+                 <% program_shikao7 << x7 %>
+                 <%= x7 %>
+               </td>
+             <% end %>
+             <% if @t_baogao_program.program_eight.present? %>
+               <td>
+                 <% m = m + 1 %>
+                 <% x8 = @program_eight_ck_hash[duan_name] %>
+                 <% sum << x8 %>
+                 <% program_shikao8 << x8 %>
+                 <%= x8 %>
+               </td>
+             <% end %>
+             <% if m >= 1 %>
+               <td>
+                 <% x9 = (sum.sum.to_f/(y*m).to_i*100).round(2)%>
+                 <% program_shikao_percent << x9%>
+                 <%= x9 %> %
+               </td>
+             <% end %>
+           </tr>
+
+           <% n = n + 1%>
+         <% end %>
+         <tr>
+           <th colspan= "2">合计</th>
+           <th><%= program_yingkao.sum%></th>
+           <% if @t_baogao_program.program_one.present? %>
+             <th><%= program_shikao1.sum %></th>
+           <% end %>
+           <% if @t_baogao_program.program_two.present? %>
+             <th><%= program_shikao2.sum %></th>
+           <% end %>
+           <% if @t_baogao_program.program_three.present? %>
+             <th><%= program_shikao3.sum %></th>
+           <% end %>
+           <% if @t_baogao_program.program_four.present? %>
+             <th><%= program_shikao4.sum %></th>
+           <% end %>
+           <% if @t_baogao_program.program_five.present? %>
+             <th><%= program_shikao5.sum %></th>
+           <% end %>
+           <% if @t_baogao_program.program_six.present? %>
+             <th><%= program_shikao6.sum %></th>
+           <% end %>
+           <% if @t_baogao_program.program_seven.present? %>
+             <th><%= program_shikao7.sum %></th>
+           <% end %>
+           <% if @t_baogao_program.program_eight.present? %>
+             <th><%= program_shikao8.sum %></th>
+           <% end %>
+           <% if @t_baogao_program.program_one.present? %>
+             <th><%= (program_shikao_percent.sum/program_shikao_percent.size).round(2) %> %</th>
+           <% end %>
+         </tr>
+       </tbody>
+
+   </table>
+   <% end %>
+  </div>
+
+  <div class="baogao-program">
+    <% if current_user.orgnize == "运输处"%>
+      <div class="baogao-program-create">
+        <%= link_to("新建专项考核",new_t_baogao_program_path,class:"btn btn-success") %>
+      </div>
+    <% end %>
+
+    <div class="dropdown pull_right baogao-program-select">
+      <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" >
+        选择专项考核  <i class="fa fa-sort fa-lg" aria-hidden="true"></i>
+      </button>
+      <ul class="dropdown-menu" style = "background:#ECF9F2;">
+        <% @baogao_program_select.each do |program| %>
+          <li><%= link_to(program,"/baogao?"+"#{request.original_url.split("?")[1]}"+"&"+"name=#{program}")%></li>
+        <% end %>
+      </ul>
+    </div>
 
   </div>
 

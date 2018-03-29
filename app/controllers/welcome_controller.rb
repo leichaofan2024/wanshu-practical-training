@@ -273,10 +273,11 @@ class WelcomeController < ApplicationController
 
   def baogao
     @kuaizhao = TBaogaoInfo.pluck(:created_at).uniq
+    @baogao_program_select = TBaogaoProgram.pluck(:name)
     if params[:kuaizhao_duibi].present?
       @kuaizhao_duibi = TBaogaoInfo.where(:created_at => params[:kuaizhao_duibi].to_time)
     end
-    
+
     if params[:kuaizhao_time].present?
       @kuaizhao_xiangqing = TBaogaoInfo.where(:created_at => params[:kuaizhao_time].to_time )
     end
@@ -300,6 +301,155 @@ class WelcomeController < ApplicationController
       end
       @student_dabiao = TUserInfo.where(:F_id => dabiao_keys).joins(:t_duan_info).duan_orgnization.select("t_duan_info.F_name,t_user_info.F_id").distinct.group("t_duan_info.F_name").count
 
+
+      if params[:name].present?
+        @t_baogao_program = TBaogaoProgram.find_by(:name => params[:name])
+        if @t_baogao_program.program_one.present?
+          program_duan_student_hash = TUserInfo.student_all(@search.date_from, @search.date_to).joins(:t_duan_info).duan_orgnization.select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
+          key = program_duan_student_hash.keys
+          value = program_duan_student_hash.values
+
+          duan_ck = @search.scope_program_duan_student(@t_baogao_program.program_one).select('t_duan_info.F_name, t_user_info.F_id').distinct
+          program_duan_ck_hash = duan_ck.group('t_duan_info.F_name').count
+          ck_key = program_duan_ck_hash.keys
+          @program_one_ck_hash = program_duan_student_hash
+          key.each do |k|
+              @program_one_ck_hash[k] = if ck_key.include?(k)
+                                        program_duan_ck_hash[k]
+                                      else
+                                        0
+                                      end
+          end
+        end
+
+        if @t_baogao_program.program_two.present?
+          program_duan_student_hash = TUserInfo.student_all(@search.date_from, @search.date_to).joins(:t_duan_info).duan_orgnization.select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
+          key = program_duan_student_hash.keys
+          value = program_duan_student_hash.values
+
+          duan_ck = @search.scope_program_duan_student(@t_baogao_program.program_two).select('t_duan_info.F_name, t_user_info.F_id').distinct
+          program_duan_ck_hash = duan_ck.group('t_duan_info.F_name').count
+          ck_key = program_duan_ck_hash.keys
+          @program_two_ck_hash = program_duan_student_hash
+          key.each do |k|
+              @program_two_ck_hash[k] = if ck_key.include?(k)
+                                        program_duan_ck_hash[k]
+                                      else
+                                        0
+                                      end
+          end
+        end
+
+        if @t_baogao_program.program_three.present?
+          program_duan_student_hash = TUserInfo.student_all(@search.date_from, @search.date_to).joins(:t_duan_info).duan_orgnization.select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
+          key = program_duan_student_hash.keys
+          value = program_duan_student_hash.values
+
+          duan_ck = @search.scope_program_duan_student(@t_baogao_program.program_three).select('t_duan_info.F_name, t_user_info.F_id').distinct
+          program_duan_ck_hash = duan_ck.group('t_duan_info.F_name').count
+          ck_key = program_duan_ck_hash.keys
+          @program_three_ck_hash = program_duan_student_hash
+          key.each do |k|
+              @program_three_ck_hash[k] = if ck_key.include?(k)
+                                        program_duan_ck_hash[k]
+                                      else
+                                        0
+                                      end
+          end
+        end
+
+        if @t_baogao_program.program_four.present?
+          program_duan_student_hash = TUserInfo.student_all(@search.date_from, @search.date_to).joins(:t_duan_info).duan_orgnization.select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
+          key = program_duan_student_hash.keys
+          value = program_duan_student_hash.values
+
+          duan_ck = @search.scope_program_duan_student(@t_baogao_program.program_four).select('t_duan_info.F_name, t_user_info.F_id').distinct
+          program_duan_ck_hash = duan_ck.group('t_duan_info.F_name').count
+          ck_key = program_duan_ck_hash.keys
+          @program_four_ck_hash = program_duan_student_hash
+          key.each do |k|
+              @program_four_ck_hash[k] = if ck_key.include?(k)
+                                        program_duan_ck_hash[k]
+                                      else
+                                        0
+                                      end
+          end
+        end
+
+        if @t_baogao_program.program_five.present?
+          program_duan_student_hash = TUserInfo.student_all(@search.date_from, @search.date_to).joins(:t_duan_info).duan_orgnization.select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
+          key = program_duan_student_hash.keys
+          value = program_duan_student_hash.values
+
+          duan_ck = @search.scope_program_duan_student(@t_baogao_program.program_five).select('t_duan_info.F_name, t_user_info.F_id').distinct
+          program_duan_ck_hash = duan_ck.group('t_duan_info.F_name').count
+          ck_key = program_duan_ck_hash.keys
+          @program_five_ck_hash = program_duan_student_hash
+          key.each do |k|
+              @program_five_ck_hash[k] = if ck_key.include?(k)
+                                        program_duan_ck_hash[k]
+                                      else
+                                        0
+                                      end
+          end
+        end
+
+        if @t_baogao_program.program_six.present?
+          program_duan_student_hash = TUserInfo.student_all(@search.date_from, @search.date_to).joins(:t_duan_info).duan_orgnization.select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
+          key = program_duan_student_hash.keys
+          value = program_duan_student_hash.values
+
+          duan_ck = @search.scope_program_duan_student(@t_baogao_program.program_six).select('t_duan_info.F_name, t_user_info.F_id').distinct
+          program_duan_ck_hash = duan_ck.group('t_duan_info.F_name').count
+          ck_key = program_duan_ck_hash.keys
+          @program_six_ck_hash = program_duan_student_hash
+          key.each do |k|
+              @program_six_ck_hash[k] = if ck_key.include?(k)
+                                        program_duan_ck_hash[k]
+                                      else
+                                        0
+                                      end
+          end
+        end
+
+        if @t_baogao_program.program_seven.present?
+          program_duan_student_hash = TUserInfo.student_all(@search.date_from, @search.date_to).joins(:t_duan_info).duan_orgnization.select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
+          key = program_duan_student_hash.keys
+          value = program_duan_student_hash.values
+
+          duan_ck = @search.scope_program_duan_student(@t_baogao_program.program_seven).select('t_duan_info.F_name, t_user_info.F_id').distinct
+          program_duan_ck_hash = duan_ck.group('t_duan_info.F_name').count
+          ck_key = program_duan_ck_hash.keys
+          @program_seven_ck_hash = program_duan_student_hash
+          key.each do |k|
+              @program_seven_ck_hash[k] = if ck_key.include?(k)
+                                        program_duan_ck_hash[k]
+                                      else
+                                        0
+                                      end
+          end
+        end
+
+        if @t_baogao_program.program_eight.present?
+          program_duan_student_hash = TUserInfo.student_all(@search.date_from, @search.date_to).joins(:t_duan_info).duan_orgnization.select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
+          key = program_duan_student_hash.keys
+          value = program_duan_student_hash.values
+
+          duan_ck = @search.scope_program_duan_student(@t_baogao_program.program_eight).select('t_duan_info.F_name, t_user_info.F_id').distinct
+          program_duan_ck_hash = duan_ck.group('t_duan_info.F_name').count
+          ck_key = program_duan_ck_hash.keys
+          @program_eight_ck_hash = program_duan_student_hash
+          key.each do |k|
+              @program_eight_ck_hash[k] = if ck_key.include?(k)
+                                        program_duan_ck_hash[k]
+                                      else
+                                        0
+                                      end
+          end
+        end
+
+      end
+
     else
       student_diaoli_uuid = TVacationInfo.student_transfer(Time.now.beginning_of_month,Time.now.end_of_month) + TUserInfo.where("t_user_info.status=? AND t_user_info.F_type = ?","调离",0).pluck(:F_uuid)
       @student_diaoli = TUserInfo.where(:F_uuid => student_diaoli_uuid).joins(:t_duan_info).duan_orgnization.select("t_duan_info.F_name,t_user_info.F_id").distinct.group("t_duan_info.F_name").count
@@ -317,7 +467,158 @@ class WelcomeController < ApplicationController
         end
       end
       @student_dabiao = TUserInfo.where(:F_id => dabiao_keys).joins(:t_duan_info).duan_orgnization.select("t_duan_info.F_name,t_user_info.F_id").distinct.group("t_duan_info.F_name").count
+
+
+      if params[:name].present?
+        @t_baogao_program = TBaogaoProgram.find_by(:name => params[:name])
+        if @t_baogao_program.program_one.present?
+          program_duan_student_hash = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info).duan_orgnization.select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
+          key = program_duan_student_hash.keys
+          value = program_duan_student_hash.values
+          duan_ck = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info, :t_record_infoes).program_record(@t_baogao_program.program_one).datetime.duan_orgnization.select('t_duan_info.F_name, t_user_info.F_id').distinct
+          program_duan_ck_hash = duan_ck.group('t_duan_info.F_name').count
+          ck_key = program_duan_ck_hash.keys
+          @program_one_ck_hash = program_duan_student_hash
+          key.each do |k|
+              @program_one_ck_hash[k] = if ck_key.include?(k)
+                                        program_duan_ck_hash[k]
+                                      else
+                                        0
+                                      end
+          end
+        end
+
+        if @t_baogao_program.program_two.present?
+          program_duan_student_hash = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info).duan_orgnization.select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
+          key = program_duan_student_hash.keys
+          value = program_duan_student_hash.values
+
+          duan_ck = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info, :t_record_infoes).program_record(@t_baogao_program.program_two).datetime.duan_orgnization.select('t_duan_info.F_name, t_user_info.F_id').distinct
+          program_duan_ck_hash = duan_ck.group('t_duan_info.F_name').count
+          ck_key = program_duan_ck_hash.keys
+          @program_two_ck_hash = program_duan_student_hash
+          key.each do |k|
+              @program_two_ck_hash[k] = if ck_key.include?(k)
+                                        program_duan_ck_hash[k]
+                                      else
+                                        0
+                                      end
+          end
+        end
+
+        if @t_baogao_program.program_three.present?
+          program_duan_student_hash = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info).duan_orgnization.select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
+          key = program_duan_student_hash.keys
+          value = program_duan_student_hash.values
+
+          duan_ck = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info, :t_record_infoes).program_record(@t_baogao_program.program_three).datetime.duan_orgnization.select('t_duan_info.F_name, t_user_info.F_id').distinct
+          program_duan_ck_hash = duan_ck.group('t_duan_info.F_name').count
+          ck_key = program_duan_ck_hash.keys
+          @program_three_ck_hash = program_duan_student_hash
+          key.each do |k|
+              @program_three_ck_hash[k] = if ck_key.include?(k)
+                                        program_duan_ck_hash[k]
+                                      else
+                                        0
+                                      end
+          end
+        end
+
+        if @t_baogao_program.program_four.present?
+          program_duan_student_hash = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info).duan_orgnization.select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
+          key = program_duan_student_hash.keys
+          value = program_duan_student_hash.values
+
+          duan_ck = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info, :t_record_infoes).program_record(@t_baogao_program.program_four).datetime.duan_orgnization.select('t_duan_info.F_name, t_user_info.F_id').distinct
+          program_duan_ck_hash = duan_ck.group('t_duan_info.F_name').count
+          ck_key = program_duan_ck_hash.keys
+          @program_four_ck_hash = program_duan_student_hash
+          key.each do |k|
+              @program_four_ck_hash[k] = if ck_key.include?(k)
+                                        program_duan_ck_hash[k]
+                                      else
+                                        0
+                                      end
+          end
+        end
+
+        if @t_baogao_program.program_five.present?
+          program_duan_student_hash = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info).duan_orgnization.select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
+          key = program_duan_student_hash.keys
+          value = program_duan_student_hash.values
+
+          duan_ck = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info, :t_record_infoes).program_record(@t_baogao_program.program_five).datetime.duan_orgnization.select('t_duan_info.F_name, t_user_info.F_id').distinct
+          program_duan_ck_hash = duan_ck.group('t_duan_info.F_name').count
+          ck_key = program_duan_ck_hash.keys
+          @program_five_ck_hash = program_duan_student_hash
+          key.each do |k|
+              @program_five_ck_hash[k] = if ck_key.include?(k)
+                                        program_duan_ck_hash[k]
+                                      else
+                                        0
+                                      end
+          end
+        end
+
+        if @t_baogao_program.program_six.present?
+          program_duan_student_hash = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info).duan_orgnization.select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
+          key = program_duan_student_hash.keys
+          value = program_duan_student_hash.values
+
+          duan_ck = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info, :t_record_infoes).program_record(@t_baogao_program.program_six).datetime.duan_orgnization.select('t_duan_info.F_name, t_user_info.F_id').distinct
+          program_duan_ck_hash = duan_ck.group('t_duan_info.F_name').count
+          ck_key = program_duan_ck_hash.keys
+          @program_six_ck_hash = program_duan_student_hash
+          key.each do |k|
+              @program_six_ck_hash[k] = if ck_key.include?(k)
+                                        program_duan_ck_hash[k]
+                                      else
+                                        0
+                                      end
+          end
+        end
+
+        if @t_baogao_program.program_seven.present?
+          program_duan_student_hash = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info).duan_orgnization.select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
+          key = program_duan_student_hash.keys
+          value = program_duan_student_hash.values
+
+          duan_ck = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info, :t_record_infoes).program_record(@t_baogao_program.program_seven).datetime.duan_orgnization.select('t_duan_info.F_name, t_user_info.F_id').distinct
+          program_duan_ck_hash = duan_ck.group('t_duan_info.F_name').count
+          ck_key = program_duan_ck_hash.keys
+          @program_seven_ck_hash = program_duan_student_hash
+          key.each do |k|
+              @program_seven_ck_hash[k] = if ck_key.include?(k)
+                                        program_duan_ck_hash[k]
+                                      else
+                                        0
+                                      end
+          end
+        end
+
+        if @t_baogao_program.program_eight.present?
+          program_duan_student_hash = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info).duan_orgnization.select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
+          key = program_duan_student_hash.keys
+          value = program_duan_student_hash.values
+
+          duan_ck = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info, :t_record_infoes).program_record(@t_baogao_program.program_eight).datetime.duan_orgnization.select('t_duan_info.F_name, t_user_info.F_id').distinct
+          program_duan_ck_hash = duan_ck.group('t_duan_info.F_name').count
+          ck_key = program_duan_ck_hash.keys
+          @program_eight_ck_hash = program_duan_student_hash
+          key.each do |k|
+              @program_eight_ck_hash[k] = if ck_key.include?(k)
+                                        program_duan_ck_hash[k]
+                                      else
+                                        0
+                                      end
+          end
+        end
+
+      end
+
+
     end
+
     @student_tuixiu = TUserInfo.where("t_user_info.status=? AND t_user_info.F_type = ?","退休",0).joins(:t_duan_info).duan_orgnization.select("t_duan_info.F_name,t_user_info.F_id").distinct.group("t_duan_info.F_name").count
 
   end

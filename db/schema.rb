@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180326220744) do
+ActiveRecord::Schema.define(version: 20180328220925) do
 
   create_table "attachment", id: :bigint, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", comment: "系统附件表" do |t|
     t.string   "file_name",          limit: 50,                                       null: false, comment: "文件名称"
@@ -221,6 +221,21 @@ ActiveRecord::Schema.define(version: 20180326220744) do
     t.integer  "student_tuixiu"
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
+  end
+
+  create_table "t_baogao_programs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "name"
+    t.string   "program_one"
+    t.string   "program_two"
+    t.string   "program_three"
+    t.string   "program_four"
+    t.string   "program_five"
+    t.string   "program_six"
+    t.string   "program_seven"
+    t.string   "program_eight"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["name"], name: "index_t_baogao_programs_on_name", unique: true, using: :btree
   end
 
   create_table "t_chejian_counts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
