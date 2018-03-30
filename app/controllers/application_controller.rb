@@ -81,11 +81,26 @@ class ApplicationController < ActionController::Base
 
     def team
       if current_user.permission == 1
-        m = TTeamInfo.joins({t_station_info: :t_duan_info},:t_user_infoes).duan_orgnization.student_all(Time.now.beginning_of_month, Time.now.end_of_month).distinct.count
+        if params[:search].present?
+          @search = TimeSearch.new(params[:search])
+          m = TTeamInfo.joins({t_station_info: :t_duan_info},:t_user_infoes).duan_orgnization.student_all(@search.date_from, @search.date_to).distinct.count
+        else
+          m = TTeamInfo.joins({t_station_info: :t_duan_info},:t_user_infoes).duan_orgnization.student_all(Time.now.beginning_of_month, Time.now.end_of_month).distinct.count
+        end
       elsif current_user.permission == 2
-        m = TTeamInfo.joins({t_station_info: :t_duan_info},:t_user_infoes).where("t_duan_info.F_name= ?",current_user.orgnize).student_all(Time.now.beginning_of_month, Time.now.end_of_month).distinct.count
+        if params[:search].present?
+          @search = TimeSearch.new(params[:search])
+          m = TTeamInfo.joins({t_station_info: :t_duan_info},:t_user_infoes).where("t_duan_info.F_name= ?",current_user.orgnize).student_all(@search.date_from, @search.date_to).distinct.count
+        else
+          m = TTeamInfo.joins({t_station_info: :t_duan_info},:t_user_infoes).where("t_duan_info.F_name= ?",current_user.orgnize).student_all(Time.now.beginning_of_month, Time.now.end_of_month).distinct.count
+        end
       elsif current_user.permission ==3
-        m = TTeamInfo.joins(:t_station_info,:t_user_infoes).where("t_station_info.F_name": current_user.orgnize).student_all(Time.now.beginning_of_month, Time.now.end_of_month).distinct.count
+        if params[:search].present?
+          @search = TimeSearch.new(params[:search])
+          m = TTeamInfo.joins(:t_station_info,:t_user_infoes).where("t_station_info.F_name": current_user.orgnize).student_all(@search.date_from, @search.date_to).distinct.count
+        else
+          m = TTeamInfo.joins(:t_station_info,:t_user_infoes).where("t_station_info.F_name": current_user.orgnize).student_all(Time.now.beginning_of_month, Time.now.end_of_month).distinct.count
+        end
       end
 
     end

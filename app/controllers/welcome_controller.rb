@@ -284,6 +284,16 @@ class WelcomeController < ApplicationController
 
     if params[:search].present?
       @search = TimeSearch.new(params[:search])
+      @reason_hot_all = @search.scope_reason_hot.group(:F_name).count
+      @programs_student = @search.scope_duan_program.group('t_program_info.F_name').count.sort { |a, b| b[1] <=> a[1] }
+      @program_type = @search.scope_program_type
+      @score_60_below = @search.scope_score.where('F_score< ? ', 60).count
+      @score_60 = @search.scope_score.where('F_score >= ? AND F_score<? ', 60, 80).count
+      @score_80 = @search.scope_score.where('F_score >= ? AND F_score<? ', 80, 90).count
+      @score_90 = @search.scope_score.where('F_score >= ?', 90).count
+
+      @team_online_all = TTeamInfo.joins({t_station_info: :t_duan_info},:t_user_infoes).duan_orgnization.student_all(@search.date_from, @search.date_to).distinct.count
+      @team_cankao_all = @search.scope_team.distinct.count
       student_diaoli_uuid = TVacationInfo.student_transfer(@search.date_from,@search.date_to) + TUserInfo.where("t_user_info.status=? AND t_user_info.F_type = ?","调离",0).pluck(:F_uuid)
       @student_diaoli = TUserInfo.where(:F_uuid => student_diaoli_uuid).joins(:t_duan_info).duan_orgnization.select("t_duan_info.F_name,t_user_info.F_id").distinct.group("t_duan_info.F_name").count
 
@@ -451,6 +461,15 @@ class WelcomeController < ApplicationController
       end
 
     else
+      @reason_hot_all = TReasonInfo.joins(:t_detail_reason_infoes).datetime1.group(:F_name).count
+      @score_60_below = TRecordInfo.where('F_score< ? ', 60).datetime.count
+      @score_60 = TRecordInfo.where('F_score >= ? AND F_score<? ', 60, 80).datetime.count
+      @score_80 = TRecordInfo.where('F_score >= ? AND F_score<? ', 80, 90).datetime.count
+      @score_90 = TRecordInfo.where('F_score >= ?', 90).datetime.count
+      @programs_student = TProgramInfo.joins(:t_record_infoes).datetime.group('t_program_info.F_name').count.sort { |a, b| b[1] <=> a[1] }
+      @program_type = m = TProgramTypeInfo.joins(t_program_infoes: :t_record_infoes).datetime.group(:F_name).count
+      @team_online_all = TTeamInfo.joins({t_station_info: :t_duan_info},:t_user_infoes).duan_orgnization.student_all(Time.now.beginning_of_month, Time.now.end_of_month).distinct.count
+      @team_cankao_all = TTeamInfo.team_orgnization.joins(t_user_infoes: :t_record_infoes).student_all(Time.now.beginning_of_month, Time.now.end_of_month).datetime.distinct.count
       student_diaoli_uuid = TVacationInfo.student_transfer(Time.now.beginning_of_month,Time.now.end_of_month) + TUserInfo.where("t_user_info.status=? AND t_user_info.F_type = ?","调离",0).pluck(:F_uuid)
       @student_diaoli = TUserInfo.where(:F_uuid => student_diaoli_uuid).joins(:t_duan_info).duan_orgnization.select("t_duan_info.F_name,t_user_info.F_id").distinct.group("t_duan_info.F_name").count
 
@@ -618,7 +637,15 @@ class WelcomeController < ApplicationController
 
 
     end
-
+    @reason_hot_all8 = @reason_hot_all.sort_by { |a, b| b[1] <=> a[1] }.first(8)
+    @reason_hot_all_sum = @reason_hot_all.values.sum
+    @score_sum = @score_90 + @score_80 + @score_60 + @score_60_below
+    @programs_student_all = @programs_student.first(5)
+    @program_type_all = @program_type.values.sum
+    @student_yingkao_all = @student_yingkao.values.sum
+    @student_cankao_all = @student_cankao.values.sum
+    @station_online_all = @station_online.values.sum
+    @station_cankao_all = @station_cankao.values.sum
     @student_tuixiu = TUserInfo.where("t_user_info.status=? AND t_user_info.F_type = ?","退休",0).joins(:t_duan_info).duan_orgnization.select("t_duan_info.F_name,t_user_info.F_id").distinct.group("t_duan_info.F_name").count
 
   end

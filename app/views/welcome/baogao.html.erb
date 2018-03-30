@@ -34,6 +34,103 @@
 
   </div>
 
+  <div class="baogao-content-part1">
+    <h2>中国铁路北京局集团有限公司网络电报</h2>
+    <div class="baogao-form-head">
+
+    </div>
+
+    <div class="">
+      <p><span></span>根据《北京铁路局接发列车实训系统管理、使用、维护办法》文件及接发列车非正常应急处置演练管理要求，
+        <%= render_baogao_time(@search,params[:kuaizhao_time]) %>全集团公司共有25个站段利用RALI实训平台进行了非正常实训及应急演练。
+        现将利用车务系统实训管理分析平台统计分析情况通报如下：
+      </p>
+      <h4><span></span>一、基本情况</h4>
+
+      <p><span></span> <strong>1.注册使用情况。</strong>
+        截止到
+        <%= render_baogao_time(@search,params[:kuaizhao_time]) %>
+
+        统计，二月份平台注册车站达到<%= if params[:kuaizhao_time].present?
+                                   @kuaizhao_xiangqing.sum(:online_station)
+                                   else
+                                    @station_online_all
+                                   end
+                                %>
+        个，本月参加考核车站<%= if params[:kuaizhao_time].present?
+                                   @kuaizhao_xiangqing.sum(:cankao_station)
+                                   else
+                                    @station_cankao_all
+                                   end
+                                %>
+        个。注册班组数达到<%= @team_online_all %>个，本月考核班组数达到<%= @team_cankao_all %>个。
+        注册应实训人员<%= if params[:kuaizhao_time].present?
+                                   @kuaizhao_xiangqing.sum(:student_yingkao)
+                                   else
+                                    @student_yingkao_all
+                                   end
+
+                      %>
+        人，参加考核人员<%= if params[:kuaizhao_time].present?
+                                   @kuaizhao_xiangqing.sum(:student_shikao)
+                                   else
+                                      @student_cankao_all
+                                   end
+
+                      %>
+        人，参加考核人员比例<%= if params[:kuaizhao_time].present?
+                                   ((@kuaizhao_xiangqing.sum(:student_shikao)*100).to_f/(@kuaizhao_xiangqing.sum(:student_yingkao))).round(2)
+                                   else
+                                      (@student_cankao_all.to_f*100/@student_yingkao_all).round(2)
+                                   end
+
+                      %>%。
+      </p>
+
+
+      <p><span></span> <strong>2.考核项点情况。</strong>
+
+        本月共考核项点<%= @program_type_all %>项。其中，
+        <% @program_type.each do |program| %>
+        <%= program[0] %><%= program[1]%> 项，占<%= (program[1].to_f*100/@program_type_all).round(2) %>%;
+        <% end %>
+        <br><span></span>本月前五的考核项点。
+        <% program_student_n = 0 %>
+        <% @programs_student_all.each do |program_student| %>
+          <% program_student_n = program_student_n+1 %>
+          <%= program_student[0] %><%= program_student[1] %>项次<% if program_student_n <5 %>
+                                                                 ，
+                                                                <% else %>
+                                                                。
+                                                                <% end %>
+        <% end %>
+
+      </p>
+      <p><span></span> <strong>3.考核得分情况。</strong>
+        本月考核成绩统计。90分以上<%= @score_90 %>人次占<%= (@score_90.to_f*100/@score_sum).round(2) %>%，80至90分<%= @score_80 %>人次占<%= (@score_80.to_f*100/@score_sum).round(2) %>%，
+        60至80分<%= @score_60 %>人次占<%= (@score_60.to_f*100/@score_sum).round(2) %>%，60分以下<%= @score_60_below %>人次占<%= (@score_60_below.to_f*100/@score_sum).round(2) %>%。
+      </p>
+      <p><span></span> <strong>4.考核扣分项点。</strong>
+        本月考核扣分<%= @reason_hot_all_sum%>项，前八的项错误项点为
+        <% reason_hot_all_n = 0 %>
+        <% @reason_hot_all8.each do |reason_hot| %>
+        <% reason_hot_all_n = reason_hot_all_n + 1 %>
+          <%= reason_hot[0] %><%= reason_hot[1] %>次占<%= (reason_hot[1]*100.to_f/@reason_hot_all_sum).round(2) %>% <% if reason_hot_all_n < 8 %>
+                                                                                                     ,
+                                                                                               <% else %>
+                                                                                                    。
+                                                                                               <% end %>
+        <% end %>
+
+      </p>
+
+      <h4><span></span> 二、好的方面</h4>
+      <h4><span></span> 三、存在问题</h4>
+      <h4><span></span> 四、下月重点工作</h4>
+    </div>
+
+  </div>
+
   <div class="table-responsive baogao-form">
     <h3>附表1:
       <% if params[:search].present? %>
