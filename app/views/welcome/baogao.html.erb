@@ -201,8 +201,8 @@
                 <% baogao_zongji9 << c9 %>
               </td>
               <td>
-                <% c10 = (@student_dabiao[duan_name].to_f/@student_yingkao[duan_name].to_i*100).round(2) %>
-                <%= c10 %>
+                <% c10 = @student_dabiao[duan_name]%>
+                <%= (c10.to_f/@student_yingkao[duan_name].to_i*100).round(2) %>
                 <% baogao_zongji10 << c10 %>
               </td>
               <td>
@@ -233,12 +233,12 @@
             <th><%= baogao_zongji2.sum %></th>
             <th><%= baogao_zongji3.sum %></th>
             <th><%= baogao_zongji4.sum %></th>
-            <th><%= (baogao_zongji5.sum/baogao_zongji5.size).round(2) %></th>
+            <th><%= (baogao_zongji2.sum.to_f*100/baogao_zongji1.sum).round(2) %></th>
             <th><%= baogao_zongji6.sum %></th>
             <th><%= baogao_zongji7.sum %></th>
             <th><%= baogao_zongji8.sum %></th>
-            <th><%= (baogao_zongji9.sum/baogao_zongji9.size).round(2) %></th>
-            <th><%= (baogao_zongji10.sum/baogao_zongji10.size).round(2) %></th>
+            <th><%= (baogao_zongji8.sum.to_f*100/baogao_zongji6.sum).round(2) %></th>
+            <th><%= (baogao_zongji10.sum.to_f*100/baogao_zongji6.sum).round(2) %></th>
             <th><%= baogao_zongji11.sum %></th>
             <th><%= baogao_zongji12.sum %></th>
 
@@ -337,8 +337,8 @@
                 <% baogao_zongji9 << c9 %>
               </td>
               <td>
-                <% c10 = kuaizhao.student_dabiao_percent %>
-                <%= c10 %>
+                <% c10 = kuaizhao.student_dabiao_percent.to_f * kuaizhao.student_yingkao %>
+                <%= kuaizhao.student_dabiao_percent %>
                 <% baogao_zongji10 << c10 %>
               </td>
               <td>
@@ -368,12 +368,12 @@
             <th><%= baogao_zongji2.sum %></th>
             <th><%= baogao_zongji3.sum %></th>
             <th><%= baogao_zongji4.sum %></th>
-            <th><%= (baogao_zongji5.sum/baogao_zongji5.size).round(2) %></th>
+            <th><%= (baogao_zongji2.sum.to_f*100/baogao_zongji1.sum).round(2) %> </th>
             <th><%= baogao_zongji6.sum %></th>
             <th><%= baogao_zongji7.sum %></th>
             <th><%= baogao_zongji8.sum %></th>
-            <th><%= (baogao_zongji9.sum/baogao_zongji9.size).round(2) %></th>
-            <th><%= (baogao_zongji10.sum/baogao_zongji10.size).round(2) %></th>
+            <th><%= (baogao_zongji8.sum.to_f*100/baogao_zongji6.sum).round(2) %></th>
+            <th><%= (baogao_zongji10.sum.to_f/baogao_zongji6.sum).round(2) %></th>
             <th><%= baogao_zongji11.sum %></th>
             <th><%= baogao_zongji12.sum %></th>
 
@@ -479,7 +479,7 @@
        </tr>
      </thead>
        <tbody>
-         <% n = 1%>
+         <% n = 1 %>
          <% program_yingkao = [] %>
          <% program_shikao1 = [] %>
          <% program_shikao2 = [] %>
@@ -633,8 +633,8 @@
       </div>
     <% end %>
 
-    <div class="dropdown pull_right baogao-program-select">
-      <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" >
+    <div class="dropdown  baogao-program-select ">
+      <button type="button" class="btn btn-info dropdown-toggle"data-toggle="dropdown" >
         选择专项考核  <i class="fa fa-sort fa-lg" aria-hidden="true"></i>
       </button>
       <ul class="dropdown-menu" style = "background:#ECF9F2;">

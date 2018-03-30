@@ -470,6 +470,7 @@ table {
 }
 
 .baogao-kuaizhao{
+  clear: both;
   .baogao-kuaizhao-shengchen{
     display: inline-block;
   }
@@ -480,9 +481,14 @@ table {
 .baogao-program{
   .baogao-program-create{
     display: inline-block;
+
+  }
+  .baogao-program-select{
+    display: inline-block;
   }
 }
 .baogao-form{
+  clear:both;
   table{
 
       th{
