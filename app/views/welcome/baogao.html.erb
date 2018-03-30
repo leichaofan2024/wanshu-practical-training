@@ -131,7 +131,7 @@
                 <% end %>
               </td>
               <td>
-                <% c2 = @station_online[duan_name] %>
+                <% c2 = @station_online[duan_name].to_i %>
                 <% baogao_zongji2 << c2 %>
                 <%= c2 %>
               </td>
@@ -153,7 +153,7 @@
               </td>
 
               <td>
-                <% c4 = @station_cankao[duan_name] %>
+                <% c4 = @station_cankao[duan_name].to_i %>
                 <% baogao_zongji4 << c4 %>
                 <%= c4 %>
               </td>
@@ -168,7 +168,7 @@
                 <% end %>
               </td>
               <td>
-                <% c6 = @student_yingkao[duan_name] %>
+                <% c6 = @student_yingkao[duan_name].to_i %>
                 <% baogao_zongji6 << c6 %>
                 <%= c6 %>
               </td>
@@ -191,7 +191,7 @@
 
               </td>
               <td>
-                <% c8 = @student_cankao[duan_name] %>
+                <% c8 = @student_cankao[duan_name].to_i %>
                 <%= c8 %>
                 <% baogao_zongji8 << c8 %>
               </td>
@@ -201,27 +201,19 @@
                 <% baogao_zongji9 << c9 %>
               </td>
               <td>
-                <% c10 = @student_dabiao[duan_name]%>
-                <%= (c10.to_f/@student_yingkao[duan_name].to_i*100).round(2) %>
+                <% c10 = @student_dabiao[duan_name].to_f %>
+                <%= (c10/@student_yingkao[duan_name].to_i*100).round(2) %>
                 <% baogao_zongji10 << c10 %>
               </td>
               <td>
-                <% c11 = @student_diaoli[duan_name] %>
+                <% c11 = @student_diaoli[duan_name].to_i %>
                 <%= c11 %>
-                <% if c11 == nil %>
-                <% baogao_zongji11 << 0 %>
-                <% else %>
                 <% baogao_zongji11 << c11 %>
-                <% end %>
               </td>
               <td>
-                <% c12 = @student_tuixiu[duan_name] %>
+                <% c12 = @student_tuixiu[duan_name].to_i %>
                 <%= c12 %>
-                <% if c12 == nil %>
-                <% baogao_zongji12 << 0 %>
-                <% else %>
                 <% baogao_zongji12 << c12 %>
-                <% end %>
               </td>
 
             </tr>
@@ -270,7 +262,7 @@
                 <% end %>
               </td>
               <td>
-                <% c2 = kuaizhao.online_station %>
+                <% c2 = kuaizhao.online_station.to_i %>
                 <%= c2 %>
                 <% baogao_zongji2 << c2 %>
               </td>
@@ -290,7 +282,7 @@
                 <% end %>
               </td>
               <td>
-                <% c4 = kuaizhao.cankao_station %>
+                <% c4 = kuaizhao.cankao_station.to_i %>
                 <%= c4 %>
                 <% baogao_zongji4 << c4 %>
               </td>
@@ -305,7 +297,7 @@
                 <% end %>
               </td>
               <td>
-                <% c6 = kuaizhao.student_yingkao %>
+                <% c6 = kuaizhao.student_yingkao.to_i %>
                 <%= c6 %>
                 <% baogao_zongji6 << c6 %>
               </td>
@@ -327,7 +319,7 @@
 
               </td>
               <td>
-                <% c8 = kuaizhao.student_shikao %>
+                <% c8 = kuaizhao.student_shikao.to_i %>
                 <%= c8 %>
                 <% baogao_zongji8 << c8 %>
               </td>
@@ -342,7 +334,7 @@
                 <% baogao_zongji10 << c10 %>
               </td>
               <td>
-                <% c11 = kuaizhao.student_diaoli %>
+                <% c11 = kuaizhao.student_diaoli.to_i %>
                 <%= c11 %>
                 <% if c11 == nil %>
                 <% baogao_zongji11 << 0 %>
@@ -351,7 +343,7 @@
                 <% end %>
               </td>
               <td>
-                <% c12 = kuaizhao.student_tuixiu %>
+                <% c12 = kuaizhao.student_tuixiu.to_i %>
                 <%= c12 %>
                 <% if c12 == nil %>
                 <% baogao_zongji12 << 0 %>
