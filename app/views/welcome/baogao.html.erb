@@ -47,11 +47,37 @@
       </p>
       <h4><span></span>一、基本情况</h4>
 
+      <div style = "width:100%;overflow:auto;">
+
+        <% if @jibenqingkuang.present? %>
+          <div class="pull-right" style= "overflow:auto;clear:both;">
+            <% if current_user.orgnize == "运输处" %>
+             <%= link_to("修改截图 >> ", edit_t_baogao_input_path(@jibenqingkuang)) %>
+            <% end %>
+          </div>
+          <hr>
+          <% if @jibenqingkuang.baogao_attachment[0].present? %>
+            <div style ="text-align:center;">
+              <%= image_tag("http://10.64.2.108:8033"+@jibenqingkuang.baogao_attachment[0].url,width: 900)%>
+            </div>
+          <% end %>
+
+        <% else %>
+          <div class="pull-right">
+            <% if current_user.orgnize == "运输处" %>
+              <%= link_to("插入截图 >> ", new_t_baogao_input_path) %>
+            <% end %>
+          </div>
+        <% end %>
+
+      </div>
+
+
       <p><span></span> <strong>1.注册使用情况。</strong>
         截止到
         <%= render_baogao_time(@search,params[:kuaizhao_time]) %>
 
-        统计，二月份平台注册车站达到<%= if params[:kuaizhao_time].present?
+        统计，平台注册车站达到<%= if params[:kuaizhao_time].present?
                                    @kuaizhao_xiangqing.sum(:online_station)
                                    else
                                     @station_online_all
@@ -124,9 +150,107 @@
 
       </p>
 
+
+      <div style = "width:100%;margin-bottom:30px;">
+
+        <% if @jibenqingkuang.present? %>
+          <% if @jibenqingkuang.baogao_attachment[1].present? %>
+            <div style ="text-align:center;">
+              <%= image_tag("http://10.64.2.108:8033"+@jibenqingkuang.baogao_attachment[1].url,width: 900)%>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+
+      <div style = "width:100%;">
+
+        <% if @jibenqingkuang.present? %>
+          <% if @jibenqingkuang.baogao_attachment[2].present? %>
+            <div style ="text-align:center;">
+              <%= image_tag("http://10.64.2.108:8033"+@jibenqingkuang.baogao_attachment[2].url,width: 900)%>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+
       <h4><span></span> 二、好的方面</h4>
+        <div style = "width:100%;">
+
+          <% if @haodefangmian.present? %>
+
+
+            <div class="pull-right" style= "overflow: auto;">
+              <% if current_user.orgnize == "运输处" %>
+               <%= link_to("修改文字 >> ", edit_t_baogao_input_path(@haodefangmian)) %>
+              <% end %>
+            </div>
+            <% if @haodefangmian.content.present? %>
+              <p> <%= @haodefangmian.content.html_safe %> </p>
+            <% end %>
+
+          <% else %>
+            <div class="pull-right">
+              <% if current_user.orgnize == "运输处" %>
+                <%= link_to("新建文字 >> ", new_t_baogao_input_path) %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+
       <h4><span></span> 三、存在问题</h4>
+        <div style = "width:100%;">
+
+          <% if @cunzaiwenti.present? %>
+            <div class="pull-right">
+              <% if current_user.orgnize == "运输处" %>
+               <%= link_to("修改图文 >> ", edit_t_baogao_input_path(@cunzaiwenti)) %>
+              <% end %>
+            </div>
+            <hr>
+            <% if @cunzaiwenti.baogao_attachment[0].present? %>
+              <div style ="text-align:center;margin-bottom:30px;">
+                <%= image_tag("http://10.64.2.108:8033"+@cunzaiwenti.baogao_attachment[0].url,width: 900)%>
+              </div>
+            <% end %>
+            <% if @cunzaiwenti.baogao_attachment[1].present? %>
+              <div style ="text-align:center;">
+                <%= image_tag("http://10.64.2.108:8033"+@cunzaiwenti.baogao_attachment[1].url,width: 900)%>
+              </div>
+            <% end %>
+            <% if @cunzaiwenti.content.present? %>
+              <p> <%= @cunzaiwenti.content %> </p>
+            <% end %>
+          <% else %>
+            <div class="pull-right">
+              <% if current_user.orgnize == "运输处" %>
+                <%= link_to("新建图文 >> ", new_t_baogao_input_path) %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+
       <h4><span></span> 四、下月重点工作</h4>
+        <div style = "width:100%;">
+
+          <% if @xiayuezhongdiangongzuo.present? %>
+            <div class="pull-right">
+              <% if current_user.orgnize == "运输处" %>
+               <%= link_to("修改 >> ", edit_t_baogao_input_path(@xiayuezhongdiangongzuo)) %>
+              <% end %>
+            </div>
+            <% if @xiayuezhongdiangongzuo.content.present? %>
+              <p><%= @xiayuezhongdiangongzuo.content.html_safe%></p>
+
+            <% end %>
+
+          <% else %>
+            <div class="pull-right">
+              <% if current_user.orgnize == "运输处" %>
+                <%= link_to("新建文字 >> ", new_t_baogao_input_path) %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
     </div>
 
   </div>

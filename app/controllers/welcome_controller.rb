@@ -284,6 +284,10 @@ class WelcomeController < ApplicationController
 
     if params[:search].present?
       @search = TimeSearch.new(params[:search])
+      @jibenqingkuang = TBaogaoInput.where(:title => "基本情况" ).where("t_baogao_inputs.baogao_time between ? and ?",@search.date_from,@search.date_to ).first
+      @haodefangmian = TBaogaoInput.where(:title => "好的方面" ).where("t_baogao_inputs.baogao_time between ? and ?",@search.date_from,@search.date_to ).first
+      @cunzaiwenti = TBaogaoInput.where(:title => "存在问题" ).where("t_baogao_inputs.baogao_time between ? and ?",@search.date_from,@search.date_to ).first
+      @xiayuezhongdiangongzuo = TBaogaoInput.where(:title => "下月重点工作" ).where("t_baogao_inputs.baogao_time between ? and ?",@search.date_from,@search.date_to ).first
       @reason_hot_all = @search.scope_reason_hot.group(:F_name).count
       @programs_student = @search.scope_duan_program.group('t_program_info.F_name').count.sort { |a, b| b[1] <=> a[1] }
       @program_type = @search.scope_program_type
@@ -461,6 +465,10 @@ class WelcomeController < ApplicationController
       end
 
     else
+      @jibenqingkuang = TBaogaoInput.where(:title => "基本情况" ).where("t_baogao_inputs.baogao_time between ? and ?",Time.now.beginning_of_month,Time.now.end_of_month ).first
+      @haodefangmian = TBaogaoInput.where(:title => "好的方面" ).where("t_baogao_inputs.baogao_time between ? and ?",Time.now.beginning_of_month,Time.now.end_of_month ).first
+      @cunzaiwenti = TBaogaoInput.where(:title => "存在问题" ).where("t_baogao_inputs.baogao_time between ? and ?",Time.now.beginning_of_month,Time.now.end_of_month).first
+      @xiayuezhongdiangongzuo = TBaogaoInput.where(:title => "下月重点工作" ).where("t_baogao_inputs.baogao_time between ? and ?",Time.now.beginning_of_month,Time.now.end_of_month).first
       @reason_hot_all = TReasonInfo.joins(:t_detail_reason_infoes).datetime1.group(:F_name).count
       @score_60_below = TRecordInfo.where('F_score< ? ', 60).datetime.count
       @score_60 = TRecordInfo.where('F_score >= ? AND F_score<? ', 60, 80).datetime.count

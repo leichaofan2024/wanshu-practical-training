@@ -21,6 +21,7 @@ Rails.application.routes.draw do
     get '/update_note',to: 'welcome#update_note'
     get "/baogao", to: "welcome#baogao"
     post "/create_kuaizhao", to: "t_baogao_infos#create_kuaizhao"
+    resources :t_baogao_inputs
     resources :t_chejian_counts
     resources :t_baogao_programs
     resources :users
