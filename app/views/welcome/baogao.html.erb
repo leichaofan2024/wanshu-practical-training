@@ -45,31 +45,26 @@
         <%= render_baogao_time(@search,params[:kuaizhao_time]) %>全集团公司共有25个站段利用RALI实训平台进行了非正常实训及应急演练。
         现将利用车务系统实训管理分析平台统计分析情况通报如下：
       </p>
-      <h4><span></span>一、基本情况</h4>
+      <h4><span></span>一、基本情况
+        <% if @jibenqingkuang.present? %>
+          <% if current_user.orgnize == "运输处" %>
+           <%= link_to("", edit_t_baogao_input_path(@jibenqingkuang),class: "fa fa-edit") %>
+          <% end %>
+        <% else %>
+            <% if current_user.orgnize == "运输处" %>
+              <%= link_to("插入截图 >> ", new_t_baogao_input_path) %>
+            <% end %>
+        <% end %>
+      </h4>
 
       <div style = "width:100%;overflow:auto;">
-
         <% if @jibenqingkuang.present? %>
-          <div class="pull-right" style= "overflow:auto;clear:both;">
-            <% if current_user.orgnize == "运输处" %>
-             <%= link_to("修改截图 >> ", edit_t_baogao_input_path(@jibenqingkuang)) %>
-            <% end %>
-          </div>
-          <hr>
           <% if @jibenqingkuang.baogao_attachment[0].present? %>
             <div style ="text-align:center;">
               <%= image_tag("http://10.64.2.108:8033"+@jibenqingkuang.baogao_attachment[0].url,width: 900)%>
             </div>
           <% end %>
-
-        <% else %>
-          <div class="pull-right">
-            <% if current_user.orgnize == "运输处" %>
-              <%= link_to("插入截图 >> ", new_t_baogao_input_path) %>
-            <% end %>
-          </div>
         <% end %>
-
       </div>
 
 
@@ -173,40 +168,36 @@
         <% end %>
       </div>
 
-      <h4><span></span> 二、好的方面</h4>
+      <h4><span></span> 二、好的方面
+          <% if @haodefangmian.present? &&  current_user.orgnize == "运输处"%>
+             <%= link_to("", edit_t_baogao_input_path(@haodefangmian),class: "fa fa-edit") %>
+          <% elsif current_user.orgnize == "运输处" %>
+              <%= link_to("", new_t_baogao_input_path,class: "fa fa-edit") %>
+          <% end %>
+      </h4>
         <div style = "width:100%;">
 
           <% if @haodefangmian.present? %>
 
-
-            <div class="pull-right" style= "overflow: auto;">
-              <% if current_user.orgnize == "运输处" %>
-               <%= link_to("修改文字 >> ", edit_t_baogao_input_path(@haodefangmian)) %>
-              <% end %>
-            </div>
             <% if @haodefangmian.content.present? %>
               <p> <%= @haodefangmian.content.html_safe %> </p>
             <% end %>
-
-          <% else %>
-            <div class="pull-right">
-              <% if current_user.orgnize == "运输处" %>
-                <%= link_to("新建文字 >> ", new_t_baogao_input_path) %>
-              <% end %>
-            </div>
           <% end %>
         </div>
 
-      <h4><span></span> 三、存在问题</h4>
+      <h4><span></span> 三、存在问题
+        <% if current_user.orgnize == "运输处" %>
+          <% if @cunzaiwenti.present? %>
+             <%= link_to("", edit_t_baogao_input_path(@cunzaiwenti) ,class: "fa fa-edit")%>
+          <% else %>
+             <%= link_to("", new_t_baogao_input_path,class: "fa fa-edit" )%>
+          <% end %>
+        <% end %>
+      </h4>
         <div style = "width:100%;">
 
           <% if @cunzaiwenti.present? %>
-            <div class="pull-right">
-              <% if current_user.orgnize == "运输处" %>
-               <%= link_to("修改图文 >> ", edit_t_baogao_input_path(@cunzaiwenti)) %>
-              <% end %>
-            </div>
-            <hr>
+
             <% if @cunzaiwenti.baogao_attachment[0].present? %>
               <div style ="text-align:center;margin-bottom:30px;">
                 <%= image_tag("http://10.64.2.108:8033"+@cunzaiwenti.baogao_attachment[0].url,width: 900)%>
@@ -220,35 +211,24 @@
             <% if @cunzaiwenti.content.present? %>
               <p> <%= @cunzaiwenti.content %> </p>
             <% end %>
-          <% else %>
-            <div class="pull-right">
-              <% if current_user.orgnize == "运输处" %>
-                <%= link_to("新建图文 >> ", new_t_baogao_input_path) %>
-              <% end %>
-            </div>
           <% end %>
         </div>
 
-      <h4><span></span> 四、下月重点工作</h4>
+      <h4><span></span> 四、下月重点工作
+        <% if current_user.orgnize == "运输处" %>
+          <% if @xiayuezhongdiangongzuo.present? %>
+            <%= link_to("", edit_t_baogao_input_path(@xiayuezhongdiangongzuo),class: "fa fa-edit") %>
+          <% else %>
+            <%= link_to("", new_t_baogao_input_path,class: "fa fa-edit") %>
+          <% end %>
+        <% end %>
+      </h4>
         <div style = "width:100%;">
 
           <% if @xiayuezhongdiangongzuo.present? %>
-            <div class="pull-right">
-              <% if current_user.orgnize == "运输处" %>
-               <%= link_to("修改 >> ", edit_t_baogao_input_path(@xiayuezhongdiangongzuo)) %>
-              <% end %>
-            </div>
             <% if @xiayuezhongdiangongzuo.content.present? %>
               <p><%= @xiayuezhongdiangongzuo.content.html_safe%></p>
-
             <% end %>
-
-          <% else %>
-            <div class="pull-right">
-              <% if current_user.orgnize == "运输处" %>
-                <%= link_to("新建文字 >> ", new_t_baogao_input_path) %>
-              <% end %>
-            </div>
           <% end %>
         </div>
     </div>
