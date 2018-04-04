@@ -645,7 +645,7 @@ class WelcomeController < ApplicationController
 
 
     end
-    @reason_hot_all8 = @reason_hot_all.sort_by { |a, b| b[1] <=> a[1] }.first(8)
+    @reason_hot_all8 = @reason_hot_all.sort{ |a, b| b[1] <=> a[1] }.first(8)
     @reason_hot_all_sum = @reason_hot_all.values.sum
     @score_sum = @score_90 + @score_80 + @score_60 + @score_60_below
     @programs_student_all = @programs_student.first(5)
