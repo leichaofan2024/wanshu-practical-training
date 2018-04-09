@@ -9,4 +9,11 @@ module WelcomeHelper
        "#{Time.now.beginning_of_month.to_time.strftime('%Y/%m/%d')}  ~ #{Time.now.end_of_month.to_time.strftime('%Y/%m/%d')}"
      end
   end
+
+  def render_time_length(params)
+    seconds = params % 60
+    minutes = (params - seconds)/60
+    time_longth = "#{minutes}分#{seconds}秒"
+    return time_longth
+  end
 end

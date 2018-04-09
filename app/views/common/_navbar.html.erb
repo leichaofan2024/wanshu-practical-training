@@ -45,7 +45,9 @@
 					<li><%= link_to("个人信息分析",employees_path)%></li>
 
 					<li><%= link_to("报告数据分析",baogao_path)%></li>
-
+          <% if current_user.permission == 2 %>
+					  <li><%= link_to("各站达标一览", duan_student_dabiao_path)%></li>
+				  <% end %>
     		</ul>
 
 

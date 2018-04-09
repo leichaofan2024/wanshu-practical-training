@@ -1,0 +1,76 @@
+<div class="root-search-frame">
+  <div class="row">
+    <div class="pull-right range-query">
+      <div class="searchtime">时间：</div>
+      <div class="searchtime">
+        <%= form_tag duan_student_dabiao_path, method: :get do %>
+          <%= text_field_tag 'search[date_from]',nil,:placeholder => time_begin(params[:search])%>
+          <%= text_field_tag 'search[date_to]',nil,:placeholder => time_end(params[:search]) %>
+          <%= submit_tag "搜索", id:"time_id",class: "btn search-button"%>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class= "pie_duan_frame">
+  <table class = "table">
+    <thead>
+      <tr>
+        <th>序号</th>
+        <th>姓名</th>
+        <th>考试时长</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @duan_student_group.each do |station_uuid,students| %>
+        <tr>
+          <th><%= TStationInfo.find_by(F_uuid: station_uuid).F_name %></th>
+        </tr>
+        <tr>
+          <td> 达标人员： </td>
+        </tr>
+        <% n = 1 %>
+        <% students.each do |student| %>
+          <% if @student_dabiao_id.include?(student.F_id)%>
+            <tr>
+              <td><%= n %></td>
+              <td><%= student.F_name %></td>
+              <td>
+                <% if @student_shichang_hash[student.F_id].present? %>
+                <%= render_time_length(@student_shichang_hash[student.F_id]) %>
+                <% else %>
+                  未参考
+                <% end %>
+              </td>
+              <% n = n+1 %>
+            </tr>
+          <% end %>
+        <% end %>
+
+
+        <tr>
+          <td> 未达标人员： </td>
+        </tr>
+        <% n = 1 %>
+        <% students.each do |student| %>
+          <% if @student_not_dabiao_id.include?(student.F_id)%>
+            <tr>
+              <td><%= n %></td>
+              <td><%= student.F_name %></td>
+              <td>
+                <% if @student_shichang_hash[student.F_id].present? %>
+                <%= render_time_length(@student_shichang_hash[student.F_id]) %>
+                <% else %>
+                  未参考
+                <% end %>
+              </td>
+              <% n = n+1 %>
+            </tr>
+          <% end %>
+        <% end %>
+
+      <% end %>
+    </tbody>
+<div>
