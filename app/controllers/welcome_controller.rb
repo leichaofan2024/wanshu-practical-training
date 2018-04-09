@@ -272,14 +272,14 @@ class WelcomeController < ApplicationController
   end
 
   def baogao
-    @kuaizhao = TBaogaoInfo.pluck(:created_at).uniq
+    @kuaizhao = TBaogaoInfo.pluck(:kuaizhao_create_time).uniq
     @baogao_program_select = TBaogaoProgram.pluck(:name)
     if params[:kuaizhao_duibi].present?
-      @kuaizhao_duibi = TBaogaoInfo.where(:created_at => params[:kuaizhao_duibi].to_time)
+      @kuaizhao_duibi = TBaogaoInfo.where(:kuaizhao_create_time => params[:kuaizhao_duibi].to_time)
     end
 
     if params[:kuaizhao_time].present?
-      @kuaizhao_xiangqing = TBaogaoInfo.where(:created_at => params[:kuaizhao_time].to_time )
+      @kuaizhao_xiangqing = TBaogaoInfo.where(:kuaizhao_create_time => params[:kuaizhao_time].to_time )
     end
 
     if params[:search].present?

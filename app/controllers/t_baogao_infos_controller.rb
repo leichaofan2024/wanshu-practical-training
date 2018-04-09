@@ -41,10 +41,10 @@ class TBaogaoInfosController < ApplicationController
     end
 
     @student_tuixiu = TUserInfo.where("t_user_info.status=? AND t_user_info.F_type = ?","退休",0).joins(:t_duan_info).duan_orgnization.select("t_duan_info.F_name,t_user_info.F_id").distinct.group("t_duan_info.F_name").count
-
+    @kuaizhao_create_time = Time.now
     @station_online.keys.each do |duan_name|
       TBaogaoInfo.create(:duan_name => duan_name, :online_station => @station_online[duan_name], :cankao_station =>@station_cankao[duan_name], :student_yingkao => @student_yingkao[duan_name], :student_shikao => @student_cankao[duan_name], :student_dabiao_percent => (@student_dabiao[duan_name].to_f/@student_yingkao[duan_name].to_i*100).round(2),
-       :student_diaoli =>@student_diaoli[duan_name], :student_tuixiu => @student_tuixiu[duan_name])
+       :student_diaoli =>@student_diaoli[duan_name], :student_tuixiu => @student_tuixiu[duan_name],:kuaizhao_create_time => @kuaizhao_create_time)
     end
     redirect_to baogao_path
   end
