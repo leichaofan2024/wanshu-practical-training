@@ -1,6 +1,6 @@
 <div class="call-board-frame">
   <div class="pull-right">
-    <% if current_user.permission == 1 or current_user.permission==2 %>
+    <% if current_user.orgnize == "运输处" or current_user.permission==2 %>
     <%= link_to("发布消息>>", new_call_board_path, :class => "btn btn-primary") %>
     <% end %>
   </div>
@@ -10,7 +10,7 @@
         <th>序号</th>
         <th>标题</th>
         <th>发布日期</th>
-        <% if current_user.permission ==1 or current_user.permission ==2 %>
+        <% if current_user.orgnize == "运输处" or current_user.permission ==2 %>
           <th>管理</th>
         <% end %>
       </tr>
@@ -24,7 +24,7 @@
             <td width= "20%"><%= i %></td>
             <td width= "40%"><%= link_to(c.name, call_board_path(c)) %>  <span style="color:red;margin-left:10px;"><%= if_browsed?(current_user,c)%></span></td>
             <td width= "20%"><%= c.created_at.strftime("%Y/%m/%d %I:%M %p") %></td>
-            <% if current_user.permission ==1%>
+            <% if current_user.orgnize == "运输处" %>
               <td width= "20%">
                 <%= link_to("编辑", edit_call_board_path(c),:class => "btn btn-sm btn-primary")%> |
                 <%= link_to("删除", call_board_path(c),method: :delete,data: {confirm: "确定删除吗？"}, :class=> "btn btn-sm btn-danger")%>
