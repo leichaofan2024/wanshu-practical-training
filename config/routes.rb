@@ -2,7 +2,13 @@ Rails.application.routes.draw do
     devise_for :users, controllers: { registrations: 'users/registrations' , sessions: 'users/sessions'}
     # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
-      root :to => 'welcome#ju_overview'
+    namespace :api, :defaults => { :format => :json } do
+      namespace :qjsx do
+        post '/data_transfer/create_data', to: 'data_transfer#create_data'
+        post "/data_transfer/data_test", to: "data_transfer#data_test"
+      end
+    end
+    root :to => 'welcome#ju_overview'
 
     get '/ju_overview', to: 'welcome#ju_overview'
     get '/duan_overview', to: 'welcome#duan_overview'
