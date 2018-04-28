@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180404083046) do
+ActiveRecord::Schema.define(version: 20180418113539) do
 
   create_table "attachment", id: :bigint, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", comment: "系统附件表" do |t|
     t.string   "file_name",          limit: 50,                                       null: false, comment: "文件名称"
@@ -451,6 +451,75 @@ ActiveRecord::Schema.define(version: 20180404083046) do
     t.integer  "permission"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
     t.index ["role"], name: "index_users_on_role", unique: true, using: :btree
+  end
+
+  create_table "xcf_detail_reason_infos", primary_key: "F_uuid", id: :string, limit: 64, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "F_record_detail_uuid"
+    t.datetime "F_time"
+    t.integer  "F_reason_id"
+    t.integer  "F_score"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  create_table "xcf_program_infos", primary_key: "F_id", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.string  "F_name"
+    t.integer "F_type_id"
+  end
+
+  create_table "xcf_program_type_infos", primary_key: "F_id", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.string "F_name"
+  end
+
+  create_table "xcf_reason_infos", primary_key: "F_id", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.integer "F_reason_type_id"
+    t.string  "F_name"
+    t.integer "F_value"
+  end
+
+  create_table "xcf_reason_type_infos", primary_key: "F_id", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.string "F_name"
+  end
+
+  create_table "xcf_record_detail_infos", primary_key: "F_uuid", id: :string, limit: 64, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "F_record_uuid"
+    t.integer  "F_program_id"
+    t.integer  "F_score"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  create_table "xcf_record_infos", primary_key: "F_uuid", id: :string, limit: 64, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "F_user_uuid"
+    t.string   "F_location"
+    t.integer  "F_score"
+    t.datetime "F_begin_time"
+    t.integer  "time_length"
+    t.string   "F_teacher_uuid"
+    t.string   "F_question_name"
+    t.string   "F_record"
+    t.string   "F_pre_work_uuid"
+    t.string   "F_bs_name"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.index ["F_score"], name: "index_xcf_record_infos_on_F_score", using: :btree
+    t.index ["F_user_uuid"], name: "index_xcf_record_infos_on_F_user_uuid", using: :btree
+  end
+
+  create_table "xcf_user_infos", primary_key: "F_uuid", id: :string, limit: 64, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "F_name"
+    t.string   "F_id"
+    t.integer  "F_type"
+    t.string   "F_duan_uuid"
+    t.string   "F_station_uuid"
+    t.string   "F_team_uuid"
+    t.string   "F_work_uuid"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.index ["F_duan_uuid"], name: "index_xcf_user_infos_on_F_duan_uuid", using: :btree
+    t.index ["F_id"], name: "index_xcf_user_infos_on_F_id", using: :btree
+    t.index ["F_station_uuid"], name: "index_xcf_user_infos_on_F_station_uuid", using: :btree
+    t.index ["F_uuid"], name: "index_xcf_user_infos_on_F_uuid", using: :btree
   end
 
   add_foreign_key "sys_resources_sub", "sys_resources", column: "resource_id", name: "sys_resources_sub_ibfk_1", on_delete: :cascade

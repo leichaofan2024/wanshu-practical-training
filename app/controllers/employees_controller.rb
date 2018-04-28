@@ -7,22 +7,21 @@ class EmployeesController < ApplicationController
   def index
     student = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month)
     @student_F_id = student.joins(:t_record_infoes).datetime.pluck("t_user_info.F_id").uniq
-    @student_ck = student.where("t_user_info.F_id": @student_F_id).select("t_user_info.F_id, t_user_info.F_name").distinct.order("F_id DESC")
-    @student_wk = student.where.not("t_user_info.F_id": @student_F_id).select("t_user_info.F_id, t_user_info.F_name").distinct.order("F_id DESC")
-
-    @users = case params[:order]
-    when 'by_student_wk'
-      @student_wk
-    when 'by_student_ck'
-      @student_ck
-    else
-      TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).select("t_user_info.F_id, t_user_info.F_name").distinct.order("F_id DESC")
-    end
+    @student_ck = student.where("t_user_info.F_id": @student_F_id).select("t_user_info.F_uuid,t_user_info.F_id, t_user_info.F_name").distinct.order("F_id DESC")
+    @student_wk = student.where.not("t_user_info.F_id": @student_F_id).select("t_user_info.F_uuid,t_user_info.F_id, t_user_info.F_name").distinct.order("F_id DESC")
 
 
     # @q = TUserInfo.joins(:t_station_info, :t_team_info).ransack(params[:q])
     # @users = @q.result.order("F_id DESC").page(params[:page]).per(20)
     if params[:registration_id].present?
+      @users = case params[:order]
+      when 'by_student_wk'
+        @student_wk
+      when 'by_student_ck'
+        @student_ck
+      else
+        TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).select("t_user_info.F_uuid,t_user_info.F_id, t_user_info.F_name").distinct.order("F_id DESC")
+      end
       @users = @users.joins(:t_station_info).where('t_station_info.F_name' => params[:registration_id])
     end
   end
@@ -70,7 +69,7 @@ class EmployeesController < ApplicationController
   end
 
   def duan_record
-      @station = TStationInfo.joins(:t_user_infoes).student_all(Time.now.beginning_of_month, Time.now.end_of_month).pluck("t_station_info.F_uuid").uniq
+      @station =TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_station_info).pluck("t_station_info.F_uuid").uniq
       @duan = TDuanInfo.duan_orgnization.joins(:t_station_infoes).where("t_station_info.F_uuid": @station).group("t_duan_info.F_name").count
 
   end

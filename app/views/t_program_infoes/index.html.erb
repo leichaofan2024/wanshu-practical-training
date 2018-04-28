@@ -1,0 +1,23 @@
+<div class="call-board-frame">
+  <% @programs.each do |program_type,program_group| %>
+    <div class="program-index-type">
+      <%= TProgramTypeInfo.find_by(:F_id => program_type).F_name %> <br>
+    </div>
+    <div class="program-index-content">
+
+      <% program_group.each do |program| %>
+        <div class="program-index-object">
+
+            <% if params[:search].present? %>
+              <%= link_to(program.F_name,t_program_info_path(:id => program.F_id,:name => program.F_name,:"uf8" => params[:uf8],:"search" => params[:search],:"commit" => params[:commit])) %>
+            <% else %>
+              <%= link_to(program.F_name,t_program_info_path(:id => program.F_id,:name => program.F_name))%>
+            <% end %>
+
+        </div>
+      <% end %>
+      <div style="clear: both;height:0px; line-height:0px;"></div>
+    </div>
+
+  <% end %>
+</div>

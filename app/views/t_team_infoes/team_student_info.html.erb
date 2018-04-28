@@ -427,7 +427,7 @@
             <%= simple_form_for @station do |f| %>
               <td class="text-center"><%= f.label "上传站场图", class: "uploader-label"%></td>
               <td><%= f.input_field :image,multiple: true ,as: :file ,label: "选择图片"%></td>
-              <% if current_user.orgnize != "集团公司" %>
+              <% if current_user.orgnize != "集团公司" && current_user.orgnize != "研发中心" %>
                 <td><%= f.submit "点击上传", data: { disable_with: "上传中。。。"}, class: "uploader-submit" %></td>
               <% else %>
                 <td><%= link_to("点击上传","#",class:"btn btn-sm btn-primary")%></td>
@@ -454,14 +454,14 @@
             <%= simple_form_for @station do |f| %>
               <td class="text-center"><%= f.label "上传岗位作业指导书", class: "uploader-label"%></td>
               <td><%= f.input_field :attachment,multiple: true ,as: :file ,label: "选择附件"%></td>
-              <% if current_user.orgnize != "集团公司" %>
+              <% if current_user.orgnize != "集团公司" && current_user.orgnize != "研发中心"  %>
                 <td><%= f.submit "点击上传", data: { disable_with: "上传中。。。"}, class: "uploader-submit" %></td>
               <% else %>
                 <td><%= link_to("点击上传","#",class:"btn btn-sm btn-primary")%></td>
               <% end %>
             <% end %>
             <td>
-              <% if current_user.orgnize != "集团公司" %>
+              <% if current_user.orgnize != "集团公司" && current_user.orgnize != "研发中心" %>
                 <span style="color:#4B73B2"><i class="fa fa-download fa-1x" aria-hidden="true"></i>下载附件：</span>
                 <% if @station.attachment.present? %>
                   <% n = @station.attachment.count %>
@@ -481,14 +481,14 @@
             <%= simple_form_for @station do |f| %>
               <td class="text-center"><%= f.label "本站实训平台软件压缩包", class: "uploader-label"%></td>
               <td><%= f.input_field :attachment2,multiple: true ,as: :file ,label: "选择附件"%></td>
-              <% if current_user.orgnize != "集团公司" %>
+              <% if current_user.orgnize != "集团公司" && current_user.orgnize != "研发中心" %>
                 <td><%= f.submit "点击上传", data: { disable_with: "上传中。。。"}, class: "uploader-submit" %></td>
               <% else %>
                 <td><%= link_to("点击上传","#",class:"btn btn-sm btn-primary")%></td>
               <% end %>
             <% end %>
             <td>
-              <% if current_user.orgnize != "集团公司" %>
+              <% if current_user.orgnize != "集团公司" && current_user.orgnize != "研发中心" %>
                 <span style="color:#4B73B2"><i class="fa fa-download fa-1x" aria-hidden="true"></i>下载附件：</span>
                 <% if @station.attachment2.present? %>
                   <% n = @station.attachment2.count %>

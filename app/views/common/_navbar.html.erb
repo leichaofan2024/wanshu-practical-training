@@ -25,23 +25,8 @@
           <li><a href="/call_boards">公告</a></li>
 					<% if current_user.permission == 1%>
 					  <li><a href="/duan_call_boards">站段公告</a></li>
-						<li class="dropdown">
-		          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-								专项考核
-		          </a>
-		          <ul class="dropdown-menu">
-								<% TProgramInfo.all.each do |p| %>
-									<li>
-										<% if params[:search].present? %>
-										  <%= link_to(p.F_name,t_program_info_path(p,:name => p.F_name,:"uf8" => params[:uf8],:"search" => params[:search],:"commit" => params[:commit] ))%>
-										<% else %>
-	                    <%= link_to(p.F_name,t_program_info_path(p,:name => p.F_name))%>
-										<% end %>
-									</li>
-								<% end %>
-		          </ul>
-	          </li>
 					<% end %>
+					<li><%= link_to("专项考核", t_program_infoes_path)%></li>
 					<li><%= link_to("个人信息分析",employees_path)%></li>
 
 					<li><%= link_to("报告数据分析",baogao_path)%></li>

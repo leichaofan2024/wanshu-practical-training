@@ -14,10 +14,10 @@
 
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuDivider">
           <li>
-            <%= link_to("未考", employees_path(:order => "by_student_wk")) %>
+            <%= link_to("未考", employees_path(:order => "by_student_wk",:registration_id => params[:registration_id])) %>
           </li>
           <li>
-            <%= link_to("已考", employees_path(:order => "by_student_ck"))%>
+            <%= link_to("已考", employees_path(:order => "by_student_ck",:registration_id => params[:registration_id]))%>
           </li>
         </ul>
       </div>
@@ -53,7 +53,8 @@
             </tr>
           </thead>
           <tbody _ngcontent-1>
-              <% @users.each do |user| %>
+            <% if @users.present? %>
+              <% @users.find_each(:batch_size => 100) do |user| %>
               <% u = TUserInfo.find_by(:F_id => user.F_id) %>
                   <tr _ngcontent-1>
                     <td _ngcontent-1>
@@ -67,7 +68,7 @@
                     <% if record.present? %>
                     <td><%= record.pluck(:F_score).sort_by{ |score| score }.first %></td>
                       <td _ngcontent-1>
-                        <%= record.pluck(:F_score).inject(0.0) { |s, f| s + f } / record.count %>
+                        <%= (record.pluck(:F_score).inject(0.0) { |s, f| s + f } / record.count).round(2) %>
                       </td>
                       <td>
                           <p> <%= record.count %> </p>
@@ -85,16 +86,10 @@
                       </td>
                       <% end %>
                   </tr>
-                  <% end %>
+              <% end %>
+            <% end %>
           </tbody>
       </table>
     </div>
   </div>
 </div>
-
-  <div class="pull-right">
-      <%= paginate @users %>
-  </div>
-  <!-- <script>
-    $("#event_category_id").select2( { theme: "bootstrap"} );
-  </script> -->

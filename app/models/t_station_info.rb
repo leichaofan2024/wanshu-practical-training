@@ -9,5 +9,5 @@ class TStationInfo < ApplicationRecord
   has_many :t_team_infoes, :class_name => "TTeamInfo", :foreign_key => "F_station_uuid"
   has_many :t_record_infoes, :foreign_key => "F_station_uuid"
   has_many :t_user_infoes ,:class_name => "TUserInfo" ,:foreign_key => "F_station_uuid"
-
+  has_many :xcf_user_infoes, :class_name => "XcfUserInfo", :foreign_key => "F_station_uuid"
 end

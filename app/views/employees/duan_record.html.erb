@@ -1,5 +1,5 @@
-<div class="">
-  <table class="table-bordered">
+<div class="call-board-frame">
+  <table class="table">
     <thead>
       <tr>
         <th>序号</th>
@@ -8,7 +8,6 @@
         <th>应考人数（人数）</th>
         <th>实考人数（人数）</th>
         <th>参考率 </th>
-        <th>调离人数</th>
         <th>退休人数</th>
       </tr>
     </thead>
@@ -22,10 +21,7 @@
           <td><%= value %></td>
           <td><%= employe_user(name) %></td>
           <td><%= employe_record(name) %></td>
-
           <td><%= (employe_record(name).to_f / employe_user(name).to_f * 100).round(2) %>%</td>
-
-          <td><%= employe_transfer(name, "调离") %></td>
           <td><%= employe_transfer(name, "退休")%></td>
         </tr>
         <% end %>

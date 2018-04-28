@@ -1,5 +1,8 @@
 class TProgramInfoesController < ApplicationController
-  layout "program_frame"
+  layout "program_frame",except: :index
+  def index
+    @programs = TProgramInfo.all.group_by{|x| x.F_type_id}
+  end
   def show
     gon.program_id = params[:id]
     if params[:name].present?
