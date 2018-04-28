@@ -149,6 +149,7 @@ class Api::Qjsx::DataTransferController < ApiController
                 F_uuid: record_detail_info_uuid,
                 F_record_uuid: r[:"F_uuid"],
                 F_program_id: pg1[:"F_program_id"],
+                F_score:      pg1[:"F_score"]
               )
               if pg1[:"F_reason_detail"].present?
                 x = pg1[:"F_reason_detail"].size
