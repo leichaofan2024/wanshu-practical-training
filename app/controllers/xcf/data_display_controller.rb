@@ -51,7 +51,7 @@ class Xcf::DataDisplayController < ApplicationController
      # 第二部分：
      a_user_record_hash = a_record_join_user.select("xcf_record_infos.F_uuid,xcf_user_infos.F_id").group_by{|u| u.F_id}
      if a_user_record_hash.present?
-       a_user_record_hash.each do |F_id,records|
+       a_user_record_hash.each do |f_id,records|
          n = 0
          m = 0
          records.each do |record|
@@ -64,7 +64,7 @@ class Xcf::DataDisplayController < ApplicationController
          end
 
          #每个考生的考题达标率：
-         a_user_record_hash[F_id] = (n.to_f/m).round(3)*100
+         a_user_record_hash[f_id] = (n.to_f/m).round(3)*100
        end
      end
      #饼图考题达标率占比：
@@ -101,7 +101,7 @@ class Xcf::DataDisplayController < ApplicationController
 
      #第三部分
      #每个考核项点的出现频次，倒叙排列:
-     a_record_detail_joins_program = a_record_details.joins(:xcf_group_infos)
+     a_record_detail_joins_program = a_record_details.joins(:xcf_program_infos)
      @program_record_detail_count = a_record_detail_joins_program.group("xcf_program_infos.F_name").count.sort{|a,b| b[1]<=>a[1]}
      #每个考核项点的平均成绩:
      @program_record_detail_average = a_record_detail_joins_program.group("xcf_program_infos.F_name").average("xcf_record_detail_infos.F_score")
@@ -129,33 +129,35 @@ class Xcf::DataDisplayController < ApplicationController
      gon.dabiao_duan_60 = @dabiao_duan_60.values
      gon.dabiao_duan_60_below = @dabiao_duan_60_below.values
      #第三个饼图:
-     gon.program_detail_key = @program_record_detail_count.first(8).sort{|x| x[0]}
-     gon.program_detail_count_a = {name: @program_record_detail_count[0][0],value: @program_record_detail_count[0][1]}
-     gon.program_detail_count_b = {name: @program_record_detail_count[1][0],value: @program_record_detail_count[1][1]}
-     gon.program_detail_count_c = {name: @program_record_detail_count[2][0],value: @program_record_detail_count[2][1]}
-     gon.program_detail_count_d = {name: @program_record_detail_count[3][0],value: @program_record_detail_count[3][1]}
-     gon.program_detail_count_e = {name: @program_record_detail_count[4][0],value: @program_record_detail_count[4][1]}
-     gon.program_detail_count_f = {name: @program_record_detail_count[5][0],value: @program_record_detail_count[5][1]}
-     gon.program_detail_count_g = {name: @program_record_detail_count[6][0],value: @program_record_detail_count[6][1]}
-     gon.program_detail_count_h = {name: @program_record_detail_count[7][0],value: @program_record_detail_count[7][1]}
-     #柱状图：
-     gon.program_keys = @program_record_detail_count.sort{|x| x[0]}
-     gon.program_values =@program_record_detail_count.sort{|x| x[1]}
-
+     if @program_record_detail_count.present?
+       gon.program_detail_key = @program_record_detail_count.first(8).sort{|x| x[0]}
+       gon.program_detail_count_a = {name: @program_record_detail_count[0][0],value: @program_record_detail_count[0][1]}
+       gon.program_detail_count_b = {name: @program_record_detail_count[1][0],value: @program_record_detail_count[1][1]}
+       gon.program_detail_count_c = {name: @program_record_detail_count[2][0],value: @program_record_detail_count[2][1]}
+       gon.program_detail_count_d = {name: @program_record_detail_count[3][0],value: @program_record_detail_count[3][1]}
+       gon.program_detail_count_e = {name: @program_record_detail_count[4][0],value: @program_record_detail_count[4][1]}
+       gon.program_detail_count_f = {name: @program_record_detail_count[5][0],value: @program_record_detail_count[5][1]}
+       gon.program_detail_count_g = {name: @program_record_detail_count[6][0],value: @program_record_detail_count[6][1]}
+       gon.program_detail_count_h = {name: @program_record_detail_count[7][0],value: @program_record_detail_count[7][1]}
+       #柱状图：
+       gon.program_keys = @program_record_detail_count.sort{|x| x[0]}
+       gon.program_values =@program_record_detail_count.sort{|x| x[1]}
+     end
      #第四个饼图：
-     gon.reason_keys_8 = @detail_reasons_count.first(8).sort{|x| x[0]}
-     gon.reason_value_a = {name: @detail_reasons_count[0][0], value: @detail_reasons_count[0][1]}
-     gon.reason_value_b = {name: @detail_reasons_count[1][0], value: @detail_reasons_count[1][1]}
-     gon.reason_value_c = {name: @detail_reasons_count[2][0], value: @detail_reasons_count[2][1]}
-     gon.reason_value_d = {name: @detail_reasons_count[3][0], value: @detail_reasons_count[3][1]}
-     gon.reason_value_e = {name: @detail_reasons_count[4][0], value: @detail_reasons_count[4][1]}
-     gon.reason_value_f = {name: @detail_reasons_count[5][0], value: @detail_reasons_count[5][1]}
-     gon.reason_value_g = {name: @detail_reasons_count[6][0], value: @detail_reasons_count[6][1]}
-     gon.reason_value_h = {name: @detail_reasons_count[7][0], value: @detail_reasons_count[7][1]}
-     #柱状图：
-     gon.reason_keys = @detail_reasons_count.sort{|x| x[0]}
-     gon.reason_values = @detail_reasons_count.sort{|x| x[1]}
-
+     if @detail_reasons_count.present?
+       gon.reason_keys_8 = @detail_reasons_count.first(8).sort{|x| x[0]}
+       gon.reason_value_a = {name: @detail_reasons_count[0][0], value: @detail_reasons_count[0][1]}
+       gon.reason_value_b = {name: @detail_reasons_count[1][0], value: @detail_reasons_count[1][1]}
+       gon.reason_value_c = {name: @detail_reasons_count[2][0], value: @detail_reasons_count[2][1]}
+       gon.reason_value_d = {name: @detail_reasons_count[3][0], value: @detail_reasons_count[3][1]}
+       gon.reason_value_e = {name: @detail_reasons_count[4][0], value: @detail_reasons_count[4][1]}
+       gon.reason_value_f = {name: @detail_reasons_count[5][0], value: @detail_reasons_count[5][1]}
+       gon.reason_value_g = {name: @detail_reasons_count[6][0], value: @detail_reasons_count[6][1]}
+       gon.reason_value_h = {name: @detail_reasons_count[7][0], value: @detail_reasons_count[7][1]}
+       #柱状图：
+       gon.reason_keys = @detail_reasons_count.sort{|x| x[0]}
+       gon.reason_values = @detail_reasons_count.sort{|x| x[1]}
+     end
   end
 
 
