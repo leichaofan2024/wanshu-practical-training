@@ -1,0 +1,2 @@
+module Xcf::DataDisplayHelper
+end

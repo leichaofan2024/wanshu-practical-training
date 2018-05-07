@@ -28,6 +28,9 @@ Rails.application.routes.draw do
     get "/baogao", to: "welcome#baogao"
     post "/create_kuaizhao", to: "t_baogao_infos#create_kuaizhao"
     get "/duan_student_dabiao", to: "welcome#duan_student_dabiao"
+    namespace :xcf do
+      get "/general_overview", to: "data_display#general_overview"
+    end
     resources :t_baogao_inputs
     resources :t_chejian_counts
     resources :t_baogao_programs

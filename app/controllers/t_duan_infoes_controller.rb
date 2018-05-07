@@ -340,14 +340,14 @@ class TDuanInfoesController < ApplicationController
 
 
     def duan_score_info
-        @duantype1 = TDuanInfo.where('t_duan_info.F_type= ?', 1).joins(t_user_infoes: :t_record_infoes)
-        @duantype2 = TDuanInfo.where('t_duan_info.F_type= ?', 2).joins(t_user_infoes: :t_record_infoes)
-        @duan = TDuanInfo.where('t_duan_info.F_type= ?', 1).joins(t_user_infoes: :t_record_infoes).group('t_duan_info.F_name').distinct.count
-        @duan_keys = @duan.keys
-        @duan_keys2 = @duantype2.group('t_duan_info.F_name').distinct.count.keys
+
 
         if params[:search].present?
             @search = TimeSearch.new(params[:search])
+            @duantype1 = TDuanInfo.where('t_duan_info.F_type= ?', 1).where.not(:F_name => "局职教基地").joins(t_user_infoes: :t_record_infoes).student_all(@search.date_from, @search.date_to)
+            @duantype2 = TDuanInfo.where('t_duan_info.F_type= ?', 2).joins(t_user_infoes: :t_record_infoes).student_all(@search.date_from, @search.date_to)
+            @duan_keys = @duantype1.group('t_duan_info.F_name').count.keys
+            @duan_keys2 = @duantype2.group('t_duan_info.F_name').count.keys
             duan_90_cwscores = @search.scope_duan_score1.where('t_record_info.F_score > ?', 90).group('t_duan_info.F_name').size
             @duan_90_cwscores = []
             @duan_keys.each do |key|
@@ -422,6 +422,10 @@ class TDuanInfoesController < ApplicationController
                                         end
             end
         else
+          @duantype1 = TDuanInfo.where('t_duan_info.F_type= ?', 1).joins(t_user_infoes: :t_record_infoes).student_all(Time.now.beginning_of_month, Time.now.end_of_month)
+          @duantype2 = TDuanInfo.where('t_duan_info.F_type= ?', 2).joins(t_user_infoes: :t_record_infoes).student_all(Time.now.beginning_of_month, Time.now.end_of_month)
+          @duan_keys = @duantype1.group('t_duan_info.F_name').count.keys
+          @duan_keys2 = @duantype2.group('t_duan_info.F_name').count.keys
             duan_90_cwscores = @duantype1.where('t_record_info.F_score > ?', 90).datetime.group('t_duan_info.F_name').size
             @duan_90_cwscores = []
             @duan_keys.each do |key|
