@@ -1,3 +1,116 @@
 // Place all the styles related to the xcf::data-display controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+.overall-data {
+  width: auto;
+  height: 36px;
+  margin-top: 10px;
+  font-family: AvenirNext;
+  font-size: 21px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #4a4a4a;
+  color: var(--greyish-brown);
+}
+.time-search{
+  width: auto;
+  height: 36px;
+  border-style: solid;
+  border-width: 2px;
+}
+.box{
+  width: auto;
+  height: 708px;
+  padding: 15px;
+  padding-left: 20px;
+  border-style: solid;
+  border-width: 2px;
+  margin-top: 10px;
+  background-attachment: scroll;
+  background-clip: border-box;
+  background-color: rgb(255,255,255);
+  background-origin: padding-box;
+  box-shadow: rgba(190,202,218,17);
+  border-collapse: separate;
+  border-color: rgb(255,255,255);
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  border-image-outset: 0px;
+  border-image-repeat: stretch;
+  border-image-slice: 100%;
+  border-image-source: none;
+  border-image-width: 1px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+.box-padding{
+  width: auto;
+  height: 656px;
+}
+.box-text{
+  width: auto;
+  height: 42px;
+  font-size: 14px;
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #4a4a4a;
+  color: var(--greyish-brown);
+}
+
+
+.box1{
+  width: auto;
+  height: 708px;
+  padding: 15px;
+  margin-top: 10px;
+  border-style: solid;
+  border-width: 1px;
+  background-attachment: scroll;
+  background-clip: border-box;
+  background-color: rgb(255,255,255);
+  background-origin: padding-box;
+  box-shadow: rgba(190,202,218,17);
+  border-collapse: separate;
+  border-color: rgb(255,255,255);
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  border-image-outset: 0px;
+  border-image-repeat: stretch;
+  border-image-slice: 100%;
+  border-image-source: none;
+  border-image-width: 1px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+.box1-padding{
+  width: auto;
+  height: 656px;
+}
+.box1-text{
+  width: auto;
+  height: 42px;
+  font-size: 14px;
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #4a4a4a;
+  color: var(--greyish-brown);
+}
+.box1-form{
+  width: auto;
+  height: auto;
+  border-style: solid;
+  border-width: 1px;
+  padding-top: 15px;
+}
