@@ -1,0 +1,8 @@
+<%= simple_form_for @faq do |f| %>
+  <%= f.input :title %>
+  <%= f.input :content, as: :ckeditor,label: "文字部分" %>
+
+  <label> 附件图(可一次选择多个文件)</label>
+  <%= f.input_field :faq_attachment,multiple: true ,as: :file ,label: "选择图片"%>
+  <%= f.submit "提交",:data => {:disable_with => "提交中..."} %>
+<% end %>

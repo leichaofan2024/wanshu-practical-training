@@ -116,8 +116,8 @@ class Api::Qjsx::DataTransferController < ApiController
               time_length:     r[:"time_length"],
               F_teacher_uuid:  r[:"F_teacher_uuid"],
               F_question_name: r[:"F_question_name"],
-              F_pre_work_uuid: r[:"F_pre_work_uuid"],
-              F_bs_name:       r[:"F_bs_name"]
+              F_pre_work_uuid: params[:"student"][:"F_pre_work_uuid"],
+              F_bs_name:       params[:"student"][:"F_bs_name"]
             )
             record_ret = 0
             record_msg = ""
@@ -133,8 +133,8 @@ class Api::Qjsx::DataTransferController < ApiController
               time_length:     r[:"time_length"],
               F_teacher_uuid:  r[:"F_teacher_uuid"],
               F_question_name: r[:"F_question_name"],
-              F_pre_work_uuid: r[:"F_pre_work_uuid"],
-              F_bs_name:       r[:"F_bs_name"]
+              F_pre_work_uuid: params[:"student"][:"F_pre_work_uuid"],
+              F_bs_name:       params[:"student"][:"F_bs_name"]
             )
             record_ret = 0
             record_msg = ""
@@ -159,7 +159,7 @@ class Api::Qjsx::DataTransferController < ApiController
                     F_record_detail_uuid:   record_detail_info_uuid,
                     F_reason_id:            detail_reason[:"F_reason_id"],
                     F_time:                 detail_reason[:"F_time"],
-                    F_score:                XcfReasonInfo.find_by(:id => detail_reason[:"F_reason_id"]).F_value
+                    F_score:                XcfReasonInfo.find_by(:F_id => detail_reason[:"F_reason_id"]).F_value
                   )
                 end
                 reason_ret = 0
@@ -212,6 +212,7 @@ class Api::Qjsx::DataTransferController < ApiController
 
 
   def data_test
+
     head = request.headers["ws-xcf-api"]
     if head == "75edb54405964a0c8393ce427f5f5d5e"
 

@@ -3,7 +3,9 @@
   <%= simple_form_for @user do |f| %>
   <%= f.input :role %>
   <% if @user.permission == 2 %>
-    <%= f.input :orgnize, collection: TDuanInfo.duan_orgnization.pluck(:F_name) %>
+    <% if current_user.permission == 1 %>
+      <%= f.input :orgnize, collection: TDuanInfo.duan_orgnization.pluck(:F_name) %>
+    <% end %>
     <%= f.input :permission,collection: [2]%>
   <% elsif @user.permission == 3 %>
     <% if current_user.permission == 1 %>

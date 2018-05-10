@@ -39,6 +39,7 @@
 
 
       <div class="nav navbar-nav navbar-right login-block">
+				<li><%= link_to("常见问题", faqs_path) %></li>
         <% if !current_user %>
           <li><%= link_to("注册", new_user_registration_path) %> </li>
           <li><%= link_to("登入", new_user_session_path) %></li>

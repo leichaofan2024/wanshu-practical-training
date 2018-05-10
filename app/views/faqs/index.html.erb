@@ -1,0 +1,68 @@
+<div class="call-board-frame">
+  <div class="pull-right">
+    <% if current_user.orgnize == "研发中心" %>
+    <%= link_to("发布消息>>", new_faq_path, :class => "btn btn-primary") %>
+    <% end %>
+  </div>
+  <table class="table table-border">
+    <thead>
+      <tr>
+        <th>序号</th>
+        <th>标题</th>
+        <th>发布日期</th>
+        <% if current_user.orgnize == "研发中心" %>
+          <th>管理</th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% i = 0 %>
+      <% @faqs.each do |c| %>
+          <% i= i+1%>
+          <tr>
+            <td width= "20%"><%= i %></td>
+            <td width= "40%"><%= link_to(c.title, "#",class: "#") %></td>
+            <td width= "20%"><%= c.created_at.strftime("%Y/%m/%d %I:%M %p") %></td>
+            <% if current_user.orgnize == "研发中心" %>
+              <td width= "20%">
+                <%= link_to("编辑", edit_faq_path(c),:class => "btn btn-sm btn-primary")%> |
+                <%= link_to("删除", faq_path(c),method: :delete,data: {confirm: "确定删除吗？"}, :class=> "btn btn-sm btn-danger")%>
+              </td>
+            <% end %>
+
+      <% end %>
+    </tbody>
+  </table>
+  <div style= "clear:both;">
+    <% m = 1 %>
+    <% @faqs.each do |c| %>
+      <hr>
+      <div class="faq-title">
+       <h4 style = "font-weight:400"><%= m %> 、<%= c.title %></h4>
+      </div><br>
+
+
+      <div class="faq_uploader_picture">
+          <% if c.faq_attachment.present? %>
+            <% n = c.faq_attachment.count %>
+            <% (0..(n-1)).each do |i| %>
+              <div class="teams_station_picture">
+                <!-- "http://10.64.2.108:8033"+ -->
+                <%= image_tag(c.faq_attachment[i].thumb.url)%>
+                <div class="dropdown-content">
+                  <%= image_tag(c.faq_attachment[i].url)%>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+      </div>
+
+      <div class="faq-content">
+       <p><%= c.content.html_safe %></p>
+      </div>
+      <% m = m+1%>
+    <% end %>
+  </div>
+
+
+</div>

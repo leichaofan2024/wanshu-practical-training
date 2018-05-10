@@ -31,6 +31,7 @@ Rails.application.routes.draw do
     namespace :xcf do
       get "/general_overview", to: "data_display#general_overview"
     end
+    resources :faqs
     resources :t_baogao_inputs
     resources :t_chejian_counts
     resources :t_baogao_programs
