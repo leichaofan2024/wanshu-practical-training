@@ -114,3 +114,126 @@
   border-width: 1px;
   padding-top: 15px;
 }
+
+
+
+
+//这个是all_examinee的css设置
+
+.examinee{
+  width: auto;
+  height: 76px;
+  padding: 15px;
+  font-family: AvenirNext;
+  font-size: 32px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  color: #4a4a4a;
+  color: var(--greyish-brown);
+}
+.time-center{
+  width: auto;
+  height: 28px;
+  margin: 10px,30px;
+  border-bottom-style: solid;
+  border-width: 1px;
+  font-size: 18px;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+}
+.back-button{
+  width: 162px;
+  height: 36px;
+  margin-top: 15px;
+  text-align: center;
+  border-style: solid;
+  border-width: 1px;
+  padding-top: 5px;
+}
+.statistics{
+  width: auto;
+  height: 56px;
+  padding: 10px;
+  margin-top: 10px;
+  border-style: solid;
+  border-width: 1px;
+  background-attachment: scroll;
+  background-clip: border-box;
+  background-color: rgb(255,255,255);
+  background-origin: padding-box;
+  box-shadow: rgba(190,202,218,17);
+  border-collapse: separate;
+  border-color: rgb(255,255,255);
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  border-image-outset: 0px;
+  border-image-repeat: stretch;
+  border-image-slice: 100%;
+  border-image-source: none;
+  border-image-width: 1px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+.statistics-box{
+  width: auto;
+  height: 40px;
+  padding: 5px;
+  font-size: 18px;
+  text-align: left;
+}
+.statistics-box1{
+  width: auto;
+  height: 40px;
+  padding: 5px;
+  padding-left: 20px;
+  font-size: 18px;
+  text-align: center;
+}
+
+.exam-table{
+  width: auto;
+  height: auto;
+  border-style: solid;
+  border-width: 3px;
+  text-align: center;
+  background-attachment: scroll;
+  background-clip: border-box;
+  background-color: rgb(255,255,255);
+  background-origin: padding-box;
+  box-shadow: rgba(190,202,218,17);
+  border-collapse: separate;
+  border-color: rgb(255,255,255);
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  border-image-outset: 0px;
+  border-image-repeat: stretch;
+  border-image-slice: 100%;
+  border-image-source: none;
+  border-image-width: 1px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+.exam-text{
+  background-color: rgb(245,246,247);
+  font-size: 18px;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+}
+.exam-text-small{
+  font-size: 14px;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+}

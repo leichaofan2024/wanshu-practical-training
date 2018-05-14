@@ -30,6 +30,7 @@ Rails.application.routes.draw do
     get "/duan_student_dabiao", to: "welcome#duan_student_dabiao"
     namespace :xcf do
       get "/general_overview", to: "data_display#general_overview"
+      get "/all_examinee", to: "data_display#all_examinee"
     end
     resources :t_baogao_inputs
     resources :t_chejian_counts

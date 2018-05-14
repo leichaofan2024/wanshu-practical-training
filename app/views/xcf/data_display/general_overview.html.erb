@@ -27,7 +27,7 @@
         <div class="box-text">
           <%= "合格率分析饼状图"%>
           <br>
-          <%= "2018-04-04 ~ 2018-05-04"%>
+          <%= "2018-04-04 ~ 2018-05-04"%><!--这个是需要展示当月的时间-->
         </div>
         <div id="exam-xcf" style="height:572px;"></div>
         <script type="text/javascript">
@@ -90,26 +90,33 @@
       </div>
     </div>
   </div>
-          <div class="col-md-4">
-            <div class="box1">
-              <div class="box1-padding">
-                <div class="box1-text">
-                    <%= "合格率表格数据分析"%>
-                    <br>
-                    <%= "2018-04-04 ~ 2018-05-04"%>
-                </div>
-                <div class="box1-form">
-                  <table class="table table-bordered">
-                    <tr>
-                      <td class="active"><%= "北京站"%></td>
-                      <td class="success"><%= "天津站"%></td>
-                      <td class="danger">...</td>
-                    </tr>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div><!--这个是饼图的附属表格-->
+  <div class="col-md-4">
+    <div class="box1">
+      <div class="box1-padding">
+        <div class="box1-text">
+            <%= "合格率表格数据分析"%>
+            <br>
+            <%= "2018-04-04 ~ 2018-05-04"%><!--这个是需要展示当月的时间-->
+        </div>
+        <div class="box1-form">
+          <table class="table table-bordered" style="height: auto;">
+            <tr>
+              <th class="exam-text"><%= "站段"%></th>
+              <th class="exam-text"><%= "不合格人数"%></th>
+              <th class="exam-text"><%="合格人数"%></th>
+              <th class="exam-text"><%="操作"%></th>
+            </tr>
+            <tr>
+              <td class="exam-text-small"><%= "北京西车务段"%></td>
+              <td class="exam-text-small"><%= "2"%></td>
+              <td class="exam-text-small"><%= "201"%></td>
+              <td class="exam-text-small"><%= "查看详情"%></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div><!--这个是饼图的附属表格-->
       </div><!--第一个饼图row-->
 <!--第二个饼图row-->
       <div class="row">
@@ -202,7 +209,7 @@
                             <td class="exam-text-small"><%= "北京西车务段"%></td>
                             <td class="exam-text-small"><%= "2"%></td>
                             <td class="exam-text-small"><%= "201"%></td>
-                            <td class="exam-text-small"><%= "查看详情"%></td>
+                            <td class="exam-text-small"><%= "查看详情"%></td><!--进入到 all_examinee的页面-->
                           </tr>
                         </table>
                       </div>
