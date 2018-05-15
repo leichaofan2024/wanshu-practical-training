@@ -1,0 +1,76 @@
+<div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="examinee">
+          <%= "北京车务段全部考生"%>
+        </div>
+      </div>
+    </div><!--这个是标题栏-->
+    <div class="row">
+      <div class="col-md-4 col-md-offset-4">
+        <div class="time-center">
+          <%= "2018-04-04 ~ 2018-05-04 | 当前月"%>
+        </div>
+      </div>
+    </div><!--这个是时间显示栏-->
+    <div class="row">
+      <div class="col-md-2">
+        <div class="back-button">
+          <%="返回上一层"%> <!--这个需要 button 返回到general_overview -->
+        </div>
+      </div>
+      <div class="col-md-6 col-md-offset-4">
+          <div class="pull-right range-query">
+            <div class="searchtime">时间：</div>
+            <div class="searchtime">
+                <%= form_tag baogao_path, method: :get do %>
+                  <%= text_field_tag 'search[date_from]',nil%>
+                  <%= text_field_tag 'search[date_to]',nil %>
+                  <%= submit_tag "搜索", id:"time_id",class: "btn search-button"%>
+                <% end %>
+          </div>
+        </div>
+      </div>
+    </div><!--这个是时间搜索栏-->
+<div class="row">
+  <div class="col-md-12">
+    <div class="statistics">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="statistics-box">
+            <%= "合计：XX 人"%>
+          </div>
+        </div>
+        <div class="col-md-4 col-md-offset-4">
+          <div class="statistics-box1">
+            <%= "合格人数 XX 人"%> |
+            <%= "不合格人数 XX 人"%>
+          </div>
+        </div>
+      </div>
+    </div><!--这个是statistics-->
+  </div>
+</div><!--这个是表格的统计栏-->
+<div class="row">
+    <div class="col-md-12">
+      <div class="exam-table">
+        <table class="table table-bordered">
+          <tr>
+            <th class="exam-text"><%= "姓名"%></th>
+            <th class="exam-text"><%= "车站"%></th>
+            <th class="exam-text"><%="监考老师"%></th>
+            <th class="exam-text"><%="时间"%></th>
+            <th class="exam-text"><%="操作"%></th>
+          </tr>
+          <tr>
+            <td class="exam-text-small"><%= "王小二"%></td>
+            <td class="exam-text-small"><%= "北京西车务段"%></td>
+            <td class="exam-text-small"><%= "王炸"%></td>
+            <td class="exam-text-small"><%= "2018-04-04"%></td>
+            <td class="exam-text-small"><%= "查看详情"%></td>
+          </tr>
+        </table>
+        </div>
+      </div>
+  </div>
+</div><!--这个是container-->

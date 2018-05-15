@@ -1,3 +1,60 @@
 // Place all the styles related to the welcome controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.data-search-label{
+  width: auto;
+  height: 40px;
+
+  font-size: 32px;
+  margin: 20px 25px;
+  padding: 5px;
+}
+.data-search-text{
+  width: auto;
+  height: 58px;
+  margin-left: 25px;
+  padding: 5px;
+
+  font-size: 16px;
+  text-align: left;
+}
+.data-overview{
+  width: auto;
+  height: 40px;
+
+  margin-left: 25px;
+  margin-top: 35px;
+  padding: 5px;
+  font-size: 24px;
+}
+.data-station{
+  width: auto;
+  height: 30px;
+
+  margin: 10px 25px 0px;
+  padding: 5px;
+  font-size: 20px;
+}
+.data-station-bar{
+  width: auto;
+  height: 50px;
+
+  margin-left:25px;
+  padding: 10px;
+}
+.data-box{
+  width: auto;
+  height: 500px;
+  border-width: 1px;
+  border-style: solid;
+  margin: 35px 25px 0px;
+}
+.data-skip-button{
+  width: auto;
+  height: 30px;
+  margin-bottom: 20px;
+  padding: 5px 0px 5px 200px;
+  border-width: 1px;
+  border-style: solid;
+}

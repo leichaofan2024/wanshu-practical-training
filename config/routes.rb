@@ -8,7 +8,7 @@ Rails.application.routes.draw do
         post "/data_transfer/data_test", to: "data_transfer#data_test"
       end
     end
-    root :to => 'welcome#ju_overview'
+    root :to => 'welcome#index'
 
     get '/ju_overview', to: 'welcome#ju_overview'
     get '/duan_overview', to: 'welcome#duan_overview'
@@ -30,6 +30,7 @@ Rails.application.routes.draw do
     get "/duan_student_dabiao", to: "welcome#duan_student_dabiao"
     namespace :xcf do
       get "/general_overview", to: "data_display#general_overview"
+      get "/all_examinee", to: "data_display#all_examinee"
     end
     resources :faqs
     resources :t_baogao_inputs

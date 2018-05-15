@@ -1,15 +1,309 @@
 class WelcomeController < ApplicationController
   before_action :all_browsed?
   layout "notime_frame",only: [:update_note]
-  def ju_overview
-    if current_user.permission == 2
-      redirect_to duan_overview_path
+  def index
+    if current_user.permission == 1
+      redirect_to ju_overview_path
+    elsif current_user.permission == 2
+      redirect_to duan_student_dabiao_path
     elsif current_user.permission == 3
       redirect_to station_overview_path
     end
   end
 
-  def role
+  def ju_overview
+    @duan = TDuanInfo.where.not('F_name= ? || F_name= ?', '局职教基地', '运输处').count
+    @station = TStationInfo.station_orgnization.joins(:t_user_infoes).student_all(Time.now.beginning_of_month, Time.now.end_of_month).distinct.count
+
+    if params[:search].present?
+        @search = TimeSearch.new(params[:search])
+        # 卡片
+        @duan_ck_count = @search.scope_duan.select('t_duan_info.F_uuid').distinct.count
+        @station_ck_count = @search.scope_station.distinct.count
+        @team = TTeamInfo.joins({t_station_info: :t_duan_info},:t_user_infoes).duan_orgnization.student_all(@search.date_from, @search.date_to).distinct.count
+        @team_ck_count = @search.scope_team.distinct.count
+        @students = TUserInfo.student_all(@search.date_from, @search.date_to).where.not(F_duan_uuid: ["74708afh145a11e6ad9d001ec9b3cd0c", "74708bnv145a11e6ad9d001ec9b3cd0c"]).select(:F_id).distinct.count
+        @student_ck_counts = @search.scope_student.select("t_user_info.F_id").distinct.count
+        @program_ck_count = @search.scope_program
+        # 饼图一
+        @student_ck_count = @search.scope_student_k.select("t_user_info.F_id").distinct.count
+        @student_wk_count = TUserInfo.student_all(@search.date_from, @search.date_to).where.not(F_duan_uuid: ["74708afh145a11e6ad9d001ec9b3cd0c", "74708bnv145a11e6ad9d001ec9b3cd0c"]).select("t_user_info.F_id").distinct.count - @search.scope_student_k.select("t_user_info.F_id").distinct.count
+        # 饼图二
+        sum = TUserInfo.student_all(@search.date_from, @search.date_to).where.not(F_duan_uuid: ["74708afh145a11e6ad9d001ec9b3cd0c", "74708bnv145a11e6ad9d001ec9b3cd0c"]).select(:F_id).distinct.count
+        n = @search.scope_student_dabiao1
+        user_f_id= Array.new
+        n.each do |key,value|
+          if value>= 3600
+            user_f_id << key
+          end
+        end
+        x = user_f_id.size
+        # 饼图三
+        @score_90 = @search.scope_score.where('F_score >= ?', 90).count
+        @score_80 = @search.scope_score.where('F_score >= ? AND F_score<? ', 80, 90).count
+        @score_60 = @search.scope_score.where('F_score >= ? AND F_score<? ', 60, 80).count
+        @score_60_below = @search.scope_score.where('F_score< ? ', 60).count
+        # 饼图四
+        @program_type_percent = @search.scope_program_type
+        # 饼图五
+        r = @search.scope_reason_hot.group(:F_name).size.sort_by { |_key, value| value }.reverse
+        r8 = r.first(8).to_h
+        other_value= r.to_h.values.sum - r.first(8).to_h.values.sum
+    else
+      # 卡片
+        @duan_ck_count = TDuanInfo.duan_orgnization.joins(t_user_infoes: :t_record_infoes).student_all(Time.now.beginning_of_month, Time.now.end_of_month).datetime.distinct.count
+        @station_ck_count = TStationInfo.station_orgnization.joins(t_user_infoes: :t_record_infoes).student_all(Time.now.beginning_of_month, Time.now.end_of_month).datetime.distinct.count
+        @team = TTeamInfo.joins({t_station_info: :t_duan_info},:t_user_infoes).duan_orgnization.student_all(Time.now.beginning_of_month, Time.now.end_of_month).distinct.count
+        @team_ck_count = TTeamInfo.team_orgnization.joins(t_user_infoes: :t_record_infoes).student_all(Time.now.beginning_of_month, Time.now.end_of_month).datetime.distinct.count
+        @students = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).where.not(F_duan_uuid: ["74708afh145a11e6ad9d001ec9b3cd0c", "74708bnv145a11e6ad9d001ec9b3cd0c"]).select(:F_id).distinct.count
+        @student_ck_counts = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).where.not(F_duan_uuid: ["74708afh145a11e6ad9d001ec9b3cd0c", "74708bnv145a11e6ad9d001ec9b3cd0c"]).joins(:t_record_infoes).datetime.select("t_user_info.F_id").distinct.count
+        @program_ck_count = TProgramInfo.joins(:t_record_infoes).datetime.distinct.count
+        # 饼图一
+        @student_ck_count = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).where.not(F_duan_uuid: ["74708afh145a11e6ad9d001ec9b3cd0c", "74708bnv145a11e6ad9d001ec9b3cd0c"]).joins(:t_record_infoes).datetime.select("t_user_info.F_id").distinct.count
+        @student_wk_count = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).where.not(F_duan_uuid: ["74708afh145a11e6ad9d001ec9b3cd0c", "74708bnv145a11e6ad9d001ec9b3cd0c"]).select("t_user_info.F_id").distinct.count - TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).where.not(F_duan_uuid: ["74708afh145a11e6ad9d001ec9b3cd0c", "74708bnv145a11e6ad9d001ec9b3cd0c"]).joins(:t_record_infoes).datetime.select("t_user_info.F_id").distinct.count
+        # 饼图二
+        sum = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).where.not(F_duan_uuid: ["74708afh145a11e6ad9d001ec9b3cd0c", "74708bnv145a11e6ad9d001ec9b3cd0c"]).select(:F_id).distinct.count
+        n = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).where.not(F_duan_uuid: ["74708afh145a11e6ad9d001ec9b3cd0c", "74708bnv145a11e6ad9d001ec9b3cd0c"]).joins(:t_record_infoes).datetime.group("t_user_info.F_id").sum("t_record_info.time_length")
+        user_f_id= Array.new
+        n.each do |key,value|
+          if value>= 3600
+            user_f_id << key
+          end
+        end
+        x = user_f_id.size
+        # 饼图三
+        @score_90 = TRecordInfo.where('F_score >= ?', 90).datetime.count
+        @score_80 = TRecordInfo.where('F_score >= ? AND F_score<? ', 80, 90).datetime.count
+        @score_60 = TRecordInfo.where('F_score >= ? AND F_score<? ', 60, 80).datetime.count
+        @score_60_below = TRecordInfo.where('F_score< ? ', 60).datetime.count
+
+        # 饼图四
+        @program_type_percent = TProgramTypeInfo.joins(t_program_infoes: :t_record_infoes).datetime.group(:F_name).count
+        # 饼图五
+        r = TReasonInfo.joins(:t_detail_reason_infoes).datetime1.group(:F_name).size.sort_by { |_key, value| value }.reverse
+        r8 = r.first(8).to_h
+        other_value= r.to_h.values.sum - r.first(8).to_h.values.sum
+    end
+    y = sum - x
+    gon.shikao = { name: '实考人数', value: @student_ck_count }
+    gon.weikao = { name: '未考人数', value: @student_wk_count }
+
+    gon.dabiao = { name: '达标人数', value: x }
+    gon.weidabiao = { name: '未达标人数', value: y }
+
+    gon.nine = { name: '90分以上', value: @score_90 }
+    gon.eight = { name: '80分-90分', value: @score_80 }
+    gon.six = { name: '60分-80分', value: @score_60 }
+    gon.below = { name: '60分以下', value: @score_60_below }
+
+    gon.yj = { name: '应急处置', value: @program_type_percent['应急处置'] }
+    gon.zc = { name: '正常接发车办理科目', value: @program_type_percent['正常接发车办理科目'] }
+    gon.fzcfche = { name: '非正常发车办理科目', value: @program_type_percent['非正常发车办理科目'] }
+    gon.fzcjche = { name: '非正常接车办理科目', value: @program_type_percent['非正常接车办理科目'] }
+
+    gon.reason_hot_all_keys8 = r8.keys + ["其他"]
+    gon.a = { name: r8.keys[0] , value: r8.values[0]}
+    gon.b = { name: r8.keys[1] , value: r8.values[1]}
+    gon.c = { name: r8.keys[2] , value: r8.values[2]}
+    gon.d = { name: r8.keys[3] , value: r8.values[3]}
+    gon.e = { name: r8.keys[4] , value: r8.values[4]}
+    gon.f = { name: r8.keys[5] , value: r8.values[5]}
+    gon.g = { name: r8.keys[6] , value: r8.values[6]}
+    gon.h = { name: r8.keys[7] , value: r8.values[7]}
+    gon.i = { name: "其他" , value: other_value}
+
+  end
+
+  def duan_overview
+    @station = TStationInfo.joins(:t_user_infoes).student_all(Time.now.beginning_of_month, Time.now.end_of_month).where(F_duan_uuid: TDuanInfo.find_by(:F_name => current_user.orgnize).F_uuid).distinct.count
+    record = TRecordDetailInfo.joins(t_record_info: :t_duan_info).where("t_duan_info.F_name=?", current_user.orgnize)
+    if params[:search].present?
+      @search = TimeSearch.new(params[:search])
+      @station_ck_count = @search.scope_station.joins(:t_duan_info).where("t_duan_info.F_name=?", current_user.orgnize).distinct.count
+      @team = TTeamInfo.joins({t_station_info: :t_duan_info},:t_user_infoes).where("t_duan_info.F_name= ?",current_user.orgnize).student_all(@search.date_from, @search.date_to).distinct.count
+      @team_ck_count = @search.scope_team_duan(current_user.orgnize).distinct.count
+      @students = TUserInfo.student_all(@search.date_from, @search.date_to).joins(:t_duan_info).where("t_duan_info.F_name= ?",current_user.orgnize).select("t_user_info.F_id").distinct.count
+      @student_ck_counts = @search.scope_student.joins(:t_duan_info).where("t_duan_info.F_name= ? ", current_user.orgnize).select("t_user_info.F_id").distinct.count
+      @program_ck_count = @search.scope_program_duan.where("t_duan_info.F_name= ?", current_user.orgnize).distinct.count
+      # 饼图一
+      @student_ck_count = @search.scope_student_k.joins(:t_duan_info).where("t_duan_info.F_name= ?", current_user.orgnize).select("t_user_info.F_id").distinct.count
+      @student_wk_count = TUserInfo.student_all(@search.date_from, @search.date_to).joins(:t_duan_info).where("t_duan_info.F_name= ?", current_user.orgnize).select("t_user_info.F_id").distinct.count - @search.scope_student_k.joins(:t_duan_info).where("t_duan_info.F_name= ?", current_user.orgnize).select("t_user_info.F_id").distinct.count
+      # 饼图二
+      sum = TUserInfo.student_all(@search.date_from, @search.date_to).where(:F_duan_uuid => TDuanInfo.find_by(:F_name => current_user.orgnize).F_uuid).select(:F_id).distinct.count
+      n = @search.scope_student_dabiao2(current_user)
+      user_f_id= Array.new
+      n.each do |key,value|
+        if value>= 3600
+          user_f_id << key
+        end
+      end
+      x = user_f_id.size
+      # 饼图三
+      @score_90 = @search.scope_score.where('F_score >= ?', 90).joins(:t_duan_info).where("t_duan_info.F_name= ?", current_user.orgnize).count
+      @score_80 = @search.scope_score.where('F_score >= ? AND F_score<? ', 80, 90).joins(:t_duan_info).where("t_duan_info.F_name= ?", current_user.orgnize).count
+      @score_60 = @search.scope_score.where('F_score >= ? AND F_score<? ', 60, 80).joins(:t_duan_info).where("t_duan_info.F_name= ?", current_user.orgnize).count
+      @score_60_below = @search.scope_score.where('F_score< ? ', 60).joins(:t_duan_info).where("t_duan_info.F_name= ?", current_user.orgnize).count
+      # 饼图四
+      @program_type_percent = @search.scope_program_type_duan.where("t_record_info.F_duan_uuid=?", TDuanInfo.find_by(:F_name => current_user.orgnize).F_uuid).group(:F_name).count
+      # 饼图五
+      r = @search.scope_reason_hot1(current_user.orgnize).group("t_reason_info.F_name").count.sort_by { |_key, value| value }.reverse
+      r8 = r.first(8).to_h
+      other_value = r.to_h.values.sum - r.first(8).to_h.values.sum
+    else
+      @station_ck_count = TStationInfo.station_orgnization.joins(:t_duan_info,t_user_infoes: :t_record_infoes).student_all(Time.now.beginning_of_month, Time.now.end_of_month).where("t_duan_info.F_name=?", current_user.orgnize).datetime.distinct.count
+      @team = TTeamInfo.joins({t_station_info: :t_duan_info},:t_user_infoes).where("t_duan_info.F_name= ?",current_user.orgnize).student_all(Time.now.beginning_of_month, Time.now.end_of_month).distinct.count
+      @team_ck_count = TTeamInfo.joins(t_station_info: :t_duan_info).where("t_duan_info.F_name= ?",current_user.orgnize).joins(t_user_infoes: :t_record_infoes).student_all(Time.now.beginning_of_month, Time.now.end_of_month).datetime.distinct.count
+      @students = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info).where("t_duan_info.F_name= ?",current_user.orgnize).select("t_user_info.F_id").distinct.count
+      @student_ck_counts = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info,:t_record_infoes).where("t_duan_info.F_name= ?", current_user.orgnize).datetime.select("t_user_info.F_id").distinct.count
+      @program_ck_count = TProgramInfo.joins(t_record_infoes: :t_duan_info).datetime.where("t_duan_info.F_name= ?", current_user.orgnize).distinct.count
+      # 饼图一
+      @student_ck_count = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info,:t_record_infoes).datetime.where("t_duan_info.F_name= ?", current_user.orgnize).select("t_user_info.F_id").distinct.count
+      @student_wk_count = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info).where("t_duan_info.F_name= ?", current_user.orgnize).select("t_user_info.F_id").distinct.count - TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info,:t_record_infoes).datetime.where("t_duan_info.F_name= ?", current_user.orgnize).select("t_user_info.F_id").distinct.count
+      # 饼图二
+      sum = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).where(:F_duan_uuid => TDuanInfo.find_by(:F_name => current_user.orgnize).F_uuid).select(:F_id).distinct.count
+      n = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info,:t_record_infoes).datetime.where("t_duan_info.F_name= ?", current_user.orgnize).group("t_user_info.F_id").sum("t_record_info.time_length")
+      user_f_id= Array.new
+      n.each do |key,value|
+        if value>= 3600
+          user_f_id << key
+        end
+      end
+      x = user_f_id.size
+      # 饼图三
+      @score_90 = TRecordInfo.where('F_score >= ?', 90).joins(:t_duan_info).where("t_duan_info.F_name= ?", current_user.orgnize).datetime.count
+      @score_80 = TRecordInfo.where('F_score >= ? AND F_score<? ', 80, 90).joins(:t_duan_info).where("t_duan_info.F_name= ?", current_user.orgnize).datetime.count
+      @score_60 = TRecordInfo.where('F_score >= ? AND F_score<? ', 60, 80).joins(:t_duan_info).where("t_duan_info.F_name= ?", current_user.orgnize).datetime.count
+      @score_60_below = TRecordInfo.where('F_score< ? ', 60).joins(:t_duan_info).where("t_duan_info.F_name= ?", current_user.orgnize).datetime.count
+      # 饼图四
+      @program_type_percent = TProgramTypeInfo.joins(t_program_infoes: :t_record_infoes).where("t_record_info.F_duan_uuid=?", TDuanInfo.find_by(:F_name => current_user.orgnize).F_uuid).datetime.group("t_program_type_info.F_name").count
+      # 饼图五
+      r = TReasonInfo.joins(:t_record_detail_infoes).where("t_record_detail_info.F_uuid": record.ids).datetime1.group("t_reason_info.F_name").count.sort_by { |_key, value| value }.reverse
+      r8 = r.first(8).to_h
+      other_value = r.to_h.values.sum - r.first(8).to_h.values.sum
+
+    end
+    y = sum - x
+    gon.shikao = { name: '实考人数', value: @student_ck_count }
+    gon.weikao = { name: '未考人数', value: @student_wk_count }
+
+    gon.dabiao = { name: '达标人数', value: x }
+    gon.weidabiao = { name: '未达标人数', value: y }
+
+    gon.nine = { name: '90分以上', value: @score_90 }
+    gon.eight = { name: '80分-90分', value: @score_80 }
+    gon.six = { name: '60分-80分', value: @score_60 }
+    gon.below = { name: '60分以下', value: @score_60_below }
+
+    gon.yj = { name: '应急处置', value: @program_type_percent['应急处置'] }
+    gon.zc = { name: '正常接发车办理科目', value: @program_type_percent['正常接发车办理科目'] }
+    gon.fzcfche = { name: '非正常发车办理科目', value: @program_type_percent['非正常发车办理科目'] }
+    gon.fzcjche = { name: '非正常接车办理科目', value: @program_type_percent['非正常接车办理科目'] }
+
+    gon.reason_hot_all_keys8 = r8.keys + ["其他"]
+    gon.a = { name: r8.keys[0] , value: r8.values[0]}
+    gon.b = { name: r8.keys[1] , value: r8.values[1]}
+    gon.c = { name: r8.keys[2] , value: r8.values[2]}
+    gon.d = { name: r8.keys[3] , value: r8.values[3]}
+    gon.e = { name: r8.keys[4] , value: r8.values[4]}
+    gon.f = { name: r8.keys[5] , value: r8.values[5]}
+    gon.g = { name: r8.keys[6] , value: r8.values[6]}
+    gon.h = { name: r8.keys[7] , value: r8.values[7]}
+    gon.i = { name: "其他" , value: other_value}
+  end
+
+  def station_overview
+    record = TRecordDetailInfo.joins(t_record_info: :t_station_info).where("t_station_info.F_name=?", current_user.orgnize)
+    if params[:search].present?
+      @search = TimeSearch.new(params[:search])
+      @team = TTeamInfo.joins(:t_station_info,:t_user_infoes).where("t_station_info.F_name": current_user.orgnize).student_all(@search.date_from, @search.date_to).distinct.count
+      @team_ck_count = @search.scope_team_station(current_user.orgnize).distinct.count
+      @students = TUserInfo.student_all(@search.date_from, @search.date_to).joins(:t_station_info).where("t_station_info.F_name=?", current_user.orgnize).select("t_user_info.F_id").distinct.count
+      @student_ck_counts = @search.scope_student.joins(:t_station_info).where("t_station_info.F_name= ? ", current_user.orgnize).select("t_user_info.F_id").distinct.count
+      @program_ck_count = @search.scope_program_station.where("t_station_info.F_name= ?", current_user.orgnize).distinct.count
+      # 饼图一
+      @student_ck_count = @search.scope_student_k.joins(:t_station_info).where("t_station_info.F_name= ?", current_user.orgnize).select("t_user_info.F_id").distinct.count
+      @student_wk_count = TUserInfo.student_all(@search.date_from, @search.date_to).joins(:t_station_info).where("t_station_info.F_name= ?", current_user.orgnize).select("t_user_info.F_id").distinct.count - @search.scope_student_k.joins(:t_station_info).where("t_station_info.F_name= ?", current_user.orgnize).select("t_user_info.F_id").distinct.count
+      # 饼图二
+      sum = TUserInfo.student_all(@search.date_from, @search.date_to).where(:F_station_uuid => TStationInfo.find_by(:F_name => current_user.orgnize).F_uuid).select(:F_id).distinct.count
+      n = @search.scope_student_dabiao3(current_user)
+      user_f_id= Array.new
+      n.each do |key,value|
+        if value>= 3600
+          user_f_id << key
+        end
+      end
+      x = user_f_id.size
+      # 饼图三
+      @score_90 = @search.scope_score.where('F_score >= ?', 90).joins(:t_station_info).where("t_station_info.F_name= ?", current_user.orgnize).count
+      @score_80 = @search.scope_score.where('F_score >= ? AND F_score<? ', 80, 90).joins(:t_station_info).where("t_station_info.F_name= ?", current_user.orgnize).count
+      @score_60 = @search.scope_score.where('F_score >= ? AND F_score<? ', 60, 80).joins(:t_station_info).where("t_station_info.F_name= ?", current_user.orgnize).count
+      @score_60_below = @search.scope_score.where('F_score< ? ', 60).joins(:t_station_info).where("t_station_info.F_name= ?", current_user.orgnize).count
+      # 饼图四
+      @program_type_percent = @search.scope_program_type_station.where("t_record_info.F_station_uuid=?", TStationInfo.find_by(:F_name => current_user.orgnize).F_uuid).group(:F_name).count
+      # 饼图五
+      r = @search.scope_reason_hot2(current_user.orgnize).group("t_reason_info.F_name").count.sort_by { |_key, value| value }.reverse
+      r8 = r.first(8).to_h
+      other_value = r.to_h.values.sum - r.first(8).to_h.values.sum
+
+    else
+      @team = TTeamInfo.joins(:t_station_info,:t_user_infoes).where("t_station_info.F_name": current_user.orgnize).student_all(Time.now.beginning_of_month, Time.now.end_of_month).distinct.count
+      @team_ck_count = TTeamInfo.joins(:t_station_info,t_user_infoes: :t_record_infoes).where("t_station_info.F_name": current_user.orgnize).student_all(Time.now.beginning_of_month, Time.now.end_of_month).datetime.distinct.count
+      @students = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_station_info).where("t_station_info.F_name=?", current_user.orgnize).select("t_user_info.F_id").distinct.count
+      @student_ck_counts = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_station_info,:t_record_infoes).datetime.where("t_station_info.F_name= ?", current_user.orgnize).select("t_user_info.F_id").distinct.count
+      @program_ck_count = TProgramInfo.joins(t_record_infoes: :t_station_info).datetime.where("t_station_info.F_name= ?", current_user.orgnize).distinct.count
+      # 饼图一
+      @student_ck_count = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_station_info,:t_record_infoes).datetime.where("t_station_info.F_name= ?", current_user.orgnize).select("t_user_info.F_id").distinct.count
+      @student_wk_count = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_station_info).where("t_station_info.F_name= ?", current_user.orgnize).select("t_user_info.F_id").distinct.count - TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_station_info,:t_record_infoes).datetime.where("t_station_info.F_name= ?", current_user.orgnize).select("t_user_info.F_id").distinct.count
+      # 饼图二
+      sum = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).where(:F_station_uuid => TStationInfo.find_by(:F_name => current_user.orgnize).F_uuid).select(:F_id).distinct.count
+      n = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_station_info,:t_record_infoes).datetime.where("t_station_info.F_name= ?", current_user.orgnize).group("t_user_info.F_id").sum("t_record_info.time_length")
+      user_f_id= Array.new
+      n.each do |key,value|
+        if value>= 3600
+          user_f_id << key
+        end
+      end
+      x = user_f_id.size
+      # 饼图三
+      @score_90 = TRecordInfo.where('F_score >= ?', 90).joins(:t_station_info).where("t_station_info.F_name= ?", current_user.orgnize).datetime.count
+      @score_80 = TRecordInfo.where('F_score >= ? AND F_score<? ', 80, 90).joins(:t_station_info).where("t_station_info.F_name= ?", current_user.orgnize).datetime.count
+      @score_60 = TRecordInfo.where('F_score >= ? AND F_score<? ', 60, 80).joins(:t_station_info).where("t_station_info.F_name= ?", current_user.orgnize).datetime.count
+      @score_60_below = TRecordInfo.where('F_score< ? ', 60).joins(:t_station_info).where("t_station_info.F_name= ?", current_user.orgnize).datetime.count
+      # 饼图四
+      @program_type_percent = TProgramTypeInfo.joins(t_program_infoes: :t_record_infoes).where("t_record_info.F_station_uuid=?", TStationInfo.find_by(:F_name => current_user.orgnize).F_uuid).datetime.group("t_program_type_info.F_name").count
+      # 饼图五
+      r = TReasonInfo.joins(:t_record_detail_infoes).where("t_record_detail_info.F_uuid": record.ids).datetime1.group("t_reason_info.F_name").count.sort_by { |_key, value| value }.reverse
+      r8 = r.first(8).to_h
+      other_value = r.to_h.values.sum - r.first(8).to_h.values.sum
+
+    end
+    y = sum - x
+    gon.shikao = { name: '实考人数', value: @student_ck_count }
+    gon.weikao = { name: '未考人数', value: @student_wk_count }
+
+    gon.dabiao = { name: '达标人数', value: x }
+    gon.weidabiao = { name: '未达标人数', value: y }
+
+    gon.nine = { name: '90分以上', value: @score_90 }
+    gon.eight = { name: '80分-90分', value: @score_80 }
+    gon.six = { name: '60分-80分', value: @score_60 }
+    gon.below = { name: '60分以下', value: @score_60_below }
+
+    gon.yj = { name: '应急处置', value: @program_type_percent['应急处置'] }
+    gon.zc = { name: '正常接发车办理科目', value: @program_type_percent['正常接发车办理科目'] }
+    gon.fzcfche = { name: '非正常发车办理科目', value: @program_type_percent['非正常发车办理科目'] }
+    gon.fzcjche = { name: '非正常接车办理科目', value: @program_type_percent['非正常接车办理科目'] }
+
+    gon.reason_hot_all_keys8 = r8.keys + ["其他"]
+    gon.a = { name: r8.keys[0] , value: r8.values[0]}
+    gon.b = { name: r8.keys[1] , value: r8.values[1]}
+    gon.c = { name: r8.keys[2] , value: r8.values[2]}
+    gon.d = { name: r8.keys[3] , value: r8.values[3]}
+    gon.e = { name: r8.keys[4] , value: r8.values[4]}
+    gon.f = { name: r8.keys[5] , value: r8.values[5]}
+    gon.g = { name: r8.keys[6] , value: r8.values[6]}
+    gon.h = { name: r8.keys[7] , value: r8.values[7]}
+    gon.i = { name: "其他" , value: other_value}
   end
 
   def duan_ck

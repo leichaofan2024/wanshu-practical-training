@@ -1,2 +1,220 @@
+<div class="container-fluid">
+<!--这个是时间搜索框-->
+<div class="row">
+  <div class="col-md-2">
+      <div class="overall-data">
+        <%= "整体数据概览" %>
+      </div>
+    </div>
+      <div class="col-md-6 col-md-offset-4">
+        <div class="pull-right range-query">
+          <div class="searchtime">时间：</div>
+          <div class="searchtime">
+              <%= form_tag baogao_path, method: :get do %>
+                <%= text_field_tag 'search[date_from]',nil%>
+                <%= text_field_tag 'search[date_to]',nil %>
+                <%= submit_tag "搜索", id:"time_id",class: "btn search-button"%>
+              <% end %>
+          </div>
+        </div>
+      </div>
+  </div><!--这个是时间搜索-->
+<!--这个是第一行的数据展示-->
+<div class="row">
+  <div class="col-md-8">
+    <div class="box">
+      <div class="box-padding">
+        <div class="box-text">
+          <%= "合格率分析饼状图"%>
+          <br>
+          <%= "2018-04-04 ~ 2018-05-04"%><!--这个是需要展示当月的时间-->
+        </div>
+        <div id="exam-xcf" style="height:572px;"></div>
+        <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('exam-xcf'));
+         // 基于准备好的dom，初始化echarts实例
+         option = {
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    },
+                    legend: {
+                        data: ['合格', '不合格']
+                    },
+                    grid: {
+                        top: 50,
+                        width: '50%',
+                        bottom: 0,
+                        containLabel: true
+                    },
+                    xAxis: {
+                        type: 'value',
+                        boundaryGap: [0, 0.01],
 
-<h3>即将上线，敬请期待...</h3>
+                    },
+                    yAxis: {
+                        type: 'category',
+                        data: ['巴西','印尼','美国','印度','中国','世界人口(万)','巴西','印尼','美国','印度','中国','世界人口(万)','巴西','印尼','美国','印度','中国','世界人口(万)']
+                    },
+                    series: [
+                        {
+                            name: '合格',
+                            type: 'bar',
+                            data: [18203, 23489, 29034, 104970, 131744, 630230,18203, 23489, 29034, 104970, 131744, 630230,18203, 23489, 29034, 104970, 131744, 630230]
+                        },
+                        {
+                            name: '不合格',
+                            type: 'bar',
+                            data: [19325, 23438, 31000, 121594, 134141, 681807,18203, 23489, 29034, 104970, 131744, 630230,18203, 23489, 29034, 104970, 131744, 630230]
+                        },
+                        {
+                            type:'pie',
+                            radius: ['0', '30%'],
+                            center: ['79%','25%'],
+                            data:[
+                                {value:335, name:'直接访问'},
+                                {value:310, name:'邮件营销'},
+                                {value:234, name:'联盟广告'},
+                                {value:135, name:'视频广告'},
+                                {value:1548, name:'搜索引擎'}
+                            ]
+                        }
+                    ]
+
+
+                };
+         myChart.setOption(option);
+         </script>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="box1">
+      <div class="box1-padding">
+        <div class="box1-text">
+            <%= "合格率表格数据分析"%>
+            <br>
+            <%= "2018-04-04 ~ 2018-05-04"%><!--这个是需要展示当月的时间-->
+        </div>
+        <div class="box1-form">
+          <table class="table table-bordered" style="height: auto;">
+            <tr>
+              <th class="exam-text"><%= "站段"%></th>
+              <th class="exam-text"><%= "不合格人数"%></th>
+              <th class="exam-text"><%="合格人数"%></th>
+              <th class="exam-text"><%="操作"%></th>
+            </tr>
+            <tr>
+              <td class="exam-text-small"><%= "北京西车务段"%></td>
+              <td class="exam-text-small"><%= "2"%></td>
+              <td class="exam-text-small"><%= "201"%></td>
+              <td class="exam-text-small"><%= "查看详情"%></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div><!--这个是饼图的附属表格-->
+</div><!--第一个饼图row-->
+<!--第二个饼图row-->
+      <div class="row">
+        <div class="col-md-8">
+          <div class="box">
+            <div class="box-padding">
+              <div class="box-text">
+                <%= "合格率分析饼状图"%>
+                <br>
+                <%= "2018-04-04 ~ 2018-05-04"%>
+              </div>
+              <div id="exam-xcf-1" style="height:572px;"></div>
+              <script type="text/javascript">
+              var myChart = echarts.init(document.getElementById('exam-xcf-1'));
+               // 基于准备好的dom，初始化echarts实例
+               option = {
+                          tooltip: {
+                              trigger: 'axis',
+                              axisPointer: {
+                                  type: 'shadow'
+                              }
+                          },
+                          legend: {
+                              data: ['合格', '不合格']
+                          },
+                          grid: {
+                              top: 50,
+                              width: '50%',
+                              bottom: 0,
+                              containLabel: true
+                          },
+                          xAxis: {
+                              type: 'value',
+                              boundaryGap: [0, 0.01],
+
+                          },
+                          yAxis: {
+                              type: 'category',
+                              data: ['巴西','印尼','美国','印度','中国','世界人口(万)','巴西','印尼','美国','印度','中国','世界人口(万)','巴西','印尼','美国','印度','中国','世界人口(万)']
+                          },
+                          series: [
+                              {
+                                  name: '合格',
+                                  type: 'bar',
+                                  data: [18203, 23489, 29034, 104970, 131744, 630230,18203, 23489, 29034, 104970, 131744, 630230,18203, 23489, 29034, 104970, 131744, 630230]
+                              },
+                              {
+                                  name: '不合格',
+                                  type: 'bar',
+                                  data: [19325, 23438, 31000, 121594, 134141, 681807,18203, 23489, 29034, 104970, 131744, 630230,18203, 23489, 29034, 104970, 131744, 630230]
+                              },
+                              {
+                                  type:'pie',
+                                  radius: ['0', '30%'],
+                                  center: ['79%','25%'],
+                                  data:[
+                                      {value:335, name:'直接访问'},
+                                      {value:310, name:'邮件营销'},
+                                      {value:234, name:'联盟广告'},
+                                      {value:135, name:'视频广告'},
+                                      {value:1548, name:'搜索引擎'}
+                                  ]
+                              }
+                          ]
+
+
+                      };
+               myChart.setOption(option);
+               </script>
+            </div>
+          </div>
+        </div>
+                <div class="col-md-4">
+                  <div class="box1">
+                    <div class="box1-padding">
+                      <div class="box1-text">
+                          <%= "合格率表格数据分析"%>
+                          <br>
+                          <%= "2018-04-04 ~ 2018-05-04"%>
+                      </div>
+                      <div class="box1-form">
+                        <table class="table table-bordered">
+                          <tr>
+                            <th class="exam-text"><%= "站段"%></th>
+                            <th class="exam-text"><%= "不合格人数"%></th>
+                            <th class="exam-text"><%="合格人数"%></th>
+                            <th class="exam-text"><%="操作"%></th>
+                          </tr>
+                          <tr>
+                            <td class="exam-text-small"><%= "北京西车务段"%></td>
+                            <td class="exam-text-small"><%= "2"%></td>
+                            <td class="exam-text-small"><%= "201"%></td>
+                            <td class="exam-text-small"><%= "查看详情"%></td><!--进入到 all_examinee的页面-->
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div><!--这个是饼图的附属表格-->
+      </div><!--第二个饼图row-->
+</div><!--container-fulid-->

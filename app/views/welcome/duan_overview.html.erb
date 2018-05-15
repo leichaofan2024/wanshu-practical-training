@@ -22,8 +22,8 @@
       <div class="root-card-block">
         <i class="fa fa-building fa-4x" aria-hidden="true"></i><br>
         <div class="root-card-content">
-          <strong>车站总数：<%= station%> </strong><br>
-          <strong>实考车站：<%= station_ck_count %></strong>
+          <strong>车站总数：<%= @station%> </strong><br>
+          <strong>实考车站：<%= @station_ck_count %></strong>
         </div>
       </div>
     <% end %>
@@ -32,8 +32,8 @@
       <div class="root-card-block">
         <i class="fa fa-users fa-4x" aria-hidden="true"></i><br>
         <div class="root-card-content">
-          <strong>班组总数：<%= team %> </strong><br>
-          <strong>实考班组：<%= team_ck_count %></strong>
+          <strong>班组总数：<%= @team %> </strong><br>
+          <strong>实考班组：<%= @team_ck_count %></strong>
         </div>
       </div>
     <% end %>
@@ -42,8 +42,8 @@
       <div class="root-card-block">
         <i class="fa fa-user fa-4x" aria-hidden="true"></i><br>
         <div class="root-card-content">
-          <strong>实训人数：<%= students %> </strong><br>
-          <strong>实考人数：<%= student_ck_counts %></strong>
+          <strong>实训人数：<%= @students %> </strong><br>
+          <strong>实考人数：<%= @student_ck_counts %></strong>
         </div>
       </div>
     <% end %>
@@ -53,13 +53,12 @@
         <i class="fa fa-file-text fa-4x" aria-hidden="true"></i><br>
         <div class="root-card-content">
           <strong>考点总数：<%= TProgramInfo.count %> </strong><br>
-          <strong>覆盖考点：<%= program_ck_count %></strong>
+          <strong>覆盖考点：<%= @program_ck_count %></strong>
         </div>
       </div>
     <% end %>
     </div>
   </div>
-
 <!-- 第一个饼图-->
 
 <div class="root-data-frame">
@@ -137,10 +136,8 @@
         });
         <% end %>
     </script>
-      <% student_wk_count%>
-      <% student_ck_count %>
     </div>
-
+<prograss id = "progressBar" value="50" max="100"></progress>
 
     <!-- 第二个饼图 -->
 
@@ -215,7 +212,6 @@
         });
         <% end %>
     </script>
-      <% student_dabiao_count%>
     </div>
 
 
@@ -282,10 +278,6 @@
         });
         <% end %>
         </script>
-      <% score_90%><br>
-      <% score_80%><br>
-      <% score_60%><br>
-      <% score_60_below%>
     </div>
 
 
@@ -362,7 +354,6 @@
         });
         <% end %>
         </script>
-    <% program_type_percent %>
     </div>
 
 
@@ -440,7 +431,6 @@
         });
         <% end %>
         </script>
-      <% reason_hot_all.first(8)%>
     </div>
   </div>
 </div>
