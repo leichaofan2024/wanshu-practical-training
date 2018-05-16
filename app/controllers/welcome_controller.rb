@@ -327,6 +327,9 @@ class WelcomeController < ApplicationController
         end
       end
       @student_dabiao_id = user_f_id
+      #参考进度条的数据来源(带时间参数)
+      @student_ck_count = @search.scope_student_k.joins(:t_duan_info).where("t_duan_info.F_name= ?", current_user.orgnize).select("t_user_info.F_id").distinct.count
+      @student_count = TUserInfo.student_all(@search.date_from, @search.date_to).joins(:t_duan_info).where("t_duan_info.F_name= ?", current_user.orgnize).select("t_user_info.F_id").distinct.count
     else
       @duan_student_all = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).where(:F_duan_uuid => @duan.F_uuid)
       sum = @duan_student_all.pluck(:F_id).uniq
@@ -339,10 +342,13 @@ class WelcomeController < ApplicationController
       end
 
       @student_dabiao_id = user_f_id
+      #参考进度条的数据来源
+      @student_ck_count = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info,:t_record_infoes).datetime.where("t_duan_info.F_name= ?", current_user.orgnize).select("t_user_info.F_id").distinct.count
+      @student_count = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info).where("t_duan_info.F_name= ?", current_user.orgnize).select("t_user_info.F_id").distinct.count
     end
     @student_not_dabiao_id = sum - @student_dabiao_id
     @duan_student_group = @duan_student_all.select("t_user_info.F_name,t_user_info.F_id,t_user_info.F_station_uuid").distinct.group_by{|u| u.F_station_uuid}
-
+    @progress_ck = (@student_ck_count / @student_count).round(3) * 100
   end
 
 

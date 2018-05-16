@@ -11,12 +11,12 @@ default: &default
   pool: 5
   timeout: 5000
   username: root
-  password: 123456
+  password: lss090306
   host: 127.0.0.1
 
 development:
   <<: *default
-  database: wanshu20180507
+  database: wanshu
   reconnect: false
   port: 3306
 # Warning: The database defined as "test" will be erased and
