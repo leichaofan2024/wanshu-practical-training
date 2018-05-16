@@ -34,8 +34,8 @@
     <div class="col-md-8">
       <div class="data-station-bar">
         <div class="progress" style="height: 25px;">
-          <div class="progress-bar" role="progressbar" aria-valuenow="<%= @progress %>" aria-valuemin="0" aria-valuemax="100" style="width:<%= @progress%>%">
-              <%= @progress %>%
+          <div class="progress-bar" role="progressbar" aria-valuenow="<%= @progress_reference %>" aria-valuemin="0" aria-valuemax="100" style="width:<%= @progress_reference%>%">
+              <%= @progress_reference %>%
           </div>
         </div>
       </div>
@@ -52,9 +52,8 @@
       <div class="col-md-8">
         <div class="data-station-bar">
           <div class="progress" style="height: 25px;">
-            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%;">
-               <span class="sr-only">80% Complete (success)</span>
-               80%
+            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<%= @progress_standard %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= @progress_standard %>%;">
+               <%= @progress_standard %>%
             </div>
           </div>
         </div>
@@ -63,22 +62,98 @@
   <div class="row">
     <div class="col-md-12">
       <div class="data-box">
-        <div>
-
+        <div role="tabpanel">
           <!-- Nav tabs -->
           <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">未达标</a></li>
-            <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">已参考，未达标</a></li>
-            <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">已达标</a></li>
-            <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">状态设置</a></li>
+            <li role="presentation" class="active">
+              <a href="#home" aria-controls="home" role="tab" data-toggle="tab">未参考，未达标</a>
+            </li>
+            <li role="presentation">
+              <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">已参考，未达标</a>
+            </li>
+            <li role="presentation">
+              <a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">已达标</a>
+            </li>
+            <li role="presentation">
+              <a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">状态设置</a>
+            </li>
           </ul>
 
           <!-- Tab panes -->
           <div class="tab-content">
-            <div role="tabpanel" class="tab-pane active" id="home">...</div>
-            <div role="tabpanel" class="tab-pane" id="profile">...</div>
-            <div role="tabpanel" class="tab-pane" id="messages">...</div>
-            <div role="tabpanel" class="tab-pane" id="settings">...</div>
+            <div role="tabpanel" class="tab-pane active" id="home">
+              <div class="exam-table">
+                <table class="table table-bordered">
+                  <tr>
+                    <th class="exam-text"><%= "车站名称"%></th>
+                    <th class="exam-text"><%= "未参考人数"%></th>
+                    <th class="exam-text"><%="时间"%></th>
+                    <th class="exam-text"><%="操作"%></th>
+                  </tr>
+                  <tr>
+                    <td class="exam-text-small"><%= "北京西车务段"%></td>
+                    <td class="exam-text-small"><%= "20"%></td>
+                    <td class="exam-text-small"><%= "2018-04-04"%></td>
+                    <td class="exam-text-small"><%= "查看详情"%></td>
+                  </tr>
+                </table>
+              </div>
+            </div><!--未参考，未达标-->
+
+            <div role="tabpanel" class="tab-pane" id="profile">
+              <div class="exam-table">
+                <table class="table table-bordered">
+                  <tr>
+                    <th class="exam-text"><%= "车站名称"%></th>
+                    <th class="exam-text"><%= "已参考人数"%></th>
+                    <th class="exam-text"><%= "未达标人数"%></th>
+                    <th class="exam-text"><%="时间"%></th>
+                    <th class="exam-text"><%="操作"%></th>
+                  </tr>
+                  <tr>
+                    <td class="exam-text-small"><%= "北京西车务段"%></td>
+                    <td class="exam-text-small"><%= "50"%></td>
+                    <td class="exam-text-small"><%= "20"%></td>
+                    <td class="exam-text-small"><%= "2018-04-04"%></td>
+                    <td class="exam-text-small"><%= "查看详情"%></td>
+                  </tr>
+                </table>
+              </div>
+            </div><!--已参考，未达标-->
+            <div role="tabpanel" class="tab-pane" id="messages">
+              <div class="exam-table">
+                <table class="table table-bordered">
+                  <tr>
+                    <th class="exam-text"><%= "车站名称"%></th>
+                    <th class="exam-text"><%= "已完成人数"%></th>
+                    <th class="exam-text"><%="时间"%></th>
+                    <th class="exam-text"><%="操作"%></th>
+                  </tr>
+                  <tr>
+                    <td class="exam-text-small"><%= "北京西车务段"%></td>
+                    <td class="exam-text-small"><%= "60"%></td>
+                    <td class="exam-text-small"><%= "2018-04-04"%></td>
+                    <td class="exam-text-small"><%= "查看详情"%></td>
+                  </tr>
+                </table>
+              </div>
+            </div><!--已参考，已达标-->
+            <div role="tabpanel" class="tab-pane" id="settings">
+              <div class="exam-table">
+                <table class="table table-bordered">
+                  <tr>
+                    <th class="exam-text"><%= "车站名称"%></th>
+                    <th class="exam-text"><%="总人数"%></th>
+                    <th class="exam-text"><%="操作"%></th>
+                  </tr>
+                  <tr>
+                    <td class="exam-text-small"><%= "北京西车务段"%></td>
+                    <td class="exam-text-small"><%= "100"%></td>
+                    <td class="exam-text-small"><%= "查看详情"%></td>
+                  </tr>
+                </table>
+              </div>
+            </div><!--状态设置-->
           </div>
 
         </div>
