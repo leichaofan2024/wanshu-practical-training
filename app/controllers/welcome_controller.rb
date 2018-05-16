@@ -114,6 +114,9 @@ class WelcomeController < ApplicationController
 
   end
 
+
+  #站段图表一览页
+
   def duan_overview
     @station = TStationInfo.joins(:t_user_infoes).student_all(Time.now.beginning_of_month, Time.now.end_of_month).where(F_duan_uuid: TDuanInfo.find_by(:F_name => current_user.orgnize).F_uuid).distinct.count
     record = TRecordDetailInfo.joins(t_record_info: :t_duan_info).where("t_duan_info.F_name=?", current_user.orgnize)
@@ -211,6 +214,8 @@ class WelcomeController < ApplicationController
     gon.i = { name: "其他" , value: other_value}
   end
 
+#车站图表一览页：
+
   def station_overview
     record = TRecordDetailInfo.joins(t_record_info: :t_station_info).where("t_station_info.F_name=?", current_user.orgnize)
     if params[:search].present?
@@ -305,6 +310,41 @@ class WelcomeController < ApplicationController
     gon.h = { name: r8.keys[7] , value: r8.values[7]}
     gon.i = { name: "其他" , value: other_value}
   end
+
+#站段首页：
+
+  def duan_student_dabiao
+    @duan = TDuanInfo.find_by(:F_name => current_user.orgnize)
+    if params[:search].present?
+      @search = TimeSearch.new(params[:search])
+      @duan_student_all = TUserInfo.student_all(@search.date_from, @search.date_to).where(:F_duan_uuid => @duan.F_uuid)
+      sum = @duan_student_all.pluck(:F_id).uniq
+      @student_shichang_hash = @search.scope_student_dabiao2(current_user)
+      user_f_id= Array.new
+      @student_shichang_hash.each do |key,value|
+        if value>= 3600
+          user_f_id << key
+        end
+      end
+      @student_dabiao_id = user_f_id
+    else
+      @duan_student_all = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).where(:F_duan_uuid => @duan.F_uuid)
+      sum = @duan_student_all.pluck(:F_id).uniq
+      @student_shichang_hash = @duan_student_all.joins(:t_record_infoes).datetime.group("t_user_info.F_id").sum("t_record_info.time_length")
+      user_f_id= Array.new
+      @student_shichang_hash.each do |key,value|
+        if value>= 3600
+          user_f_id << key
+        end
+      end
+
+      @student_dabiao_id = user_f_id
+    end
+    @student_not_dabiao_id = sum - @student_dabiao_id
+    @duan_student_group = @duan_student_all.select("t_user_info.F_name,t_user_info.F_id,t_user_info.F_station_uuid").distinct.group_by{|u| u.F_station_uuid}
+
+  end
+
 
   def duan_ck
     duan = TDuanInfo.duan_orgnization
@@ -956,36 +996,6 @@ class WelcomeController < ApplicationController
 
   end
 
-  def duan_student_dabiao
-    @duan = TDuanInfo.find_by(:F_name => current_user.orgnize)
-    if params[:search].present?
-      @search = TimeSearch.new(params[:search])
-      @duan_student_all = TUserInfo.student_all(@search.date_from, @search.date_to).where(:F_duan_uuid => @duan.F_uuid)
-      sum = @duan_student_all.pluck(:F_id).uniq
-      @student_shichang_hash = @search.scope_student_dabiao2(current_user)
-      user_f_id= Array.new
-      @student_shichang_hash.each do |key,value|
-        if value>= 3600
-          user_f_id << key
-        end
-      end
-      @student_dabiao_id = user_f_id
-    else
-      @duan_student_all = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).where(:F_duan_uuid => @duan.F_uuid)
-      sum = @duan_student_all.pluck(:F_id).uniq
-      @student_shichang_hash = @duan_student_all.joins(:t_record_infoes).datetime.group("t_user_info.F_id").sum("t_record_info.time_length")
-      user_f_id= Array.new
-      @student_shichang_hash.each do |key,value|
-        if value>= 3600
-          user_f_id << key
-        end
-      end
 
-      @student_dabiao_id = user_f_id
-    end
-    @student_not_dabiao_id = sum - @student_dabiao_id
-    @duan_student_group = @duan_student_all.select("t_user_info.F_name,t_user_info.F_id,t_user_info.F_station_uuid").distinct.group_by{|u| u.F_station_uuid}
-
-  end
 
 end
