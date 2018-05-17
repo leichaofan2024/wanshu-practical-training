@@ -1,0 +1,103 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="railway_details_show">
+        <div class="row">
+          <div class="col-md-2">
+            <div class="railway_title">
+              <%= "天津站人员详情"%>
+            </div>
+          </div>
+          <div class="col-md-6 col-md-offset-4">
+            <div class="pull-right range-query">
+              <div class="searchtime">时间：</div>
+              <div class="searchtime">
+                  <%= form_tag baogao_path, method: :get do %>
+                    <%= text_field_tag 'search[date_from]',nil%>
+                    <%= text_field_tag 'search[date_to]',nil %>
+                    <%= submit_tag "搜索", id:"time_id",class: "btn search-button"%>
+                  <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="railway_body_show">
+          <div class="railway_body_head">
+            <div class="railway_body_title">
+              <%= "人员状态栏"%>
+            </div>
+              <table class="table table-bordered">
+                <tr>
+                  <th class="exam-text"><%= "姓名"%></th>
+                  <th class="exam-text"><%= "班组名称"%></th>
+                  <th class="exam-text"><%= "职位"%></th>
+                  <th class="exam-text"><%= "人员状态"%></th>
+                  <th class="exam-text"><%= "状态设置"%></th>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="railway_button">
+                      <%= "王炸"%>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="railway_button">
+                      <%= "甲班"%>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="railway_button">
+                      <%= "车站值班员"%>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="railway_button">
+                      <%= "在职"%>
+                    </div>
+                  </td>
+                  <td>
+                    <div style="text-align: center;">
+                      <button class="btn btn-info btn-sm active">长假</button>
+                      <button class="btn btn-success btn-sm">短假</button>
+                      <button class="btn btn-warning btn-sm">调离</button>
+                      <button class="btn btn-danger btn-sm">退休</button>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+          </div>
+        </div><!--railway_body_show-->
+      </div><!--railway_details-->
+      <div class="railway_details_show">
+          <div class="railway_body_cotent">
+            <div class="railway_body_title">
+              <%= "历史状态栏"%>
+            </div>
+            <table class="table table-bordered">
+              <tr>
+                <th class="exam-text"><%= "姓名"%></th>
+                <th class="exam-text"><%= "班组名称"%></th>
+                <th class="exam-text"><%= "职位"%></th>
+                <th class="exam-text"><%= "人员状态"%></th>
+                <th class="exam-text"><%= "状态改变时间"%></th>
+                <th class="exam-text"><%= "状态设置"%></th>
+              </tr>
+              <tr>
+                <td class="exam-text-small"><%= "王炸"%></td>
+                <td class="exam-text-small"><%= "甲班"%></td>
+                <td class="exam-text-small"><%= "车站值班员"%></td>
+                <td class="exam-text-small"><%= "调离"%></td>
+                <td class="exam-text-small"><%= "2018-04-05"%></td>
+                <td class="exam-text-small"><%= "结束"%></td>
+              </tr>
+            </table>
+          </div>
+      </div>
+      <div class=" col-md-2 col-md-offset-10">
+        <div class="railway_back_button">
+          <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>  <%= "返回上一层"%>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

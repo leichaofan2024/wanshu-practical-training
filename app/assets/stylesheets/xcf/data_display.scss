@@ -37,15 +37,7 @@
   box-shadow: rgba(190,202,218,17);
   border-collapse: separate;
   border-color: rgb(255,255,255);
-  border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
-  border-image-outset: 0px;
-  border-image-repeat: stretch;
-  border-image-slice: 100%;
-  border-image-source: none;
-  border-image-width: 1px;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
+  border-radius: 3px;
 }
 .box-padding{
   width: auto;
@@ -80,15 +72,7 @@
   box-shadow: rgba(190,202,218,17);
   border-collapse: separate;
   border-color: rgb(255,255,255);
-  border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
-  border-image-outset: 0px;
-  border-image-repeat: stretch;
-  border-image-slice: 100%;
-  border-image-source: none;
-  border-image-width: 1px;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
+  border-radius: 3px;
 }
 .box1-padding{
   width: auto;
@@ -171,15 +155,7 @@
   box-shadow: rgba(190,202,218,17);
   border-collapse: separate;
   border-color: rgb(255,255,255);
-  border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
-  border-image-outset: 0px;
-  border-image-repeat: stretch;
-  border-image-slice: 100%;
-  border-image-source: none;
-  border-image-width: 1px;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
+  border-radius: 3px;
 }
 .statistics-box{
   width: auto;
@@ -210,15 +186,7 @@
   box-shadow: rgba(190,202,218,17);
   border-collapse: separate;
   border-color: rgb(255,255,255);
-  border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
-  border-image-outset: 0px;
-  border-image-repeat: stretch;
-  border-image-slice: 100%;
-  border-image-source: none;
-  border-image-width: 1px;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
+  border-radius: 3px;
 }
 .exam-text{
   background-color: rgb(245,246,247);
@@ -251,15 +219,22 @@
   box-shadow: rgba(190,202,218,17);
   border-collapse: separate;
   border-color: rgb(255,255,255);
-  border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
-  border-image-outset: 0px;
-  border-image-repeat: stretch;
-  border-image-slice: 100%;
-  border-image-source: none;
-  border-image-width: 1px;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
+  border-radius: 3px;
+}
+.railway_details_show{
+  width: auto;
+  height: auto;
+  margin: 10px 50px 40px 50px;
+  border-style: solid;
+  border-width: 3px;
+  background-attachment: scroll;
+  background-clip: border-box;
+  background-color: rgb(255,255,255);
+  background-origin: padding-box;
+  box-shadow: rgba(190,202,218,17);
+  border-collapse: separate;
+  border-color: rgb(255,255,255);
+  border-radius: 3px;
 }
 .railway_title{
   width: auto;
@@ -280,15 +255,23 @@
 .railway_body{
   width: auto;
   height: 725px;
-  border-width: 1px;
-  border-style: solid;
   padding:0px 15px;
   margin-top: 40px;
+}
+
+.railway_body_head{
+  width: auto;
+  height: 325px;
+}
+.railway_body_cotent{
+  width: auto;
+  height: 325px;
+  margin-top: 30px;
+
 }
 .railway_body_title{
   width: auto;
   height: 40px;
-
   margin-bottom: 10px;
   padding: 10px;
   font-size: 18px;
@@ -299,4 +282,15 @@
   text-align: right;
   font-size: 16px;
   padding: 10px;
+  margin-bottom: 20px;
+}
+.railway_button{
+  height: auto;
+  width: auto;
+  text-align: center;
+  padding: 15px;
+}
+.railway-text-small{
+  text-align: center;
+  margin: 5px 0px;
 }

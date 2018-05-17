@@ -32,6 +32,7 @@ Rails.application.routes.draw do
       get "/general_overview", to: "data_display#general_overview"
       get "/all_examinee", to: "data_display#all_examinee"
       get "/index", to: "data_display#index"
+      get "/show", to: "data_display#show"
     end
     resources :faqs
     resources :t_baogao_inputs
