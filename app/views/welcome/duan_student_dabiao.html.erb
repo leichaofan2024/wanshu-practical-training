@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-md-4">
       <div class="data-search-label">
-        <%= "数据查询"%>
+        <%= "查询规则"%>
       </div>
     </div>
     <div class="col-md-offset-4">
@@ -19,15 +19,13 @@
     </div>
   </div><!--这个是第一个导航栏-->
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
       <div class="data-search-text">
         <%= "达标率统计规则，长假，调离规则；"%>
       </div>
     </div>
-    <div class="col-md-8">
-      <hr style="border-style: solid; border-width: 1px; margin-left:25px;">
-    </div>
   </div><!--这个是对规则的解释栏-->
+  <hr>
   <div class="row">
     <div class="col-md-2">
       <div class="data-overview">
@@ -35,42 +33,45 @@
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-md-6">
-      <div class="data-station">
-        <%= "参考进度"%>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-8">
-      <div class="data-station-bar">
-        <div class="progress" style="height: 25px;">
-          <div class="progress-bar" role="progressbar" aria-valuenow="<%= @progress_reference %>" aria-valuemin="0" aria-valuemax="100" style="width:<%= @progress_reference%>%">
-              <%= @progress_reference %>%
-          </div>
+  <div class="data-second-box">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="data-station">
+          <%= "参考进度"%>
         </div>
       </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-md-6">
-      <div class="data-station">
-        <%= "达标进度"%>
-      </div>
-    </div>
-  </div>
     <div class="row">
       <div class="col-md-8">
         <div class="data-station-bar">
           <div class="progress" style="height: 25px;">
-            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<%= @progress_standard %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= @progress_standard %>%;">
-               <%= @progress_standard %>%
+            <div class="progress-bar" role="progressbar" aria-valuenow="<%= @progress_reference %>" aria-valuemin="0" aria-valuemax="100" style="width:<%= @progress_reference%>%">
+                <%= @progress_reference %>%
             </div>
           </div>
         </div>
       </div>
-  </div><!--这个是第二个进度条-->
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="data-station">
+          <%= "达标进度"%>
+        </div>
+      </div>
+    </div>
+      <div class="row">
+        <div class="col-md-8">
+          <div class="data-station-bar">
+            <div class="progress" style="height: 25px;">
+              <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<%= @progress_standard %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= @progress_standard %>%;">
+                 <%= @progress_standard %>%
+              </div>
+            </div>
+          </div>
+        </div>
+    </div><!--这个是第二个进度条-->
+  </div><!--这个是数据概览的外框-->
+  <hr>
   <div class="row"><!--这个是详细信息展示栏-->
     <div class="col-md-12">
       <div class="data-box">
