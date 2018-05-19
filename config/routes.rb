@@ -11,7 +11,7 @@ Rails.application.routes.draw do
     root :to => 'welcome#index'
 
     get '/ju_overview', to: 'welcome#ju_overview'
-    get '/duan_overview', to: 'welcome#duan_overview'
+    get '/duan_overview', to: 'welcome#duan_overview_1'
     get '/station_overview', to: 'welcome#station_overview'
     get '/duan_ck', to: 'welcome#duan_ck'
     get '/station_ck', to: 'welcome#station_ck'

@@ -535,3 +535,106 @@ table {
     background: red;
   }
 }
+.railway_station_head{
+  width: auto;
+  height: 163px;
+  margin: 20px 10px;
+  padding: 15px 10px;
+  border-style: solid;
+  border-width: 2px;
+  background-attachment: scroll;
+  background-clip: border-box;
+  background-color: rgb(255,255,255);
+  background-origin: padding-box;
+  box-shadow: rgba(190,202,218,17);
+  border-collapse: separate;
+  border-color: rgb(255,255,255);
+  border-radius: 3px;
+}
+.railway_station_head_content{
+  width: auto;
+  height: 129px;
+  padding-top: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 6px;
+}
+.railway_station_box{
+  width: auto;
+  height: 102px;
+  padding: 5px;
+}
+.railway_staion_box_data_1{
+  width: auto;
+  height: 40px;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+.railway_staion_box_data_2{
+  width: auto;
+  height: 40px;
+  margin-top: 18px;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+.railway_station_body{
+  width: auto;
+  height: 697px;
+  margin: 20px 10px;
+  padding: 30px 10px;
+  border-style: solid;
+  border-width: 2px;
+  background-attachment: scroll;
+  background-clip: border-box;
+  background-color: rgb(255,255,255);
+  background-origin: padding-box;
+  box-shadow: rgba(190,202,218,17);
+  border-collapse: separate;
+  border-color: rgb(255,255,255);
+  border-radius: 3px;
+}
+.railway_station_body_content{
+  width:auto;
+  height: 623px;
+
+}
+.railway_station_body_box1{
+  width: auto;
+  height: 201px;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 6px;
+  background-color: rgb(184,207,220);
+}
+.railway_station_body_box2{
+  width: auto;
+  height: 201px;
+  margin-top: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 6px;
+  background-color: rgb(184,207,220);
+}
+.railway_station_body_box3{
+  width: 80%;
+  height: 306px;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 6px;
+  background-color: rgb(205,221,230);
+}
+.railway_station_body_box4{
+  width: auto;
+  height: 306px;
+  margin-top: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 6px;
+  background-color: rgb(205,221,230);
+}
+.boooox{
+  width: auto;
+  height: 306px;
+  border-style: solid;
+  border-width: 1px;
+}

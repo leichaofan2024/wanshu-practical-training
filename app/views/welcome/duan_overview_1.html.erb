@@ -1,0 +1,167 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="railway_station_head">
+        <div class="col-md-3">
+          <div class="railway_station_head_content">
+            <%= link_to station_ck_path(:"uf8" => params[:uf8],:"search" => params[:search],:"commit" => params[:commit]), {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
+                <div class="col-md-8">
+                  <div class="railway_station_box" style="border-right: 3px solid #000;">
+                    <div class="railway_staion_box_data_1">
+                      <strong>车站总数：<%= @station%> </strong>
+                    </div>
+                    <div class="railway_staion_box_data_2">
+                      <strong>实考车站：<%= @station_ck_count %></strong>
+                    </div>
+                  </div>
+                </div>
+                <% end %>
+                <div class="col-md-4">
+                  <div class="railway_station_box">
+                    <%= "百分比"%>
+                  </div>
+                </div>
+          </div>
+        </div><!--第一个卡片外框-->
+        <div class="col-md-3">
+          <div class="railway_station_head_content">
+            <%= link_to team_ck_path(:"uf8" => params[:uf8],:"search" => params[:search],:"commit" => params[:commit]), {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
+                <div class="col-md-8">
+                  <div class="railway_station_box" style="border-right: 3px solid #000;">
+                    <div class="railway_staion_box_data_1">
+                      <strong>班组总数：<%= @team %>
+                    </div>
+                    <div class="railway_staion_box_data_2">
+                      <strong>实考班组：<%= @team_ck_count %></strong>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+                <div class="col-md-4">
+                  <div class="railway_station_box">
+                    <%= "百分比"%>
+                  </div>
+                </div>
+          </div>
+        </div><!--第2个卡片外框-->
+        <div class="col-md-3">
+          <div class="railway_station_head_content">
+            <%= link_to student_ck_path(:"uf8" => params[:uf8],:"search" => params[:search],:"commit" => params[:commit]), {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
+                <div class="col-md-8">
+                  <div class="railway_station_box" style="border-right: 3px solid #000;">
+                    <div class="railway_staion_box_data_1">
+                      <strong>实训人数：<%= @students %> </strong>
+                    </div>
+                    <div class="railway_staion_box_data_2">
+                      <strong>实考人数：<%= @student_ck_counts %>
+                    </div>
+                  </div>
+                </div>
+            <% end %>
+                <div class="col-md-4">
+                  <div class="railway_station_box">
+                    <%= "百分比"%>
+                  </div>
+                </div>
+          </div>
+        </div><!--第3个卡片外框-->
+        <div class="col-md-3">
+          <div class="railway_station_head_content">
+            <%= link_to program_ck_path(:"uf8" => params[:uf8],:"search" => params[:search],:"commit" => params[:commit]), {'data-toggle' => "tooltip", 'data-placement' => "top", 'title' => "点击查看详情" } do %>
+                <div class="col-md-8">
+                  <div class="railway_station_box" style="border-right: 3px solid #000;">
+                    <div class="railway_staion_box_data_1">
+                      <strong>考点总数：<%= TProgramInfo.count %> </strong>
+                    </div>
+                    <div class="railway_staion_box_data_2">
+                      <strong>覆盖考点：<%= @program_ck_count %>
+                    </div>
+                  </div>
+                </div>
+                <% end %>
+                <div class="col-md-4">
+                  <div class="railway_station_box">
+                    <%= "百分比"%>
+                  </div>
+                </div>
+          </div>
+        </div><!--第4个卡片外框-->
+      </div><!--这个是卡片栏的外框-->
+
+<!--这段是饼图的外框-->
+      <div class="railway_station_body">
+        <div class="col-md-6">
+          <div class="railway_station_body_content">
+            <div id="main" class="railway_station_body_box3">
+                 <script type="text/javascript">
+                    var myChart = echarts.init(document.getElementById('main'));
+                       var option = {
+                          tooltip: {
+                              trigger: 'item',
+                              formatter: "{a} <br/>{b}: {c} ({d}%)"
+                          },
+                          color:['rgb(0,164,220)','rgb(0,81,108)'],
+                          legend: {
+                              orient: 'vertical',
+                              x: 'left',
+                              data:['实考','未考']
+                          },
+                          series: [
+                              {
+                                  name:'访问来源',
+                                  type:'pie',
+                                  radius: ['50%', '70%'],
+                                  avoidLabelOverlap: false,
+                                  label: {
+                                      normal: {
+                                          show: false,
+                                          position: 'center'
+                                      },
+                                      emphasis: {
+                                          show: true,
+                                          textStyle: {
+                                              fontSize: '30',
+                                              fontWeight: 'bold'
+                                          }
+                                      }
+                                  },
+                                  labelLine: {
+                                      normal: {
+                                          show: false
+                                      }
+                                  },
+                                  data:[
+                                      {value:335, name:'实考'},
+                                      {value:310, name:'未考'},
+                                  ]
+                              }
+                          ]
+                      };
+                      myChart.setOption(option);
+                 </script>
+
+            </div>
+            <div class="railway_station_body_box4">
+              <%= "ah"%>
+            </div>
+          </div><!--railway_station_body_content-->
+        </div><!--这个是3个饼图的状态栏-->
+        <div class="col-md-6">
+          <div class="railway_station_body_content">
+            <div class="railway_station_body_box1">
+              <%= "hahh"%>
+            </div>
+            <div class="railway_station_body_box2">
+              <%= "hahh"%>
+            </div>
+            <div class="railway_station_body_box2">
+              <%= "hahh"%>
+            </div>
+          </div>
+        </div><!--这个是2个饼图的状态栏-->
+      </div><!--railway_station_body-->
+
+
+    </div><!--col-md-12-->
+  </div><!--row-->
+</div><!--fluid-->
