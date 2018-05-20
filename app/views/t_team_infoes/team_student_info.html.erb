@@ -439,9 +439,9 @@
                 <% n = @station.image.count %>
                 <% (0..(n-1)).each do |i| %>
                   <div class="teams_station_picture">
-                    <%= image_tag("http://10.64.2.108:8033"+@station.image[i].thumb.url)%>
+                    <%= image_tag(@station.image[i].thumb.url)%>
                     <div class="dropdown-content">
-                      <%= image_tag("http://10.64.2.108:8033"+@station.image[i].huge.url)%>
+                      <%= image_tag(@station.image[i].huge.url)%>
                     </div>
                   </div>
                 <% end %>
@@ -466,7 +466,7 @@
                 <% if @station.attachment.present? %>
                   <% n = @station.attachment.count %>
                   <% (0..(n-1)).each do |i| %>
-                    <%= link_to(@station.attachment[i].file.file.split("/").last,"http://10.64.2.108:8033"+@station.attachment_urls[i])%>
+                    <%= link_to(@station.attachment[i].file.file.split("/").last,@station.attachment_urls[i])%>
                   <% end %>
                 <% end %>
               <% else %>
@@ -493,7 +493,7 @@
                 <% if @station.attachment2.present? %>
                   <% n = @station.attachment2.count %>
                   <% (0..(n-1)).each do |i| %>
-                    <%= link_to(@station.attachment2[i].file.file.split("/").last,"http://10.64.2.108:8033"+@station.attachment2_urls[i])%>
+                    <%= link_to(@station.attachment2[i].file.file.split("/").last,@station.attachment2_urls[i])%>
                   <% end %>
                 <% end %>
               <% else %>

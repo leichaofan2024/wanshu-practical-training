@@ -15,7 +15,7 @@
   <% n = @call_board.call_board_attachments.count %>
 
   <% (0..(n-1)).each do |i| %>
-    <p>下载附件:<%= link_to(@call_board.call_board_attachments[i].file.file.split("/").last,"http://10.64.2.108:8033"+"#{@call_board.call_board_attachments_urls[i]}")%></p>
+    <p>下载附件:<%= link_to(@call_board.call_board_attachments[i].file.file.split("/").last,@call_board.call_board_attachments_urls[i])%></p>
   <% end %>
 
 </div>

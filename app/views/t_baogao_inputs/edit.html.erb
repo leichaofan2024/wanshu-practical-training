@@ -15,7 +15,7 @@
       <label>当前截图预览：</label><br>
       <% n = @t_baogao_input.baogao_attachment.size %>
       <% (0..(n-1)).each do |i| %>
-        <%= image_tag("http://10.64.2.108:8033"+@t_baogao_input.baogao_attachment[i].url,width: 200) %>
+        <%= image_tag(@t_baogao_input.baogao_attachment[i].url,width: 200) %>
       <% end %>
 
     <% end %>
