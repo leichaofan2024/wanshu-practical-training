@@ -1,15 +1,19 @@
-<div class="loginpage-frame">
-  <h2>登录账户</h2>
 
-  <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-    <div class="form-inputs">
-      <%= f.input :role, required: true,label:"用户名", autofocus:true %>
-      <%= f.input :password, required: false ,label: "密码"%>
-      <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %>
+<img src="https://ws2.sinaimg.cn/large/006tKfTcly1fri1sx7qrij31kw11xqv7.jpg" class="img-responsive" alt="无法显示">
+    <div class="login-box">
+        <div class="login-box-box">
+          <div class="login-box-title">
+            <h2>车务系统实训管理分析平台</h2>
+            <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+              <div class="form-inputs">
+                <%= f.input :role, required: true,label:"用户名", autofocus:true %>
+                <%= f.input :password, required: false ,label: "密码"%>
+                <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %>
+              </div>
+              <div class="form-actions">
+                <%= f.button :submit, "登录", 'background-color' => "#3D74B8" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
     </div>
-
-    <div class="form-actions">
-      <%= f.button :submit, "登录", 'background-color' => "#3D74B8" %>
-    </div>
-  <% end %>
-</div>

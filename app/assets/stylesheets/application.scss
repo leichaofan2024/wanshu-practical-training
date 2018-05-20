@@ -65,9 +65,35 @@ table {
 }
 
 // 登陆样式：
-.loginpage-frame{
-  width:30%;
-  margin:0 auto;
+.login-box{
+    position: absolute;
+    top: 0;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+}
+.login-box-title{
+  float: right;
+  width: 100%;
+	padding: 0;
+	line-height: 2.4;
+  h2{
+    font-size: 36px;
+    font-weight: bold;
+    font-family: sans-serif;
+  }
+}
+.login-box-box{
+  height: auto;
+  width: 35%;
+  padding-top: 10%;
+  float: right;
+  top: 0;
+
+}
+.img-responsive{
+  position: fixed;top: 0; left: 0;
+  opacity:0.8;
 }
 
 .simple_form input[type='submit']{
