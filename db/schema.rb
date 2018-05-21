@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180509134349) do
+ActiveRecord::Schema.define(version: 20180102090102) do
 
   create_table "browses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "user_id"
@@ -26,14 +26,6 @@ ActiveRecord::Schema.define(version: 20180509134349) do
     t.datetime "updated_at",                              null: false
     t.json     "call_board_attachments"
     t.integer  "user_id"
-  end
-
-  create_table "faqs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string   "title"
-    t.text     "content",        limit: 65535
-    t.json     "faq_attachment"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
   end
 
   create_table "t_baogao_infos", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -217,34 +209,6 @@ ActiveRecord::Schema.define(version: 20180509134349) do
     t.index ["F_work_uuid"], name: "F_work_uuid", using: :btree
   end
 
-  create_table "t_user_info_copy", primary_key: "F_uuid", id: :string, limit: 64, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string  "F_id",           limit: 64,             null: false
-    t.string  "F_name",         limit: 16,             null: false
-    t.string  "F_code",         limit: 32,             null: false
-    t.string  "F_password",     limit: 32,             null: false
-    t.integer "F_type",                    default: 0, null: false
-    t.integer "F_state",                   default: 0, null: false
-    t.string  "F_duan_uuid",    limit: 64,             null: false
-    t.string  "F_station_uuid", limit: 64,             null: false
-    t.string  "F_team_uuid",    limit: 64,             null: false
-    t.string  "F_work_uuid",    limit: 64,             null: false
-    t.integer "F_synch",                   default: 0, null: false
-  end
-
-  create_table "t_user_info_copy_copy", primary_key: "F_uuid", id: :string, limit: 64, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string  "F_id",           limit: 64,             null: false
-    t.string  "F_name",         limit: 16,             null: false
-    t.string  "F_code",         limit: 32,             null: false
-    t.string  "F_password",     limit: 32,             null: false
-    t.integer "F_type",                    default: 0, null: false
-    t.integer "F_state",                   default: 0, null: false
-    t.string  "F_duan_uuid",    limit: 64,             null: false
-    t.string  "F_station_uuid", limit: 64,             null: false
-    t.string  "F_team_uuid",    limit: 64,             null: false
-    t.string  "F_work_uuid",    limit: 64,             null: false
-    t.integer "F_synch",                   default: 0, null: false
-  end
-
   create_table "t_vacation_infos", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "F_id"
     t.datetime "begin_time"
@@ -288,13 +252,13 @@ ActiveRecord::Schema.define(version: 20180509134349) do
     t.datetime "updated_at",           null: false
   end
 
-  create_table "xcf_program_infos", primary_key: "F_id", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
-    t.string  "F_name",    collation: "utf8_general_ci"
+  create_table "xcf_program_infos", primary_key: "F_id", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string  "F_name"
     t.integer "F_type_id"
   end
 
   create_table "xcf_program_type_infos", primary_key: "F_id", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
-    t.string "F_name"
+    t.string "F_name", collation: "utf8_general_ci"
   end
 
   create_table "xcf_reason_infos", primary_key: "F_id", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -304,7 +268,7 @@ ActiveRecord::Schema.define(version: 20180509134349) do
   end
 
   create_table "xcf_reason_type_infos", primary_key: "F_id", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
-    t.string "F_name"
+    t.string "F_name", collation: "utf8_general_ci"
   end
 
   create_table "xcf_record_detail_infos", primary_key: "F_uuid", id: :string, limit: 64, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

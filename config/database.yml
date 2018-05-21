@@ -16,7 +16,7 @@ default: &default
 
 development:
   <<: *default
-  database: wanshu20180507
+  database: wanshu20180515
   reconnect: false
   port: 3306
 # Warning: The database defined as "test" will be erased and
@@ -24,12 +24,12 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: wanshu
+  database: wanshu20180515
   reconnect: false
   port: 3306
 
 production:
   <<: *default
-  database: wanshu
+  database: wanshu20180515
   reconnect: false
   port: 3306
