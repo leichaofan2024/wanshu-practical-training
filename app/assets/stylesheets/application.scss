@@ -66,34 +66,35 @@ table {
 
 // 登陆样式：
 .login-box{
+    top: 0; right: 0; bottom: 0; left: 0;
     position: absolute;
-    top: 0;
-    left: 0px;
-    width: 100%;
-    height: 100%;
+    width: 600px;
+    height: 565px;
+    margin: auto;
+    -moz-box-shadow:2px 2px 5px #333333;
+    -webkit-box-shadow:2px 2px 5px #333333;
+    background-color: #eee;
+    box-shadow: 2px 2px 5px #333333;
 }
 .login-box-title{
-  float: right;
-  width: 100%;
-	padding: 0;
+  padding: 40px;
 	line-height: 2.4;
-  h2{
+  h2.login{
+    text-align: center;
     font-size: 36px;
     font-weight: bold;
     font-family: sans-serif;
   }
-}
-.login-box-box{
-  height: auto;
-  width: 35%;
-  padding-top: 10%;
-  float: right;
-  top: 0;
-
+  span{
+    text-align: center;
+    font-size: 24px;
+  }
 }
 .img-responsive{
-  position: fixed;top: 0; left: 0;
-  opacity:0.8;
+  position: fixed;
+  top: 0; right: 0; bottom: 0; left: 0;
+  opacity:0.6;
+  overflow: scroll;
 }
 
 .simple_form input[type='submit']{

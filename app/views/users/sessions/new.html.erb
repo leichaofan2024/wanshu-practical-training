@@ -1,9 +1,10 @@
 
 <img src="https://ws2.sinaimg.cn/large/006tKfTcly1fri1sx7qrij31kw11xqv7.jpg" class="img-responsive" alt="无法显示">
+
     <div class="login-box">
-        <div class="login-box-box">
           <div class="login-box-title">
-            <h2>车务系统实训管理分析平台</h2>
+            <h2 class="login">车务实训系统<br>
+              <span>管理分析平台</span></h2>
             <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
               <div class="form-inputs">
                 <%= f.input :role, required: true,label:"用户名", autofocus:true %>
@@ -15,5 +16,4 @@
               </div>
             <% end %>
           </div>
-        </div>
     </div>
