@@ -48,9 +48,9 @@
             <% (0..(n-1)).each do |i| %>
               <div class="teams_station_picture">
                 <!-- "http://10.64.2.108:8033"+ -->
-                <%= image_tag(c.faq_attachment[i].thumb.url)%>
+                <%= image_tag(c.faq_attachment[i].versions[:thumb].file.file.split("public").last) %>
                 <div class="dropdown-content">
-                  <%= image_tag(c.faq_attachment[i].url)%>
+                  <%= image_tag(c.faq_attachment[i].file.file.split("public").last) %>
                 </div>
               </div>
             <% end %>

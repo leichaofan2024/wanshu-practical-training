@@ -61,7 +61,7 @@
         <% if @jibenqingkuang.present? %>
           <% if @jibenqingkuang.baogao_attachment[0].present? %>
             <div style ="text-align:center;">
-              <%= image_tag(@jibenqingkuang.baogao_attachment[0].url,width: 900)%>
+              <%= image_tag(@jibenqingkuang.baogao_attachment[0].file.file.split("public").last,width: 900)%>
             </div>
           <% end %>
         <% end %>
@@ -151,7 +151,7 @@
         <% if @jibenqingkuang.present? %>
           <% if @jibenqingkuang.baogao_attachment[1].present? %>
             <div style ="text-align:center;">
-              <%= image_tag(@jibenqingkuang.baogao_attachment[1].url,width: 900)%>
+              <%= image_tag(@jibenqingkuang.baogao_attachment[1].file.file.split("public").last,width: 900)%>
             </div>
           <% end %>
         <% end %>
@@ -162,7 +162,7 @@
         <% if @jibenqingkuang.present? %>
           <% if @jibenqingkuang.baogao_attachment[2].present? %>
             <div style ="text-align:center;">
-              <%= image_tag(@jibenqingkuang.baogao_attachment[2].url,width: 900)%>
+              <%= image_tag(@jibenqingkuang.baogao_attachment[2].file.file.split("public").last,width: 900)%>
             </div>
           <% end %>
         <% end %>
@@ -200,12 +200,12 @@
 
             <% if @cunzaiwenti.baogao_attachment[0].present? %>
               <div style ="text-align:center;margin-bottom:30px;">
-                <%= image_tag(@cunzaiwenti.baogao_attachment[0].url,width: 900)%>
+                <%= image_tag(@cunzaiwenti.baogao_attachment[0].file.file.split("public").last,width: 900)%>
               </div>
             <% end %>
             <% if @cunzaiwenti.baogao_attachment[1].present? %>
               <div style ="text-align:center;">
-                <%= image_tag(@cunzaiwenti.baogao_attachment[1].url,width: 900)%>
+                <%= image_tag(@cunzaiwenti.baogao_attachment[1].file.file.split("public").last,width: 900)%>
               </div>
             <% end %>
             <% if @cunzaiwenti.content.present? %>

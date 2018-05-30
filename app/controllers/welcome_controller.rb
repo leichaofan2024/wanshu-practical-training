@@ -220,8 +220,14 @@ class WelcomeController < ApplicationController
     record = TRecordDetailInfo.joins(t_record_info: :t_station_info).where("t_station_info.F_name=?", current_user.orgnize)
     if params[:search].present?
       @search = TimeSearch.new(params[:search])
+
+      # @team_ck_count = TTeamInfo.where(F_station_uuid: TStationInfo.find_by(:F_name => current_user.orgnize).F_uuid).joins(t_user_infoes: :t_record_infoes).student_all(Time.now.beginning_of_month, Time.now.end_of_month).where("t_user_info.F_id": student_id).datetime.distinct.count
       @team = TTeamInfo.joins(:t_station_info,:t_user_infoes).where("t_station_info.F_name": current_user.orgnize).student_all(@search.date_from, @search.date_to).distinct.count
-      @team_ck_count = @search.scope_team_station(current_user.orgnize).distinct.count
+      student_id = TUserInfo.student_all(@search.date_from, @search.date_to).joins(:t_team_info).where("t_team_info.F_station_uuid": TStationInfo.find_by(:F_name => current_user.orgnize).F_uuid).pluck("t_user_info.F_id").uniq
+      student_ck_id = TUserInfo.student_all(@search.date_from, @search.date_to).where(F_id: student_id).joins(:t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @search.date_from+8.hours, @search.date_to+8.hours).pluck("t_user_info.F_id").uniq
+      @team_ck_count=TTeamInfo.where(F_station_uuid: TStationInfo.find_by(:F_name => current_user.orgnize).F_uuid).joins(:t_user_infoes).student_all(@search.date_from,@search.date_to).where("t_user_info.F_id": student_ck_id).distinct.count
+
+      # @team_ck_count = @search.scope_team_station(current_user.orgnize).distinct.count
       @students = TUserInfo.student_all(@search.date_from, @search.date_to).joins(:t_station_info).where("t_station_info.F_name=?", current_user.orgnize).select("t_user_info.F_id").distinct.count
       @student_ck_counts = @search.scope_student.joins(:t_station_info).where("t_station_info.F_name= ? ", current_user.orgnize).select("t_user_info.F_id").distinct.count
       @program_ck_count = @search.scope_program_station.where("t_station_info.F_name= ?", current_user.orgnize).distinct.count
@@ -252,7 +258,11 @@ class WelcomeController < ApplicationController
 
     else
       @team = TTeamInfo.joins(:t_station_info,:t_user_infoes).where("t_station_info.F_name": current_user.orgnize).student_all(Time.now.beginning_of_month, Time.now.end_of_month).distinct.count
-      @team_ck_count = TTeamInfo.joins(:t_station_info,t_user_infoes: :t_record_infoes).where("t_station_info.F_name": current_user.orgnize).student_all(Time.now.beginning_of_month, Time.now.end_of_month).datetime.distinct.count
+      student_id = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_team_info).where("t_team_info.F_station_uuid": TStationInfo.find_by(:F_name => current_user.orgnize).F_uuid).pluck("t_user_info.F_id").uniq
+      student_ck_id =  TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).where(F_id: student_id).joins(:t_record_infoes).datetime.pluck("t_user_info.F_id").uniq
+
+      @team_ck_count = TTeamInfo.where(F_station_uuid: TStationInfo.find_by(:F_name => current_user.orgnize).F_uuid).joins(:t_user_infoes).student_all(Time.now.beginning_of_month, Time.now.end_of_month).where("t_user_info.F_id": student_ck_id).distinct.count
+      # @team_ck_count = TTeamInfo.joins(:t_station_info,t_user_infoes: :t_record_infoes).where("t_station_info.F_name": current_user.orgnize).student_all(Time.now.beginning_of_month, Time.now.end_of_month).datetime.distinct.count
       @students = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_station_info).where("t_station_info.F_name=?", current_user.orgnize).select("t_user_info.F_id").distinct.count
       @student_ck_counts = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_station_info,:t_record_infoes).datetime.where("t_station_info.F_name= ?", current_user.orgnize).select("t_user_info.F_id").distinct.count
       @program_ck_count = TProgramInfo.joins(t_record_infoes: :t_station_info).datetime.where("t_station_info.F_name= ?", current_user.orgnize).distinct.count
