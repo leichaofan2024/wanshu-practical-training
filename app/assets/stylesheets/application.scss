@@ -562,69 +562,27 @@ table {
     background: red;
   }
 }
-.railway_station_head{
-  width: auto;
-  height: 163px;
-  margin: 20px 10px;
-  padding: 15px 10px;
-  border-style: solid;
-  border-width: 2px;
-  background-attachment: scroll;
-  background-clip: border-box;
-  background-color: rgb(255,255,255);
-  background-origin: padding-box;
-  box-shadow: rgba(190,202,218,17);
-  border-collapse: separate;
-  border-color: rgb(255,255,255);
-  border-radius: 3px;
-}
-.railway_station_head_content{
-  width: auto;
-  height: 129px;
-  padding-top: 10px;
-  border-style: solid;
-  border-width: 1px;
-  border-radius: 6px;
-}
-.railway_station_box{
-  width: auto;
-  height: 102px;
-  padding: 5px;
-}
-.railway_staion_box_data_1{
-  width: auto;
-  height: 40px;
-  padding-top: 10px;
-  padding-left: 10px;
-}
-.railway_staion_box_data_2{
-  width: auto;
-  height: 40px;
-  margin-top: 18px;
-  padding-top: 10px;
-  padding-left: 10px;
-}
+
 .railway_station_body{
   width: auto;
-  height: 697px;
-  margin: 20px 10px;
-  padding: 30px 10px;
-  border-style: solid;
-  border-width: 2px;
-  background-attachment: scroll;
-  background-clip: border-box;
+  margin-top: 30px;
+  height: 739px;
   background-color: rgb(255,255,255);
-  background-origin: padding-box;
-  box-shadow: rgba(190,202,218,17);
-  border-collapse: separate;
-  border-color: rgb(255,255,255);
-  border-radius: 3px;
+  border: solid 1px #ebedf8;
+  border-radius: 3.8px;
 }
-.railway_station_body_content{
-  width:auto;
-  height: 623px;
+.railway-head-box{
+  height: 269px;
+  border: solid 1px;
+  padding: 40px;
 
 }
+.box-box-box{
+  height: 196px;
+  width: 450px;
+  border: solid 1px;
+}
+
 .railway_station_body_box1{
   width: auto;
   height: 201px;
