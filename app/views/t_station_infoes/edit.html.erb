@@ -1,7 +1,0 @@
-<div class="loginpage-frame">
-  <h3>本车站实训平台设备状态：</h3>
-  <%= simple_form_for @station do |f| %>
-    <%= f.input :status,:collection => ["在线","脱机","维修"] %>
-    <%= f.submit "确定" %>
-  <% end %>
-</div>

@@ -37,16 +37,29 @@ module ApplicationHelper
       a = TVacationInfo.student_transfer(time_interval[:date_from],time_interval[:date_to])
       b = TVacationInfo.student_long_vacation(time_interval[:date_from],time_interval[:date_to])
       c = TVacationInfo.student_short_vacation(time_interval[:date_from],time_interval[:date_to])
+      d = StationEquipmentMaintain.equipment_maintain(time_interval[:date_from],time_interval[:date_to])
       if a.include?(student.F_uuid)
         return "调离"
       elsif b.include?(student.F_id)
         return "长假"
       elsif c.include?(student.F_id)
         return "短假"
+      elsif d.include?(student.F_station_uuid)
+        return "设备维护"
       else
         return "在职"
       end
     end
   end
+
+  def render_station_status(time_interval,station_uuid)
+    a = StationEquipmentMaintain.equipment_maintain(time_interval[:date_from],time_interval[:date_to])
+    if a.include?(station_uuid)
+      return "设备维护"
+    else
+      return "在线"
+    end
+  end
+
 
 end

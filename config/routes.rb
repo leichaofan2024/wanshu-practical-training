@@ -91,9 +91,12 @@ Rails.application.routes.draw do
             get :station_student_info
             get :station_dabiao_info
             get :station_score_info
-
         end
-
+        member do
+          get :equipment_maintain_edit
+          post :equipment_maintain_create
+          patch :equipment_maintain_update
+        end
     end
 
     resources :t_team_infoes do

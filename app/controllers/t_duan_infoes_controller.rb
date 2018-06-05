@@ -1,6 +1,15 @@
 class TDuanInfoesController < ApplicationController
   require 'bigdecimal'
     def index
+      if params[:search].present?
+          @search = TimeSearch.new(params[:search])
+        equipment_maintain = StationEquipmentMaintain.equipment_maintain(@search.date_from, @search.date_to)
+        @duan_name = TStationInfo.where(F_uuid: equipment_maintain).pluck("t_station_info.F_duan_uuid").uniq
+      else
+        equipment_maintain = StationEquipmentMaintain.equipment_maintain(Time.now.beginning_of_month, Time.now.end_of_month)
+        @duan_name = TStationInfo.where(F_uuid: equipment_maintain).pluck("t_station_info.F_duan_uuid").uniq
+      end
+
         @duans_cw = TDuanInfo.duan_orgnization.where(F_type: 1)
         @duans_zs = TDuanInfo.duan_orgnization.where(F_type: 2)
         @duans_zj = TDuanInfo.duan_zhijiao
