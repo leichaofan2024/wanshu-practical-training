@@ -4,10 +4,10 @@ class TDuanInfoesController < ApplicationController
       if params[:search].present?
           @search = TimeSearch.new(params[:search])
         equipment_maintain = StationEquipmentMaintain.equipment_maintain(@search.date_from, @search.date_to)
-        @duan_name = TStationInfo.where(F_uuid: equipment_maintain).pluck("t_station_info.F_duan_uuid").uniq
+        @duan_name = TDuanInfo.where(F_uuid: TStationInfo.where(F_uuid: equipment_maintain).pluck("t_station_info.F_duan_uuid").uniq).pluck("t_duan_info.F_name").uniq
       else
         equipment_maintain = StationEquipmentMaintain.equipment_maintain(Time.now.beginning_of_month, Time.now.end_of_month)
-        @duan_name = TStationInfo.where(F_uuid: equipment_maintain).pluck("t_station_info.F_duan_uuid").uniq
+        @duan_name = TDuanInfo.where(F_uuid: TStationInfo.where(F_uuid: equipment_maintain).pluck("t_station_info.F_duan_uuid").uniq).pluck("t_duan_info.F_name").uniq
       end
 
         @duans_cw = TDuanInfo.duan_orgnization.where(F_type: 1)

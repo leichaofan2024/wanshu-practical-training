@@ -7,8 +7,13 @@
     </div>
     <h3>车站 (共计：<%= @stations.size%>个)</h3><hr>
       <% @stations.each do |station|%>
-        <%= link_to team_student_info_t_team_infoes_path(:duan_name => params[:duan_name],:station_name => station.F_name) do  %>
-          <button type="button" name="name"><%= station.F_name %></button>
+        <%= link_to team_student_info_t_team_infoes_path(:duan_name => params[:duan_name],:station_name => station.F_name,"utf8": params[:utf8], "search": params[:search], "commit": params[:commit]) do  %>
+          <button type="button" name="name">
+            <%= station.F_name %>
+            <% if @station_name.include?(station.F_name) %>
+              <i style = "color: red;">(维护中)</i>
+            <% end %>
+          </button>
         <% end %>
       <% end %>
   <% elsif current_user.permission ==2 %>
@@ -17,8 +22,13 @@
     </div>
     <h3>车站 (共计：<%= @stations.size%>个)</h3><hr>
       <% @stations.each do |station|%>
-        <%= link_to team_student_info_t_team_infoes_path(:duan_name => current_user.orgnize,:station_name => station.F_name) do  %>
-          <button type="button" name="name"><%= station.F_name %></button>
+        <%= link_to team_student_info_t_team_infoes_path(:duan_name => current_user.orgnize,:station_name => station.F_name,"utf8": params[:utf8], "search": params[:search], "commit": params[:commit]) do  %>
+          <button type="button" name="name">
+            <%= station.F_name %>
+            <% if @station_name.include?(station.F_name) %>
+              <i style = "color: red;">(维护中)</i>
+            <% end %>
+          </button>
         <% end %>
       <% end %>
   <% end %>

@@ -1,12 +1,20 @@
 class TStationInfoesController < ApplicationController
   require 'bigdecimal'
     def index
-        if current_user.permission == 1
-          @duan = TDuanInfo.find_by(F_name: params[:duan_name])
-          @stations = TStationInfo.all.where(F_duan_uuid: @duan.F_uuid)
-        elsif current_user.permission == 2
-          @stations = TDuanInfo.find_by(:F_name => current_user.orgnize).t_station_infoes
-        end
+      if params[:search].present?
+          @search = TimeSearch.new(params[:search])
+        equipment_maintain = StationEquipmentMaintain.equipment_maintain(@search.date_from, @search.date_to)
+        @station_name = TStationInfo.where(F_uuid: equipment_maintain).pluck("t_station_info.F_name").uniq
+      else
+        equipment_maintain = StationEquipmentMaintain.equipment_maintain(Time.now.beginning_of_month, Time.now.end_of_month)
+        @station_name = TStationInfo.where(F_uuid: equipment_maintain).pluck("t_station_info.F_name").uniq
+      end
+      if current_user.permission == 1
+        @duan = TDuanInfo.find_by(F_name: params[:duan_name])
+        @stations = TStationInfo.all.where(F_duan_uuid: @duan.F_uuid)
+      elsif current_user.permission == 2
+        @stations = TDuanInfo.find_by(:F_name => current_user.orgnize).t_station_infoes
+      end
     end
 
     def equipment_maintain_edit
