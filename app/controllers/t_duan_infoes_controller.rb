@@ -2,11 +2,13 @@ class TDuanInfoesController < ApplicationController
   require 'bigdecimal'
     def index
       if params[:search].present?
-          @search = TimeSearch.new(params[:search])
-        equipment_maintain = StationEquipmentMaintain.equipment_maintain(@search.date_from, @search.date_to)
+        @search = TimeSearch.new(params[:search])
+        @station_equipment_maintain = StationEquipmentMaintain.where("station_equipment_maintains.begin_time < ? and station_equipment_maintains.end_time > ? ",@search.date_to,@search.date_to)
+        equipment_maintain = TStationInfo.where(:F_name => @station_equipment_maintain.pluck("station_equipment_maintains.station_name")).pluck(:F_uuid)
         @duan_name = TDuanInfo.where(F_uuid: TStationInfo.where(F_uuid: equipment_maintain).pluck("t_station_info.F_duan_uuid").uniq).pluck("t_duan_info.F_name").uniq
       else
-        equipment_maintain = StationEquipmentMaintain.equipment_maintain(Time.now.beginning_of_month, Time.now.end_of_month)
+        @station_equipment_maintain = StationEquipmentMaintain.where("station_equipment_maintains.begin_time < ? and station_equipment_maintains.end_time > ? ",Time.now.end_of_month,Time.now.end_of_month)
+        equipment_maintain = TStationInfo.where(:F_name => @station_equipment_maintain.pluck("station_equipment_maintains.station_name")).pluck(:F_uuid)
         @duan_name = TDuanInfo.where(F_uuid: TStationInfo.where(F_uuid: equipment_maintain).pluck("t_station_info.F_duan_uuid").uniq).pluck("t_duan_info.F_name").uniq
       end
 

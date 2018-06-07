@@ -52,4 +52,37 @@
       </button>
     </div>
   <% end %>
+
+  <h5 style= "margin-top: 50px;">设备维护的站：</h5>
+  <table class = "table">
+    <thead>
+      <tr>
+        <th>序号</th>
+        <th>站段</th>
+        <th>车站</th>
+        <th>维护原因</th>
+        <th>维护时间</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% n = 1%>
+      <% @station_equipment_maintain.each do |equipment_maintain| %>
+      <tr>
+        <td><%= n %></td>
+        <td><%= TDuanInfo.find_by(F_uuid: TStationInfo.find_by(F_name: equipment_maintain.station_name).F_duan_uuid ).F_name %></td>
+        <td><%= equipment_maintain.station_name %></td>
+        <td><%= equipment_maintain.maintain_reason %></td>
+        <td>
+          <%= equipment_maintain.begin_time.strftime("%Y-%m-%d %H:%M:%S") %> ~
+          <% if equipment_maintain.end_time == "2030-01-01 00:00:00" %>
+            （维护中）
+          <% else %>
+            <%= equipment_maintain.end_time.strftime("%Y-%m-%d %H:%M:%S") %>
+          <% end %>
+        </td>
+      </tr>
+      <% n = n+1 %>
+      <% end %>
+    </tbody>
+  </table>
 </div>
