@@ -43,10 +43,14 @@
     <div class="">
       <a href="/">首页</a> > 当前站段
     </div>
-    <div class="">
+    <div style="margin-top:30px;">
       <button type="button" name="button">
-        <%= link_to(current_user.orgnize,t_station_infoes_path) %>
-        <% if @duan_name.include?(duan.F_name) %>
+        <% if params[:search].present? %>
+         <%= link_to(current_user.orgnize,t_station_infoes_path("utf8": params[:utf8], "search": params[:search], "commit": params[:commit])) %>
+        <% else %>
+          <%= link_to(current_user.orgnize,t_station_infoes_path) %>
+        <% end %>
+        <% if @duan_name.include?(current_user.orgnize) %>
           <i style = "color: red;">(维护中)</i>
         <% end %>
       </button>
@@ -67,21 +71,42 @@
     <tbody>
       <% n = 1%>
       <% @station_equipment_maintain.each do |equipment_maintain| %>
-      <tr>
-        <td><%= n %></td>
-        <td><%= TDuanInfo.find_by(F_uuid: TStationInfo.find_by(F_name: equipment_maintain.station_name).F_duan_uuid ).F_name %></td>
-        <td><%= equipment_maintain.station_name %></td>
-        <td><%= equipment_maintain.maintain_reason %></td>
-        <td>
-          <%= equipment_maintain.begin_time.strftime("%Y-%m-%d %H:%M:%S") %> ~
-          <% if equipment_maintain.end_time == "2030-01-01 00:00:00" %>
-            （维护中）
-          <% else %>
-            <%= equipment_maintain.end_time.strftime("%Y-%m-%d %H:%M:%S") %>
+        <% duan_name = TDuanInfo.find_by(F_uuid: TStationInfo.find_by(F_name: equipment_maintain.station_name).F_duan_uuid ).F_name %>
+        <% if current_user.permission == 1 %>
+          <tr>
+            <td><%= n %></td>
+            <td><%= duan_name %></td>
+            <td><%= equipment_maintain.station_name %></td>
+            <td><%= equipment_maintain.maintain_reason %></td>
+            <td>
+              <%= equipment_maintain.begin_time.strftime("%Y-%m-%d %H:%M:%S") %> ~
+              <% if equipment_maintain.end_time == "2030-01-01 00:00:00" %>
+                （维护中）
+              <% else %>
+                <%= equipment_maintain.end_time.strftime("%Y-%m-%d %H:%M:%S") %>
+              <% end %>
+            </td>
+          </tr>
+          <% n = n+1 %>
+        <% elsif current_user.permission == 2 %>
+          <% if duan_name == current_user.orgnize %>
+            <tr>
+              <td><%= n %></td>
+              <td><%= duan_name %></td>
+              <td><%= equipment_maintain.station_name %></td>
+              <td><%= equipment_maintain.maintain_reason %></td>
+              <td>
+                <%= equipment_maintain.begin_time.strftime("%Y-%m-%d %H:%M:%S") %> ~
+                <% if equipment_maintain.end_time == "2030-01-01 00:00:00" %>
+                  （维护中）
+                <% else %>
+                  <%= equipment_maintain.end_time.strftime("%Y-%m-%d %H:%M:%S") %>
+                <% end %>
+              </td>
+            </tr>
+            <% n = n+1 %>
           <% end %>
-        </td>
-      </tr>
-      <% n = n+1 %>
+        <% end %>
       <% end %>
     </tbody>
   </table>
