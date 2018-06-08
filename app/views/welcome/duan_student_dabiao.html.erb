@@ -12,8 +12,18 @@
 <body>
 	<div class="container">
     <div class="top-text">
-        <button class="btn btn-xs" data-toggle="modal" data-target=".bd-example-modal-lg" style="height:30px; padding:0 20px;margin-left:10px; ">点这</button>
+        <button class="btn" data-toggle="modal" data-target=".bd-example-modal-lg" style="height:30px; padding:0 20px;margin-left:10px; background-color:#f9745c;">点这</button>
         可以查看实训平台统计规则
+        <div class="range-query" style="position: relative; float: right; padding-top: 5px;">
+          <div class="searchtime">时间：</div>
+          <div class="searchtime">
+            <%= form_tag duan_overview_path, method: :get do %>
+              <%= text_field_tag 'search[date_from]',nil,:placeholder => time_begin(params[:search])%>
+              <%= text_field_tag 'search[date_to]',nil,:placeholder => time_end(params[:search]) %>
+              <%= submit_tag "搜索", id:"time_id",class: "btn search-button"%>
+            <% end %>
+          </div>
+        </div>
     </div>
 
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -178,17 +188,17 @@
 
 
 			<div class="bottom" role="tabpanel" style="background-color: rgba(248,248,248);">
-          <ul class="nav nav-tabs" role="tablist" class="tabs-control" style="padding-top: 20px; background-color: rgba(248,248,248);">
+          <ul class="nav nav-tabs" role="tablist" style="background-color: rgba(248,248,248);">
             <li role="presentation">
               <a href="#home" aria-controls="home" role="tab" data-toggle="tab">
-                <h5 style="color:#000;">未参考 | 未达标  <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></h5>
+                <h5>未参考 | 未达标  <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></h5>
               </a>
             </li>
             <li role="presentation">
-              <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab"><h5 style="color:#000;">已参考 | 未达标  <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></h5></a>
+              <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab"><h5>已参考 | 未达标  <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></h5></a>
             </li>
             <li role="presentation">
-              <a href="#messages" aria-controls="messages" role="tab" data-toggle="tab"><h5 style="color:#000;">已达标  <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></h5></a>
+              <a href="#messages" aria-controls="messages" role="tab" data-toggle="tab"><h5>已达标  <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></h5></a>
             </li>
           </ul>
 				<div class="tabs-wrap">
@@ -325,3 +335,13 @@
 	</div><!--container-->
 </body>
 </html>
+
+<div class="row">
+  <div class="col-md-4 col-md-offset-8">
+    <div class="data-skip-button">
+          <%= link_to("数据图表分析一览", duan_overview_path)%>
+          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    </div>
+  </div>
+</div>

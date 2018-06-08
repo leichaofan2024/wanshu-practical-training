@@ -12,45 +12,19 @@
 <body>
 	<div class="container">
     <div class="top-text">
-        <button class="btn btn-xs" data-toggle="modal" data-target=".bd-example-modal-lg" style="height:30px; padding:0 20px;margin-left:10px; ">点这</button>
-        可以查看实训平台统计规则
+        <p>XX车站展示栏</p>
+        <div class="range-query">
+          <div class="searchtime">时间：</div>
+          <div class="searchtime">
+            <%= form_tag duan_overview_path, method: :get do %>
+              <%= text_field_tag 'search[date_from]',nil,:placeholder => time_begin(params[:search])%>
+              <%= text_field_tag 'search[date_to]',nil,:placeholder => time_end(params[:search]) %>
+              <%= submit_tag "搜索", id:"time_id",class: "btn search-button"%>
+            <% end %>
+          </div>
+        </div>
     </div>
 
-<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="gridModalLabel">规则</h4>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-md-12">
-            调离：学员被标记调离后，自标记月起，不再计入考核统计。例，学员A，自5月28日起，申请调离甲站 ，则学员A不被统计到5月甲站的统计；该学员于6月28日调入乙站，则学员被计入乙站6月考核统计。
-          </div>
-        </div>
-        <br>
-        <div class="row">
-          <div class="col-md-12">
-            长假：学员被标记长假后，自标记月起，不再计入考核统计；至标记月止，开始计入考核统计。例：学员A，自5月28起，申请长假，则该学员不被计入5月考核统计；该学员于6月28日止，结束长假，则该学员被计入6月考核统计。
-          </div>
-        </div>
-        <br>
-        <div class="row">
-          <div class="col-md-12">
-            短假：学员被标记短假后，仍被计入考核统计，要求完成演练任务。
-          </div>
-        </div>
-        <br>
-        <div class="row">
-          <div class="col-md-12">
-            退休：学员被标记退休后，自标记月起，永不计入考核统计。
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 		<div class="bd">
       <!--top-->
 			<div class="top">
@@ -59,49 +33,47 @@
             <div class="general" style="font-size: 17px;">参考率</div>
             <div id="main" class="chart">
                <script type="text/javascript">
-                  var myChart = echarts.init(document.getElementById('main'));
-                     var option = {
-                        tooltip: {
-                            trigger: 'item',
-                            formatter: "{a} <br/>{b}: {c} ({d}%)"
-                        },
-                        color:['rgb(0,164,220)','rgb(0,81,108)'],
-                        legend: {
-                            orient: 'vertical',
-                            x: 'left',
-                            data:['实考','未考']
-                        },
-                        series: [
-                            {
-                                name:'访问来源',
-                                type:'pie',
-                                radius: ['50%', '70%'],
-                                avoidLabelOverlap: false,
-                                label: {
-                                    normal: {
-                                        show: false,
-                                        position: 'center'
-                                    },
-                                    emphasis: {
-                                        show: true,
-                                        textStyle: {
-                                            fontSize: '30',
-                                            fontWeight: 'bold'
-                                        }
-                                    }
-                                },
-                                labelLine: {
-                                    normal: {
-                                        show: false
-                                    }
-                                },
-                                data:[
-                                    {value:335, name:'实考'},
-                                    {value:310, name:'未考'},
-                                ]
-                            }
-                        ]
-                    };
+                // 基于准备好的dom，初始化echarts实例
+                var myChart = echarts.init(document.getElementById('main'));
+
+                // 指定图表的配置项和数据
+              var  option = {
+                          color: ['#3398DB'],
+                          tooltip : {
+                              trigger: 'axis',
+                              axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                                  type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                              }
+                          },
+                          grid: {
+                              left: '3%',
+                              right: '4%',
+                              bottom: '3%',
+                              containLabel: true
+                          },
+                          xAxis : [
+                              {
+                                  type : 'category',
+                                  data : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                                  axisTick: {
+                                      alignWithLabel: true
+                                  }
+                              }
+                          ],
+                          yAxis : [
+                              {
+                                  type : 'value'
+                              }
+                          ],
+                          series : [
+                              {
+                                  name:'直接访问',
+                                  type:'bar',
+                                  barWidth: '60%',
+                                  data:[10, 52, 200, 334, 390, 330, 220]
+                              }
+                          ]
+                      };
                     myChart.setOption(option);
                </script>
           </div><!--这个是第一个饼图的位置-->
@@ -111,204 +83,116 @@
             <div id="main1" class="chart">
                <script type="text/javascript">
                   var myChart = echarts.init(document.getElementById('main1'));
-                     var option = {
-                        tooltip: {
-                            trigger: 'item',
-                            formatter: "{a} <br/>{b}: {c} ({d}%)"
-                        },
-                        color:['rgb(0,164,220)','rgb(0,81,108)'],
-                        legend: {
-                            orient: 'vertical',
-                            x: 'left',
-                            data:['实考','未考']
-                        },
-                        series: [
-                            {
-                                name:'访问来源',
-                                type:'pie',
-                                radius: ['50%', '70%'],
-                                avoidLabelOverlap: false,
-                                label: {
-                                    normal: {
-                                        show: false,
-                                        position: 'center'
-                                    },
-                                    emphasis: {
-                                        show: true,
-                                        textStyle: {
-                                            fontSize: '30',
-                                            fontWeight: 'bold'
-                                        }
-                                    }
-                                },
-                                labelLine: {
-                                    normal: {
-                                        show: false
-                                    }
-                                },
-                                data:[
-                                    {value:335, name:'实考'},
-                                    {value:310, name:'未考'},
-                                ]
-                            }
-                        ]
-                    };
+                  var option = {
+                              color: ['#3398DB'],
+                              tooltip : {
+                                  trigger: 'axis',
+                                  axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                                      type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                                  }
+                              },
+                              grid: {
+                                  left: '3%',
+                                  right: '4%',
+                                  bottom: '3%',
+                                  containLabel: true
+                              },
+                              xAxis : [
+                                  {
+                                      type : 'category',
+                                      data : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                                      axisTick: {
+                                          alignWithLabel: true
+                                      }
+                                  }
+                              ],
+                              yAxis : [
+                                  {
+                                      type : 'value'
+                                  }
+                              ],
+                              series : [
+                                  {
+                                      name:'直接访问',
+                                      type:'bar',
+                                      barWidth: '60%',
+                                      data:[10, 52, 200, 334, 390, 330, 220]
+                                  }
+                              ]
+                          };
                     myChart.setOption(option);
                </script>
           </div><!--这个是第二个饼图的位置-->
       </div>
 		</div><!--charts-->
-
-    <!--term-->
-				<div class="term">
-					<div class="row">
-						<div class="label">北京西车务段</div>
-						<div class="value">85.08</div>
-					</div>
-					<div class="row">
-						<div class="label">天津车务段</div>
-						<div class="value">85.08</div>
-					</div>
-					<div class="row">
-						<div class="label">运输处</div>
-						<div class="value">85.08</div>
-					</div>
-				</div><!--term-->
-			</div><!--top-->
+	</div><!--top-->
 
 
-			<div class="bottom" role="tabpanel" style="background-color: rgba(248,248,248);">
-          <ul class="nav nav-tabs" role="tablist" class="tabs-control" style="padding-top: 20px; background-color: rgba(248,248,248);">
-            <li role="presentation">
-              <a href="#home" aria-controls="home" role="tab" data-toggle="tab">
-                <h5 style="color:#000;">未参考 | 未达标  <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></h5>
-              </a>
-            </li>
-            <li role="presentation">
-              <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab"><h5 style="color:#000;">已参考 | 未达标  <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></h5></a>
-            </li>
-            <li role="presentation">
-              <a href="#messages" aria-controls="messages" role="tab" data-toggle="tab"><h5 style="color:#000;">已达标  <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></h5></a>
-            </li>
-          </ul>
-				<div class="tabs-wrap">
-          <div class="tab-content">
-            <div role="tabpanel" class="tab-pane active" id="home">
-              <div class="item">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th width="170"><%= "车站名称"%></th>
-                      <th width="280"><%= "未参考人数"%></th>
-                      <th width="170"><%= "未参考比例"%></th>
-                      <th width="200"><%="时间"%></th>
-                      <th width="170"><%="操作"%></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td width="170"><%= "北京西车务段"%></td>
-                      <td width="280"><%= "20"%></td>
-                      <td width="170"><%= "70%"%></td>
-                      <td width="200"><%= "2018-04-04"%></td>
-                      <td width="170">
-                      <a href="#">查看详情</a>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div><!--未参考，未达标-->
-
-            <div role="tabpanel" class="tab-pane" id="profile">
-              <div class="item">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th width="170"><%= "车站名称"%></th>
-                      <th width="280"><%= "未达标人数"%></th>
-                      <th width="170"><%= "已参考人数"%></th>
-                      <th width="200">
-                        <%= "未达标率"%> <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
-                      </th>
-                      <th width="170"><%="时间"%></th>
-                      <th width="70"><%="操作"%></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><%= "北京西车务段"%></td>
-                      <td><%= "50"%></td>
-                      <td><%= "20"%></td>
-                      <td><%= "100"%></td>
-                      <td><%= "2018-04-04"%></td>
-                      <td>
-                          <a href="#">详情</a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><%= "北京西车务段"%></td>
-                      <td><%= "50"%></td>
-                      <td><%= "20"%></td>
-                      <td><%= "100"%></td>
-                      <td><%= "2018-04-04"%></td>
-                      <td>
-                          <a href="#">详情</a>
-                      </td>
-                    </tr>
-
-                  </tbody>
-                </table>
-              </div>
-            </div><!--已参考，未达标-->
-            <div role="tabpanel" class="tab-pane" id="messages">
-              <div class="item">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th width="170"><%= "车站名称"%></th>
-                      <th width="280"><%= "已完成人数"%></th>
-                      <th width="170"><%= "完成率"%></th>
-                      <th width="200"><%="时间"%></th>
-                      <th width="170"><%="操作"%></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><%= "北京西车务段"%></td>
-                      <td><%= "60"%></td>
-                      <td><%= "60%"%></td>
-                      <td><%= "2018-04-04"%></td>
-                      <td><%= "查看详情"%></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div><!--已参考，已达标-->
-            <div role="tabpanel" class="tab-pane" id="settings">
-              <div class="item">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th width="170"><%= "车站名称"%></th>
-                      <th width="280"><%= "请假人数"%></th>
-                      <th width="170"><%= "调离人数"%></th>
-                      <th width="200"><%="操作"%></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><%= "北京西车务段"%></td>
-                      <td><%= "20"%></td>
-                      <td><%= "50"%></td>
-                      <td><%= "查看详情"%></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div><!--状态设置-->
-          </div><!--tab panes-->
-				</div><!--tab-wrap-->
+			<div class="bottom">
+        <ul style="margin-top: 40px; padding-left: 10px;border-left: 3.8px solid;">
+          <%= "车站详情栏"%>
+        </ul>
+            <div class="wrap">
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-4 tile">
+                    <div class="text">
+                    <h3>北京车务段</h3>
+                    <div class="row">
+                      <button class="btn btn-default animate-text" type="submit" >点击查看详情</button>
+                    </div>
+                    <p>参考人数: <span>20</span></p>
+                    <p>参考人数: <span>20</span></p>
+                    <p>参考人数: <span>20</span></p>
+            		    </div>
+            		  </div>
+                  <div class="col-md-4 tile">
+                    <div class="text">
+                    <h3>北京车务段</h3>
+                    <div class="row">
+                      <button class="btn btn-default animate-text" type="submit" >点击查看详情</button>
+                    </div>
+                    <p>参考人数: <span>20</span></p>
+                    <p>参考人数: <span>20</span></p>
+                    <p>参考人数: <span>20</span></p>
+            		    </div>
+            		  </div>
+                  <div class="col-md-4 tile">
+                    <div class="text">
+                    <h3>北京车务段</h3>
+                    <div class="row">
+                      <button class="btn btn-default animate-text" type="submit" >点击查看详情</button>
+                    </div>
+                    <p>参考人数: <span>20</span></p>
+                    <p>参考人数: <span>20</span></p>
+                    <p>参考人数: <span>20</span></p>
+            		    </div>
+            		  </div>
+                  <div class="col-md-4 tile">
+                    <div class="text">
+                    <h3>北京车务段</h3>
+                    <div class="row">
+                      <button class="btn btn-default animate-text" type="submit" >点击查看详情</button>
+                    </div>
+                    <p>参考人数: <span>20</span></p>
+                    <p>参考人数: <span>20</span></p>
+                    <p>参考人数: <span>20</span></p>
+            		    </div>
+            		  </div>
+                  <div class="col-md-4 tile">
+                    <div class="text">
+                    <h3>北京车务段</h3>
+                    <div class="row">
+                      <button class="btn btn-default animate-text" type="submit" >点击查看详情</button>
+                    </div>
+                    <p>参考人数: <span>20</span></p>
+                    <p>参考人数: <span>20</span></p>
+                    <p>参考人数: <span>20</span></p>
+            		    </div>
+            		  </div>
+                </div>
+          	</div>
+          </div>
 			</div><!--bottom-->
 		</div><!--bd-->
 
