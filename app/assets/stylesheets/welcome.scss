@@ -1,60 +1,75 @@
 // Place all the styles related to the welcome controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+.wrap
+{
+  margin:10px 0;
+  width:100%;
+  display:flex;
+  max-width:1200px;
+}
+.tile{
+  padding: 25px 10px 23px;
+  display: inline-block;
+  position:relative;
+  cursor:pointer;
+  transition: all 0.4s ease;
+  font-family:'Microsoft YaHei',sans-serif;
+  color: black;
+}
+.tile .text
+{
+    position: relative;
+    padding: 25px 10px 23px;
+    border: 1px solid;
+    border-radius: 5px;
+    background-color: #ffffff;
+}
 
-.data-search-label{
-  width: auto;
-  height: 40px;
-
-  font-size: 32px;
-  margin: 20px 25px;
+.tile h3
+{
+  font-weight:300;
+  margin: 0 10px 30px 10px;
+  text-align: center;
+}
+.tile p{
+  position: relative;
+  flex: 1;
+  height: 100%;
+  display: block;
+  padding-left: 10px;
+}
+.tile span{
+  padding-left: 20px;
+  font-weight:300;
+  line-height: 25px;
+}
+.tile .animate-text{
+  opacity:0;
+  position: absolute;
+  right: 10px;
+  top: 0px;
+  z-index: 2;
+  transition: box-shadow 1s;
+}
+.tile:hover
+{
+/*   background-color:#99aeff; */
+  transform:scale(1.05);
+}
+.tile:hover .animate-text
+{
+  box-shadow: 0 0 3px #515151;
+  opacity:1;
+  background-color: #5098a7;
   padding: 5px;
+  transform: translateY(-10px);
 }
-.data-search-text{
-  width: auto;
-  height: 58px;
-  margin-left: 25px;
-  padding: 5px;
 
-  font-size: 16px;
-  text-align: left;
-}
-.data-overview{
-  width: auto;
-  height: 40px;
 
-  margin-left: 25px;
-  margin-top: 35px;
-  padding: 5px;
-  font-size: 24px;
-}
-.data-station{
-  width: auto;
-  height: 30px;
-
-  margin: 10px 25px 0px;
-  padding: 5px;
-  font-size: 20px;
-}
-.data-station-bar{
-  width: auto;
-  height: 50px;
-
-  margin-left:25px;
-  padding: 10px;
-}
-.data-box{
-  width: auto;
-  height: 500px;
-  border-width: 1px;
-  border-style: solid;
-  margin: 35px 25px 0px;
-}
-.data-skip-button{
-  width: auto;
-  height: 30px;
-  margin-bottom: 20px;
-  padding: 5px 0px 5px 200px;
-  border-width: 1px;
-  border-style: solid;
+@media (max-width: 1000px) {
+  .wrap {
+   flex-direction: column;
+    width:400px;
+  }
 }

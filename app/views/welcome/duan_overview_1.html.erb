@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="renderer" content="webkit">
+	<title>document</title>
+	<link rel="stylesheets" href="stylesheets/dabiao.scss" />
+</head>
+
+<body>
+	<div class="container">
+    <div class="top-text">
+        <p>XX车站展示栏</p>
+        <div class="range-query">
+          <div class="searchtime">时间：</div>
+          <div class="searchtime">
+            <%= form_tag duan_overview_path, method: :get do %>
+              <%= text_field_tag 'search[date_from]',nil,:placeholder => time_begin(params[:search])%>
+              <%= text_field_tag 'search[date_to]',nil,:placeholder => time_end(params[:search]) %>
+              <%= submit_tag "搜索", id:"time_id",class: "btn search-button"%>
+            <% end %>
+          </div>
+        </div>
+    </div>
+
+		<div class="bd">
+      <!--top-->
+			<div class="top">
+				<div class="charts">
+          <div class="item">
+            <div class="general" style="font-size: 17px;">参考率</div>
+            <div id="main" class="chart">
+               <script type="text/javascript">
+                // 基于准备好的dom，初始化echarts实例
+                var myChart = echarts.init(document.getElementById('main'));
+
+                // 指定图表的配置项和数据
+              var  option = {
+                          color: ['#3398DB'],
+                          tooltip : {
+                              trigger: 'axis',
+                              axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                                  type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                              }
+                          },
+                          grid: {
+                              left: '3%',
+                              right: '4%',
+                              bottom: '3%',
+                              containLabel: true
+                          },
+                          xAxis : [
+                              {
+                                  type : 'category',
+                                  data : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                                  axisTick: {
+                                      alignWithLabel: true
+                                  }
+                              }
+                          ],
+                          yAxis : [
+                              {
+                                  type : 'value'
+                              }
+                          ],
+                          series : [
+                              {
+                                  name:'直接访问',
+                                  type:'bar',
+                                  barWidth: '60%',
+                                  data:[10, 52, 200, 334, 390, 330, 220]
+                              }
+                          ]
+                      };
+                    myChart.setOption(option);
+               </script>
+          </div><!--这个是第一个饼图的位置-->
+      </div><!--第一个item-->
+					<div class="item">
+            <div class="general" style="font-size: 17px;">达标率</div>
+            <div id="main1" class="chart">
+               <script type="text/javascript">
+                  var myChart = echarts.init(document.getElementById('main1'));
+                  var option = {
+                              color: ['#3398DB'],
+                              tooltip : {
+                                  trigger: 'axis',
+                                  axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                                      type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                                  }
+                              },
+                              grid: {
+                                  left: '3%',
+                                  right: '4%',
+                                  bottom: '3%',
+                                  containLabel: true
+                              },
+                              xAxis : [
+                                  {
+                                      type : 'category',
+                                      data : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                                      axisTick: {
+                                          alignWithLabel: true
+                                      }
+                                  }
+                              ],
+                              yAxis : [
+                                  {
+                                      type : 'value'
+                                  }
+                              ],
+                              series : [
+                                  {
+                                      name:'直接访问',
+                                      type:'bar',
+                                      barWidth: '60%',
+                                      data:[10, 52, 200, 334, 390, 330, 220]
+                                  }
+                              ]
+                          };
+                    myChart.setOption(option);
+               </script>
+          </div><!--这个是第二个饼图的位置-->
+      </div>
+		</div><!--charts-->
+	</div><!--top-->
+
+
+			<div class="bottom">
+        <ul style="margin-top: 40px; padding-left: 10px;border-left: 3.8px solid;">
+          <%= "车站详情栏"%>
+        </ul>
+            <div class="wrap">
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-4 tile">
+                    <div class="text">
+                    <h3>北京车务段</h3>
+                    <div class="row">
+                      <button class="btn btn-default animate-text" type="submit" >点击查看详情</button>
+                    </div>
+                    <p>参考人数: <span>20</span></p>
+                    <p>参考人数: <span>20</span></p>
+                    <p>参考人数: <span>20</span></p>
+            		    </div>
+            		  </div>
+                  <div class="col-md-4 tile">
+                    <div class="text">
+                    <h3>北京车务段</h3>
+                    <div class="row">
+                      <button class="btn btn-default animate-text" type="submit" >点击查看详情</button>
+                    </div>
+                    <p>参考人数: <span>20</span></p>
+                    <p>参考人数: <span>20</span></p>
+                    <p>参考人数: <span>20</span></p>
+            		    </div>
+            		  </div>
+                  <div class="col-md-4 tile">
+                    <div class="text">
+                    <h3>北京车务段</h3>
+                    <div class="row">
+                      <button class="btn btn-default animate-text" type="submit" >点击查看详情</button>
+                    </div>
+                    <p>参考人数: <span>20</span></p>
+                    <p>参考人数: <span>20</span></p>
+                    <p>参考人数: <span>20</span></p>
+            		    </div>
+            		  </div>
+                  <div class="col-md-4 tile">
+                    <div class="text">
+                    <h3>北京车务段</h3>
+                    <div class="row">
+                      <button class="btn btn-default animate-text" type="submit" >点击查看详情</button>
+                    </div>
+                    <p>参考人数: <span>20</span></p>
+                    <p>参考人数: <span>20</span></p>
+                    <p>参考人数: <span>20</span></p>
+            		    </div>
+            		  </div>
+                  <div class="col-md-4 tile">
+                    <div class="text">
+                    <h3>北京车务段</h3>
+                    <div class="row">
+                      <button class="btn btn-default animate-text" type="submit" >点击查看详情</button>
+                    </div>
+                    <p>参考人数: <span>20</span></p>
+                    <p>参考人数: <span>20</span></p>
+                    <p>参考人数: <span>20</span></p>
+            		    </div>
+            		  </div>
+                </div>
+          	</div>
+          </div>
+			</div><!--bottom-->
+		</div><!--bd-->
+
+
+		<div class="footer">
+			<div class="tips">显示
+				<span class="black">1</span>到
+				<span class="black">20</span> 还有 25 页</div>
+			<div class="pages">页
+				<a href="#">1</a>
+				<a href="#">2</a>
+			</div>
+		</div>
+	</div><!--container-->
+</body>
+</html>

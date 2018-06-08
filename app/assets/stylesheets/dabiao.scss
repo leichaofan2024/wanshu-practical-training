@@ -1,0 +1,180 @@
+@import "reset.scss";
+/*@import "function.css";*/
+/*
+
+-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=1,startColorstr=#99ffffff,endColorstr=#99ffffff)";
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#99ffffff,endColorstr=#99ffffff);
+background:rgba(255,255,255,.8);
+
+
+filter:alpha(opacity=40); 针对 IE8 以及更早的版本 */
+body {
+  font-size: 100%;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: rgb(255,255,255);
+}
+.top-text {
+  border: 1px solid #ebedf8;
+  border-radius: 3.8px;
+  background: #ffffff;
+  margin: 20px 0;
+}
+.top-text p{
+  padding-left:5px;
+  padding-top: 5px; 
+  font-size: 17px;
+}
+ .top-text h3 {
+  padding: 30px 0;
+  font-size: 17px;
+  color: #000;
+  font-weight: normal;
+  line-height: 1;
+  text-transform: capitalize;
+}
+.bd {
+  border: 1px solid #ebedf8;
+  border-radius: 3.8px;
+}
+.top {
+  display: flex;
+  height: 268px;
+  border-bottom: 1px solid #f4f4f4;
+}
+.top .charts {
+  width: 100%;
+  height: 100%;
+  border-right: 1px solid #f4f4f4;
+  display: flex;
+}
+.top .charts .item {
+  position: relative;
+  flex: 1;
+  height: 100%;
+  border-right: 1px solid #f4f4f4;
+}
+.top .charts .item .general {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  text-transform: uppercase;
+}
+.chart{
+  height: 200px;
+  width: 400px;
+  margin: 50px 20px;
+}
+.top .term {
+  width: 20%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.top .term .row {
+  padding: 11px 0;
+  max-width: 140px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 12px;
+  color: #bebdbe;
+  text-transform: uppercase;
+}
+.top .term .row .value {
+  color: #000;
+}
+.bottom {
+  padding: 0 30px 40px;
+}
+.bottom .tabs-control {
+  padding: 30px 0 20px;
+  display: flex;
+}
+.bottom .tabs-control h2 {
+  font-size: 20px;
+  color: #000;
+  text-transform: capitalize;
+}
+.bottom .tabs-control h2+h2 {
+  margin-left: 20px;
+}
+.bottom .tabs-wrap table {
+  width: 100%;
+}
+.bottom .tabs-wrap thead tr,
+.bottom .tabs-wrap thead th {
+  font-size: 12px;
+  color: #d7dce1;
+}
+.bottom .tabs-wrap tr,
+.bottom .tabs-wrap th,
+.bottom .tabs-wrap td {
+  height: 50px;
+  text-align: left;
+  font-weight: normal;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #adb5bd;
+  font-size: 14px;
+}
+.bottom .tabs-wrap a {
+  display: block;
+  max-width: 55px;
+  padding: 0 10px;
+  height: 36px;
+  line-height: 36px;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  background: #0577ff;
+  border: 1px solid #0577ff;
+}
+.bottom .tabs-wrap a.active {
+  background: none;
+  border: 1px solid #adb5bd;
+  color: #adb5bd;
+}
+.bottom h5{
+  color:#ffffff;
+  border: 1px solid;
+  border-radius: 8px;
+  padding: 0 10px;
+  background-color: #5098a7;
+}
+.footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 30px 0;
+  font-size: 12px;
+  color: #bdc4cf;
+  line-height: 26px;
+
+}
+.footer .black {
+  color: #000;
+  padding: 0 5px;
+}
+.footer .pages {
+  display: flex;
+}
+.footer .pages a {
+  padding: 0 8px;
+  margin: 0 0 0 24px;
+  height: 24px;
+  line-height: 24px;
+  border-radius: 3px;
+  border: 1px solid #dde0e7;
+  transition: 0.3s;
+}
+.footer .pages a:hover {
+  background: #0577ff;
+  border-color: #0577ff;
+  color: #fff;
+}
+
+/*# sourceMappingURL=public.css.map */
