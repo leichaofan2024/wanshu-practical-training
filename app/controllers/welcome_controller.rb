@@ -11,6 +11,9 @@ class WelcomeController < ApplicationController
     end
   end
 
+  def duan_overview_1
+  end 
+
   def ju_overview
     @duan = TDuanInfo.where.not('F_name= ? || F_name= ?', '局职教基地', '运输处').count
     @station = TStationInfo.station_orgnization.joins(:t_user_infoes).student_all(Time.now.beginning_of_month, Time.now.end_of_month).distinct.count
