@@ -10,9 +10,9 @@
         <div class="pull-right range-query">
           <div class="searchtime">时间：</div>
           <div class="searchtime">
-              <%= form_tag baogao_path, method: :get do %>
-                <%= text_field_tag 'search[date_from]',nil%>
-                <%= text_field_tag 'search[date_to]',nil %>
+              <%= form_tag xcf_general_overview_path, method: :get do %>
+                <%= text_field_tag 'search[date_from]',nil,:placeholder => time_begin(params[:search])%>
+                <%= text_field_tag 'search[date_to]',nil,:placeholder => time_end(params[:search]) %>
                 <%= submit_tag "搜索", id:"time_id",class: "btn search-button"%>
               <% end %>
           </div>
@@ -25,14 +25,13 @@
     <div class="box">
       <div class="box-padding">
         <div class="box-text">
-          <%= "合格率分析饼状图"%>
+          <%= "考生合格率分析"%>
           <br>
-          <%= "2018-04-04 ~ 2018-05-04"%><!--这个是需要展示当月的时间-->
         </div>
         <div id="exam-xcf" style="height:572px;"></div>
         <script type="text/javascript">
         var myChart = echarts.init(document.getElementById('exam-xcf'));
-         // 基于准备好的dom，初始化echarts实例
+         // 基于准备好的dom,初始化echarts实例
          option = {
                     tooltip: {
                         trigger: 'axis',
@@ -56,29 +55,26 @@
                     },
                     yAxis: {
                         type: 'category',
-                        data: ['巴西','印尼','美国','印度','中国','世界人口(万)','巴西','印尼','美国','印度','中国','世界人口(万)','巴西','印尼','美国','印度','中国','世界人口(万)']
+                        data: gon.hege_duan_key
                     },
                     series: [
                         {
                             name: '合格',
                             type: 'bar',
-                            data: [18203, 23489, 29034, 104970, 131744, 630230,18203, 23489, 29034, 104970, 131744, 630230,18203, 23489, 29034, 104970, 131744, 630230]
+                            data: gon.hege_duan_value
                         },
                         {
                             name: '不合格',
                             type: 'bar',
-                            data: [19325, 23438, 31000, 121594, 134141, 681807,18203, 23489, 29034, 104970, 131744, 630230,18203, 23489, 29034, 104970, 131744, 630230]
+                            data: gon.buhege_duan_value
                         },
                         {
                             type:'pie',
                             radius: ['0', '30%'],
                             center: ['79%','25%'],
                             data:[
-                                {value:335, name:'直接访问'},
-                                {value:310, name:'邮件营销'},
-                                {value:234, name:'联盟广告'},
-                                {value:135, name:'视频广告'},
-                                {value:1548, name:'搜索引擎'}
+                                gon.hege,
+                                gon.buhege
                             ]
                         }
                     ]
@@ -96,22 +92,23 @@
         <div class="box1-text">
             <%= "合格率表格数据分析"%>
             <br>
-            <%= "2018-04-04 ~ 2018-05-04"%><!--这个是需要展示当月的时间-->
         </div>
         <div class="box1-form">
           <table class="table table-bordered" style="height: auto;">
             <tr>
-              <th class="exam-text"><%= "站段"%></th>
+              <th class="exam-text" style="width:30%;"><%= "站段"%></th>
               <th class="exam-text"><%= "不合格人数"%></th>
               <th class="exam-text"><%="合格人数"%></th>
-              <th class="exam-text"><%="操作"%></th>
+              <th class="exam-text" style="width:20%;"><%="操作"%></th>
             </tr>
-            <tr>
-              <td class="exam-text-small"><%= "北京西车务段"%></td>
-              <td class="exam-text-small"><%= "2"%></td>
-              <td class="exam-text-small"><%= "201"%></td>
-              <td class="exam-text-small"><%= "查看详情"%></td>
-            </tr>
+            <% @student_hege.each do |key,value| %>
+              <tr>
+                <td class="exam-text-small"><%= key %></td>
+                <td class="exam-text-small"><%= @student_buhege[key] %></td>
+                <td class="exam-text-small"><%= value %></td>
+                <td class="exam-text-small"><%= link_to("查看详情", "/") %></td>
+              </tr>
+            <% end %>
           </table>
         </div>
       </div>
@@ -124,14 +121,12 @@
           <div class="box">
             <div class="box-padding">
               <div class="box-text">
-                <%= "合格率分析饼状图"%>
-                <br>
-                <%= "2018-04-04 ~ 2018-05-04"%>
+                <%= "考生考题达标率分析"%>
               </div>
               <div id="exam-xcf-1" style="height:572px;"></div>
               <script type="text/javascript">
               var myChart = echarts.init(document.getElementById('exam-xcf-1'));
-               // 基于准备好的dom，初始化echarts实例
+               // 基于准备好的dom,初始化echarts实例
                option = {
                           tooltip: {
                               trigger: 'axis',
@@ -140,7 +135,7 @@
                               }
                           },
                           legend: {
-                              data: ['合格', '不合格']
+                              data: ['考题达标率100%', '考题达标率80% ~ 100%','考题达标率60% ~ 80%','考题达标率低于60%']
                           },
                           grid: {
                               top: 50,
@@ -155,29 +150,38 @@
                           },
                           yAxis: {
                               type: 'category',
-                              data: ['巴西','印尼','美国','印度','中国','世界人口(万)','巴西','印尼','美国','印度','中国','世界人口(万)','巴西','印尼','美国','印度','中国','世界人口(万)']
+                              data: gon.dabiao_duan_key
                           },
                           series: [
                               {
-                                  name: '合格',
+                                  name: '考题达标率100%',
                                   type: 'bar',
-                                  data: [18203, 23489, 29034, 104970, 131744, 630230,18203, 23489, 29034, 104970, 131744, 630230,18203, 23489, 29034, 104970, 131744, 630230]
+                                  data: gon.dabiao_duan_100
                               },
                               {
-                                  name: '不合格',
+                                  name: '考题达标率80% ~ 100%',
                                   type: 'bar',
-                                  data: [19325, 23438, 31000, 121594, 134141, 681807,18203, 23489, 29034, 104970, 131744, 630230,18203, 23489, 29034, 104970, 131744, 630230]
+                                  data: gon.dabiao_duan_80
+                              },
+                              {
+                                  name: '考题达标率60% ~ 80%',
+                                  type: 'bar',
+                                  data: gon.dabiao_duan_60
+                              },
+                              {
+                                  name: '考题达标率低于60%',
+                                  type: 'bar',
+                                  data: gon.dabiao_duan_60_below
                               },
                               {
                                   type:'pie',
                                   radius: ['0', '30%'],
                                   center: ['79%','25%'],
                                   data:[
-                                      {value:335, name:'直接访问'},
-                                      {value:310, name:'邮件营销'},
-                                      {value:234, name:'联盟广告'},
-                                      {value:135, name:'视频广告'},
-                                      {value:1548, name:'搜索引擎'}
+                                    gon.dabiao_100,
+                                    gon.dabiao_80,
+                                    gon.dabiao_60,
+                                    gon.dabiao_60_below
                                   ]
                               }
                           ]
@@ -193,24 +197,28 @@
                   <div class="box1">
                     <div class="box1-padding">
                       <div class="box1-text">
-                          <%= "合格率表格数据分析"%>
-                          <br>
-                          <%= "2018-04-04 ~ 2018-05-04"%>
+                        <%= "考生考题达标率表格数据分析"%>
                       </div>
                       <div class="box1-form">
                         <table class="table table-bordered">
                           <tr>
-                            <th class="exam-text"><%= "站段"%></th>
-                            <th class="exam-text"><%= "不合格人数"%></th>
-                            <th class="exam-text"><%="合格人数"%></th>
-                            <th class="exam-text"><%="操作"%></th>
+                            <th class="exam-text" style="width:30%;"><%= "站段"%></th>
+
+                            <th class="exam-text"><%= "考生考题达标率60% ~ 80%"%></th>
+                            <th class="exam-text"><%="考生考题达标率低于60%"%></th>
+                            <th class="exam-text" style="width:20%;"><%="操作"%></th>
                           </tr>
-                          <tr>
-                            <td class="exam-text-small"><%= "北京西车务段"%></td>
-                            <td class="exam-text-small"><%= "2"%></td>
-                            <td class="exam-text-small"><%= "201"%></td>
-                            <td class="exam-text-small"><%= "查看详情"%></td><!--进入到 all_examinee的页面-->
-                          </tr>
+                          <% @dabiao_duan_60.each do |key,value| %>
+                            <tr>
+                              <td class="exam-text-small"><%= key %></td>
+
+                              <td class="exam-text-small"><%= value %></td>
+                              <% if @dabiao_duan_60_below.keys.include?(key) %>
+                                <td class="exam-text-small"><%= @dabiao_duan_60_below[key] %></td>
+                              <% end %>
+                              <td class="exam-text-small"><%= link_to("查看详情", "/")%></td><!--进入到 all_examinee的页面-->
+                            </tr>
+                          <% end %>
                         </table>
                       </div>
                     </div>

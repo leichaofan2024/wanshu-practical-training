@@ -35,7 +35,17 @@ class Xcf::DataDisplayController < ApplicationController
 
       @record_hege = XcfRecordInfo.where(F_uuid: record_hege)
       # 合格人数各站段哈希
-      @student_hege = @record_hege.joins(xcf_user_infos: :t_duan_info).select("xcf_user_infos.F_id,t_duan_info.F_name").distinct.group("t_duan_info.F_name").count
+      @student_hege = {}
+      @student_buhege = {}
+      student_hege = @record_hege.joins(xcf_user_infos: :t_duan_info).select("xcf_user_infos.F_id,t_duan_info.F_name").distinct.group("t_duan_info.F_name").count
+      @student_all.keys.each do |key|
+        if student_hege.keys.include?(key)
+          @student_hege[key] = student_hege[key]
+        else
+          @student_hege[key] = 0
+        end
+        @student_buhege[key] = @student_all[key] - @student_hege[key]
+      end
       # 合格人数比例各站段哈希
       @student_hege_bl = Hash.new
       @student_all.keys.each do |key|
@@ -52,8 +62,8 @@ class Xcf::DataDisplayController < ApplicationController
      a_user_record_hash = a_record_join_user.select("xcf_record_infos.F_uuid,xcf_user_infos.F_id").group_by{|u| u.F_id}
      if a_user_record_hash.present?
        a_user_record_hash.each do |f_id,records|
-         n = 0
-         m = 0
+         n = 1
+         m = 1
          records.each do |record|
            XcfRecordDetailInfo.where(:F_record_uuid => record.F_uuid).each do |detail|
              m = m + 1
@@ -83,7 +93,7 @@ class Xcf::DataDisplayController < ApplicationController
        c = 0
        d = 0
        users.each do |user|
-         if a_user_record_hash[user.F_id] = 100
+         if a_user_record_hash[user.F_id] == 100
            a = a + 1
          elsif a_user_record_hash[user.F_id] < 100 && a_user_record_hash[user.F_id] >= 80
            b = b + 1
@@ -114,20 +124,35 @@ class Xcf::DataDisplayController < ApplicationController
      #第一个饼图:
      gon.hege = {name: "合格人数", value: @student_hege.values.sum}
      gon.buhege = {name: "不合格人数", value: (@student_all.values.sum -@student_hege.values.sum)}
+     # gon.hege = {name: "合格人数", value: 70}
+     # gon.buhege = {name: "不合格人数", value: 24}
      #柱状图:
-     gon.hege_duan_key = @student_hege.keys
+     gon.hege_duan_key = @student_all.keys
      gon.hege_duan_value = @student_hege.values
+     gon.buhege_duan_value = @student_buhege.values
+     # gon.hege_duan_key = TDuanInfo.duan_orgnization.where(F_type: 1).pluck("F_name")
+     # gon.hege_duan_value = [5,6,7,4,5,6,5,8,9,4,5,6]
+     # gon.buhege_duan_value = [2,3,1,3,2,3,2,1,2,4,1,0]
      #第二个饼图:
      gon.dabiao_100 = {name: "考题达标率100%", value: @dabiao_100}
      gon.dabiao_80 = {name: "考题达标率80% ~ 100%", value: @dabiao_80}
      gon.dabiao_60 = {name: "考题达标率60% ~ 80%", value: @dabiao_60}
      gon.dabiao_60_below = {name: "考题达标率低于60%", value: @dabiao_60_below}
+     # gon.dabiao_100 = {name: "考题达标率100%", value: 50}
+     # gon.dabiao_80 = {name: "考题达标率80% ~ 100%", value: 12}
+     # gon.dabiao_60 = {name: "考题达标率60% ~ 80%", value: 6}
+     # gon.dabiao_60_below = {name: "考题达标率低于60%", value: 2}
      #柱状图:
      gon.dabiao_duan_key = @dabiao_duan_100.keys
      gon.dabiao_duan_100 = @dabiao_duan_100.values
      gon.dabiao_duan_80 = @dabiao_duan_80.values
      gon.dabiao_duan_60 = @dabiao_duan_60.values
      gon.dabiao_duan_60_below = @dabiao_duan_60_below.values
+     # gon.dabiao_duan_key = TDuanInfo.duan_orgnization.where(F_type: 1).pluck("F_name")
+     # gon.dabiao_duan_100 = @dabiao_duan_100.values
+     # gon.dabiao_duan_80 = @dabiao_duan_80.values
+     # gon.dabiao_duan_60 = @dabiao_duan_60.values
+     # gon.dabiao_duan_60_below = @dabiao_duan_60_below.values
      #第三个饼图:
      if @program_record_detail_count.present?
        gon.program_detail_key = @program_record_detail_count.first(8).sort{|x| x[0]}
