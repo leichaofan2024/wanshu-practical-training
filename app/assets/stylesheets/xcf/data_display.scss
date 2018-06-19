@@ -67,6 +67,7 @@
 
 
 .box1{
+
   width: auto;
   height: 708px;
   padding: 15px;
@@ -108,10 +109,17 @@
   color: var(--greyish-brown);
 }
 .box1-form{
+  overflow: scroll;
   width: auto;
-  height: auto;
+  height: 620px;
   border-style: solid;
   border-width: 1px;
+  thead{
+
+  }
+  tbody{
+  }
+
   // padding-top: 15px;
 }
 
@@ -222,7 +230,7 @@
 }
 .exam-text{
   background-color: rgb(245,246,247);
-  font-size: 15px;
+  font-size: 18px;
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
@@ -230,7 +238,7 @@
   text-align: center;
 }
 .exam-text-small{
-  font-size: 12px;
+  font-size: 14px;
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
