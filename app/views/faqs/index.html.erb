@@ -1,6 +1,6 @@
 <div class="call-board-frame">
   <div class="pull-right">
-    <% if current_user.orgnize == "研发中心" %>
+    <% if current_user.orgnize == "北京万数" %>
     <%= link_to("发布消息>>", new_faq_path, :class => "btn btn-primary") %>
     <% end %>
   </div>
@@ -10,7 +10,7 @@
         <th>序号</th>
         <th>标题</th>
         <th>发布日期</th>
-        <% if current_user.orgnize == "研发中心" %>
+        <% if current_user.orgnize == "北京万数" %>
           <th>管理</th>
         <% end %>
       </tr>
@@ -23,7 +23,7 @@
             <td width= "20%"><%= i %></td>
             <td width= "40%"><%= link_to(c.title, "#",class: "#") %></td>
             <td width= "20%"><%= c.created_at.strftime("%Y/%m/%d %I:%M %p") %></td>
-            <% if current_user.orgnize == "研发中心" %>
+            <% if current_user.orgnize == "北京万数" %>
               <td width= "20%">
                 <%= link_to("编辑", edit_faq_path(c),:class => "btn btn-sm btn-primary")%> |
                 <%= link_to("删除", faq_path(c),method: :delete,data: {confirm: "确定删除吗？"}, :class=> "btn btn-sm btn-danger")%>

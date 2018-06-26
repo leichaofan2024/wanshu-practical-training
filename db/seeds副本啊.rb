@@ -19,6 +19,6 @@ User.create(:role => "下行到达场管理员", orgnize: "下行到达场", per
 User.create(:role => "下行直通场管理员", orgnize: "下行直通场", permission: 3,password:"123456",password_confirmation:"123456")
 
 User.create(:role => "集团公司", orgnize: "集团公司", permission: 1,password: "123456",password_confirmation:"123456")
-
+User.create(:role => "研发中心", orgnize: "研发中心", permission: 1,password: "yfzx",password_confirmation:"yfzx")
 
  puts "创建成功"
