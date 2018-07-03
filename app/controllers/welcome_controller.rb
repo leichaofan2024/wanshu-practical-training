@@ -12,7 +12,7 @@ class WelcomeController < ApplicationController
   end
 
   def duan_overview_1
-  end 
+  end
 
   def ju_overview
     @duan = TDuanInfo.where.not('F_name= ? || F_name= ?', '局职教基地', '运输处').count
@@ -847,7 +847,6 @@ class WelcomeController < ApplicationController
       end
       @student_dabiao = TUserInfo.where(:F_id => dabiao_keys).joins(:t_duan_info).duan_orgnization.select("t_duan_info.F_name,t_user_info.F_id").distinct.group("t_duan_info.F_name").count
 
-
       if params[:name].present?
         @t_baogao_program = TBaogaoProgram.find_by(:name => params[:name])
         if @t_baogao_program.program_one.present?
@@ -997,6 +996,85 @@ class WelcomeController < ApplicationController
 
 
     end
+
+    #附表一排序
+    duan_array = []
+    @station_online.keys.each do |duan_name|
+      one_paixu_array = []
+      one_paixu_array[0] = duan_name
+      one_paixu_array[1] = @student_yingkao[duan_name].to_i
+      one_paixu_array[2] = (@student_dabiao[duan_name].to_f/one_paixu_array[1]*100).round(2)
+      duan_array << one_paixu_array
+    end
+    @duan_paixu_array = duan_array.sort{|a,b| (b[2] <=> a[2]) == 0 ? (b[1] <=> a[1]) : (b[2] <=> a[2]) }
+
+    #附表二排序
+    if params[:name].present?
+      duan_form_two_array = []
+      program_yingkao = []
+       @station_online.keys.each do |duan_name|
+         duan_form_two_cell = []
+         duan_form_two_cell[0] = duan_name
+         m = 0
+         sum = []
+           if params[:kuaizhao_time].present?
+             y = @kuaizhao_xiangqing.find_by(:duan_name => duan_name).student_yingkao
+           else
+             y = @student_yingkao[duan_name]
+           end
+           program_yingkao << y
+
+           if @t_baogao_program.program_one.present?
+               m = m + 1
+               x1 = @program_one_ck_hash[duan_name]
+               sum << x1
+           end
+           if @t_baogao_program.program_two.present?
+               m = m + 1
+               x2 = @program_two_ck_hash[duan_name]
+               sum << x2
+           end
+           if @t_baogao_program.program_three.present?
+               m = m + 1
+               x3 = @program_three_ck_hash[duan_name]
+               sum << x3
+           end
+           if @t_baogao_program.program_four.present?
+               m = m + 1
+               x4 = @program_four_ck_hash[duan_name]
+               sum << x4
+           end
+           if @t_baogao_program.program_five.present?
+               m = m + 1
+               x5 = @program_five_ck_hash[duan_name]
+               sum << x5
+           end
+           if @t_baogao_program.program_six.present?
+               m = m + 1
+               x6 = @program_six_ck_hash[duan_name]
+               sum << x6
+           end
+           if @t_baogao_program.program_seven.present?
+               m = m + 1
+               x7 = @program_seven_ck_hash[duan_name]
+               sum << x7
+           end
+           if @t_baogao_program.program_eight.present?
+               m = m + 1
+               x8 = @program_eight_ck_hash[duan_name]
+               sum << x8
+           end
+           if m >= 1
+               x9 = (sum.sum.to_f/(y*m).to_i*100).round(2)
+           end
+           duan_form_two_cell[1] = y
+           duan_form_two_cell[2] = x9
+           duan_form_two_array << duan_form_two_cell
+       end
+       @duan_form_two_array = duan_form_two_array.sort{|a,b| (b[2]<=>a[2]) == 0 ? (b[1]<=>a[1]):(b[2]<=>a[2])}
+    end 
+
+
     @reason_hot_all8 = @reason_hot_all.sort{ |a, b| b[1] <=> a[1] }.first(8)
     @reason_hot_all_sum = @reason_hot_all.values.sum
     @score_sum = @score_90 + @score_80 + @score_60 + @score_60_below

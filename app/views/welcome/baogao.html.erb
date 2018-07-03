@@ -304,23 +304,23 @@
         <% baogao_zongji12 = [] %>
         <% if params[:kuaizhao_time].blank? %>
 
-          <% @station_online.keys.each do |duan_name| %>
+          <% @duan_paixu_array.each do |duan_name| %>
 
             <tr>
 
               <th>
                 <%= n %>
               </th>
-              <td><%= duan_name %></td>
+              <td><%= duan_name[0] %></td>
 
               <td>
-                <% c1 = TChejianCount.find_by(:duan_name => duan_name)%>
+                <% c1 = TChejianCount.find_by(:duan_name => duan_name[0])%>
                 <% if current_user.orgnize == "运输处"%>
                   <% if c1.present? %>
                   <% baogao_zongji1 << c1.station_count %>
-                    <%= link_to(c1.station_count, edit_t_chejian_count_path(c1,:duan_name => duan_name))%>
+                    <%= link_to(c1.station_count, edit_t_chejian_count_path(c1,:duan_name => duan_name[0]))%>
                   <% else %>
-                    <%= link_to("", new_t_chejian_count_path(c1,:duan_name => duan_name),class: "fa fa-edit")%>
+                    <%= link_to("", new_t_chejian_count_path(c1,:duan_name => duan_name[0]),class: "fa fa-edit")%>
                   <% end %>
                 <% else %>
                   <% if c1.present? %>
@@ -332,14 +332,14 @@
                 <% end %>
               </td>
               <td>
-                <% c2 = @station_online[duan_name].to_i %>
+                <% c2 = @station_online[duan_name[0]].to_i %>
                 <% baogao_zongji2 << c2 %>
                 <%= c2 %>
               </td>
 
               <td>
                 <% if params[:kuaizhao_duibi].present? %>
-                  <% c3 = @station_online[duan_name] - @kuaizhao_duibi.find_by(:duan_name => duan_name).online_station %>
+                  <% c3 = @station_online[duan_name[0]] - @kuaizhao_duibi.find_by(:duan_name => duan_name[0]).online_station %>
                     <% if c3 > 0 %>
                       <%= c3 %>    <i class="fa fa-long-arrow-up" aria-hidden="true"></i>
                     <% elsif c3 < 0%>
@@ -354,14 +354,14 @@
               </td>
 
               <td>
-                <% c4 = @station_cankao[duan_name].to_i %>
+                <% c4 = @station_cankao[duan_name[0]].to_i %>
                 <% baogao_zongji4 << c4 %>
                 <%= c4 %>
               </td>
               <td>
-                <% cc = TChejianCount.find_by(:duan_name => duan_name)%>
+                <% cc = TChejianCount.find_by(:duan_name => duan_name[0])%>
                 <% if cc.present? %>
-                  <% c5 = (@station_online[duan_name].to_f/cc.station_count*100).round(2) %>
+                  <% c5 = (@station_online[duan_name[0]].to_f/cc.station_count*100).round(2) %>
                   <%= c5 %>
                   <% baogao_zongji5 << c5 %>
                 <% else %>
@@ -369,14 +369,14 @@
                 <% end %>
               </td>
               <td>
-                <% c6 = @student_yingkao[duan_name].to_i %>
+                <% c6 = duan_name[1] %>
                 <% baogao_zongji6 << c6 %>
                 <%= c6 %>
               </td>
               <td>
 
                 <% if params[:kuaizhao_duibi].present? %>
-                  <% c7 = @student_yingkao[duan_name] - @kuaizhao_duibi.find_by(:duan_name => duan_name).student_yingkao %>
+                  <% c7 = duan_name[1] - @kuaizhao_duibi.find_by(:duan_name => duan_name[0]).student_yingkao %>
                     <% if c7 > 0 %>
                       <%= c7 %>    <i class="fa fa-long-arrow-up" aria-hidden="true"></i>
                     <% elsif c7 < 0%>
@@ -392,27 +392,27 @@
 
               </td>
               <td>
-                <% c8 = @student_cankao[duan_name].to_i %>
+                <% c8 = @student_cankao[duan_name[0]].to_i %>
                 <%= c8 %>
                 <% baogao_zongji8 << c8 %>
               </td>
               <td>
-                <% c9 = (@student_cankao[duan_name].to_f/@student_yingkao[duan_name].to_i*100).round(2) %>
+                <% c9 = (@student_cankao[duan_name[0]].to_f/duan_name[1]*100).round(2) %>
                 <%= c9 %>
                 <% baogao_zongji9 << c9 %>
               </td>
               <td>
-                <% c10 = @student_dabiao[duan_name].to_f %>
-                <%= (c10/@student_yingkao[duan_name].to_i*100).round(2) %>
+                <% c10 = @student_dabiao[duan_name[0]].to_f %>
+                <%= (c10/duan_name[1]*100).round(2) %>
                 <% baogao_zongji10 << c10 %>
               </td>
               <td>
-                <% c11 = @student_diaoli[duan_name].to_i %>
+                <% c11 = @student_diaoli[duan_name[0]].to_i %>
                 <%= c11 %>
                 <% baogao_zongji11 << c11 %>
               </td>
               <td>
-                <% c12 = @student_tuixiu[duan_name].to_i %>
+                <% c12 = @student_tuixiu[duan_name[0]].to_i %>
                 <%= c12 %>
                 <% baogao_zongji12 << c12 %>
               </td>
@@ -683,26 +683,21 @@
          <% program_shikao7 = [] %>
          <% program_shikao8 = [] %>
          <% program_shikao_percent = [] %>
-         <% @station_online.keys.each do |duan_name| %>
+
+         <% @duan_form_two_array.each do |duan_name| %>
            <% m = 0 %>
            <% sum = []%>
            <tr>
              <th><%= n %></th>
-             <td><%= duan_name %></td>
+             <td><%= duan_name[0] %></td>
              <td>
-               <% if params[:kuaizhao_time].present? %>
-                 <% y = @kuaizhao_xiangqing.find_by(:duan_name => duan_name).student_yingkao %>
-                 <%= y %>
-               <% else %>
-                 <% y = @student_yingkao[duan_name]%>
-                 <%= y %>
-               <% end %>
-               <% program_yingkao << y%>
+               <%= duan_name[1] %>
+               <% program_yingkao << duan_name[1] %>
              </td>
              <% if @t_baogao_program.program_one.present? %>
                <td>
                  <% m = m + 1 %>
-                 <% x1 = @program_one_ck_hash[duan_name] %>
+                 <% x1 = @program_one_ck_hash[duan_name[0]] %>
                  <% sum << x1 %>
                  <% program_shikao1 << x1 %>
                  <%= x1%>
@@ -711,7 +706,7 @@
              <% if @t_baogao_program.program_two.present? %>
                <td>
                  <% m = m + 1 %>
-                 <% x2 = @program_two_ck_hash[duan_name] %>
+                 <% x2 = @program_two_ck_hash[duan_name[0]] %>
                  <% sum << x2 %>
                  <% program_shikao2 << x2 %>
                  <%= x2 %>
@@ -720,7 +715,7 @@
              <% if @t_baogao_program.program_three.present? %>
                <td>
                  <% m = m + 1 %>
-                 <% x3 = @program_three_ck_hash[duan_name] %>
+                 <% x3 = @program_three_ck_hash[duan_name[0]] %>
                  <% sum << x3 %>
                  <% program_shikao3 << x3 %>
                  <%= x3 %>
@@ -729,7 +724,7 @@
              <% if @t_baogao_program.program_four.present? %>
                <td>
                  <% m = m + 1 %>
-                 <% x4 = @program_four_ck_hash[duan_name] %>
+                 <% x4 = @program_four_ck_hash[duan_name[0]] %>
                  <% sum << x4 %>
                  <% program_shikao4 << x4 %>
                  <%= x4 %>
@@ -738,7 +733,7 @@
              <% if @t_baogao_program.program_five.present? %>
                <td>
                  <% m = m + 1 %>
-                 <% x5 = @program_five_ck_hash[duan_name] %>
+                 <% x5 = @program_five_ck_hash[duan_name[0]] %>
                  <% sum << x5 %>
                  <% program_shikao5 << x5 %>
                  <%= x5 %>
@@ -747,7 +742,7 @@
              <% if @t_baogao_program.program_six.present? %>
                <td>
                  <% m = m + 1 %>
-                 <% x6 = @program_six_ck_hash[duan_name] %>
+                 <% x6 = @program_six_ck_hash[duan_name[0]] %>
                  <% sum << x6 %>
                  <% program_shikao6 << x6 %>
                  <%= x6 %>
@@ -756,7 +751,7 @@
              <% if @t_baogao_program.program_seven.present? %>
                <td>
                  <% m = m + 1 %>
-                 <% x7 = @program_seven_ck_hash[duan_name] %>
+                 <% x7 = @program_seven_ck_hash[duan_name[0]] %>
                  <% sum << x7 %>
                  <% program_shikao7 << x7 %>
                  <%= x7 %>
@@ -765,7 +760,7 @@
              <% if @t_baogao_program.program_eight.present? %>
                <td>
                  <% m = m + 1 %>
-                 <% x8 = @program_eight_ck_hash[duan_name] %>
+                 <% x8 = @program_eight_ck_hash[duan_name[0]] %>
                  <% sum << x8 %>
                  <% program_shikao8 << x8 %>
                  <%= x8 %>
@@ -773,7 +768,7 @@
              <% end %>
              <% if m >= 1 %>
                <td>
-                 <% x9 = (sum.sum.to_f/(y*m).to_i*100).round(2)%>
+                 <% x9 = duan_name[2]%>
                  <% program_shikao_percent << x9%>
                  <%= x9 %> %
                </td>

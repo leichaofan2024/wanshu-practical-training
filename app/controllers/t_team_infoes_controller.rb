@@ -7,7 +7,7 @@ class TTeamInfoesController < ApplicationController
 
     def team_student_info
         @duan = TDuanInfo.find_by(F_name: params[:duan_name])
-        @station = TStationInfo.find_by(F_name: params[:station_name])
+        @station = TStationInfo.where(F_duan_uuid: @duan.F_uuid).find_by(F_name: params[:station_name])
 
 
         if params[:search].present?
@@ -49,28 +49,7 @@ class TTeamInfoesController < ApplicationController
             end
           end
 
-            # m = @search.scope_team_student(params[:station_name]).select('t_user_info.F_name,t_user_info.F_id,t_team_info.F_name').distinct
-            # c = m.group('t_team_info.F_name').count
-            # c1 = c.keys
-            # @team_student_ck= Array.new
-            # n.each do |n|
-            #   if c1.include?(n)
-            #     @team_student_ck << c[n]
-            #   else
-            #     @team_student_ck << 0
-            #   end
-            # end
-            #
-            # w = TTeamInfo.where('t_team_info.F_station_uuid = ?', @station.F_uuid).joins(:t_user_infoes).where("t_user_info.F_type= ?", 0).select('t_user_info.F_name,t_user_info.F_id,t_team_info.F_name').where.not('t_user_info.F_name' => m.pluck('t_user_info.F_name')).distinct.group('t_team_info.F_name').count
-            # w1 = w.keys
-            # @team_student_wk = Array.new
-            # n.each do |n|
-            #   if w1.include?(n)
-            #     @team_student_wk << w[n]
-            #   else
-            #     @team_student_wk << 0
-            #   end
-            # end
+
         else
           @team_student = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_team_info).where('t_team_info.F_station_uuid = ?', @station.F_uuid).select('t_user_info.F_name,t_user_info.F_id,t_team_info.F_name').distinct.group('t_team_info.F_name').count
           n= @team_student.keys
@@ -107,29 +86,6 @@ class TTeamInfoesController < ApplicationController
             end
           end
 
-
-            # m = TTeamInfo.where('t_team_info.F_station_uuid = ?', @station.F_uuid).joins(t_user_infoes: :t_record_infoes).datetime.where("t_user_info.F_type= ?", 0).select('t_user_info.F_name,t_user_info.F_id,t_team_info.F_name').distinct
-            # c = m.group('t_team_info.F_name').count
-            # c1 = c.keys
-            # @team_student_ck= Array.new
-            # n.each do |n|
-            #   if c1.include?(n)
-            #     @team_student_ck << c[n]
-            #   else
-            #     @team_student_ck << 0
-            #   end
-            # end
-            #
-            # w = TTeamInfo.where('t_team_info.F_station_uuid = ?', @station.F_uuid).joins(:t_user_infoes).where("t_user_info.F_type= ?", 0).select('t_user_info.F_name,t_user_info.F_id,t_team_info.F_name').where.not('t_user_info.F_name' => m.pluck('t_user_info.F_name')).distinct.group('t_team_info.F_name').count
-            # w1 = w.keys
-            # @team_student_wk = Array.new
-            # n.each do |n|
-            #   if w1.include?(n)
-            #     @team_student_wk << w[n]
-            #   else
-            #     @team_student_wk << 0
-            #   end
-            # end
 
         end
         gon.key = @key

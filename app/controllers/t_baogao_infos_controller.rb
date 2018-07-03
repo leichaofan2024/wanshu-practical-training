@@ -42,9 +42,20 @@ class TBaogaoInfosController < ApplicationController
 
     @student_tuixiu = TUserInfo.where("t_user_info.status=? AND t_user_info.F_type = ?","退休",0).joins(:t_duan_info).duan_orgnization.select("t_duan_info.F_name,t_user_info.F_id").distinct.group("t_duan_info.F_name").count
     @kuaizhao_create_time = Time.now
+    #排序
+    duan_array = []
     @station_online.keys.each do |duan_name|
-      TBaogaoInfo.create(:duan_name => duan_name, :online_station => @station_online[duan_name], :cankao_station =>@station_cankao[duan_name], :student_yingkao => @student_yingkao[duan_name], :student_shikao => @student_cankao[duan_name], :student_dabiao_percent => (@student_dabiao[duan_name].to_f/@student_yingkao[duan_name].to_i*100).round(2),
-       :student_diaoli =>@student_diaoli[duan_name], :student_tuixiu => @student_tuixiu[duan_name],:kuaizhao_create_time => @kuaizhao_create_time)
+      one_paixu_array = []
+      one_paixu_array[0] = duan_name
+      one_paixu_array[1] = @student_yingkao[duan_name].to_i
+      one_paixu_array[2] = (@student_dabiao[duan_name].to_f/one_paixu_array[1]*100).round(2)
+      duan_array << one_paixu_array
+    end
+    @duan_paixu_array = duan_array.sort{|a,b| (b[2] <=> a[2]) == 0 ? (b[1] <=> a[1]) : (b[2] <=> a[2]) }
+
+    @duan_paixu_array.each do |duan_name|
+      TBaogaoInfo.create(:duan_name => duan_name[0], :online_station => @station_online[duan_name[0]], :cankao_station =>@station_cankao[duan_name[0]], :student_yingkao => duan_name[1], :student_shikao => @student_cankao[duan_name[0]], :student_dabiao_percent => duan_name[2],
+       :student_diaoli =>@student_diaoli[duan_name[0]], :student_tuixiu => @student_tuixiu[duan_name[0]],:kuaizhao_create_time => @kuaizhao_create_time)
     end
     redirect_to baogao_path
   end
