@@ -5,7 +5,7 @@ class WelcomeController < ApplicationController
     if current_user.permission == 1
       redirect_to ju_overview_path
     elsif current_user.permission == 2
-      redirect_to duan_student_dabiao_path
+      redirect_to duan_overview_path
     elsif current_user.permission == 3
       redirect_to station_overview_path
     end
@@ -1072,7 +1072,7 @@ class WelcomeController < ApplicationController
            duan_form_two_array << duan_form_two_cell
        end
        @duan_form_two_array = duan_form_two_array.sort{|a,b| (b[2]<=>a[2]) == 0 ? (b[1]<=>a[1]):(b[2]<=>a[2])}
-    end 
+    end
 
 
     @reason_hot_all8 = @reason_hot_all.sort{ |a, b| b[1] <=> a[1] }.first(8)
