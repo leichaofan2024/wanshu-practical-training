@@ -143,25 +143,26 @@
       </thead>
       <tbody>
 
-          <% @student_ck.each do |c| %>
-          <% s = TUserInfo.find_by(:F_id => c.F_id,:F_station_uuid => @station.F_uuid)%>
-            <tr>
-              <td><%= s.F_name %></td>
-              <td>
-                <% if s.t_team_info.present? %>
-                  <%= s.t_team_info.F_name %>:
-                <% else %>
-                  <span style="color:red;">未录入班组信息:</span>
-                <% end %>
-                <% if s.F_work_uuid.present? %>
-                  <%= s.t_work_info.F_name %>
-                <% else %>
-                  <span style="color:red;">未录入职务信息</span>
-                <% end %>
-              </td>
+      <% @student_ck.each do |c| %>
+      <% s_station = TUserInfo.where(:F_id => c.F_id,:F_station_uuid => @station.F_uuid) %>
+      <% team_uuid = (s_station.pluck(:F_team_uuid)&@team_uuid_array)[0] %>
+      <% s = s_station.find_by(:F_team_uuid => team_uuid) %>
+        <tr>
+          <% if s.present? %>
+            <td><%= s.F_name %></td>
+            <td><%= s.t_team_info.F_name %>:
+            <%= s.t_work_info.F_name %></td>
+          <% else %>
+            <td><%= s_station.first.F_name %> </td>
+            <td><span style="color:red;">考生未在本站注册:</span>
+            <%= s_station.first.t_work_info.F_name %></td>
+          <% end %>
+
+
+
               <td><%= render_student_time_length(c,params[:search],params[:station_name]) %></td>
               <td>
-                <% status = render_student_status(s,@time_interval,params[:station_name])%>
+                <% status = render_student_status(s_station.first,@time_interval,params[:station_name])%>
                 <% if current_user.role == "运输处" or current_user.permission == 2 %>
                   <div class="dropdown">
                     <% if params[:search].present? %>
@@ -173,17 +174,17 @@
                       <ul class="dropdown-menu" style = "background:#ECF9F2;">
                         <% case status %>
                         <% when "在职" %>
-                          <li><%= link_to("长假",set_vacation_status_t_user_info_path(s,:F_id => s.F_id,:station_name => params[:station_name], :F_type => "长假"),method: :post)%></li>
-                          <li><%= link_to("短假",set_vacation_status_t_user_info_path(s,:F_id => s.F_id,:station_name => params[:station_name], :F_type => "短假"),method: :post)%></li>
-                          <li><%= link_to("调离",set_vacation_status_t_user_info_path(s,:F_id => s.F_id,:station_name => params[:station_name], :F_type => "调离"),method: :post)%></li>
-                          <li><%= link_to("退休",set_student_status_t_user_info_path(s,:station_name=> params[:station_name],:status => "退休"),method: :patch)%></li>
+                          <li><%= link_to("长假",set_vacation_status_t_user_info_path(s_station.first,:F_id => c.F_id,:station_name => params[:station_name], :F_type => "长假"),method: :post)%></li>
+                          <li><%= link_to("短假",set_vacation_status_t_user_info_path(s_station.first,:F_id => c.F_id,:station_name => params[:station_name], :F_type => "短假"),method: :post)%></li>
+                          <li><%= link_to("调离",set_vacation_status_t_user_info_path(s_station.first,:F_id => c.F_id,:station_name => params[:station_name], :F_type => "调离"),method: :post)%></li>
+                          <li><%= link_to("退休",set_student_status_t_user_info_path(s_station.first,:station_name=> params[:station_name],:status => "退休"),method: :patch)%></li>
                         <% when "短假" %>
-                          <% short_vacation = TVacationInfo.where(F_id: s.F_id,F_type: status).last %>
+                          <% short_vacation = TVacationInfo.where(F_id: c.F_id,F_type: status).last %>
                           <% if short_vacation.end_time.present? %>
-                            <li><%= link_to("长假",set_vacation_status_t_user_info_path(s,:F_id => s.F_id,:station_name => params[:station_name], :F_type => "长假"),method: :post)%></li>
-                            <li><%= link_to("短假",set_vacation_status_t_user_info_path(s,:F_id => s.F_id,:station_name => params[:station_name], :F_type => "短假"),method: :post)%></li>
-                            <li><%= link_to("调离",set_vacation_status_t_user_info_path(s,:F_id => s.F_id,:station_name => params[:station_name], :F_type => "调离"),method: :post)%></li>
-                            <li><%= link_to("退休",set_student_status_t_user_info_path(s,:station_name=> params[:station_name],:status => "退休"),method: :patch)%></li>
+                            <li><%= link_to("长假",set_vacation_status_t_user_info_path(s_station.first,:F_id => c.F_id,:station_name => params[:station_name], :F_type => "长假"),method: :post)%></li>
+                            <li><%= link_to("短假",set_vacation_status_t_user_info_path(s_station.first,:F_id => c.F_id,:station_name => params[:station_name], :F_type => "短假"),method: :post)%></li>
+                            <li><%= link_to("调离",set_vacation_status_t_user_info_path(s_station.first,:F_id => c.F_id,:station_name => params[:station_name], :F_type => "调离"),method: :post)%></li>
+                            <li><%= link_to("退休",set_student_status_t_user_info_path(s_station.first,:station_name=> params[:station_name],:status => "退休"),method: :patch)%></li>
                             <li class = "divider"></li>
                             <div style = "background:white;">
                                <span class = "student_status_style_one"> 短假(已结束) </span><br>
@@ -191,7 +192,7 @@
                                <span class = "student_status_style_two"> 止： <%= short_vacation.end_time.strftime("%Y-%m-%d %H:%M:%S") %> </span>
                             </div>
                           <% else %>
-                            <li><%= link_to("结束短假",set_vacation_status_t_user_info_path(s,:F_id => s.F_id,:station_name => params[:station_name], :F_type => "短假"),method: :post)%></li>
+                            <li><%= link_to("结束短假",set_vacation_status_t_user_info_path(s_station.first,:F_id => c.F_id,:station_name => params[:station_name], :F_type => "短假"),method: :post)%></li>
                             <li class = "divider"></li>
                             <div style = "background:white;">
                                <span class = "student_status_style_one"> 短假 </span><br>
@@ -207,12 +208,12 @@
                 <% end %>
               </td>
               <% if params[:search].present? %>
-              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id, "utf8": params[:utf8], "search": params[:search], "commit": params[:commit]))%></td>
+              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s_station.first.F_name, :user_id => c.F_id, "utf8": params[:utf8], "search": params[:search], "commit": params[:commit]))%></td>
               <% else %>
-              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id))%></td>
+              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s_station.first.F_name, :user_id => c.F_id))%></td>
               <% end %>
               <% if current_user.orgnize == "运输处"%>
-              <td><%= link_to("",t_user_info_path(s,:station_name => params[:station_name]),method: :delete, data: {confirm: "此操作会删除此用户所有相关信息，您确定要删除吗？"},class: "fa fa-trash")%></td>
+              <td><%= link_to("",t_user_info_path(s_station.first,:station_name => params[:station_name]),method: :delete, data: {confirm: "此操作会删除此用户所有相关信息，您确定要删除吗？"},class: "fa fa-trash")%></td>
               <% end %>
             </tr>
           <% end %>
@@ -236,26 +237,24 @@
         </tr>
       </thead>
       <tbody>
-
-          <% @student_wk.each do |c| %>
-          <% s = TUserInfo.find_by(:F_id => c.F_id)%>
-            <tr>
+        <% @student_wk.each do |c| %>
+        <% s_station = TUserInfo.where(:F_id => c.F_id,:F_station_uuid => @station.F_uuid) %>
+        <% team_uuid = (s_station.pluck(:F_team_uuid)&@team_uuid_array)[0] %>
+        <% s = s_station.find_by(:F_team_uuid => team_uuid) %>
+          <tr>
+            <% if s.present? %>
               <td><%= s.F_name %></td>
-              <td>
-                <% if s.t_team_info.present? %>
-                  <%= s.t_team_info.F_name %>:
-                <% else %>
-                  <span style="color:red;">未录入班组信息:</span>
-                <% end %>
-                <% if s.F_work_uuid.present? %>
-                  <%= s.t_work_info.F_name %>
-                <% else %>
-                  <span style="color:red;">未录入职务信息</span>
-                <% end %>
-              </td>
+              <td><%= s.t_team_info.F_name %>:
+              <%= s.t_work_info.F_name %></td>
+            <% else %>
+              <td><%= s_station.first.F_name %> </td>
+              <td><span style="color:red;">考生未在本站注册:</span>
+              <%= s_station.first.t_work_info.F_name %></td>
+            <% end %>
+
               <td><%= render_student_time_length(c,params[:search],params[:station_name]) %></td>
               <td>
-                <% status = render_student_status(s,@time_interval,params[:station_name])%>
+                <% status = render_student_status(s_station.first,@time_interval,params[:station_name])%>
                 <% if current_user.orgnize == "运输处" or current_user.permission == 2 %>
                   <div class="dropdown">
                     <% if params[:search].present?%>
@@ -267,17 +266,17 @@
                       <ul class="dropdown-menu" style = "background:#ECF9F2;">
                         <% case status %>
                         <% when "在职" %>
-                          <li><%= link_to("长假",set_vacation_status_t_user_info_path(s,:F_id => s.F_id,:station_name => params[:station_name], :F_type => "长假"),method: :post)%></li>
-                          <li><%= link_to("短假",set_vacation_status_t_user_info_path(s,:F_id => s.F_id,:station_name => params[:station_name], :F_type => "短假"),method: :post)%></li>
-                          <li><%= link_to("调离",set_vacation_status_t_user_info_path(s,:F_id => s.F_id,:station_name => params[:station_name], :F_type => "调离"),method: :post)%></li>
-                          <li><%= link_to("退休",set_student_status_t_user_info_path(s,:station_name=> params[:station_name],:status => "退休"),method: :patch)%></li>
+                          <li><%= link_to("长假",set_vacation_status_t_user_info_path(s_station.first,:F_id => c.F_id,:station_name => params[:station_name], :F_type => "长假"),method: :post)%></li>
+                          <li><%= link_to("短假",set_vacation_status_t_user_info_path(s_station.first,:F_id => c.F_id,:station_name => params[:station_name], :F_type => "短假"),method: :post)%></li>
+                          <li><%= link_to("调离",set_vacation_status_t_user_info_path(s_station.first,:F_id => c.F_id,:station_name => params[:station_name], :F_type => "调离"),method: :post)%></li>
+                          <li><%= link_to("退休",set_student_status_t_user_info_path(s_station.first,:station_name=> params[:station_name],:status => "退休"),method: :patch)%></li>
                         <% when "短假" %>
-                          <% short_vacation = TVacationInfo.where(F_id: s.F_id,F_type: status).last %>
+                          <% short_vacation = TVacationInfo.where(F_id: c.F_id,F_type: status).last %>
                           <% if short_vacation.end_time.present? %>
-                            <li><%= link_to("长假",set_vacation_status_t_user_info_path(s,:F_id => s.F_id,:station_name => params[:station_name], :F_type => "长假"),method: :post)%></li>
-                            <li><%= link_to("短假",set_vacation_status_t_user_info_path(s,:F_id => s.F_id,:station_name => params[:station_name], :F_type => "短假"),method: :post)%></li>
-                            <li><%= link_to("调离",set_vacation_status_t_user_info_path(s,:F_id => s.F_id,:station_name => params[:station_name], :F_type => "调离"),method: :post)%></li>
-                            <li><%= link_to("退休",set_student_status_t_user_info_path(s,:station_name=> params[:station_name],:status => "退休"),method: :patch)%></li>
+                            <li><%= link_to("长假",set_vacation_status_t_user_info_path(s_station.first,:F_id => c.F_id,:station_name => params[:station_name], :F_type => "长假"),method: :post)%></li>
+                            <li><%= link_to("短假",set_vacation_status_t_user_info_path(s_station.first,:F_id => c.F_id,:station_name => params[:station_name], :F_type => "短假"),method: :post)%></li>
+                            <li><%= link_to("调离",set_vacation_status_t_user_info_path(s_station.first,:F_id => c.F_id,:station_name => params[:station_name], :F_type => "调离"),method: :post)%></li>
+                            <li><%= link_to("退休",set_student_status_t_user_info_path(s_station.first,:station_name=> params[:station_name],:status => "退休"),method: :patch)%></li>
                             <li class = "divider"></li>
                             <div style = "background:white;">
                                <span class = "student_status_style_one"> 短假(已结束) </span><br>
@@ -285,7 +284,7 @@
                                <span class = "student_status_style_two"> 止： <%= short_vacation.end_time.strftime("%Y-%m-%d %H:%M:%S") %> </span>
                             </div>
                           <% else %>
-                            <li><%= link_to("结束短假",set_vacation_status_t_user_info_path(s,:F_id => s.F_id,:station_name => params[:station_name], :F_type => "短假"),method: :post)%></li>
+                            <li><%= link_to("结束短假",set_vacation_status_t_user_info_path(s_station.first,:F_id => c.F_id,:station_name => params[:station_name], :F_type => "短假"),method: :post)%></li>
                             <li class = "divider"></li>
                             <div style = "background:white;">
                                <span class = "student_status_style_one"> 短假 </span><br>
@@ -301,12 +300,12 @@
                 <% end %>
               </td>
               <% if params[:search].present? %>
-              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id, "utf8": params[:utf8], "search": params[:search], "commit": params[:commit]))%></td>
+              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s_station.first.F_name, :user_id => c.F_id, "utf8": params[:utf8], "search": params[:search], "commit": params[:commit]))%></td>
               <% else %>
-              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id))%></td>
+              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s_station.first.F_name, :user_id => c.F_id))%></td>
               <% end %>
               <% if current_user.orgnize == "运输处"%>
-              <td><%= link_to("",t_user_info_path(s,:station_name => params[:station_name]),method: :delete, data: {confirm: "此操作会删除此用户所有相关信息，您确定要删除吗？"},class: "fa fa-trash")%></td>
+              <td><%= link_to("",t_user_info_path(s_station.first,:station_name => params[:station_name]),method: :delete, data: {confirm: "此操作会删除此用户所有相关信息，您确定要删除吗？"},class: "fa fa-trash")%></td>
               <% end %>
             </tr>
           <% end %>
@@ -329,31 +328,30 @@
         </tr>
       </thead>
       <tbody>
-
-          <% @student_other.each do |c| %>
-          <% s = TUserInfo.find_by(:F_id => c.F_id,:F_station_uuid => @station.F_uuid)%>
-            <tr>
+        <% @student_other.each do |c| %>
+        <% s_station = TUserInfo.where(:F_id => c.F_id,:F_station_uuid => @station.F_uuid) %>
+        <% team_uuid = (s_station.pluck(:F_team_uuid)&@team_uuid_array)[0] %>
+        <% s = s_station.find_by(:F_team_uuid => team_uuid) %>
+          <tr>
+            <% if s.present? %>
               <td><%= s.F_name %></td>
+              <td><%= s.t_team_info.F_name %>:
+              <%= s.t_work_info.F_name %></td>
+            <% else %>
+              <td><%= s_station.first.F_name %> </td>
+              <td><span style="color:red;">考生未在本站注册:</span>
+              <%= s_station.first.t_work_info.F_name %></td>
+            <% end %>
+
+
               <td>
-                <% if s.t_team_info.present? %>
-                  <%= s.t_team_info.F_name %>:
-                <% else %>
-                  <span style="color:red;">未录入班组信息:</span>
-                <% end %>
-                <% if s.F_work_uuid.present? %>
-                  <%= s.t_work_info.F_name %>
-                <% else %>
-                  <span style="color:red;">未录入职务信息</span>
-                <% end %>
-              </td>
-              <td>
-                <% status = render_student_status(s,@time_interval,params[:station_name]) %>
+                <% status = render_student_status(s_station.first,@time_interval,params[:station_name]) %>
                 <% if current_user.orgnize == "运输处" or current_user.permission == 2 %>
                   <div class="dropdown">
                     <% if params[:search].present? || status == "退休" %>
                       <%= status %>
                     <% elsif status == "点击修复" %>
-                      <%= link_to("点击修复", set_vacation_status_t_user_info_path(s,:F_id => s.F_id,:F_type => "点击修复",:station_name => params[:station_name]),method: :post) %>
+                      <%= link_to("点击修复", set_vacation_status_t_user_info_path(s_station.first,:F_id => c.F_id,:F_type => "点击修复",:station_name => params[:station_name]),method: :post) %>
                     <% else %>
                       <button type="button" class="btn-sm btn-default dropdown-toggle" data-toggle="dropdown" style= "width:70px;">
                         <%= status %>
@@ -362,12 +360,12 @@
                       <ul class="dropdown-menu" style = "background:#ECF9F2;">
                         <% case status %>
                         <% when "调离" %>
-                          <% student_transfer = TVacationInfo.where(F_id: s.F_id,F_type: status,station_name: params[:station_name]).last %>
+                          <% student_transfer = TVacationInfo.where(F_id: c.F_id,F_type: status,station_name: params[:station_name]).last %>
                           <% if student_transfer.end_time.present? %>
-                            <li><%= link_to("长假",set_vacation_status_t_user_info_path(s,:F_id => s.F_id,:station_name => params[:station_name], :F_type => "长假"),method: :post)%></li>
-                            <li><%= link_to("短假",set_vacation_status_t_user_info_path(s,:F_id => s.F_id,:station_name => params[:station_name], :F_type => "短假"),method: :post)%></li>
-                            <li><%= link_to("调离",set_vacation_status_t_user_info_path(s,:F_id => s.F_id,:station_name => params[:station_name], :F_type => "调离"),method: :post)%></li>
-                            <li><%= link_to("退休",set_student_status_t_user_info_path(s,:station_name=> params[:station_name],:status => "退休"),method: :patch)%></li>
+                            <li><%= link_to("长假",set_vacation_status_t_user_info_path(s_station.first,:F_id => c.F_id,:station_name => params[:station_name], :F_type => "长假"),method: :post)%></li>
+                            <li><%= link_to("短假",set_vacation_status_t_user_info_path(s_station.first,:F_id => c.F_id,:station_name => params[:station_name], :F_type => "短假"),method: :post)%></li>
+                            <li><%= link_to("调离",set_vacation_status_t_user_info_path(s_station.first,:F_id => c.F_id,:station_name => params[:station_name], :F_type => "调离"),method: :post)%></li>
+                            <li><%= link_to("退休",set_student_status_t_user_info_path(s_station.first,:station_name=> params[:station_name],:status => "退休"),method: :patch)%></li>
                             <li class = "divider"></li>
                             <div style = "background:white;">
                                <span class = "student_status_style_one"> 调离(已调回) </span><br>
@@ -375,7 +373,7 @@
                                <span class = "student_status_style_two"> 止： <%= student_transfer.end_time.strftime("%Y-%m-%d %H:%M:%S") %> </span>
                             </div>
                           <% else %>
-                            <li><%= link_to("调回",set_vacation_status_t_user_info_path(s,:F_id => s.F_id,:station_name => params[:station_name], :F_type => "调离"),method: :post)%></li>
+                            <li><%= link_to("调回",set_vacation_status_t_user_info_path(s_station.first,:F_id => c.F_id,:station_name => params[:station_name], :F_type => "调离"),method: :post)%></li>
                             <li class = "divider"></li>
                             <div style = "background:white;">
                                <span class = "student_status_style_one"> 调离 </span><br>
@@ -383,12 +381,12 @@
                             </div>
                           <% end %>
                         <% when "长假"%>
-                          <% long_vacation = TVacationInfo.where(F_id: s.F_id,F_type: status).last %>
+                          <% long_vacation = TVacationInfo.where(F_id: c.F_id,F_type: status).last %>
                           <% if long_vacation.end_time.present? %>
-                            <li><%= link_to("长假",set_vacation_status_t_user_info_path(s,:F_id => s.F_id,:station_name => params[:station_name], :F_type => "长假"),method: :post)%></li>
-                            <li><%= link_to("短假",set_vacation_status_t_user_info_path(s,:F_id => s.F_id,:station_name => params[:station_name], :F_type => "短假"),method: :post)%></li>
-                            <li><%= link_to("调离",set_vacation_status_t_user_info_path(s,:F_id => s.F_id,:station_name => params[:station_name], :F_type => "调离"),method: :post)%></li>
-                            <li><%= link_to("退休",set_student_status_t_user_info_path(s,:station_name=> params[:station_name],:status => "退休"),method: :patch)%></li>
+                            <li><%= link_to("长假",set_vacation_status_t_user_info_path(s_station.first,:F_id => c.F_id,:station_name => params[:station_name], :F_type => "长假"),method: :post)%></li>
+                            <li><%= link_to("短假",set_vacation_status_t_user_info_path(s_station.first,:F_id => c.F_id,:station_name => params[:station_name], :F_type => "短假"),method: :post)%></li>
+                            <li><%= link_to("调离",set_vacation_status_t_user_info_path(s_station.first,:F_id => c.F_id,:station_name => params[:station_name], :F_type => "调离"),method: :post)%></li>
+                            <li><%= link_to("退休",set_student_status_t_user_info_path(s_station.first,:station_name=> params[:station_name],:status => "退休"),method: :patch)%></li>
                             <li class = "divider"></li>
                             <div style = "background:white;">
                                <span class = "student_status_style_one"> 长假(已结束) </span><br>
@@ -396,7 +394,7 @@
                                <span class = "student_status_style_two"> 止： <%= long_vacation.end_time.strftime("%Y-%m-%d %H:%M:%S") %> </span>
                             </div>
                           <% else %>
-                            <li><%= link_to("结束长假",set_vacation_status_t_user_info_path(s,:F_id => s.F_id,:station_name => params[:station_name], :F_type => "长假"),method: :post)%></li>
+                            <li><%= link_to("结束长假",set_vacation_status_t_user_info_path(s_station.first,:F_id => c.F_id,:station_name => params[:station_name], :F_type => "长假"),method: :post)%></li>
                             <li class = "divider"></li>
                             <div style = "background:white;">
                                <span class = "student_status_style_one"> 长假 </span><br>
@@ -413,12 +411,12 @@
                 <% end %>
               </td>
               <% if params[:search].present? %>
-              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id, "utf8": params[:utf8], "search": params[:search], "commit": params[:commit]))%></td>
+              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s_station.first.F_name, :user_id => c.F_id, "utf8": params[:utf8], "search": params[:search], "commit": params[:commit]))%></td>
               <% else %>
-              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s.F_name, :user_id => s.F_id))%></td>
+              <td><%= link_to("查看详情", student_records_t_record_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name => params[:team_name],:user_name => s_station.first.F_name, :user_id => c.F_id))%></td>
               <% end %>
               <% if current_user.orgnize == "运输处"%>
-              <td><%= link_to("",t_user_info_path(s,:station_name => params[:station_name]),method: :delete, data: {confirm: "此操作会删除此用户所有相关信息，您确定要删除吗？"},class: "fa fa-trash")%></td>
+              <td><%= link_to("",t_user_info_path(s_station.first,:station_name => params[:station_name]),method: :delete, data: {confirm: "此操作会删除此用户所有相关信息，您确定要删除吗？"},class: "fa fa-trash")%></td>
               <% end %>
             </tr>
           <% end %>
