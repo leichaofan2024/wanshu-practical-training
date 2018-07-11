@@ -1,20 +1,56 @@
 <div class= "pie_duan_frame">
   <div class="clear">
-    <% if params[:search].present? %>
-      <a href="/">首页</a> > <%= link_to("各站段参考情况", duan_student_info_t_duan_infoes_path("utf8": params[:utf8], "search": params[:search], "commit": params[:commit])) %> >
-      <%= link_to(@duan.F_name, station_student_info_t_station_infoes_path("utf8": params[:utf8], "search": params[:search], "commit": params[:commit], 'duan_name': @duan.F_name)) %> > <%= @station.F_name%>
-      (实训平台状态:
-      <%= link_to(render_station_status(@time_interval,@station.F_uuid),"#",class: "btn-sm btn-danger") %>
-      )
-    <% else %>
-      <a href="/">首页</a> > <a href="/t_duan_infoes/duan_student_info">各站段参考情况</a> > <a href="/t_station_infoes/station_student_info?duan_name=<%= @duan.F_name%>"><%= @duan.F_name %></a> > <%= @station.F_name%>
-      (实训平台状态:
-        <% if current_user.role != "集团公司" && current_user.role != "研发中心" %>
-          <%= link_to(render_station_status(@time_interval,@station.F_uuid),equipment_maintain_edit_t_station_info_path(@station,:duan_name => params[:duan_name],:station_name => params[:station_name]),class: "btn-sm btn-danger") %>
-        <% else %>
-          <%= link_to(render_station_status(@time_interval,@station.F_uuid),"#",class: "btn-sm btn-danger") %>
-        <% end %>
-      )
+    <% if current_user.permission == 1%>
+      <% if params[:search].present? %>
+        <a href="/">首页</a> > <%= link_to("各站段参考情况", duan_student_info_t_duan_infoes_path("utf8": params[:utf8], "search": params[:search], "commit": params[:commit])) %> >
+        <%= link_to(@duan.F_name, station_student_info_t_station_infoes_path("utf8": params[:utf8], "search": params[:search], "commit": params[:commit], 'duan_name': @duan.F_name)) %> > <%= @station.F_name%>
+        (实训平台状态:
+        <%= link_to(render_station_status(@time_interval,@station.F_uuid),"#",class: "btn-sm btn-danger") %>
+        )
+      <% else %>
+        <a href="/">首页</a> > <a href="/t_duan_infoes/duan_student_info">各站段参考情况</a> > <a href="/t_station_infoes/station_student_info?duan_name=<%= @duan.F_name%>"><%= @duan.F_name %></a> > <%= @station.F_name%>
+        (实训平台状态:
+          <% if current_user.role != "集团公司" && current_user.role != "研发中心" %>
+            <%= link_to(render_station_status(@time_interval,@station.F_uuid),equipment_maintain_edit_t_station_info_path(@station,:duan_name => params[:duan_name],:station_name => params[:station_name]),class: "btn-sm btn-danger") %>
+          <% else %>
+            <%= link_to(render_station_status(@time_interval,@station.F_uuid),"#",class: "btn-sm btn-danger") %>
+          <% end %>
+        )
+      <% end %>
+    <% elsif current_user.permission == 2 %>
+      <% if params[:search].present? %>
+        <a href="/">首页</a> >
+        <%= link_to(@duan.F_name, station_student_info_t_station_infoes_path("utf8": params[:utf8], "search": params[:search], "commit": params[:commit], 'duan_name': @duan.F_name)) %> > <%= @station.F_name%>
+        (实训平台状态:
+        <%= link_to(render_station_status(@time_interval,@station.F_uuid),"#",class: "btn-sm btn-danger") %>
+        )
+      <% else %>
+        <a href="/">首页</a> ><a href="/t_station_infoes/station_student_info?duan_name=<%= @duan.F_name%>"><%= @duan.F_name %></a> > <%= @station.F_name%>
+        (实训平台状态:
+          <% if current_user.role != "集团公司" && current_user.role != "研发中心" %>
+            <%= link_to(render_station_status(@time_interval,@station.F_uuid),equipment_maintain_edit_t_station_info_path(@station,:duan_name => params[:duan_name],:station_name => params[:station_name]),class: "btn-sm btn-danger") %>
+          <% else %>
+            <%= link_to(render_station_status(@time_interval,@station.F_uuid),"#",class: "btn-sm btn-danger") %>
+          <% end %>
+        )
+      <% end %>
+    <% elsif current_user.permission == 3 %>
+      <% if params[:search].present? %>
+        <a href="/">首页</a> >
+        <%= @station.F_name%>
+        (实训平台状态:
+        <%= link_to(render_station_status(@time_interval,@station.F_uuid),"#",class: "btn-sm btn-danger") %>
+        )
+      <% else %>
+        <a href="/">首页</a>  > <%= @station.F_name%>
+        (实训平台状态:
+          <% if current_user.role != "集团公司" && current_user.role != "研发中心" %>
+            <%= link_to(render_station_status(@time_interval,@station.F_uuid),equipment_maintain_edit_t_station_info_path(@station,:duan_name => params[:duan_name],:station_name => params[:station_name]),class: "btn-sm btn-danger") %>
+          <% else %>
+            <%= link_to(render_station_status(@time_interval,@station.F_uuid),"#",class: "btn-sm btn-danger") %>
+          <% end %>
+        )
+      <% end %>
     <% end %>
 
   </div>

@@ -10,7 +10,7 @@
       <th>得分</th>
       <th>考试详情</th>
       <th>录像回放</th>
-      <% if current_user.role == "运输处" %>
+      <% if current_user.role == "运输处" || current_user.role == params[:duan_name] %>
       <th>操作</th>
       <% end %>
     </tr>
@@ -98,7 +98,7 @@
         </script>
       </td>
 
-      <% if current_user.role == "运输处" %>
+      <% if current_user.role == "运输处"  || current_user.role == params[:duan_name] %>
         <td>
           <%= link_to("", t_record_info_path(r,:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name=> params[:team_name],:user_name => params[:user_name],:user_id => params[:user_id]),method: :delete,:data => {confirm: "你确定要删除吗？"},class: "fa fa-trash" )%>
         </td>

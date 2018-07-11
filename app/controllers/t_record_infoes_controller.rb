@@ -35,7 +35,7 @@ class TRecordInfoesController < ApplicationController
 
       if params[:search].present?
         @search = TimeSearch.new(params[:search])
-        @records = @search.scope_student_score(params[:user_id], params[:user_name])
+        @records = @search.scope_student_score(params[:user_id])
       else
         @records = TRecordInfo.where(F_user_uuid: @students.ids).datetime
       end
