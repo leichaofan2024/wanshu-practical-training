@@ -50,7 +50,7 @@
       <td>
         <%= link_to("考试详情", record_score_details_t_record_detail_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name],:team_name=> params[:team_name],:user_name => params[:user_name],:user_id => params[:user_id],:record_uuid=> r.F_uuid, "utf8": params[:utf8], "search": params[:search], "commit": params[:commit]) )%> ／
 
-        <a id="player<%= i%>"  href="http://10.64.2.108:1000/<%= r.F_record%>">播放录像</a> 
+        <a id="player<%= i%>"  href="http://10.64.2.108:1000/<%= r.F_record%>">播放录像</a>
         <script type="text/javascript">
          flowplayer(
             "player"+<%= i%>,
@@ -60,7 +60,7 @@
                 autoBuffering: true ,
                 playlist: [//播放列表
                        {
-                           url: "http://10.64.2.108:1000/play1.png",//默认显示图片（如果没有这显示播放视频的第一个画面）
+                           url: "http://10.64.2.108:8032/assets/player/play1.png",//默认显示图片（如果没有这显示播放视频的第一个画面）
                            scaling: 'orig'//缩放
                        },
                        {
