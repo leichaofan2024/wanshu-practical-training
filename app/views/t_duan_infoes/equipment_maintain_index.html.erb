@@ -1,66 +1,6 @@
-
 <div class = "welcome_frame">
-  <% if current_user.permission == 1 %>
-    <div class="">
-      <a href="/">首页</a> > 所有站段
-    </div>
-    <h3>车务段 (共计：<%= @duans_cw.size%>个)</h3><hr>
-      <% @duans_cw.each do |duan|%>
-        <%= link_to t_station_infoes_path(duan_name: duan.F_name,"utf8": params[:utf8], "search": params[:search], "commit": params[:commit]) do  %>
-          <button type="button" name="name">
-            <%= duan.F_name %>
-            <% if @duan_name.include?(duan.F_name) %>
-              <i style = "color: red;">(维护中)</i>
-            <% end %>
-          </button>
-        <% end %>
-      <% end %>
-
-    <h3>直属站 (共计：<%= @duans_zs.size%>个)</h3><hr>
-      <% @duans_zs.each do |duan|%>
-        <%= link_to t_station_infoes_path(duan_name: duan.F_name,"utf8": params[:utf8], "search": params[:search], "commit": params[:commit]) do  %>
-          <button type="button" name="name">
-            <%= duan.F_name %>
-            <% if @duan_name.include?(duan.F_name) %>
-              <i style = "color: red;">(维护中)</i>
-            <% end %>
-          </button>
-        <% end %>
-      <% end %>
-
-    <h3>职教基地 (共计：<%= @duans_zj.size%>个)</h3><hr>
-      <% @duans_zj.each do |duan|%>
-        <%= link_to t_station_infoes_path(duan_name: duan.F_name,"utf8": params[:utf8], "search": params[:search], "commit": params[:commit]) do  %>
-          <button type="button" name="name">
-            <%= duan.F_name %>
-            <% if @duan_name.include?(duan.F_name) %>
-              <i style = "color: red;">(维护中)</i>
-            <% end %>
-          </button>
-        <% end %>
-      <% end %>
-  <% elsif current_user.permission == 2 %>
-    <div class="">
-      <a href="/">首页</a> > 当前站段
-    </div>
-    <div style="margin-top:30px;">
-      <button type="button" name="button">
-        <% if params[:search].present? %>
-         <%= link_to(current_user.orgnize,t_station_infoes_path("utf8": params[:utf8], "search": params[:search], "commit": params[:commit])) %>
-        <% else %>
-          <%= link_to(current_user.orgnize,t_station_infoes_path) %>
-        <% end %>
-        <% if @duan_name.include?(current_user.orgnize) %>
-          <i style = "color: red;">(维护中)</i>
-        <% end %>
-      </button>
-    </div>
-  <% end %>
-
-  <h5 style= "margin-top: 50px;">当前设备维护的站：</h5>
-  <a href="t_duan_infoes/equipment_maintain_index" class = "pull-right" style= "color:red;margin-right:30px;">查看历史维护记录 >> </a>
-  <br>
-  <br>
+<a href="/t_duan_infoes"> << 返回 </a>
+<h5 style = "text-align: center;">设备维护历史记录汇总</h5>
   <table class = "table">
     <thead>
       <tr>
@@ -75,7 +15,7 @@
     </thead>
     <tbody>
       <% n = 1%>
-      <% @station_equipment_maintain.each do |equipment_maintain| %>
+      <% @station_equipment_maintains.each do |equipment_maintain| %>
         <% duan_name = TDuanInfo.find_by(F_uuid: TStationInfo.find_by(F_name: equipment_maintain.station_name).F_duan_uuid ).F_name %>
         <% if current_user.permission == 1 %>
           <tr>
@@ -135,4 +75,5 @@
       <% end %>
     </tbody>
   </table>
+
 </div>

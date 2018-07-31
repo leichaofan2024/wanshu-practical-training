@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180604045759) do
+ActiveRecord::Schema.define(version: 20180728082747) do
 
   create_table "browses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "user_id"
@@ -32,10 +32,12 @@ ActiveRecord::Schema.define(version: 20180604045759) do
     t.string   "station_name"
     t.string   "t_type"
     t.datetime "begin_time"
-    t.datetime "end_time",                      default: '2030-01-01 00:00:00'
-    t.text     "maintain_reason", limit: 65535
-    t.datetime "created_at",                                                    null: false
-    t.datetime "updated_at",                                                    null: false
+    t.datetime "end_time",                                default: '2030-01-01 00:00:00'
+    t.text     "maintain_reason",           limit: 65535
+    t.datetime "created_at",                                                              null: false
+    t.datetime "updated_at",                                                              null: false
+    t.string   "equipment_come_from"
+    t.string   "equipment_used_time_lenth"
   end
 
   create_table "t_baogao_infos", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

@@ -31,10 +31,15 @@ class TStationInfoesController < ApplicationController
 
     def equipment_maintain_create
       @station = TStationInfo.find_by(F_name: params[:station_name])
-      StationEquipmentMaintain.create(:station_name => @station.F_name,:begin_time => Time.now,:maintain_reason => params[:station_equipment_maintain]["maintain_reason"],:t_type => params[:station_equipment_maintain]["t_type"])
-      flash[:notice] = "设备状态成功设置为：'维修''!"
-      redirect_to team_student_info_t_team_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name])
 
+      @equipment_maintain_edit = StationEquipmentMaintain.new(:station_name => @station.F_name,:begin_time => Time.now,:equipment_come_from => params[:station_equipment_maintain]["equipment_come_from"],:equipment_used_time_lenth => params[:station_equipment_maintain]["equipment_used_time_lenth"],:maintain_reason => params[:station_equipment_maintain]["maintain_reason"],:t_type => params[:station_equipment_maintain]["t_type"])
+      if @equipment_maintain_edit.save
+        flash[:notice] = "设备状态成功设置为：'维修''!"
+        redirect_to team_student_info_t_team_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name])
+      else
+        flash[:alert] = "请把信息填写完整！"
+        redirect_to equipment_maintain_edit_t_station_info_path(@station,:duan_name => params[:duan_name],:station_name => params[:station_name])
+      end
     end
 
     def equipment_maintain_update

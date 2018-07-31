@@ -3,11 +3,11 @@ class TDuanInfoesController < ApplicationController
     def index
       if params[:search].present?
         @search = TimeSearch.new(params[:search])
-        @station_equipment_maintain = StationEquipmentMaintain.where("station_equipment_maintains.begin_time < ? and station_equipment_maintains.end_time > ? ",@search.date_to,@search.date_to)
+        @station_equipment_maintain = StationEquipmentMaintain.where("station_equipment_maintains.begin_time < ? and station_equipment_maintains.end_time > ? ",@search.date_to,@search.date_to).order("begin_time DESC")
         equipment_maintain = TStationInfo.where(:F_name => @station_equipment_maintain.pluck("station_equipment_maintains.station_name")).pluck(:F_uuid)
         @duan_name = TDuanInfo.where(F_uuid: TStationInfo.where(F_uuid: equipment_maintain).pluck("t_station_info.F_duan_uuid").uniq).pluck("t_duan_info.F_name").uniq
       else
-        @station_equipment_maintain = StationEquipmentMaintain.where("station_equipment_maintains.begin_time < ? and station_equipment_maintains.end_time > ? ",Time.now.end_of_month,Time.now.end_of_month)
+        @station_equipment_maintain = StationEquipmentMaintain.where("station_equipment_maintains.begin_time < ? and station_equipment_maintains.end_time > ? ",Time.now.end_of_month,Time.now.end_of_month).order("begin_time DESC")
         equipment_maintain = TStationInfo.where(:F_name => @station_equipment_maintain.pluck("station_equipment_maintains.station_name")).pluck(:F_uuid)
         @duan_name = TDuanInfo.where(F_uuid: TStationInfo.where(F_uuid: equipment_maintain).pluck("t_station_info.F_duan_uuid").uniq).pluck("t_duan_info.F_name").uniq
       end
@@ -15,6 +15,10 @@ class TDuanInfoesController < ApplicationController
         @duans_cw = TDuanInfo.duan_orgnization.where(F_type: 1)
         @duans_zs = TDuanInfo.duan_orgnization.where(F_type: 2)
         @duans_zj = TDuanInfo.duan_zhijiao
+    end
+
+    def equipment_maintain_index
+      @station_equipment_maintains = StationEquipmentMaintain.all.order("begin_time DESC")
     end
 
 

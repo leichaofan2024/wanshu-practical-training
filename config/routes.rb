@@ -84,6 +84,7 @@ Rails.application.routes.draw do
             get :duan_program_student_info     # 做过这道题的学生
             get :duan_reason_info              # 易错题饼图
             get :duan_reason_student_info      # 犯这种错误的学生
+            get :equipment_maintain_index
         end
     end
 
