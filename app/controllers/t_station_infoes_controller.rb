@@ -21,7 +21,7 @@ class TStationInfoesController < ApplicationController
       @duan = TDuanInfo.find_by(F_name: params[:duan_name])
       @station = TStationInfo.find_by(F_name: params[:station_name])
       equipment_maintain_edit = StationEquipmentMaintain.where(:station_name => @station.F_name)
-      if equipment_maintain_edit.present? && equipment_maintain_edit.last.end_time == "2030-01-01 00:00:00"
+      if equipment_maintain_edit.present? && (equipment_maintain_edit.last.end_time == "2030-01-01 00:00:00")
         @equipment_maintain_edit =  equipment_maintain_edit.last
       else
          @equipment_maintain_edit = StationEquipmentMaintain.new
@@ -44,7 +44,11 @@ class TStationInfoesController < ApplicationController
 
     def equipment_maintain_update
       @station = TStationInfo.find_by(F_name: params[:station_name])
-      StationEquipmentMaintain.find(params[:equipment_id]).update(:end_time => Time.now)
+      if params[:station_equipment_maintain][:equipment_come_from].present?
+        StationEquipmentMaintain.find(params[:equipment_id]).update(:end_time => Time.now,:equipment_come_from => params[:station_equipment_maintain]["equipment_come_from"],:equipment_used_time_lenth => params[:station_equipment_maintain]["equipment_used_time_lenth"],:maintain_reason => params[:station_equipment_maintain]["maintain_reason"])
+      else
+        StationEquipmentMaintain.find(params[:equipment_id]).update(:end_time => Time.now)
+      end
       flash[:notice] = "设备状态成功设置为：'在线'!"
       redirect_to team_student_info_t_team_infoes_path(:duan_name => params[:duan_name],:station_name => params[:station_name])
     end

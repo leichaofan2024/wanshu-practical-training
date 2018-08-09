@@ -1,13 +1,24 @@
 <div class="loginpage-frame">
   <h3>本车站实训平台设备状态：</h3>
   <% if @equipment_maintain_edit.begin_time.present? %>
-    <%= simple_form_for @equipment_maintain_edit,method: :patch,url: equipment_maintain_update_t_station_info_path(:station_name => @station.F_name, :duan_name => @duan.F_name,:equipment_id => @equipment_maintain_edit.id) do |f| %>
-      <%= f.input :station_name,label: "选择车站", :collection => [@station.F_name]%>
-      <%= f.input :t_type,label: "选择状态",:collection => ["在线"] %>
-      <%= f.submit "确定" %>
+    <% if @equipment_maintain_edit.equipment_come_from.present? %>
+      <%= simple_form_for @equipment_maintain_edit,method: :patch,url: equipment_maintain_update_t_station_info_path(:id => @station.id,:station_name => @station.F_name, :duan_name => @duan.F_name,:equipment_id => @equipment_maintain_edit.id) do |f| %>
+        <%= f.input :station_name,label: "选择车站", :collection => [@station.F_name]%>
+        <%= f.input :t_type,label: "选择状态",:collection => ["在线"] %>
+        <%= f.submit "确定" %>
+      <% end %>
+    <% else %>
+      <%= simple_form_for @equipment_maintain_edit,method: :patch,url: equipment_maintain_update_t_station_info_path(:id => @station.id,:station_name => @station.F_name, :duan_name => @duan.F_name,:equipment_id => @equipment_maintain_edit.id) do |f| %>
+        <%= f.input :station_name, label: "选择车站",:collection => [@station.F_name]%>
+        <%= f.input :equipment_come_from,label: "设备来源", :collection => ['交大微联','研发中心']%>
+        <%= f.input :equipment_used_time_lenth, label: "设备已使用年限", :collection => ['一年','两年','三年','四年','五年','五年以上']%>
+        <%= f.input :t_type,label: "选择状态",:collection => ["在线"] %>
+        <%= f.input :maintain_reason,label: "维护原因" %>
+        <%= f.submit "确定" %>
+      <% end %>
     <% end %>
   <% else %>
-    <%= simple_form_for @equipment_maintain_edit,method: :post,url: equipment_maintain_create_t_station_info_path(:station_name => @station.F_name, :duan_name => @duan.F_name) do |f| %>
+    <%= simple_form_for @equipment_maintain_edit,method: :post,url: equipment_maintain_create_t_station_info_path(:id => @stationid.id ,:station_name => @station.F_name, :duan_name => @duan.F_name) do |f| %>
       <%= f.input :station_name, label: "选择车站",:collection => [@station.F_name]%>
       <%= f.input :equipment_come_from,label: "设备来源", :collection => ['交大微联','研发中心']%>
       <%= f.input :equipment_used_time_lenth, label: "设备已使用年限", :collection => ['一年','两年','三年','四年','五年','五年以上']%>
