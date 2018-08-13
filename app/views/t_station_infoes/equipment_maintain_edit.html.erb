@@ -18,7 +18,7 @@
       <% end %>
     <% end %>
   <% else %>
-    <%= simple_form_for @equipment_maintain_edit,method: :post,url: equipment_maintain_create_t_station_info_path(:id => @stationid.id ,:station_name => @station.F_name, :duan_name => @duan.F_name) do |f| %>
+    <%= simple_form_for @equipment_maintain_edit,method: :post,url: equipment_maintain_create_t_station_info_path(:id => @station.id ,:station_name => @station.F_name, :duan_name => @duan.F_name) do |f| %>
       <%= f.input :station_name, label: "选择车站",:collection => [@station.F_name]%>
       <%= f.input :equipment_come_from,label: "设备来源", :collection => ['交大微联','研发中心']%>
       <%= f.input :equipment_used_time_lenth, label: "设备已使用年限", :collection => ['一年','两年','三年','四年','五年','五年以上']%>
