@@ -339,7 +339,11 @@
 
               <td>
                 <% if params[:kuaizhao_duibi].present? %>
-                  <% c3 = @station_online[duan_name[0]] - @kuaizhao_duibi.find_by(:duan_name => duan_name[0]).online_station %>
+                  <% if @kuaizhao_duibi.find_by(:duan_name => duan_name[0]).present? %>
+                    <% c3 = @station_online[duan_name[0]] - @kuaizhao_duibi.find_by(:duan_name => duan_name[0]).online_station %>
+                  <% else %>
+                    <% c3 = @station_online[duan_name[0]] %>
+                  <% end %>
                     <% if c3 > 0 %>
                       <%= c3 %>    <i class="fa fa-long-arrow-up" aria-hidden="true"></i>
                     <% elsif c3 < 0%>
@@ -376,7 +380,11 @@
               <td>
 
                 <% if params[:kuaizhao_duibi].present? %>
+                  <% if @kuaizhao_duibi.find_by(:duan_name => duan_name[0]).present? %>
                   <% c7 = duan_name[1] - @kuaizhao_duibi.find_by(:duan_name => duan_name[0]).student_yingkao %>
+                  <% else %>
+                  <% c7 = duan_name[1] %>
+                  <% end %>
                     <% if c7 > 0 %>
                       <%= c7 %>    <i class="fa fa-long-arrow-up" aria-hidden="true"></i>
                     <% elsif c7 < 0%>
@@ -469,7 +477,11 @@
               </td>
               <td>
                 <% if params[:kuaizhao_duibi].present? %>
+                  <% if @kuaizhao_duibi.find_by(:duan_name => duan_name[0]).present? %>
                   <% c3 = kuaizhao.online_station - @kuaizhao_duibi.find_by(:duan_name => kuaizhao.duan_name).online_station %>
+                  <% else %>
+                  <% c3 = kuaizhao.online_station %>
+                  <% end %>
                     <% if c3 > 0 %>
                       <%= c3 %>    <i class="fa fa-long-arrow-up" aria-hidden="true"></i>
                     <% elsif c3 < 0%>
@@ -505,7 +517,11 @@
               <td>
 
                 <% if params[:kuaizhao_duibi].present? %>
-                  <% c7= kuaizhao.student_yingkao - @kuaizhao_duibi.find_by(:duan_name => kuaizhao.duan_name).student_yingkao %>
+                  <% if @kuaizhao_duibi.find_by(:duan_name => duan_name[0]).present? %>
+                    <% c7= kuaizhao.student_yingkao - @kuaizhao_duibi.find_by(:duan_name => kuaizhao.duan_name).student_yingkao %>
+                  <% else %>
+                    <% c7= kuaizhao.student_yingkao %>
+                  <% end %>
                     <% if c7 > 0 %>
                       <%= c7 %>    <i class="fa fa-long-arrow-up" aria-hidden="true"></i>
                     <% elsif c7 < 0%>

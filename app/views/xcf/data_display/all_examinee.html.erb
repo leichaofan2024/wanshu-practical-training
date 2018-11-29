@@ -2,31 +2,34 @@
     <div class="row">
       <div class="col-md-12">
         <div class="examinee">
-          <%= "北京车务段全部考生"%>
+          <%= params[:duan_name]%>全部考生
         </div>
       </div>
     </div><!--这个是标题栏-->
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-md-4 col-md-offset-4">
         <div class="time-center">
-          <%= "2018-04-04 ~ 2018-05-04 | 当前月"%>
+          <%= "#{params[:search]} ~ #{params[:search]} | 当前月"%>
         </div>
       </div>
-    </div><!--这个是时间显示栏-->
+    </div>-->
+    <!--这个是时间显示栏 -->
     <div class="row">
       <div class="col-md-2">
-        <div class="back-button">
-          <%="返回上一层"%> <!--这个需要 button 返回到general_overview -->
-        </div>
+        <%= link_to xcf_general_overview_path do %>
+          <div class="back-button">
+            <%="返回上一层"%> <!--这个需要 button 返回到general_overview -->
+          </div>
+        <% end %>
       </div>
       <div class="col-md-6 col-md-offset-4">
           <div class="pull-right range-query">
             <div class="searchtime">时间：</div>
             <div class="searchtime">
-                <%= form_tag baogao_path, method: :get do %>
-                  <%= text_field_tag 'search[date_from]',nil%>
-                  <%= text_field_tag 'search[date_to]',nil %>
-                  <%= submit_tag "搜索", id:"time_id",class: "btn search-button"%>
+                <%= form_tag xcf_all_examinee_path, method: :get do %>
+                <%= text_field_tag 'search[date_from]',nil,:placeholder => time_begin(params[:search])%>
+                <%= text_field_tag 'search[date_to]',nil,:placeholder => time_end(params[:search]) %>
+                <%= submit_tag "搜索", id:"time_id",class: "btn search-button"%>
                 <% end %>
           </div>
         </div>
@@ -38,13 +41,13 @@
       <div class="row">
         <div class="col-md-4">
           <div class="statistics-box">
-            <%= "合计：XX 人"%>
+            合计：<%= @student_all.pluck(:F_id).uniq.count  %>人
           </div>
         </div>
         <div class="col-md-4 col-md-offset-4">
           <div class="statistics-box1">
-            <%= "合格人数 XX 人"%> |
-            <%= "不合格人数 XX 人"%>
+            合格人数<%= @student_hege.pluck(:F_id).uniq.count %>人 |
+            不合格人数<%= @student_all.pluck(:F_id).uniq.count - @student_hege.pluck(:F_id).uniq.count %>人
           </div>
         </div>
       </div>
@@ -55,20 +58,37 @@
     <div class="col-md-12">
       <div class="exam-table">
         <table class="table table-bordered">
-          <tr>
-            <th class="exam-text"><%= "姓名"%></th>
-            <th class="exam-text"><%= "车站"%></th>
-            <th class="exam-text"><%="监考老师"%></th>
-            <th class="exam-text"><%="时间"%></th>
-            <th class="exam-text"><%="操作"%></th>
-          </tr>
-          <tr>
-            <td class="exam-text-small"><%= "王小二"%></td>
-            <td class="exam-text-small"><%= "北京西车务段"%></td>
-            <td class="exam-text-small"><%= "王炸"%></td>
-            <td class="exam-text-small"><%= "2018-04-04"%></td>
-            <td class="exam-text-small"><%= "查看详情"%></td>
-          </tr>
+          <thead>
+            <tr>
+              <th class="exam-text"><%= "姓名"%></th>
+              <th class="exam-text"><%= "车站"%></th>
+              <th class="exam-text">自闭类型</th>
+              <th class="exam-text"><%="考试时间"%></th>
+              <th class="exam-text">是否合格</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% @student_hege.each do |student| %>
+              <tr>
+                <td class="exam-text-small"><%= student.F_name%> </td>
+                <td class="exam-text-small"><%= TDuanInfo.find_by(:F_uuid => student.F_duan_uuid).F_name%></td>
+                <td class="exam-text-small"><%= @records_all.find_by(:F_user_uuid => student.F_uuid).F_bs_name%></td>
+                <td class="exam-text-small"><%= @records_all.find_by(:F_user_uuid => student.F_uuid).F_begin_time%></td>
+                <td class="exam-text-small">合格</td>
+              </tr>
+            <% end %>
+            <% @student_not_hege.each do |student| %>
+              <tr>
+                <td class="exam-text-small"><%= student.F_name%></td>
+                <td class="exam-text-small"><%= TDuanInfo.find_by(:F_uuid => student.F_duan_uuid).F_name%></td>
+                <td class="exam-text-small"><%= @records_all.find_by(:F_user_uuid => student.F_uuid).F_bs_name%></td>
+                <td class="exam-text-small"><%= @records_all.find_by(:F_user_uuid => student.F_uuid).F_begin_time%></td>
+                <td class="exam-text-small">不合格</td>
+              </tr>
+            <% end %>
+          </tbody>
+
         </table>
         </div>
       </div>

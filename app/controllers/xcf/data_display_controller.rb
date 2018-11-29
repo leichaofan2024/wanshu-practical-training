@@ -155,50 +155,84 @@ class Xcf::DataDisplayController < ApplicationController
      # gon.dabiao_duan_60_below = @dabiao_duan_60_below.values
      #第三个饼图:
      if @program_record_detail_count.present?
-       gon.program_detail_key = @program_record_detail_count.first(8).sort{|x| x[0]}
+       gon.program_detail_key = @program_record_detail_count.first(8).sort{|x| x[1]}
+       if @program_record_detail_count[0].present?
        gon.program_detail_count_a = {name: @program_record_detail_count[0][0],value: @program_record_detail_count[0][1]}
+       end
+       if @program_record_detail_count[1].present?
        gon.program_detail_count_b = {name: @program_record_detail_count[1][0],value: @program_record_detail_count[1][1]}
+       end
+       if @program_record_detail_count[2].present?
        gon.program_detail_count_c = {name: @program_record_detail_count[2][0],value: @program_record_detail_count[2][1]}
+       end
+       if @program_record_detail_count[3].present?
        gon.program_detail_count_d = {name: @program_record_detail_count[3][0],value: @program_record_detail_count[3][1]}
+       end
+       if @program_record_detail_count[4].present?
        gon.program_detail_count_e = {name: @program_record_detail_count[4][0],value: @program_record_detail_count[4][1]}
+       end
+       if @program_record_detail_count[5].present?
        gon.program_detail_count_f = {name: @program_record_detail_count[5][0],value: @program_record_detail_count[5][1]}
+       end
+       if @program_record_detail_count[6].present?
        gon.program_detail_count_g = {name: @program_record_detail_count[6][0],value: @program_record_detail_count[6][1]}
+       end
+       if @program_record_detail_count[7].present?
        gon.program_detail_count_h = {name: @program_record_detail_count[7][0],value: @program_record_detail_count[7][1]}
+       end
        #柱状图：
-       gon.program_keys = @program_record_detail_count.sort{|x| x[0]}
-       gon.program_values =@program_record_detail_count.sort{|x| x[1]}
+       gon.program_keys = @program_record_detail_count.map{|x| x[0]}
+       gon.program_values =@program_record_detail_count.map{|x| x[1]}
      end
      #第四个饼图：
-     if @detail_reasons_count.present?
-       gon.reason_keys_8 = @detail_reasons_count.first(8).sort{|x| x[0]}
+       if @detail_reasons_count.present?
+       gon.reason_keys_8 = @detail_reasons_count.first(8).sort{|x| x[1]}
+       if @detail_reasons_count[0].present?
        gon.reason_value_a = {name: @detail_reasons_count[0][0], value: @detail_reasons_count[0][1]}
+       end
+       if @detail_reasons_count[1].present?
        gon.reason_value_b = {name: @detail_reasons_count[1][0], value: @detail_reasons_count[1][1]}
+       end
+       if @detail_reasons_count[2].present?
        gon.reason_value_c = {name: @detail_reasons_count[2][0], value: @detail_reasons_count[2][1]}
+       end
+       if @detail_reasons_count[3].present?
        gon.reason_value_d = {name: @detail_reasons_count[3][0], value: @detail_reasons_count[3][1]}
+       end
+       if @detail_reasons_count[4].present?
        gon.reason_value_e = {name: @detail_reasons_count[4][0], value: @detail_reasons_count[4][1]}
+       end
+       if @detail_reasons_count[5].present?
        gon.reason_value_f = {name: @detail_reasons_count[5][0], value: @detail_reasons_count[5][1]}
+       end
+       if @detail_reasons_count[6].present?
        gon.reason_value_g = {name: @detail_reasons_count[6][0], value: @detail_reasons_count[6][1]}
+       end
+       if @detail_reasons_count[7].present?
        gon.reason_value_h = {name: @detail_reasons_count[7][0], value: @detail_reasons_count[7][1]}
+       end
        #柱状图：
-       gon.reason_keys = @detail_reasons_count.sort{|x| x[0]}
-       gon.reason_values = @detail_reasons_count.sort{|x| x[1]}
+       gon.reason_keys = @detail_reasons_count.map{|x| x[0]}
+       gon.reason_values = @detail_reasons_count.map{|x| x[1]}
      end
   end
 
-  def duan_hege
+  def all_examinee
+    @duan_name = params[:duan_name]
     if params[:search].present?
       @search = TimeSearch.new(params[:search])
       @records_all = XcfRecordInfo.where("xcf_record_infos.F_begin_time between ? and ?",@search.date_from+8.hours,@search.date_to+8.hours)
     else
       @records_all = XcfRecordInfo.xcf_datetime
     end
+
     #下面会用到的几个查询：
     a_record_join_user = @records_all.joins(:xcf_user_infos).where("xcf_user_infos.F_duan_uuid": TDuanInfo.find_by(:F_name => params[:duan_name]).F_uuid)
     a_record_join_user_join_duan = @records_all.joins(xcf_user_infos: :t_duan_info).select("xcf_user_infos.F_id,t_duan_info.F_name").distinct
     a_record_details  = XcfRecordDetailInfo.where(F_record_uuid: a_record_join_user.pluck("xcf_record_infos.F_uuid"))
     a_detail_reasons = XcfDetailReasonInfo.where(:F_record_detail_uuid => a_record_details.pluck(:F_uuid))
-    @student_all = a_record_join_user
-
+    @student_all_uuid = a_record_join_user.pluck("xcf_user_infos.F_uuid").uniq
+    @student_all = XcfUserInfo.where(F_uuid: @student_all_uuid)
     @record_details = a_record_details.group_by{|rd| rd.F_record_uuid}
 
     detail_hege = Array.new
@@ -218,16 +252,10 @@ class Xcf::DataDisplayController < ApplicationController
 
     @record_hege = XcfRecordInfo.where(F_uuid: record_hege)
     # 合格人数各站段哈希
-    @student_hege = @record_hege.joins(xcf_user_infos: :t_duan_info).select("xcf_user_infos.F_id,t_duan_info.F_name").distinct.group("t_duan_info.F_name").count
-    # 合格人数比例各站段哈希
-    @student_hege_bl = Hash.new
-    @student_all.keys.each do |key|
-      if @student_hege[key].present?
-        @student_hege_bl[key]= (@student_hege[key].to_f/@student_all[key]).round(3)*100
-      else
-        @student_hege_bl[key] = 0.to_f
-      end
-    end
+    @student_hege_uuid = @record_hege.joins(:xcf_user_infos).where("xcf_user_infos.F_duan_uuid": TDuanInfo.find_by(:F_name => params[:duan_name]).F_uuid).pluck("xcf_user_infos.F_uuid").uniq
+    @student_hege = XcfUserInfo.where(:F_uuid => @student_hege_uuid)
+    @student_not_hege = @student_all - @student_hege
+
   end
 
   def duan_dabiao

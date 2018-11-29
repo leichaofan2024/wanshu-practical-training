@@ -116,7 +116,7 @@
                   <td class="exam-text-small"><%= key %></td>
                   <td class="exam-text-small"><%= @student_buhege[key] %></td>
                   <td class="exam-text-small"><%= value %></td>
-                  <td class="exam-text-small"><%= link_to("查看详情", "/") %></td>
+                  <td class="exam-text-small"><%= link_to("查看详情", xcf_all_examinee_path(:duan_name => key)) %></td>
                 </tr>
               <% end %>
             </tbody>
@@ -229,7 +229,7 @@
                               <% if @dabiao_duan_60_below.keys.include?(key) %>
                                 <td class="exam-text-small"><%= @dabiao_duan_60_below[key] %></td>
                               <% end %>
-                              <td class="exam-text-small"><%= link_to("查看详情", "/")%></td><!--进入到 all_examinee的页面-->
+                              <td class="exam-text-small"><%= link_to("查看详情", xcf_all_examinee_path(:duan_name => key))%></td><!--进入到 all_examinee的页面-->
                             </tr>
                           <% end %>
                         </table>

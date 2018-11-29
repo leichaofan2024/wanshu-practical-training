@@ -16,7 +16,7 @@ default: &default
 
 development:
   <<: *default
-  database: wanshu20180515
+  database: sxpt
   reconnect: false
   port: 3306
 # Warning: The database defined as "test" will be erased and

@@ -1,0 +1,44 @@
+<% status = render_student_status(s_station.first,time_interval,params_station_name)%>
+<% if current_user.orgnize == "运输处" or current_user.permission == 2 %>
+  <div class="dropdown">
+    <% if params[:search].present?%>
+      <%= status %>
+    <% else %>
+      <button type="button" class="btn-sm btn-default dropdown-toggle" data-toggle="dropdown" style= "width:70px;">
+        <%= status %>  <i class="fa fa-sort fa-lg" aria-hidden="true"></i>
+      </button>
+      <ul class="dropdown-menu" style = "background:#ECF9F2;">
+        <% case status %>
+        <% when "在职" %>
+          <li><%= link_to("长假",set_vacation_status_t_user_info_path(s_station.first,:F_id => c.F_id,:station_name => params_station_name, :F_type => "长假"),method: :post)%></li>
+          <li><%= link_to("短假",set_vacation_status_t_user_info_path(s_station.first,:F_id => c.F_id,:station_name => params_station_name, :F_type => "短假"),method: :post)%></li>
+          <li><%= link_to("调离",set_vacation_status_t_user_info_path(s_station.first,:F_id => c.F_id,:station_name => params_station_name, :F_type => "调离"),method: :post)%></li>
+          <li><%= link_to("退休",set_student_status_t_user_info_path(s_station.first,:station_name=> params_station_name,:status => "退休"),method: :patch)%></li>
+        <% when "短假" %>
+          <% short_vacation = TVacationInfo.where(F_id: c.F_id,F_type: status).last %>
+          <% if short_vacation.end_time.present? %>
+            <li><%= link_to("长假",set_vacation_status_t_user_info_path(s_station.first,:F_id => c.F_id,:station_name => params_station_name, :F_type => "长假"),method: :post)%></li>
+            <li><%= link_to("短假",set_vacation_status_t_user_info_path(s_station.first,:F_id => c.F_id,:station_name => params_station_name, :F_type => "短假"),method: :post)%></li>
+            <li><%= link_to("调离",set_vacation_status_t_user_info_path(s_station.first,:F_id => c.F_id,:station_name => params_station_name, :F_type => "调离"),method: :post)%></li>
+            <li><%= link_to("退休",set_student_status_t_user_info_path(s_station.first,:station_name=> params_station_name,:status => "退休"),method: :patch)%></li>
+            <li class = "divider"></li>
+            <div style = "background:white;">
+               <span class = "student_status_style_one"> 短假(已结束) </span><br>
+               <span class = "student_status_style_two"> 起： <%= short_vacation.begin_time.strftime("%Y-%m-%d %H:%M:%S") %> </span> <br>
+               <span class = "student_status_style_two"> 止： <%= short_vacation.end_time.strftime("%Y-%m-%d %H:%M:%S") %> </span>
+            </div>
+          <% else %>
+            <li><%= link_to("结束短假",set_vacation_status_t_user_info_path(s_station.first,:F_id => c.F_id,:station_name => params_station_name, :F_type => "短假"),method: :post)%></li>
+            <li class = "divider"></li>
+            <div style = "background:white;">
+               <span class = "student_status_style_one"> 短假 </span><br>
+               <span class = "student_status_style_two"> 起： <%= short_vacation.begin_time.strftime("%Y-%m-%d %H:%M:%S") %> ～</span>
+            </div>
+          <% end %>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
+<% else %>
+  <legend style= "font-size: 15px;"><%= status%></legend>
+<% end %>
