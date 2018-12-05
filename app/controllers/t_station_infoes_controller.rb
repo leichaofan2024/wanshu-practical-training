@@ -104,7 +104,7 @@ class TStationInfoesController < ApplicationController
           n = @station_student.keys
           v = @station_student.values
             m_duan_student_ids = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).where('t_user_info.F_duan_uuid = ?', @duan.F_uuid).pluck(:F_id).uniq
-            m_student_ck_ids = TUserInfo.where(:F_id => m_duan_student_ids).join(:t_record_infoes).datetime.pluck("t_user_info.F_id").uniq
+            m_student_ck_ids = TUserInfo.where(:F_id => m_duan_student_ids).joins(:t_record_infoes).datetime.pluck("t_user_info.F_id").uniq
             m = TUserInfo.where(:F_id => m_student_ck_ids).joins(:t_station_info).where("t_station_info.F_duan_uuid = ?",@duan.F_uuid).select('t_user_info.F_id,t_station_info.F_name').distinct
             c = m.group('t_station_info.F_name').count
             c1 = c.keys

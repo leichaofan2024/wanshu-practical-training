@@ -10,15 +10,17 @@ class TBaogaoInfosController < ApplicationController
       @student_yingkao = TUserInfo.student_all(@search.date_from, @search.date_to).joins(:t_duan_info).duan_orgnization.select("t_duan_info.F_name, t_user_info.F_id").distinct.group("t_duan_info.F_name").count
 
       @station_cankao = @search.scope_station_cankao
-      @student_cankao = @search.scope_student_cankao
-      student_dabiao = @search.scope_bg_student_dabiao
+      student_ids = TUserInfo.student_all(@search.date_from, @search.date_to).where(:F_duan_uuid => TDuanInfo.duan_orgnization.pluck(:F_uuid)).pluck(:F_id)
+      student_cankao_ids = @search.scope_student_cankao(student_ids)
+      @student_cankao= TUserInfo.student_all(@search.date_from, @search.date_to).where(:F_id => student_cankao_ids).joins(:t_duan_info).duan_orgnization.select("t_duan_info.F_name, t_user_info.F_id").distinct.group("t_duan_info.F_name").count
+      student_dabiao = @search.scope_bg_student_dabiao(student_cankao_ids)
       dabiao_keys = []
       student_dabiao.each do |key,value|
         if value >= 3600
           dabiao_keys << key
         end
       end
-      @student_dabiao = TUserInfo.where(:F_id => dabiao_keys).joins(:t_duan_info).duan_orgnization.select("t_duan_info.F_name,t_user_info.F_id").distinct.group("t_duan_info.F_name").count
+      @student_dabiao = TUserInfo.student_all(@search.date_from, @search.date_to).where(:F_id => dabiao_keys).joins(:t_duan_info).duan_orgnization.select("t_duan_info.F_name,t_user_info.F_id").distinct.group("t_duan_info.F_name").count
 
     else
       student_diaoli_uuid = TVacationInfo.student_transfer(Time.now.beginning_of_month,Time.now.end_of_month) + TUserInfo.where("t_user_info.status=? AND t_user_info.F_type = ?","调离",0).pluck(:F_uuid)
@@ -28,8 +30,10 @@ class TBaogaoInfosController < ApplicationController
       @student_yingkao = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info).duan_orgnization.select("t_duan_info.F_name, t_user_info.F_id").distinct.group("t_duan_info.F_name").count
 
       @station_cankao = TStationInfo.joins(:t_duan_info,{t_user_infoes: :t_record_infoes}).duan_orgnization.student_all(Time.now.beginning_of_month, Time.now.end_of_month).datetime.select("t_duan_info.F_name,t_station_info.F_uuid").distinct.group("t_duan_info.F_name").count
-      @student_cankao = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info,:t_record_infoes).duan_orgnization.datetime.select("t_duan_info.F_name, t_user_info.F_id").distinct.group("t_duan_info.F_name").count
-      student_dabiao  = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info,:t_record_infoes).duan_orgnization.datetime.group("t_user_info.F_id").sum("t_record_info.time_length")
+      student_ids = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).where(:F_duan_uuid => TDuanInfo.duan_orgnization.pluck(:F_uuid)).pluck(:F_id)
+      student_cankao_ids = TUserInfo.where(:F_id => student_ids).joins(:t_record_infoes).datetime.pluck(:F_id).uniq
+      @student_cankao = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).where(:F_id => student_cankao_ids).joins(:t_duan_info).duan_orgnization.select("t_duan_info.F_name, t_user_info.F_id").distinct.group("t_duan_info.F_name").count
+      student_dabiao  = TUserInfo.where(:F_id => student_cankao_ids).joins(:t_record_infoes).datetime.group("t_user_info.F_id").sum("t_record_info.time_length")
       dabiao_keys = []
       student_dabiao.each do |key,value|
         if value >= 3600

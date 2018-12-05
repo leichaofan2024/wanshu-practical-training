@@ -361,12 +361,12 @@ class TimeSearch
       TStationInfo.joins(:t_duan_info,{t_user_infoes: :t_record_infoes}).duan_orgnization.student_all(@time_from,@time_to).where("t_record_info.F_time BETWEEN ? AND ?", @date_from, @date_to).select("t_duan_info.F_name,t_station_info.F_uuid").distinct.group("t_duan_info.F_name").count
     end
 
-    def scope_student_cankao
-      TUserInfo.student_all(@time_from,@time_to).joins(:t_duan_info,:t_record_infoes).duan_orgnization.where("t_record_info.F_time BETWEEN ? AND ?", @date_from, @date_to).select("t_duan_info.F_name, t_user_info.F_id").distinct.group("t_duan_info.F_name").count
+    def scope_student_cankao(params)
+      TUserInfo.where(:F_id => params).joins(:t_record_infoes).where("t_record_info.F_time BETWEEN ? AND ?", @date_from, @date_to).pluck(:F_id).uniq
     end
 
-    def scope_bg_student_dabiao
-      TUserInfo.student_all(@time_from,@time_to).joins(:t_duan_info,:t_record_infoes).duan_orgnization.where("t_record_info.F_time BETWEEN ? AND ?", @date_from, @date_to).group("t_user_info.F_id").sum("t_record_info.time_length")
+    def scope_bg_student_dabiao(params)
+      TUserInfo.where(:F_id => params).joins(:t_record_infoes).where("t_record_info.F_time BETWEEN ? AND ?", @date_from, @date_to).group("t_user_info.F_id").sum("t_record_info.time_length")
     end
     private
 
