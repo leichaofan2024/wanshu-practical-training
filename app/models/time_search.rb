@@ -164,9 +164,12 @@ class TimeSearch
     def scope_program_team_student2(params,params1)
       params.joins(:t_record_infoes).program_record(params1).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
     end
-
+    
+    def scope_team_student_ids(params) 
+      TUserInfo.student_all(@time_from,@time_to).where(F_station_uuid: params.F_uuid).pluck(:F_id).uniq
+    end 
     def scope_team_student3(params)
-      TUserInfo.student_all(@time_from,@time_to).joins(:t_station_info, :t_record_infoes).where('t_station_info.F_uuid': params.F_uuid).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
+      TUserInfo.where(:F_id => params).student_all(@time_from,@time_to).joins( :t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
     end
 
     def scope_program_team_student3(params,params1)

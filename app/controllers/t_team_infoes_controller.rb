@@ -32,9 +32,10 @@ class TTeamInfoesController < ApplicationController
 
             # @student_wk= TUserInfo.where(:F_id => student_wk.pluck(:F_id))
           else
-            @student_ck = @search.scope_team_student3(@station).select(:F_id).distinct
+            student_ids =  @search.scope_team_student_ids(@station)
+            @student_ck = @search.scope_team_student3(student_ids).select(:F_id).distinct
             # @student_ck= TUserInfo.where(:F_id => student_ck.pluck(:F_id))
-            @student_wk = TUserInfo.student_all(@search.date_from, @search.date_to).joins(:t_station_info).where('t_station_info.F_uuid': @station.F_uuid).select(:F_id).distinct.where.not(F_id: @student_ck.pluck(:F_id))
+            @student_wk = TUserInfo.student_all(@search.date_from, @search.date_to).where(:F_station_uuid => @station.F_uuid).where.not(F_id: @student_ck.pluck(:F_id)).select(:F_id).distinct
             # @student_wk= TUserInfo.where(:F_id => student_wk.pluck(:F_id))
           end
 
@@ -66,9 +67,10 @@ class TTeamInfoesController < ApplicationController
             @student_wk = team_student.select(:F_id).distinct.where.not(F_id: @student_ck.pluck(:F_id))
             # @student_wk= TUserInfo.where(:F_id => student_wk.pluck(:F_id))
           else
-            @student_ck = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_station_info, :t_record_infoes).where('t_station_info.F_uuid': @station.F_uuid).datetime.select(:F_id).distinct
+            student_ids = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).where(:F_station_uuid => @station.F_uuid).pluck(:F_id).uniq
+            @student_ck = TUserInfo.where(:F_id => student_ids).joins(:t_record_infoes).datetime.select(:F_id).distinct
             # @student_ck= TUserInfo.where(:F_id => student_ck.pluck(:F_id))
-            @student_wk = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_station_info).where('t_station_info.F_uuid': @station.F_uuid).select(:F_id).distinct.where.not(F_id: @student_ck.pluck(:F_id))
+            @student_wk = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).where(:F_station_uuid => @station.F_uuid).where.not(F_id: @student_ck.pluck(:F_id)).select(:F_id).distinct
             # @student_wk= TUserInfo.where(:F_id => student_wk.pluck(:F_id))
           end
 
@@ -122,7 +124,8 @@ class TTeamInfoesController < ApplicationController
           @student_ck = TUserInfo.where(:F_id => student_dabiao_f_id).select(:F_id).distinct
           @student_wk = team_student.select(:F_id).distinct.where.not(F_id: @student_ck.pluck(:F_id))
         else
-          student_dabiao = @search.scope_team_student3(@station).group("t_user_info.F_id").sum("t_record_info.time_length")
+          student_ids = @search.scope_team_student_ids(@station)
+          student_dabiao = @search.scope_team_student3(student_ids).group("t_user_info.F_id").sum("t_record_info.time_length")
           student_dabiao_f_id = []
           student_dabiao.each do |key,value|
             if value >= 3600
@@ -130,7 +133,7 @@ class TTeamInfoesController < ApplicationController
             end
           end
           @student_ck = TUserInfo.where(:F_id => student_dabiao_f_id).select(:F_id).distinct
-          @student_wk = TUserInfo.student_all(@search.date_from, @search.date_to).joins(:t_station_info).where('t_station_info.F_uuid': @station.F_uuid).select(:F_id).distinct.where.not(F_id: @student_ck.pluck(:F_id))
+          @student_wk = TUserInfo.student_all(@search.date_from, @search.date_to).where(:F_station_uuid =>  @station.F_uuid).where.not(F_id: @student_ck.pluck(:F_id)).select(:F_id).distinct
         end
         @key = []
         @value_ck = []
@@ -177,7 +180,8 @@ class TTeamInfoesController < ApplicationController
           @student_ck = TUserInfo.where(:F_id => student_dabiao_f_id).select(:F_id).distinct
           @student_wk = team_student.select(:F_id).distinct.where.not(F_id: @student_ck.pluck(:F_id))
         else
-          student_dabiao = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_station_info, :t_record_infoes).where('t_station_info.F_uuid': @station.F_uuid).datetime.group("t_user_info.F_id").sum("t_record_info.time_length")
+          student_ids = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).where(:F_station_uuid => @station.F_uuid).pluck(:F_id).uniq
+          student_dabiao = TUserInfo.where(:F_id => student_ids).joins(:t_record_infoes).datetime.group("t_user_info.F_id").sum("t_record_info.time_length")
           student_dabiao_f_id = []
           student_dabiao.each do |key, value|
             if value >= 3600
@@ -185,7 +189,7 @@ class TTeamInfoesController < ApplicationController
             end
           end
           @student_ck = TUserInfo.where(:F_id => student_dabiao_f_id).select(:F_id).distinct
-          @student_wk = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_station_info).where('t_station_info.F_uuid': @station.F_uuid).select(:F_id).distinct.where.not(F_id: @student_ck.pluck(:F_id))
+          @student_wk = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).where(:F_station_uuid => @station.F_uuid).where.not(F_id: @student_ck.pluck(:F_id)).select(:F_id).distinct
         end
         @key = []
         @value_ck = []
