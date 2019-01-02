@@ -45,9 +45,21 @@ class TUserInfoesController < ApplicationController
       else
         @t_vacation_infoes.last.update(:end_time => Time.now)
       end
+    when "本月计入考核"
+      @t_vacation_infoes = TVacationInfo.where(:F_id => params[:F_id],:F_type => "调离",:station_name => params[:station_name]).where("begin_time > ?",Time.now.beginning_of_month)
+      @t_vacation_infoes.delete_all
     end
-    redirect_to :back
+    t_user_info = TUserInfo.find_by(:F_id => params[:F_id])
+    student_name = t_user_info.F_name
+    flash[:notice] = "#{student_name}考生状态已设置成功！"
+    redirect_to set_vacation_status_result_t_user_info_path(t_user_info, :F_id => params[:F_id],:station_name => params[:station_name])
   end
+
+  def set_vacation_status_result
+    @duan_name = TDuanInfo.find_by(:F_uuid => TStationInfo.find_by(:F_name => params[:station_name]).F_duan_uuid).F_name
+    @t_user_info = TUserInfo.find_by(:F_id => params[:F_id])
+    @t_vacation_infoes = TVacationInfo.where(:F_id => params[:F_id]).order("created_at DESC")
+  end 
 
   def destroy
     @station = TStationInfo.find_by(F_name: params[:station_name])

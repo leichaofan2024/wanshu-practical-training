@@ -1,0 +1,41 @@
+<div style="padding:20px;">
+	<%= link_to("<< 返回", team_student_info_t_team_infoes_path(:station_name => params[:station_name],:duan_name => @duan_name) )%>
+	<h3 style="text-align:center;"><%= @t_user_info.F_name%>(<%= @t_user_info.F_id%>)历史调动记录表</h3>
+	<table class="table table-border">
+		<thead>
+			<tr>
+				<th>序号</th>
+				<th>状态</th>
+				<th>开始时间</th>
+				<th>结束时间</th>
+				<th>所属车站</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% n =0 %>
+			<% @t_vacation_infoes.each do |t_vacation_info| %>
+				<% n += 1%>
+				<tr>
+					<td><%= n %></td>
+					<td><%= t_vacation_info.F_type %></td>
+					<td>
+						<% if t_vacation_info.begin_time.present? %>
+						  <%= t_vacation_info.begin_time.strftime("%Y-%m-%d %H:%M:%S") %>
+					    <% else %>
+					      ~
+					    <% end %>
+						</td>
+					<td>
+						<% if t_vacation_info.end_time.present? %>
+						  <%= t_vacation_info.end_time.strftime("%Y-%m-%d %H:%M:%S") %>
+					    <% else %>
+					      ~
+					    <% end %>
+						
+					</td>
+					<td><%= t_vacation_info.station_name %></td>
+				</tr>
+			<% end %>
+		</tbody>
+	</table>
+</div>

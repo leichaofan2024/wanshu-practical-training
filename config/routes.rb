@@ -113,7 +113,7 @@ Rails.application.routes.draw do
       member do
         patch :set_student_status
         post :set_vacation_status
-
+        get :set_vacation_status_result
       end
     end
 

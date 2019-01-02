@@ -362,6 +362,7 @@
                             <li><%= link_to("短假",set_vacation_status_t_user_info_path(s_station.first,:F_id => c.F_id,:station_name => params[:station_name], :F_type => "短假"),method: :post)%></li>
                             <li><%= link_to("调离",set_vacation_status_t_user_info_path(s_station.first,:F_id => c.F_id,:station_name => params[:station_name], :F_type => "调离"),method: :post)%></li>
                             <li><%= link_to("退休",set_student_status_t_user_info_path(s_station.first,:station_name=> params[:station_name],:status => "退休"),method: :patch)%></li>
+                            <li><%= link_to("本月计入考核",set_vacation_status_t_user_info_path(s_station.first,:F_id => c.F_id,:station_name => params[:station_name], :F_type => "本月计入考核"),method: :post)%></li>
                             <li class = "divider"></li>
                             <div style = "background:white;">
                                <span class = "student_status_style_one"> 调离(已调回) </span><br>
