@@ -9,7 +9,8 @@ Rails.application.routes.draw do
       end
     end
     root :to => 'welcome#index'
-
+    get '/clear_viedo',to: 'welcome#clear_viedo'
+    delete '/delete_viedo',to: 'welcome#delete_viedo'
     get '/ju_overview', to: 'welcome#ju_overview'
     get '/duan_overview', to: 'welcome#duan_overview'
     get '/duan_overview_1',to: 'welcome#duan_overview_1'

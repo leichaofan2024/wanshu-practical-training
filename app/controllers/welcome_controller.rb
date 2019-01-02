@@ -1095,7 +1095,37 @@ class WelcomeController < ApplicationController
   def update_note
 
   end
+  def clear_viedo
+    @this_year = Time.now.year
+    @this_month =  Time.now.month
+    @this_day = Time.now.day
+    @years = [@this_year-5,@this_year-4,@this_year-3,@this_year-2,@this_year-1,@this_year]
+    @months = (1..12)
+    @days = (1..31)
+    @t_record_info_first_create = TRecordInfo.order("created_at DESC").last
+    @t_record_info_last_create = TRecordInfo.order("created_at DESC").first
+    @file_names = Array.new
+    @file_names << Dir["/home/yunshuchu/replay_upload/*"].first
 
+  end
 
+    def delete_viedo
+      @year = params[:year]
+      @month = params[:month]
+      @day = params[:day]
+      @file_names = Array.new
+      @this_dir = Dir["/home/yunshuchu/replay_upload/*"]
+      @this_dir.each do |x|
+
+        create_time = x.split("/").last.split("_")[1]
+        if create_time.to_time < "#{@year}-#{@month}-#{@day} 00:00:00".to_time
+          @file_names << create_time
+          File.delete(x)
+        end
+      end
+      file_count = @file_names.count
+      flash[:notice] = "成功删除视频文件#{file_count}个！"
+      redirect_back fallback_location: clear_viedo_path
+    end
 
 end

@@ -53,7 +53,9 @@
           </a>
           <ul class="dropdown-menu">
 						<li><%= link_to("网站更新记录",update_note_path)%></li>
-
+            <% if current_user && current_user.role == "运输处" %>
+              <li><a href="/clear_viedo">清理往期视频</a></li>
+            <% end %>
 						<!-- <li class="divider"></li>
 						<li><%= link_to("时长赋值",time_length_t_record_infoes_path,method: :patch,data: {comfirm: "确定更新吗？"})%></li> -->
             <li class="divider"></li>
