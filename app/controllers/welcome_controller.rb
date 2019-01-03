@@ -1105,7 +1105,7 @@ class WelcomeController < ApplicationController
     @t_record_info_first_create = TRecordInfo.order("created_at DESC").last
     @t_record_info_last_create = TRecordInfo.order("created_at DESC").first
     @file_names = Array.new
-    @file_names << Dir["/home/yunshuchu/replay_upload/*"].first
+    @file_names << Dir["/wdataftp/replay_upload/*"].first
 
   end
 
@@ -1114,7 +1114,7 @@ class WelcomeController < ApplicationController
       @month = params[:month]
       @day = params[:day]
       @file_names = Array.new
-      @this_dir = Dir["/home/yunshuchu/replay_upload/*"]
+      @this_dir = Dir["/wdataftp/replay_upload/*"]
       @this_dir.each do |x|
 
         create_time = x.split("/").last.split("_")[1]
