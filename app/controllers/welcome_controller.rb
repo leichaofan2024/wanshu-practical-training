@@ -630,12 +630,15 @@ class WelcomeController < ApplicationController
       @kuaizhao_duibi = TBaogaoInfo.where(:kuaizhao_create_time => params[:kuaizhao_duibi].to_time)
     end
 
+
     if params[:kuaizhao_time].present?
       @kuaizhao_xiangqing = TBaogaoInfo.where(:kuaizhao_create_time => params[:kuaizhao_time].to_time )
+      @year = @kuaizhao_xiangqing.year
     end
 
     if params[:search].present?
       @search = TimeSearch.new(params[:search])
+      @year = @search.date_from.year
       @jibenqingkuang = TBaogaoInput.where(:title => "基本情况" ).where("t_baogao_inputs.baogao_time between ? and ?",@search.date_from,@search.date_to ).first
       @haodefangmian = TBaogaoInput.where(:title => "好的方面" ).where("t_baogao_inputs.baogao_time between ? and ?",@search.date_from,@search.date_to ).first
       @cunzaiwenti = TBaogaoInput.where(:title => "存在问题" ).where("t_baogao_inputs.baogao_time between ? and ?",@search.date_from,@search.date_to ).first
@@ -671,7 +674,7 @@ class WelcomeController < ApplicationController
 
 
       if params[:name].present?
-        @t_baogao_program = TBaogaoProgram.find_by(:name => params[:name])
+        @t_baogao_program = TBaogaoProgram.find_by(:year => @year,:name => params[:name])
         if @t_baogao_program.program_one.present?
           program_duan_student_hash = TUserInfo.student_all(@search.date_from, @search.date_to).joins(:t_duan_info).duan_orgnization.select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
           key = program_duan_student_hash.keys
@@ -819,6 +822,7 @@ class WelcomeController < ApplicationController
       end
 
     else
+      @year = Time.now.year
       @jibenqingkuang = TBaogaoInput.where(:title => "基本情况" ).where("t_baogao_inputs.baogao_time between ? and ?",Time.now.beginning_of_month,Time.now.end_of_month ).first
       @haodefangmian = TBaogaoInput.where(:title => "好的方面" ).where("t_baogao_inputs.baogao_time between ? and ?",Time.now.beginning_of_month,Time.now.end_of_month ).first
       @cunzaiwenti = TBaogaoInput.where(:title => "存在问题" ).where("t_baogao_inputs.baogao_time between ? and ?",Time.now.beginning_of_month,Time.now.end_of_month).first
@@ -852,7 +856,7 @@ class WelcomeController < ApplicationController
       @student_dabiao = TUserInfo.where(:F_id => dabiao_keys).joins(:t_duan_info).duan_orgnization.select("t_duan_info.F_name,t_user_info.F_id").distinct.group("t_duan_info.F_name").count
 
       if params[:name].present?
-        @t_baogao_program = TBaogaoProgram.find_by(:name => params[:name])
+        @t_baogao_program = TBaogaoProgram.find_by(:year => @year,:name => params[:name])
         if @t_baogao_program.program_one.present?
           program_duan_student_hash = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info).duan_orgnization.select('t_duan_info.F_name, t_user_info.F_id').distinct.group('t_duan_info.F_name').count
           key = program_duan_student_hash.keys

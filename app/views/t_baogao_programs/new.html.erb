@@ -1,6 +1,7 @@
 <div class="call-board-frame">
   <%= simple_form_for @t_baogao_program do |f| %>
-    <%= f.select :name,["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"] %>
+    <%= f.select :year,[Time.now.year-1,Time.now.year,Time.now.year+1]%>年
+    <%= f.select :name,["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"] %>月
     <%= f.input :program_one,label: "专项一", collection: TProgramInfo.pluck(:F_name) %>
     <%= f.input :program_two, label: "专项二", collection: TProgramInfo.pluck(:F_name) %>
     <%= f.input :program_three,label: "专项三", collection: TProgramInfo.pluck(:F_name) %>

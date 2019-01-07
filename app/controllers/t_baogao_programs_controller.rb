@@ -19,7 +19,7 @@ class TBaogaoProgramsController < ApplicationController
   private
 
   def t_baogao_program_params
-    params.require(:t_baogao_program).permit(:name,:program_one,:program_two,:program_three,:program_four,:program_five,:program_six,:program_seven,:program_eight)
+    params.require(:t_baogao_program).permit(:name,:year,:program_one,:program_two,:program_three,:program_four,:program_five,:program_six,:program_seven,:program_eight)
   end
 
 end
