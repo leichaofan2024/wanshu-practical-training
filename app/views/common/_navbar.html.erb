@@ -56,6 +56,7 @@
             <% if current_user && current_user.role == "运输处" %>
               <li><a href="/clear_viedo">清理往期视频</a></li>
             <% end %>
+            <li><%= link_to("FTP","ftp://10.64.2.108:8048") %></li>
 						<!-- <li class="divider"></li>
 						<li><%= link_to("时长赋值",time_length_t_record_infoes_path,method: :patch,data: {comfirm: "确定更新吗？"})%></li> -->
             <li class="divider"></li>
