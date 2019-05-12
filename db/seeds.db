@@ -1,0 +1,7 @@
+puts "创建角色："
+User.create(:role => ("张家口南站管理员"), orgnize: "张家口南站", permission: 3,password: "123456",password_confirmation:"123456")
+puts "角色创建成功！"
+
+puts "开始车站更名："
+TStationInfo.find_by(:F_name => "沙岭子西").update(:F_name => "张家口南站")
+puts "车站更名成功！"
