@@ -52,20 +52,24 @@ class TimeSearch
       TTeamInfo.joins(:t_station_info,t_user_infoes: :t_record_infoes).where("t_station_info.F_name": params).student_all(@time_from,@time_to).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
     end
 
-    def scope_student_k
-        TUserInfo.student_all(@time_from,@time_to).where.not(F_duan_uuid: ["74708afh145a11e6ad9d001ec9b3cd0c", "74708bnv145a11e6ad9d001ec9b3cd0c"]).joins(:t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
+    def scope_duan_student_ids
+      TUserInfo.student_all(@time_from,@time_to)
     end
 
-    def scope_student_dabiao1
-      TUserInfo.student_all(@time_from,@time_to).where.not(F_duan_uuid: ["74708afh145a11e6ad9d001ec9b3cd0c", "74708bnv145a11e6ad9d001ec9b3cd0c"]).joins(:t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to).group("t_user_info.F_id").sum("t_record_info.time_length")
+    def scope_student_k(params)
+      TUserInfo.where(:F_id => params).joins(:t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to)
+    end
+
+    def scope_student_dabiao1(params)
+      TUserInfo.where(:F_id => params).joins(:t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to).group("t_user_info.F_id").sum("t_record_info.time_length")
     end
 
     def scope_student_dabiao2(params)
-      TUserInfo.student_all(@time_from,@time_to).joins(:t_record_infoes,:t_duan_info).where("t_duan_info.F_name": params.orgnize).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to).group("t_user_info.F_id").sum("t_record_info.time_length")
+      TUserInfo.where(:F_id => params).joins(:t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to).group("t_user_info.F_id").sum("t_record_info.time_length")
     end
 
     def scope_student_dabiao3(params)
-      TUserInfo.student_all(@time_from,@time_to).joins(:t_record_infoes,:t_station_info).where("t_station_info.F_name": params.orgnize).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to).group("t_user_info.F_id").sum("t_record_info.time_length")
+      TUserInfo.where(:F_id => params).joins(:t_record_infoes).where('t_record_info.F_time BETWEEN ? AND ?', @date_from, @date_to).group("t_user_info.F_id").sum("t_record_info.time_length")
     end
 
     def scope_program

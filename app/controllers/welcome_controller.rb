@@ -29,11 +29,12 @@ class WelcomeController < ApplicationController
         @student_ck_counts = @search.scope_student.select("t_user_info.F_id").distinct.count
         @program_ck_count = @search.scope_program
         # 饼图一
-        @student_ck_count = @search.scope_student_k.select("t_user_info.F_id").distinct.count
-        @student_wk_count = TUserInfo.student_all(@search.date_from, @search.date_to).where.not(F_duan_uuid: ["74708afh145a11e6ad9d001ec9b3cd0c", "74708bnv145a11e6ad9d001ec9b3cd0c"]).select("t_user_info.F_id").distinct.count - @search.scope_student_k.select("t_user_info.F_id").distinct.count
+        student_all_ids  =  TUserInfo.student_all(@search.date_from, @search.date_to).where.not(F_duan_uuid: ["74708afh145a11e6ad9d001ec9b3cd0c", "74708bnv145a11e6ad9d001ec9b3cd0c"]).pluck(:F_id).uniq
+        @student_ck_count = @search.scope_student_k(student_all_ids).select("t_user_info.F_id").distinct.count
+        @student_wk_count = student_all_ids.count - @student_ck_count
         # 饼图二
-        sum = TUserInfo.student_all(@search.date_from, @search.date_to).where.not(F_duan_uuid: ["74708afh145a11e6ad9d001ec9b3cd0c", "74708bnv145a11e6ad9d001ec9b3cd0c"]).select(:F_id).distinct.count
-        n = @search.scope_student_dabiao1
+        sum = student_all_ids.count
+        n = @search.scope_student_dabiao1(student_all_ids)
         user_f_id= Array.new
         n.each do |key,value|
           if value>= 3600
@@ -62,11 +63,12 @@ class WelcomeController < ApplicationController
         @student_ck_counts = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).where.not(F_duan_uuid: ["74708afh145a11e6ad9d001ec9b3cd0c", "74708bnv145a11e6ad9d001ec9b3cd0c"]).joins(:t_record_infoes).datetime.select("t_user_info.F_id").distinct.count
         @program_ck_count = TProgramInfo.joins(:t_record_infoes).datetime.distinct.count
         # 饼图一
-        @student_ck_count = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).where.not(F_duan_uuid: ["74708afh145a11e6ad9d001ec9b3cd0c", "74708bnv145a11e6ad9d001ec9b3cd0c"]).joins(:t_record_infoes).datetime.select("t_user_info.F_id").distinct.count
-        @student_wk_count = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).where.not(F_duan_uuid: ["74708afh145a11e6ad9d001ec9b3cd0c", "74708bnv145a11e6ad9d001ec9b3cd0c"]).select("t_user_info.F_id").distinct.count - TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).where.not(F_duan_uuid: ["74708afh145a11e6ad9d001ec9b3cd0c", "74708bnv145a11e6ad9d001ec9b3cd0c"]).joins(:t_record_infoes).datetime.select("t_user_info.F_id").distinct.count
+        student_all_ids  = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).where.not(F_duan_uuid: ["74708afh145a11e6ad9d001ec9b3cd0c", "74708bnv145a11e6ad9d001ec9b3cd0c"]).pluck(:F_id).uniq
+        @student_ck_count = TUserInfo.where(:F_id => student_all_ids).joins(:t_record_infoes).datetime.select("t_user_info.F_id").distinct.count
+        @student_wk_count =  student_all_ids.count - @student_ck_count
         # 饼图二
-        sum = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).where.not(F_duan_uuid: ["74708afh145a11e6ad9d001ec9b3cd0c", "74708bnv145a11e6ad9d001ec9b3cd0c"]).select(:F_id).distinct.count
-        n = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).where.not(F_duan_uuid: ["74708afh145a11e6ad9d001ec9b3cd0c", "74708bnv145a11e6ad9d001ec9b3cd0c"]).joins(:t_record_infoes).datetime.group("t_user_info.F_id").sum("t_record_info.time_length")
+        sum = student_all_ids.count
+        n = TUserInfo.where(:F_id => student_all_ids).joins(:t_record_infoes).datetime.group("t_user_info.F_id").sum("t_record_info.time_length")
         user_f_id= Array.new
         n.each do |key,value|
           if value>= 3600
@@ -132,11 +134,12 @@ class WelcomeController < ApplicationController
       @student_ck_counts = @search.scope_student.joins(:t_duan_info).where("t_duan_info.F_name= ? ", current_user.orgnize).select("t_user_info.F_id").distinct.count
       @program_ck_count = @search.scope_program_duan.where("t_duan_info.F_name= ?", current_user.orgnize).distinct.count
       # 饼图一
-      @student_ck_count = @search.scope_student_k.joins(:t_duan_info).where("t_duan_info.F_name= ?", current_user.orgnize).select("t_user_info.F_id").distinct.count
-      @student_wk_count = TUserInfo.student_all(@search.date_from, @search.date_to).joins(:t_duan_info).where("t_duan_info.F_name= ?", current_user.orgnize).select("t_user_info.F_id").distinct.count - @search.scope_student_k.joins(:t_duan_info).where("t_duan_info.F_name= ?", current_user.orgnize).select("t_user_info.F_id").distinct.count
+      student_all_ids   = @search.scope_duan_student_ids.joins(:t_duan_info).where("t_duan_info.F_name= ?", current_user.orgnize).pluck(:F_id).uniq
+      @student_ck_count = @search.scope_student_k(student_all_ids).select("t_user_info.F_id").distinct.count
+      @student_wk_count = student_all_ids.count - student_ck_count
       # 饼图二
-      sum = TUserInfo.student_all(@search.date_from, @search.date_to).where(:F_duan_uuid => TDuanInfo.find_by(:F_name => current_user.orgnize).F_uuid).select(:F_id).distinct.count
-      n = @search.scope_student_dabiao2(current_user)
+      sum = student_all_ids.count
+      n = @search.scope_student_dabiao2(student_all_ids)
       user_f_id= Array.new
       n.each do |key,value|
         if value>= 3600
@@ -163,11 +166,12 @@ class WelcomeController < ApplicationController
       @student_ck_counts = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info,:t_record_infoes).where("t_duan_info.F_name= ?", current_user.orgnize).datetime.select("t_user_info.F_id").distinct.count
       @program_ck_count = TProgramInfo.joins(t_record_infoes: :t_duan_info).datetime.where("t_duan_info.F_name= ?", current_user.orgnize).distinct.count
       # 饼图一
-      @student_ck_count = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info,:t_record_infoes).datetime.where("t_duan_info.F_name= ?", current_user.orgnize).select("t_user_info.F_id").distinct.count
-      @student_wk_count = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info).where("t_duan_info.F_name= ?", current_user.orgnize).select("t_user_info.F_id").distinct.count - TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info,:t_record_infoes).datetime.where("t_duan_info.F_name= ?", current_user.orgnize).select("t_user_info.F_id").distinct.count
+      student_all_ids   = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info).where("t_duan_info.F_name= ?", current_user.orgnize).pluck(:F_id).uniq
+      @student_ck_count = TUserInfo.where(:F_id => student_all_ids).joins(:t_record_infoes).datetime.select("t_user_info.F_id").distinct.count
+      @student_wk_count = student_all_ids.count - @student_ck_count
       # 饼图二
-      sum = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).where(:F_duan_uuid => TDuanInfo.find_by(:F_name => current_user.orgnize).F_uuid).select(:F_id).distinct.count
-      n = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_duan_info,:t_record_infoes).datetime.where("t_duan_info.F_name= ?", current_user.orgnize).group("t_user_info.F_id").sum("t_record_info.time_length")
+      sum = student_all_ids.count
+      n = TUserInfo.where(:F_id => student_all_ids).joins(:t_record_infoes).datetime.group("t_user_info.F_id").sum("t_record_info.time_length")
       user_f_id= Array.new
       n.each do |key,value|
         if value>= 3600
@@ -235,11 +239,12 @@ class WelcomeController < ApplicationController
       @student_ck_counts = @search.scope_student.joins(:t_station_info).where("t_station_info.F_name= ? ", current_user.orgnize).select("t_user_info.F_id").distinct.count
       @program_ck_count = @search.scope_program_station.where("t_station_info.F_name= ?", current_user.orgnize).distinct.count
       # 饼图一
-      @student_ck_count = @search.scope_student_k.joins(:t_station_info).where("t_station_info.F_name= ?", current_user.orgnize).select("t_user_info.F_id").distinct.count
-      @student_wk_count = TUserInfo.student_all(@search.date_from, @search.date_to).joins(:t_station_info).where("t_station_info.F_name= ?", current_user.orgnize).select("t_user_info.F_id").distinct.count - @search.scope_student_k.joins(:t_station_info).where("t_station_info.F_name= ?", current_user.orgnize).select("t_user_info.F_id").distinct.count
+      student_all_ids   = @search.scope_duan_student_ids.joins(:t_station_info).where("t_station_info.F_name= ?", current_user.orgnize).pluck(:F_id).uniq
+      @student_ck_count = @search.scope_student_k(student_all_ids).select("t_user_info.F_id").distinct.count
+      @student_wk_count = student_all_ids.count - @student_ck_count
       # 饼图二
-      sum = TUserInfo.student_all(@search.date_from, @search.date_to).where(:F_station_uuid => TStationInfo.find_by(:F_name => current_user.orgnize).F_uuid).select(:F_id).distinct.count
-      n = @search.scope_student_dabiao3(current_user)
+      sum = student_all_ids.count
+      n = @search.scope_student_dabiao3(student_all_ids)
       user_f_id= Array.new
       n.each do |key,value|
         if value>= 3600
@@ -270,11 +275,12 @@ class WelcomeController < ApplicationController
       @student_ck_counts = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_station_info,:t_record_infoes).datetime.where("t_station_info.F_name= ?", current_user.orgnize).select("t_user_info.F_id").distinct.count
       @program_ck_count = TProgramInfo.joins(t_record_infoes: :t_station_info).datetime.where("t_station_info.F_name= ?", current_user.orgnize).distinct.count
       # 饼图一
-      @student_ck_count = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_station_info,:t_record_infoes).datetime.where("t_station_info.F_name= ?", current_user.orgnize).select("t_user_info.F_id").distinct.count
-      @student_wk_count = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_station_info).where("t_station_info.F_name= ?", current_user.orgnize).select("t_user_info.F_id").distinct.count - TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_station_info,:t_record_infoes).datetime.where("t_station_info.F_name= ?", current_user.orgnize).select("t_user_info.F_id").distinct.count
+      student_all_ids   = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_station_info).where("t_station_info.F_name= ?", current_user.orgnize).pluck(:F_id).uniq
+      @student_ck_count = TUserInfo.where(:F_id => student_all_ids).joins(:t_record_infoes).datetime.select("t_user_info.F_id").distinct.count
+      @student_wk_count =  student_all_ids.count- @student_ck_count
       # 饼图二
-      sum = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).where(:F_station_uuid => TStationInfo.find_by(:F_name => current_user.orgnize).F_uuid).select(:F_id).distinct.count
-      n = TUserInfo.student_all(Time.now.beginning_of_month, Time.now.end_of_month).joins(:t_station_info,:t_record_infoes).datetime.where("t_station_info.F_name= ?", current_user.orgnize).group("t_user_info.F_id").sum("t_record_info.time_length")
+      sum = student_all_ids.count
+      n = TUserInfo.where(:F_id => student_all_ids).joins(:t_record_infoes).datetime.group("t_user_info.F_id").sum("t_record_info.time_length")
       user_f_id= Array.new
       n.each do |key,value|
         if value>= 3600
