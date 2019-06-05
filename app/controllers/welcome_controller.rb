@@ -136,7 +136,7 @@ class WelcomeController < ApplicationController
       # 饼图一
       student_all_ids   = @search.scope_duan_student_ids.joins(:t_duan_info).where("t_duan_info.F_name= ?", current_user.orgnize).pluck(:F_id).uniq
       @student_ck_count = @search.scope_student_k(student_all_ids).select("t_user_info.F_id").distinct.count
-      @student_wk_count = student_all_ids.count - student_ck_count
+      @student_wk_count = student_all_ids.count - @student_ck_count
       # 饼图二
       sum = student_all_ids.count
       n = @search.scope_student_dabiao2(student_all_ids)
